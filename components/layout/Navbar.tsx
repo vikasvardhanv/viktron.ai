@@ -40,8 +40,8 @@ export const Navbar: React.FC = () => {
 
   const shellClass = useMemo(() => {
     return isScrolled
-      ? 'border-[#2b3549] bg-[#0f1520] shadow-[0_16px_32px_rgba(0,0,0,0.35)]'
-      : 'border-[#263041] bg-[#0e1420]';
+      ? 'border-[#c7d3e6] bg-[#f8faff]/95 shadow-[0_16px_40px_-24px_rgba(28,48,92,0.34)]'
+      : 'border-[#d5dfed] bg-[#fbfdff]/90';
   }, [isScrolled]);
 
   return (
@@ -57,7 +57,7 @@ export const Navbar: React.FC = () => {
             <div className="flex h-16 items-center justify-between px-4 sm:px-6">
               <Link to="/" className="group inline-flex items-center gap-2">
                 <BrandIcon className="h-8 w-8" />
-                <span className="font-semibold text-slate-100 tracking-tight">Viktron</span>
+                <span className="font-semibold text-[#111b2d] tracking-tight">Viktron</span>
               </Link>
 
               <div className="hidden lg:flex items-center gap-1">
@@ -69,8 +69,8 @@ export const Navbar: React.FC = () => {
                       to={item.path}
                       className={`rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
                         active
-                          ? 'bg-[#1a2332] text-white'
-                          : 'text-slate-300 hover:bg-[#181f2c] hover:text-white'
+                          ? 'bg-[#1e2f50] text-white'
+                          : 'text-[#384863] hover:bg-[#edf2fb] hover:text-[#1a2a47]'
                       }`}
                     >
                       {item.name}
@@ -84,15 +84,15 @@ export const Navbar: React.FC = () => {
                   <div className="relative">
                     <button
                       onClick={() => setShowUserMenu((prev) => !prev)}
-                      className="inline-flex items-center gap-2 rounded-xl border border-[#2d3b55] bg-[#182132] px-3 py-2 hover:bg-[#1b2538] transition-colors"
+                      className="inline-flex items-center gap-2 rounded-xl border border-[#d4deec] bg-[#f3f7fe] px-3 py-2 hover:bg-[#ebf1fc] transition-colors"
                     >
-                      <div className="h-7 w-7 rounded-full bg-[#22304a] flex items-center justify-center">
-                        <User className="h-4 w-4 text-lime-200" />
+                      <div className="h-7 w-7 rounded-full bg-[#dfe8f8] flex items-center justify-center">
+                        <User className="h-4 w-4 text-[#1d355c]" />
                       </div>
-                      <span className="text-sm font-medium text-slate-100 max-w-[9rem] truncate">
+                      <span className="text-sm font-medium text-[#1a2b47] max-w-[9rem] truncate">
                         {user?.fullName?.split(' ')[0] || 'Account'}
                       </span>
-                      <ChevronDown className={`h-4 w-4 text-slate-300 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={`h-4 w-4 text-[#5b6b86] transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
                     </button>
 
                     <AnimatePresence>
@@ -101,18 +101,18 @@ export const Navbar: React.FC = () => {
                           initial={{ opacity: 0, y: 10, scale: 0.98 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.98 }}
-                          className="absolute right-0 mt-2 w-56 rounded-xl border border-[#2c384d] bg-[#111a29] p-2 shadow-2xl"
+                          className="absolute right-0 mt-2 w-56 rounded-xl border border-[#d5dfed] bg-[#ffffff] p-2 shadow-[0_24px_50px_-30px_rgba(39,59,102,0.45)]"
                         >
-                          <div className="px-3 py-2 border-b border-[#2c384d]">
-                            <p className="text-sm font-medium text-white truncate">{user?.fullName}</p>
-                            <p className="text-xs text-slate-300 truncate">{user?.email}</p>
+                          <div className="px-3 py-2 border-b border-[#e0e7f3]">
+                            <p className="text-sm font-medium text-[#13213a] truncate">{user?.fullName}</p>
+                            <p className="text-xs text-[#61718c] truncate">{user?.email}</p>
                           </div>
                           <button
                             onClick={() => {
                               logout();
                               setShowUserMenu(false);
                             }}
-                            className="mt-1 w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-[#1d2738]"
+                            className="mt-1 w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-[#1a2a45] hover:bg-[#eef3fb]"
                           >
                             <LogOut className="h-4 w-4" />
                             Sign Out
@@ -150,7 +150,7 @@ export const Navbar: React.FC = () => {
 
               <button
                 onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-                className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#2d3b55] bg-[#182132] text-slate-100 hover:bg-[#1f2a3d]"
+                className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#cfdbeb] bg-[#f4f8fe] text-[#1e3255] hover:bg-[#ebf1fb]"
               >
                 {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
@@ -167,12 +167,12 @@ export const Navbar: React.FC = () => {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-40 lg:hidden"
           >
-            <div className="absolute inset-0 bg-[#05080f]/94" />
+            <div className="absolute inset-0 bg-[#edf2fa]/96" />
             <motion.div
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -20, opacity: 0 }}
-              className="relative mt-24 mx-4 rounded-2xl border border-[#2d3950] bg-[#121a28] p-4"
+              className="relative mt-24 mx-4 rounded-2xl border border-[#d3ddec] bg-[#ffffff] p-4"
             >
               <div className="space-y-1">
                 {navItems.map((item) => {
@@ -182,7 +182,7 @@ export const Navbar: React.FC = () => {
                       key={item.path}
                       to={item.path}
                       className={`block rounded-xl px-4 py-3 text-sm font-medium ${
-                        active ? 'bg-[#1c2638] text-white' : 'text-slate-200 hover:bg-[#1a2232]'
+                        active ? 'bg-[#1e2f50] text-white' : 'text-[#243651] hover:bg-[#edf2fb]'
                       }`}
                     >
                       {item.name}
@@ -194,9 +194,9 @@ export const Navbar: React.FC = () => {
               <div className="mt-4 grid grid-cols-1 gap-2">
                 {isAuthenticated ? (
                   <>
-                    <div className="rounded-xl border border-[#2d3950] bg-[#1a2333] px-4 py-3">
-                      <p className="text-sm font-medium text-white truncate">{user?.fullName}</p>
-                      <p className="text-xs text-slate-300 truncate">{user?.email}</p>
+                    <div className="rounded-xl border border-[#d4deec] bg-[#f4f8fe] px-4 py-3">
+                      <p className="text-sm font-medium text-[#13213a] truncate">{user?.fullName}</p>
+                      <p className="text-xs text-[#61718c] truncate">{user?.email}</p>
                     </div>
                     <button
                       onClick={() => {

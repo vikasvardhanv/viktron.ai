@@ -1,19 +1,57 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { ArrowRight, Calendar, Check, Play, Sparkles } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
 import { useAuth } from '../context/AuthContext';
 import { AnimatedSection, StaggerContainer, StaggerItem } from '../components/ui/AnimatedSection';
-import { GlassCard } from '../components/ui/GlassCard';
 import { Button } from '../components/ui/Button';
 import { INDUSTRY_AGENTS } from '../constants';
-import {
-  ArrowRight, Bot, Play, Check, Sparkles, MessageSquare,
-  Calendar, ShoppingCart, Stethoscope, Scissors, Car, HardHat, ChevronRight, BarChart3
-} from 'lucide-react';
 
-// Try Demo Button with Auth Check
+const agentDetails: Record<string, { benefits: string[]; useCases: string[] }> = {
+  restaurant: {
+    benefits: ['Reduce wait times by 50%', 'Handle peak-hour surges', 'No missed reservations'],
+    useCases: ['Reservations', 'Menu Q&A', 'Order intake', 'Event booking'],
+  },
+  clinic: {
+    benefits: ['Cut no-shows by 40%', '24/7 booking', 'Smarter triage'],
+    useCases: ['Appointments', 'Triage', 'Refills', 'Patient FAQs'],
+  },
+  salon: {
+    benefits: ['Increase rebooking', 'Stylist matching', 'Automated reminders'],
+    useCases: ['Service booking', 'Stylist selection', 'Consulting', 'Waitlist fill'],
+  },
+  dealership: {
+    benefits: ['Instant lead response', 'Book more test drives', 'Lower sales admin'],
+    useCases: ['Inventory search', 'Test drives', 'Service slots', 'Finance FAQs'],
+  },
+  construction: {
+    benefits: ['Track site progress', 'Compliance alerts', 'Resource optimization'],
+    useCases: ['Project status', 'Checklist flows', 'Equipment logging', 'Daily updates'],
+  },
+  real_estate: {
+    benefits: ['Qualify leads faster', '24/7 listing support', 'Automated showings'],
+    useCases: ['Property search', 'Viewing booking', 'Mortgage FAQs', 'Agent handoff'],
+  },
+  legal: {
+    benefits: ['Filter better leads', 'Automate intake', 'Save non-billable hours'],
+    useCases: ['Case intake', 'Consult scheduling', 'Doc collection', 'Client FAQs'],
+  },
+  ecommerce: {
+    benefits: ['Reduce support load', 'Boost conversions', 'Fast order answers'],
+    useCases: ['Order tracking', 'Returns', 'Recommendations', 'Pre-sales help'],
+  },
+  education: {
+    benefits: ['Increase enrollment', '24/7 student support', 'Faster admissions'],
+    useCases: ['Course selection', 'Admissions Q&A', 'Tuition guidance', 'Campus info'],
+  },
+  recruitment: {
+    benefits: ['Faster screening', 'Automated scheduling', 'Better candidate CX'],
+    useCases: ['Resume pre-screen', 'Interview scheduling', 'JD Q&A', 'Onboarding'],
+  },
+};
+
 const TryDemoButton: React.FC<{ agentId: string }> = ({ agentId }) => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -22,9 +60,9 @@ const TryDemoButton: React.FC<{ agentId: string }> = ({ agentId }) => {
     e.preventDefault();
     if (!isAuthenticated) {
       navigate(`/login?redirect=/demos/${agentId}`);
-    } else {
-      navigate(`/demos/${agentId}`);
+      return;
     }
+    navigate(`/demos/${agentId}`);
   };
 
   return (
@@ -34,222 +72,117 @@ const TryDemoButton: React.FC<{ agentId: string }> = ({ agentId }) => {
   );
 };
 
-// Extended agent details
-const agentDetails: Record<string, {
-  benefits: string[];
-  useCases: string[];
-  integrations: string[];
-}> = {
-  restaurant: {
-    benefits: ['Reduce wait times by 50%', 'Handle 1000+ orders/day', 'Zero missed reservations'],
-    useCases: ['Table reservations', 'Menu inquiries', 'Order taking', 'Event bookings'],
-    integrations: ['POS Systems', 'Reservation Platforms', 'Delivery Apps'],
-  },
-  clinic: {
-    benefits: ['Cut no-shows by 40%', '24/7 appointment booking', 'Intelligent triage'],
-    useCases: ['Appointment scheduling', 'Symptom pre-screening', 'Prescription refills', 'FAQs'],
-    integrations: ['EHR Systems', 'Practice Management', 'Telehealth'],
-  },
-  salon: {
-    benefits: ['Double booking capacity', 'Smart stylist matching', 'Automated reminders'],
-    useCases: ['Service booking', 'Stylist selection', 'Product recommendations', 'Waitlist management'],
-    integrations: ['Salon Software', 'Payment Systems', 'CRM'],
-  },
-  dealership: {
-    benefits: ['Qualify leads 24/7', 'Instant inventory search', 'Schedule test drives'],
-    useCases: ['Vehicle search', 'Test drive booking', 'Service appointments', 'Financing inquiries'],
-    integrations: ['DMS Systems', 'Inventory Management', 'CRM'],
-  },
-  construction: {
-    benefits: ['Real-time project tracking', 'Safety compliance alerts', 'Resource optimization'],
-    useCases: ['Project updates', 'Safety checklists', 'Equipment tracking', 'Daily reports'],
-    integrations: ['Project Management', 'Time Tracking', 'Safety Systems'],
-  },
-  real_estate: {
-    benefits: ['Qualify leads instantly', '24/7 property inquiries', 'Automated viewing scheduling'],
-    useCases: ['Property search', 'Mortgage estimation', 'Neighborhood info', 'Agent handoff'],
-    integrations: ['MLS Feeds', 'CRM Systems', 'Calendar Apps'],
-  },
-  legal: {
-    benefits: ['Filter unqualified leads', 'Automate intake forms', 'Reduce non-billable hours'],
-    useCases: ['Case evaluation', 'Legal FAQs', 'Consultation booking', 'Document collection'],
-    integrations: ['Practice Management', 'Document Systems', 'Calendar Apps'],
-  },
-  ecommerce: {
-    benefits: ['Reduce support tickets by 70%', 'Increase conversion rates', 'Instant order status'],
-    useCases: ['Order tracking', 'Product recommendations', 'Return processing', 'Gift finding'],
-    integrations: ['Shopify/WooCommerce', 'Helpdesk Software', 'Inventory Systems'],
-  },
-  education: {
-    benefits: ['Boost enrollment rates', '24/7 student support', 'Streamline admissions'],
-    useCases: ['Course selection', 'Application help', 'Campus FAQs', 'Tuition info'],
-    integrations: ['Student Information Systems', 'LMS', 'CRM'],
-  },
-  recruitment: {
-    benefits: ['Screen candidates faster', 'Automate interview scheduling', 'Improve candidate experience'],
-    useCases: ['Resume screening', 'Job description Q&A', 'Interview coordination', 'Onboarding'],
-    integrations: ['ATS Systems', 'HRIS', 'Calendar Apps'],
-  },
-};
-
 export const Agents: React.FC = () => {
-  const navigate = useNavigate();
-
   return (
     <Layout>
       <SEO
         title="AI Agents for Business | Industry-Specific Automation | Viktron"
-        description="Deploy industry-specific AI agents for restaurants, clinics, salons, dealerships & construction. Our AI automation agency builds custom chatbots, voice agents, and automation solutions. Best agentic AI solutions for your industry. Serving Chicago area: Cook, DuPage, Lake, Will, Kane, McHenry, Kendall, Grundy, DeKalb County."
-        keywords="AI agents for business, restaurant AI chatbot, clinic booking automation, salon AI assistant, dealership AI, construction automation, AI automation agency, small business AI, industry-specific chatbots, agentic AI, voice agents, Cook County, DuPage County, Lake County, Will County, Kane County, McHenry County, Kendall County, Grundy County, DeKalb County, Chicago, Chicagoland, Illinois, United States, nationwide AI agents, US automation services, national AI agency"
+        description="Deploy industry-specific AI agents for restaurants, clinics, salons, dealerships & construction."
+        keywords="AI agents for business, industry-specific AI, agentic AI"
         url="/agents"
       />
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <AnimatedSection>
-            <motion.div
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-[#020617]/5 border border-white/10"
-            >
-              <Bot className="h-4 w-4 text-sky-400" />
-              <span className="text-sm text-white/70">Industry-Specific AI Agents</span>
-            </motion.div>
-          </AnimatedSection>
 
-          <AnimatedSection delay={0.1}>
-            <h1 className="text-5xl sm:text-7xl font-black text-white mb-6">
+      <section className="pt-32 pb-12 px-4">
+        <div className="container-custom">
+          <AnimatedSection>
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#d4deeb] bg-[#f8fbff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#60718c]">
+              <Sparkles className="h-4 w-4 text-[#3768e8]" />
+              Industry-Specific Agent Modules
+            </div>
+          </AnimatedSection>
+          <AnimatedSection delay={0.08}>
+            <h1 className="mt-6 text-5xl sm:text-7xl font-semibold tracking-tight text-[#121f35]">
               AI Agents
             </h1>
-          </AnimatedSection>
-
-          <AnimatedSection delay={0.2}>
-            <p className="text-xl text-white/60 max-w-2xl mx-auto mb-8">
-              Pre-built AI agents designed for specific industries. Deploy in days, not months.
-              Each agent is trained on industry best practices.
+            <p className="mt-4 max-w-3xl text-lg text-[#52637e] leading-relaxed">
+              Production-ready agents configured for real industries. Deploy quickly, keep human control,
+              and iterate based on measurable outcomes.
             </p>
           </AnimatedSection>
-
-          <AnimatedSection delay={0.3}>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/contact">
-                <Button size="lg" icon={<Calendar className="h-5 w-5" />}>
-                  Book Free Consultation
-                </Button>
+          <AnimatedSection delay={0.16}>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link to="/demo-form">
+                <Button icon={<Calendar className="h-5 w-5" />}>Book Free Consultation</Button>
               </Link>
               <Link to="/case-studies">
-                <Button variant="secondary" size="lg" icon={<BarChart3 className="h-5 w-5" />}>
-                  View Case Studies
-                </Button>
+                <Button variant="secondary">View Case Studies</Button>
               </Link>
             </div>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* Agents Grid */}
-      <section className="pb-32 px-4">
-        <div className="max-w-7xl mx-auto">
-          <StaggerContainer className="space-y-8">
-            {INDUSTRY_AGENTS.map((agent, index) => {
-              const details = agentDetails[agent.id];
+      <section className="pb-20 px-4">
+        <div className="container-custom">
+          <StaggerContainer className="space-y-4">
+            {INDUSTRY_AGENTS.map((agent) => {
+              const details = agentDetails[agent.id] || { benefits: [], useCases: [] };
               return (
                 <StaggerItem key={agent.id}>
-                  <GlassCard className="p-8 lg:p-12">
-                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
-                      {/* Left: Agent Info */}
+                  <motion.article
+                    whileHover={{ y: -2 }}
+                    className="rounded-3xl border border-[#d8e2ef] bg-white p-5 sm:p-6"
+                  >
+                    <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr] xl:items-start">
                       <div>
-                        <div className="flex items-start gap-4 mb-6">
-                          <div className="p-4 rounded-2xl bg-[#020617]/5">{agent.icon}</div>
+                        <div className="flex items-start gap-3">
+                          <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-[#d5dfec] bg-[#f7faff]">
+                            {agent.icon}
+                          </div>
                           <div>
-                            <h2 className="text-2xl font-bold text-white">{agent.name}</h2>
-                            <p className="text-sky-400">{agent.industry}</p>
+                            <h2 className="text-2xl font-semibold text-[#12223e]">{agent.name}</h2>
+                            <p className="text-sm font-medium text-[#3668d2]">{agent.industry}</p>
                           </div>
                         </div>
+                        <p className="mt-4 text-[#53637d] leading-relaxed">{agent.description}</p>
 
-                        <p className="text-white/70 mb-6 leading-relaxed">{agent.description}</p>
-
-                        {/* Features */}
-                        <div className="mb-6">
-                          <h3 className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-3">
-                            Key Features
-                          </h3>
-                          <div className="flex flex-wrap gap-2">
-                            {agent.features.map((feature, i) => (
-                              <span
-                                key={i}
-                                className="px-3 py-1 text-sm bg-[#020617]/5 text-white/70 rounded-full"
-                              >
-                                {feature}
-                              </span>
-                            ))}
-                          </div>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {agent.features.map((feature) => (
+                            <span
+                              key={`${agent.id}-${feature}`}
+                              className="rounded-full border border-[#d7e1ef] bg-[#f8fbff] px-2.5 py-1 text-xs text-[#5f7190]"
+                            >
+                              {feature}
+                            </span>
+                          ))}
                         </div>
 
-                        {/* CTA */}
-                        <div className="flex flex-wrap gap-3">
+                        <div className="mt-5 flex flex-wrap gap-3">
                           <TryDemoButton agentId={agent.id} />
                           <Link to="/contact">
-                            <Button variant="secondary">
-                              Get Quote
-                            </Button>
+                            <Button variant="secondary">Get Quote</Button>
                           </Link>
                         </div>
                       </div>
 
-                      {/* Right: Benefits & Use Cases */}
-                      <div className="space-y-6">
-                        {/* Benefits */}
-                        <div>
-                          <h3 className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-3">
-                            Benefits
-                          </h3>
-                          <div className="space-y-2">
-                            {details?.benefits.map((benefit, i) => (
-                              <div key={i} className="flex items-center gap-3 text-white/80">
-                                <Check className="h-5 w-5 text-emerald-400 flex-shrink-0" />
+                      <div className="space-y-4">
+                        <div className="rounded-2xl border border-[#d8e2ef] bg-[#f8fbff] p-4">
+                          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#7084a1]">Benefits</p>
+                          <div className="mt-3 space-y-2">
+                            {details.benefits.map((benefit) => (
+                              <div key={`${agent.id}-${benefit}`} className="flex items-center gap-2 text-sm text-[#253855]">
+                                <Check className="h-4 w-4 text-[#2fa781]" />
                                 <span>{benefit}</span>
                               </div>
                             ))}
                           </div>
                         </div>
-
-                        {/* Use Cases */}
-                        <div>
-                          <h3 className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-3">
-                            Use Cases
-                          </h3>
-                          <div className="grid grid-cols-2 gap-2">
-                            {details?.useCases.map((useCase, i) => (
-                              <div
-                                key={i}
-                                className="px-3 py-2 text-sm bg-sky-500/10 text-sky-300 rounded-lg"
+                        <div className="rounded-2xl border border-[#d8e2ef] bg-[#f8fbff] p-4">
+                          <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#7084a1]">Use Cases</p>
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            {details.useCases.map((useCase) => (
+                              <span
+                                key={`${agent.id}-${useCase}`}
+                                className="rounded-full bg-white px-2.5 py-1 text-xs font-medium text-[#2d4f95] border border-[#d6e1f0]"
                               >
                                 {useCase}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Integrations */}
-                        <div>
-                          <h3 className="text-sm font-semibold text-white/50 uppercase tracking-wider mb-3">
-                            Integrations
-                          </h3>
-                          <div className="flex flex-wrap gap-2">
-                            {details?.integrations.map((integration, i) => (
-                              <span
-                                key={i}
-                                className="px-3 py-1 text-xs bg-purple-500/10 text-purple-300 rounded-full"
-                              >
-                                {integration}
                               </span>
                             ))}
                           </div>
                         </div>
                       </div>
                     </div>
-                  </GlassCard>
+                  </motion.article>
                 </StaggerItem>
               );
             })}
@@ -257,32 +190,24 @@ export const Agents: React.FC = () => {
         </div>
       </section>
 
-      {/* Custom Agent CTA */}
-      <section className="py-32 px-4">
-        <div className="max-w-4xl mx-auto">
+      <section className="pb-20 px-4">
+        <div className="container-custom">
           <AnimatedSection>
-            <GlassCard className="p-12 text-center">
-              <Sparkles className="h-12 w-12 text-sky-400 mx-auto mb-6" />
-              <h2 className="text-4xl font-black text-white mb-4">
-                Need a Custom Agent?
-              </h2>
-              <p className="text-xl text-white/60 mb-8 max-w-xl mx-auto">
-                Don't see your industry? We build custom AI agents tailored to your specific
-                business requirements.
+            <div className="rounded-3xl border border-[#d8e2ef] bg-[#f8fbff] p-7 text-center">
+              <h2 className="text-3xl font-semibold text-[#12223e] tracking-tight">Need a custom industry build?</h2>
+              <p className="mt-3 text-[#52637e] max-w-2xl mx-auto">
+                We can combine multiple agent types and automate handoffs across your stack.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <Link to="/contact">
-                  <Button size="lg" icon={<Calendar className="h-5 w-5" />}>
-                    Book Free Consultation
-                  </Button>
+                  <Button>Talk to an Architect</Button>
                 </Link>
-                <Link to="/case-studies">
-                  <Button variant="secondary" size="lg" icon={<BarChart3 className="h-5 w-5" />}>
-                    View Case Studies
-                  </Button>
+                <Link to="/services" className="inline-flex items-center gap-2 text-sm font-semibold text-[#2b4d92]">
+                  Explore all services
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
-            </GlassCard>
+            </div>
           </AnimatedSection>
         </div>
       </section>

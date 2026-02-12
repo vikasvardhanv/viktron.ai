@@ -38,40 +38,40 @@ const socialLinks = [
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="relative border-t border-[#29344a] bg-[#0f1521]">
+    <footer className="relative border-t border-[#d5deeb] bg-[#f8faff]">
       <div className="container-custom py-16">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <Link to="/" className="inline-flex items-center gap-2">
               <BrandIcon className="h-8 w-8" />
-              <span className="text-xl font-semibold text-white tracking-tight">Viktron</span>
+              <span className="text-xl font-semibold text-[#13213a] tracking-tight">Viktron</span>
             </Link>
-            <p className="mt-5 max-w-md text-sm leading-relaxed text-slate-300">
+            <p className="mt-5 max-w-md text-sm leading-relaxed text-[#51617c]">
               We build production-ready AI experiences for modern teams: agents, automation,
               custom integrations, and go-to-market acceleration.
             </p>
             <div className="mt-6 space-y-3 text-sm">
-              <a href="mailto:info@viktron.ai" className="inline-flex items-center gap-2 text-slate-300 hover:text-white">
-                <Mail className="h-4 w-4 text-lime-200" />
+              <a href="mailto:info@viktron.ai" className="inline-flex items-center gap-2 text-[#51617c] hover:text-[#1e3050]">
+                <Mail className="h-4 w-4 text-[#3568e4]" />
                 info@viktron.ai
               </a>
-              <a href="tel:+18446608065" className="block inline-flex items-center gap-2 text-slate-300 hover:text-white">
-                <Phone className="h-4 w-4 text-lime-200" />
+              <a href="tel:+18446608065" className="block inline-flex items-center gap-2 text-[#51617c] hover:text-[#1e3050]">
+                <Phone className="h-4 w-4 text-[#3568e4]" />
                 +1 (844) 660-8065
               </a>
-              <p className="inline-flex items-center gap-2 text-slate-300">
-                <MapPin className="h-4 w-4 text-lime-200" />
+              <p className="inline-flex items-center gap-2 text-[#51617c]">
+                <MapPin className="h-4 w-4 text-[#3568e4]" />
                 Chicago, IL
               </p>
             </div>
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 mb-4">Services</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#7a8ba8] mb-4">Services</h3>
             <ul className="space-y-3">
               {footerLinks.services.map((link) => (
                 <li key={link.path}>
-                  <Link to={link.path} className="group inline-flex items-center gap-1 text-sm text-slate-300 hover:text-white">
+                  <Link to={link.path} className="group inline-flex items-center gap-1 text-sm text-[#51617c] hover:text-[#1e3050]">
                     {link.name}
                     <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
                   </Link>
@@ -81,11 +81,11 @@ export const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 mb-4">Company</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#7a8ba8] mb-4">Company</h3>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.path}>
-                  <Link to={link.path} className="group inline-flex items-center gap-1 text-sm text-slate-300 hover:text-white">
+                  <Link to={link.path} className="group inline-flex items-center gap-1 text-sm text-[#51617c] hover:text-[#1e3050]">
                     {link.name}
                     <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
                   </Link>
@@ -95,11 +95,11 @@ export const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 mb-4">Demo Routes</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#7a8ba8] mb-4">Demo Routes</h3>
             <ul className="space-y-3">
               {footerLinks.demos.map((link) => (
                 <li key={link.path}>
-                  <Link to={link.path} className="group inline-flex items-center gap-1 text-sm text-slate-300 hover:text-white">
+                  <Link to={link.path} className="group inline-flex items-center gap-1 text-sm text-[#51617c] hover:text-[#1e3050]">
                     {link.name}
                     <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
                   </Link>
@@ -109,7 +109,7 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-14 border-t border-white/10 pt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 border-t border-[#dbe4f1] pt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2">
             {socialLinks.map((social) => (
               <a
@@ -118,13 +118,13 @@ export const Footer: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="h-9 w-9 rounded-full border border-[#2f3b54] bg-[#1a2232] text-slate-300 hover:text-white hover:bg-[#202b3e] inline-flex items-center justify-center"
+                className="h-9 w-9 rounded-full border border-[#d4deec] bg-[#f4f8fe] text-[#4f5f79] hover:text-[#1e3050] hover:bg-[#eaf1fc] inline-flex items-center justify-center"
               >
                 {social.icon}
               </a>
             ))}
           </div>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[#7586a3]">
             &copy; {new Date().getFullYear()} Viktron. Built for teams shipping real AI products.
           </p>
         </div>

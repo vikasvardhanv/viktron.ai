@@ -1,71 +1,61 @@
 import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { ArrowRight, Calendar, CheckCircle, Clock, Mail, MapPin, MessageSquare, Phone } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
 import { AnimatedSection, StaggerContainer, StaggerItem } from '../components/ui/AnimatedSection';
-import { GlassCard } from '../components/ui/GlassCard';
 import { Button } from '../components/ui/Button';
 import { SchedulingModal } from '../components/SchedulingModal';
 import { SendEmailModal, SendEmailModalStatus } from '../components/SendEmailModal';
-import {
-  Mail, Phone, MapPin, Send, MessageSquare, Calendar,
-  Clock, CheckCircle, ArrowRight, BarChart3
-} from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
 
-// Contact methods
 const contactMethods = [
   {
-    icon: <Mail className="h-6 w-6" />,
-    title: 'Email Us',
+    icon: <Mail className="h-5 w-5 text-[#3768e8]" />,
+    title: 'Email us',
     value: 'info@viktron.ai',
     href: 'mailto:info@viktron.ai',
-    color: 'sky',
   },
   {
-    icon: <Phone className="h-6 w-6" />,
-    title: 'Call Us',
+    icon: <Phone className="h-5 w-5 text-[#2fa781]" />,
+    title: 'Call us',
     value: '+1 (844) 660-8065',
     href: 'tel:+18446608065',
-    color: 'emerald',
   },
   {
-    icon: <MessageSquare className="h-6 w-6" />,
+    icon: <MessageSquare className="h-5 w-5 text-[#6b7de8]" />,
     title: 'WhatsApp',
     value: 'Chat with us',
     href: 'https://Wa.me/+16307033569',
-    color: 'green',
   },
 ];
 
-const contactMethodAccent: Record<string, string> = {
-  sky: 'bg-sky-500/20 text-sky-300',
-  emerald: 'bg-emerald-500/20 text-emerald-300',
-  green: 'bg-green-500/20 text-green-300',
-};
+const serviceOptions = [
+  'AI Agents',
+  'Workflow Automation',
+  'Marketing Automation',
+  'Voice Agents',
+  'Custom Build',
+];
 
-// FAQ items
 const faqs = [
   {
-    question: 'How long does it take to implement an AI solution?',
-    answer: 'Most of our pre-built agents can be deployed within 1-2 weeks. Custom solutions typically take 4-8 weeks depending on complexity.',
+    question: 'How fast can we launch?',
+    answer: 'Most focused deployments launch in 1-3 weeks. Complex multi-system projects run 4-8 weeks.',
   },
   {
-    question: 'Do you offer ongoing support?',
-    answer: 'Yes! All our solutions come with dedicated support. We offer various support tiers to match your needs.',
+    question: 'Do you support after launch?',
+    answer: 'Yes. We provide ongoing optimization, monitoring, and iteration support.',
   },
   {
-    question: 'Can I try before I commit?',
-    answer: 'Absolutely. We offer live demos of all our solutions and can provide a proof-of-concept for custom projects.',
-  },
-  {
-    question: 'What industries do you serve?',
-    answer: 'We serve all industries but have specialized solutions for restaurants, healthcare, salons, automotive, and construction.',
+    question: 'Can we start with a pilot?',
+    answer: 'Yes. We can define a scoped pilot with clear success metrics before broader rollout.',
   },
 ];
 
 export const Contact: React.FC = () => {
   const location = useLocation();
+  const [isSchedulingOpen, setIsSchedulingOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -75,7 +65,6 @@ export const Contact: React.FC = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [isSchedulingOpen, setIsSchedulingOpen] = useState(false);
   const [isSendModalOpen, setIsSendModalOpen] = useState(false);
   const [sendModalStatus, setSendModalStatus] = useState<SendEmailModalStatus>('sending');
   const [sendModalMessage, setSendModalMessage] = useState('');
@@ -86,14 +75,16 @@ export const Contact: React.FC = () => {
     const params = new URLSearchParams(location.search);
     const subject = params.get('subject');
     if (!subject) return;
-    setFormData((prev) => {
-      if (prev.message.trim()) return prev;
-      return { ...prev, message: subject };
-    });
+    setFormData((prev) => (prev.message.trim() ? prev : { ...prev, message: subject }));
   }, [location.search]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setIsSubmitting(true);
     setError('');
     setIsSendModalOpen(true);
@@ -102,13 +93,10 @@ export const Contact: React.FC = () => {
     setSendModalMailto(undefined);
 
     try {
-      // @ts-ignore - Vite env
-      const API_URL = import.meta.env.VITE_API_URL || '/api';
-      const response = await fetch(`${API_URL}/contact/submit`, {
+      const apiUrl = import.meta.env.VITE_API_URL || '/api';
+      const response = await fetch(`${apiUrl}/contact/submit`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
@@ -116,14 +104,12 @@ export const Contact: React.FC = () => {
 
       if (data.success) {
         setFormData({ name: '', email: '', company: '', service: '', message: '' });
-        setSendModalStatus('success');
         if (data.data?.emailSent === false) {
           setSendModalStatus('error');
-          setSendModalMessage(
-            data.message || `Thanks for your message. If this is urgent, email us at ${supportEmail}.`
-          );
+          setSendModalMessage(data.message || `Thanks for your message. If urgent, email us at ${supportEmail}.`);
           setSendModalMailto(`mailto:${supportEmail}`);
         } else {
+          setSendModalStatus('success');
           setSendModalMessage(data.message || "Message sent. We'll get back to you within 24 hours.");
         }
       } else {
@@ -132,7 +118,7 @@ export const Contact: React.FC = () => {
         setSendModalMessage(data.message || `Failed to send message. Please email us at ${supportEmail}.`);
         setSendModalMailto(`mailto:${supportEmail}`);
       }
-    } catch (err) {
+    } catch {
       setError('Network error. Please try again or email us directly at info@viktron.ai');
       setSendModalStatus('error');
       setSendModalMessage(`Network error. Please email us directly at ${supportEmail}.`);
@@ -142,20 +128,9 @@ export const Contact: React.FC = () => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
   return (
     <Layout>
-      <SchedulingModal
-        isOpen={isSchedulingOpen}
-        onClose={() => setIsSchedulingOpen(false)}
-        source="contact-page"
-      />
+      <SchedulingModal isOpen={isSchedulingOpen} onClose={() => setIsSchedulingOpen(false)} source="contact-page" />
       <SendEmailModal
         isOpen={isSendModalOpen}
         status={sendModalStatus}
@@ -163,58 +138,45 @@ export const Contact: React.FC = () => {
         mailto={sendModalMailto}
         onClose={() => setIsSendModalOpen(false)}
       />
+
       <SEO
-        title="Contact Us | Get a Free Consultation | Viktron"
-        description="Contact Viktron for AI automation and agentic AI solutions. Book a free consultation to discuss your business automation needs. Leading AI automation agency - get custom AI agents and intelligent automation solutions. Serving Chicago: Cook, DuPage, Lake, Will, Kane, McHenry, Kendall, Grundy, DeKalb County."
-        keywords="contact AI automation agency, free AI consultation, AI automation consultation, business automation help, agentic AI agency, get a quote, book consultation, AI automation services, custom AI agents, Cook County, DuPage County, Lake County, Will County, Kane County, McHenry County, Kendall County, Grundy County, DeKalb County, Chicago, Chicagoland, Illinois, United States, nationwide AI automation, US AI services, national AI agency"
+        title="Contact Viktron | Book a Consultation"
+        description="Talk to Viktron about AI agents, workflow automation, and growth systems."
         url="/contact"
       />
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <AnimatedSection>
-            <h1 className="text-5xl sm:text-7xl font-black text-white mb-6">
-              Let's Build Something
-              <span className="bg-gradient-to-r from-sky-400 to-purple-400 bg-clip-text text-transparent"> Amazing</span>
-            </h1>
-          </AnimatedSection>
 
-          <AnimatedSection delay={0.1}>
-            <p className="text-xl text-white/60 max-w-2xl mx-auto">
-              Ready to transform your business with AI? Get in touch and let's discuss
-              how we can help you achieve your goals.
+      <section className="pt-32 pb-12 px-4">
+        <div className="container-custom">
+          <AnimatedSection>
+            <h1 className="text-5xl sm:text-7xl font-semibold tracking-tight text-[#12223e]">
+              Let’s build your AI stack.
+            </h1>
+            <p className="mt-4 max-w-3xl text-lg text-[#52637e] leading-relaxed">
+              Share your goals and constraints. We’ll map practical next steps and a deployment path.
             </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Button icon={<Calendar className="h-4 w-4" />} onClick={() => setIsSchedulingOpen(true)}>
+                Book Consultation
+              </Button>
+              <Link to="/services">
+                <Button variant="secondary">Explore Services</Button>
+              </Link>
+            </div>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* Contact Methods */}
-      <section className="pb-20 px-4">
-        <div className="max-w-5xl mx-auto">
-          <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* Book Consultation - Special Card */}
-            <StaggerItem>
-              <button onClick={() => setIsSchedulingOpen(true)} className="w-full h-full text-left">
-                <GlassCard className="p-6 text-center h-full group border-sky-500/30 hover:border-sky-500/50 bg-gradient-to-br from-sky-500/10 to-purple-500/10">
-                  <div className="inline-flex p-3 rounded-xl bg-sky-500/20 text-sky-400 mb-4 group-hover:scale-110 transition-transform">
-                    <Calendar className="h-6 w-6" />
+      <section className="pb-12 px-4">
+        <div className="container-custom">
+          <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {contactMethods.map((method) => (
+              <StaggerItem key={method.title}>
+                <a href={method.href} target={method.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer">
+                  <div className="card p-5 h-full">
+                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#eef3fd]">{method.icon}</div>
+                    <h2 className="mt-4 text-xl font-semibold text-[#12223e]">{method.title}</h2>
+                    <p className="mt-1 text-sm text-[#53637d]">{method.value}</p>
                   </div>
-                  <h3 className="font-bold text-white mb-1">Book Consultation</h3>
-                  <p className="text-white/60 text-sm">Schedule a call</p>
-                </GlassCard>
-              </button>
-            </StaggerItem>
-
-            {contactMethods.map((method, index) => (
-              <StaggerItem key={index}>
-                <a href={method.href} target={method.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="block h-full">
-                  <GlassCard className="p-6 text-center h-full group">
-                    <div className={`inline-flex p-3 rounded-xl mb-4 group-hover:scale-110 transition-transform ${contactMethodAccent[method.color] || 'bg-sky-500/20 text-sky-300'}`}>
-                      {method.icon}
-                    </div>
-                    <h3 className="font-bold text-white mb-1">{method.title}</h3>
-                    <p className="text-white/60 text-sm">{method.value}</p>
-                  </GlassCard>
                 </a>
               </StaggerItem>
             ))}
@@ -222,169 +184,116 @@ export const Contact: React.FC = () => {
         </div>
       </section>
 
-      {/* Contact Form & Info */}
-      <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Form */}
+      <section className="pb-16 px-4">
+        <div className="container-custom">
+          <div className="grid gap-6 lg:grid-cols-[1.12fr_0.88fr]">
             <AnimatedSection>
-              <GlassCard className="p-8">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <h2 className="text-2xl font-bold text-white mb-6">Send us a message</h2>
+              <div className="card p-6 sm:p-7">
+                <h2 className="text-2xl font-semibold text-[#12223e]">Send a message</h2>
+                <p className="mt-2 text-[#566885]">We usually respond within one business day.</p>
 
-                  {error && (
-                    <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-                      {error}
-                    </div>
-                  )}
+                {error ? (
+                  <div className="mt-4 rounded-xl border border-[#f0c4c9] bg-[#fff4f5] p-3 text-sm text-[#bb3a48]">{error}</div>
+                ) : null}
 
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-white/70 mb-2">
-                        Your Name *
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        required
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 bg-[#020617]/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-sky-500 transition-colors"
-                        placeholder="John Doe"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-white/70 mb-2">
-                        Email Address *
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        required
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 bg-[#020617]/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-sky-500 transition-colors"
-                        placeholder="john@company.com"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-white/70 mb-2">
-                      Company
-                    </label>
+                <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
                     <input
                       type="text"
-                      name="company"
-                      value={formData.company}
+                      name="name"
+                      placeholder="Your name"
+                      value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-[#020617]/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-sky-500 transition-colors"
-                      placeholder="Your Company"
+                      required
+                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
+                    />
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Work email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-white/70 mb-2">
-                      What are you interested in?
-                    </label>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <input
+                      type="text"
+                      name="company"
+                      placeholder="Company name"
+                      value={formData.company}
+                      onChange={handleChange}
+                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
+                    />
                     <select
                       name="service"
                       value={formData.service}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-[#020617]/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-sky-500 transition-colors"
+                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] focus:border-[#7d9fee] focus:outline-none"
                     >
-                      <option value="" className="bg-gray-900">Select a service</option>
-                      <option value="ai-agents" className="bg-gray-900">AI Agents</option>
-                      <option value="chatbot" className="bg-gray-900">Chatbot Development</option>
-                      <option value="marketing" className="bg-gray-900">Marketing Automation</option>
-                      <option value="custom" className="bg-gray-900">Custom AI Solution</option>
-                      <option value="other" className="bg-gray-900">Other</option>
+                      <option value="">Select service</option>
+                      {serviceOptions.map((service) => (
+                        <option key={service} value={service}>
+                          {service}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-white/70 mb-2">
-                      Message *
-                    </label>
-                    <textarea
-                      name="message"
-                      required
-                      rows={4}
-                      value={formData.message}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 bg-[#020617]/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-sky-500 transition-colors resize-none"
-                      placeholder="Tell us about your project..."
-                    />
-                  </div>
+                  <textarea
+                    name="message"
+                    placeholder="What are you trying to automate?"
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    rows={5}
+                    className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none resize-none"
+                  />
 
-                  <Button
-                    type="submit"
-                    loading={isSubmitting}
-                    icon={<Send className="h-4 w-4" />}
-                    className="w-full"
-                  >
-                    Send Message
-                  </Button>
+                  <button type="submit" disabled={isSubmitting} className="btn-primary">
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
                 </form>
-              </GlassCard>
+              </div>
             </AnimatedSection>
 
-            {/* Info */}
-            <AnimatedSection delay={0.2}>
-              <div className="space-y-8">
-                {/* Response time */}
-                <GlassCard className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-xl bg-sky-500/20 text-sky-400">
-                      <Clock className="h-6 w-6" />
+            <AnimatedSection delay={0.08}>
+              <div className="space-y-4">
+                <div className="card p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#6f83a1]">Availability</p>
+                  <div className="mt-3 space-y-3">
+                    <div className="flex items-center gap-2 text-sm text-[#334a6e]">
+                      <Clock className="h-4 w-4 text-[#2fa781]" />
+                      Mon-Fri, 9:00 AM - 6:00 PM CST
                     </div>
-                    <div>
-                      <h3 className="font-bold text-white mb-1">Quick Response</h3>
-                      <p className="text-white/60 text-sm">
-                        We typically respond within 24 hours. For urgent inquiries,
-                        reach out via WhatsApp.
-                      </p>
+                    <div className="flex items-center gap-2 text-sm text-[#334a6e]">
+                      <MapPin className="h-4 w-4 text-[#3768e8]" />
+                      Chicago, IL (remote-first team)
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-[#334a6e]">
+                      <CheckCircle className="h-4 w-4 text-[#2fa781]" />
+                      Typical response: same business day
                     </div>
                   </div>
-                </GlassCard>
+                </div>
 
-                {/* FAQ */}
-                <div>
-                  <h3 className="text-xl font-bold text-white mb-6">Frequently Asked Questions</h3>
-                  <div className="space-y-4">
-                    {faqs.map((faq, index) => (
-                      <GlassCard key={index} className="p-6">
-                        <h4 className="font-semibold text-white mb-2">{faq.question}</h4>
-                        <p className="text-white/60 text-sm">{faq.answer}</p>
-                      </GlassCard>
+                <div className="card p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#6f83a1]">FAQ</p>
+                  <div className="mt-4 space-y-3">
+                    {faqs.map((faq) => (
+                      <div key={faq.question} className="rounded-xl border border-[#d8e2ef] bg-[#f8fbff] p-3">
+                        <p className="text-sm font-semibold text-[#1e3255]">{faq.question}</p>
+                        <p className="mt-1 text-sm text-[#596b88]">{faq.answer}</p>
+                      </div>
                     ))}
                   </div>
                 </div>
               </div>
             </AnimatedSection>
           </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <AnimatedSection>
-            <GlassCard className="p-12 text-center">
-              <BarChart3 className="h-12 w-12 text-sky-400 mx-auto mb-6" />
-              <h2 className="text-3xl font-black text-white mb-4">
-                See Our Results First
-              </h2>
-              <p className="text-xl text-white/60 mb-8 max-w-xl mx-auto">
-                Check out our case studies to see how we've helped businesses like yours achieve amazing results.
-              </p>
-              <Link to="/case-studies">
-                <Button size="lg" icon={<ArrowRight className="h-5 w-5" />}>
-                  View Case Studies
-                </Button>
-              </Link>
-            </GlassCard>
-          </AnimatedSection>
         </div>
       </section>
     </Layout>

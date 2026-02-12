@@ -63,17 +63,17 @@ export const DemoForm: React.FC = () => {
   const [error, setError] = useState('');
   const [showDummyToast, setShowDummyToast] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleDeliveryChange = (value: string) => {
-    setDelivery((prev) => (prev.includes(value) ? prev.filter((d) => d !== value) : [...prev, value]));
+    setDelivery((prev) => (prev.includes(value) ? prev.filter((entry) => entry !== value) : [...prev, value]));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setIsSubmitting(true);
     setError('');
 
@@ -105,27 +105,29 @@ export const DemoForm: React.FC = () => {
         throw new Error(result?.error || result?.message || `Request failed (${response.status})`);
       }
 
-      if (result?.success) {
-        setIsSuccess(true);
-        setDemoLink(result.demo_link);
-        if (delivery.includes('sms') && formData.phone) {
-          try {
-            await sendSMS({
-              to: formData.phone,
-              message: `Hi ${formData.name}! Your AI demo is ready: ${result.demo_link} - Viktron.ai`,
-            });
-          } catch {
-            // Non-blocking
-          }
-        }
-        if (formData.website_url && (result?.using_dummy_backend || result?.preview_blank === true)) {
-          setShowDummyToast(true);
-        }
-      } else {
+      if (!result?.success) {
         throw new Error(result?.error || 'Something went wrong');
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to create demo. Please try again.');
+
+      setIsSuccess(true);
+      setDemoLink(result.demo_link);
+
+      if (delivery.includes('sms') && formData.phone) {
+        try {
+          await sendSMS({
+            to: formData.phone,
+            message: `Hi ${formData.name}! Your AI demo is ready: ${result.demo_link} - Viktron.ai`,
+          });
+        } catch {
+          // Non-blocking
+        }
+      }
+
+      if (formData.website_url && (result?.using_dummy_backend || result?.preview_blank === true)) {
+        setShowDummyToast(true);
+      }
+    } catch (submitError: any) {
+      setError(submitError?.message || 'Failed to create demo. Please try again.');
       if (formData.website_url) setShowDummyToast(true);
     } finally {
       setIsSubmitting(false);
@@ -142,161 +144,159 @@ export const DemoForm: React.FC = () => {
 
       <section className="pt-32 pb-20 px-4">
         <div className="container-custom">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-white">
+          <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-[#4f607b] hover:text-[#213654]">
             <ArrowLeft className="h-4 w-4" />
             Back to Home
           </Link>
 
-          <div className="mt-6 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}>
-              <div className="rounded-3xl border border-[#2f3b54] bg-[#111a28] p-6 sm:p-8">
-                {!isSuccess ? (
-                  <>
-                    <h1 className="text-3xl sm:text-4xl font-semibold text-white">
-                      Generate a Live Demo in Under a Minute
-                    </h1>
-                    <p className="mt-3 text-slate-300">
-                      Share your business details and we generate a personalized AI preview instantly.
-                    </p>
+          <div className="mt-6 grid gap-5 lg:grid-cols-[1.08fr_0.92fr]">
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="card p-6 sm:p-7">
+              {!isSuccess ? (
+                <>
+                  <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#12223e]">
+                    Generate your live demo in under a minute.
+                  </h1>
+                  <p className="mt-3 text-[#52637e]">
+                    Share your details and we’ll create a custom preview link for your use case.
+                  </p>
 
-                    {error ? (
-                      <div className="mt-5 flex items-start gap-2 rounded-xl border border-rose-300/30 bg-rose-400/10 p-3 text-rose-200">
-                        <AlertCircle className="h-4 w-4 mt-0.5" />
-                        <span className="text-sm">{error}</span>
+                  {error ? (
+                    <div className="mt-5 flex items-start gap-2 rounded-xl border border-[#f0c4c9] bg-[#fff4f5] p-3 text-[#bb3a48]">
+                      <AlertCircle className="h-4 w-4 mt-0.5" />
+                      <span className="text-sm">{error}</span>
+                    </div>
+                  ) : null}
+
+                  <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      placeholder="Your name"
+                      required
+                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
+                    />
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="Work email"
+                      required
+                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
+                    />
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      placeholder="Phone (optional)"
+                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
+                    />
+                    <input
+                      type="text"
+                      name="company_name"
+                      value={formData.company_name}
+                      onChange={handleInputChange}
+                      placeholder="Company name"
+                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
+                    />
+                    <input
+                      type="url"
+                      name="website_url"
+                      value={formData.website_url}
+                      onChange={handleInputChange}
+                      placeholder="Website URL (optional)"
+                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
+                    />
+                    <select
+                      name="use_case"
+                      value={formData.use_case}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] focus:border-[#7d9fee] focus:outline-none"
+                    >
+                      <option value="">Select a primary use case</option>
+                      {useCases.map((useCase) => (
+                        <option key={useCase.value} value={useCase.value}>
+                          {useCase.label}
+                        </option>
+                      ))}
+                    </select>
+
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.14em] text-[#6f83a1] mb-2 font-semibold">Delivery</p>
+                      <div className="flex flex-wrap gap-2">
+                        {deliveryOptions.map((option) => {
+                          const active = delivery.includes(option.value);
+                          return (
+                            <button
+                              key={option.id}
+                              type="button"
+                              onClick={() => handleDeliveryChange(option.value)}
+                              className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-semibold uppercase tracking-[0.06em] ${
+                                active
+                                  ? 'border-[#8ca9eb] bg-[#e8effd] text-[#2d4f95]'
+                                  : 'border-[#d7e1ef] bg-[#f7f9fd] text-[#596b88]'
+                              }`}
+                            >
+                              {option.icon}
+                              {option.label}
+                            </button>
+                          );
+                        })}
                       </div>
-                    ) : null}
-
-                    <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-                      <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        placeholder="Your name"
-                        required
-                        className="w-full rounded-xl border border-[#2f3b54] bg-[#182235] px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:border-lime-200/45"
-                      />
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        placeholder="Work email"
-                        required
-                        className="w-full rounded-xl border border-[#2f3b54] bg-[#182235] px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:border-lime-200/45"
-                      />
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        placeholder="Phone (optional)"
-                        className="w-full rounded-xl border border-[#2f3b54] bg-[#182235] px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:border-lime-200/45"
-                      />
-                      <input
-                        type="text"
-                        name="company_name"
-                        value={formData.company_name}
-                        onChange={handleInputChange}
-                        placeholder="Company name"
-                        className="w-full rounded-xl border border-[#2f3b54] bg-[#182235] px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:border-lime-200/45"
-                      />
-                      <input
-                        type="url"
-                        name="website_url"
-                        value={formData.website_url}
-                        onChange={handleInputChange}
-                        placeholder="Website URL (optional)"
-                        className="w-full rounded-xl border border-[#2f3b54] bg-[#182235] px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:border-lime-200/45"
-                      />
-                      <select
-                        name="use_case"
-                        value={formData.use_case}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full rounded-xl border border-[#2f3b54] bg-[#182235] px-4 py-3 text-white focus:outline-none focus:border-lime-200/45"
-                      >
-                        <option value="">Select a primary use case</option>
-                        {useCases.map((c) => (
-                          <option key={c.value} value={c.value}>
-                            {c.label}
-                          </option>
-                        ))}
-                      </select>
-
-                      <div>
-                        <p className="text-xs uppercase tracking-[0.14em] text-slate-400 mb-2">Delivery</p>
-                        <div className="flex flex-wrap gap-2">
-                          {deliveryOptions.map((option) => {
-                            const active = delivery.includes(option.value);
-                            return (
-                              <button
-                                key={option.id}
-                                type="button"
-                                onClick={() => handleDeliveryChange(option.value)}
-                                className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-xs uppercase tracking-[0.08em] ${
-                                  active
-                                    ? 'border-lime-200/35 bg-lime-300/12 text-lime-100'
-                                    : 'border-[#2f3b54] bg-[#172133] text-slate-300'
-                                }`}
-                              >
-                                {option.icon}
-                                {option.label}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      <button type="submit" disabled={isSubmitting} className="btn-primary w-full justify-center">
-                        {isSubmitting ? (
-                          <>
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            Building Demo
-                          </>
-                        ) : (
-                          <>
-                            <Zap className="h-4 w-4" />
-                            Generate My Demo
-                          </>
-                        )}
-                      </button>
-                    </form>
-                  </>
-                ) : (
-                  <div className="text-center py-8">
-                    <div className="mx-auto mb-4 h-14 w-14 rounded-full border border-lime-200/30 bg-lime-300/15 grid place-items-center">
-                      <CheckCircle className="h-7 w-7 text-lime-200" />
                     </div>
-                    <h2 className="text-2xl font-medium text-white">Your demo is ready</h2>
-                    <p className="mt-2 text-slate-300">Share or open your generated experience below.</p>
-                    <div className="mt-6 rounded-xl border border-[#2f3b54] bg-[#182235] px-4 py-3 text-sm text-lime-200 break-all">
-                      {demoLink}
-                    </div>
-                    <div className="mt-4 flex flex-wrap justify-center gap-2">
-                      <a href={demoLink} target="_blank" rel="noopener noreferrer" className="btn-primary text-xs">
-                        Open Demo
-                      </a>
-                      <button onClick={() => navigator.clipboard.writeText(demoLink)} className="btn-secondary text-xs">
-                        Copy Link
-                      </button>
-                    </div>
+
+                    <button type="submit" disabled={isSubmitting} className="btn-primary w-full justify-center">
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Building demo
+                        </>
+                      ) : (
+                        <>
+                          <Zap className="h-4 w-4" />
+                          Generate my demo
+                        </>
+                      )}
+                    </button>
+                  </form>
+                </>
+              ) : (
+                <div className="py-8 text-center">
+                  <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full border border-[#b9e9d9] bg-[#e8fbf3]">
+                    <CheckCircle className="h-7 w-7 text-[#2f9f78]" />
                   </div>
-                )}
-              </div>
+                  <h2 className="text-2xl font-semibold text-[#12223e]">Your demo is ready</h2>
+                  <p className="mt-2 text-[#54657f]">Open or copy the generated link below.</p>
+                  <div className="mt-5 rounded-xl border border-[#d8e2ef] bg-[#f8fbff] px-4 py-3 text-sm text-[#2a477f] break-all">
+                    {demoLink}
+                  </div>
+                  <div className="mt-4 flex flex-wrap justify-center gap-2">
+                    <a href={demoLink} target="_blank" rel="noopener noreferrer" className="btn-primary text-xs">
+                      Open demo
+                    </a>
+                    <button onClick={() => navigator.clipboard.writeText(demoLink)} className="btn-secondary text-xs">
+                      Copy link
+                    </button>
+                  </div>
+                </div>
+              )}
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }}>
-              <div className="rounded-3xl border border-[#2f3b54] bg-[#111a28] p-6 sm:p-8 h-full">
-                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Included in your preview</p>
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }}>
+              <div className="card h-full p-6 sm:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#6f83a1]">What you get</p>
                 <div className="mt-4 space-y-3">
                   {features.map((feature) => (
-                    <div key={feature.title} className="rounded-xl border border-[#2f3b54] bg-[#182235] p-3">
-                      <div className="inline-flex items-center gap-2 text-lime-200 text-sm font-medium">
+                    <div key={feature.title} className="rounded-xl border border-[#d8e2ef] bg-[#f8fbff] p-3">
+                      <div className="inline-flex items-center gap-2 text-sm font-semibold text-[#2d4f95]">
                         {feature.icon}
                         {feature.title}
                       </div>
-                      <p className="mt-2 text-sm text-slate-300">{feature.desc}</p>
+                      <p className="mt-2 text-sm text-[#566885]">{feature.desc}</p>
                     </div>
                   ))}
                 </div>

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Lock, Unlock } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
-import { Leadbot } from '../components/Leadbot';
-import { GlassCard } from '../components/ui/GlassCard';
 import { Button } from '../components/ui/Button';
+import { Leadbot } from '../components/Leadbot';
 
 const ACCESS_EMAIL = 'info@viktron.ai';
 const ACCESS_PASSWORD = 'Viktron.ai1@';
@@ -20,8 +20,8 @@ export const LeadbotConsole: React.FC = () => {
     setIsUnlocked(localStorage.getItem(ACCESS_KEY) === 'true');
   }, []);
 
-  const handleUnlock = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleUnlock = (event: React.FormEvent) => {
+    event.preventDefault();
     const normalizedEmail = email.trim().toLowerCase();
 
     if (normalizedEmail === ACCESS_EMAIL && password === ACCESS_PASSWORD) {
@@ -45,65 +45,56 @@ export const LeadbotConsole: React.FC = () => {
 
   return (
     <Layout>
-      <SEO
-        title="Lead Gen Console | Viktron"
-        description="Private lead generation console for scraping leads and launching outreach."
-      />
-      <section className="relative z-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="max-w-2xl">
-            <p className="text-sm uppercase tracking-[0.3em] text-white/50">Private Access</p>
-            <h1 className="mt-3 text-4xl sm:text-5xl font-semibold text-white">Lead Gen Console</h1>
-            <p className="mt-4 text-lg text-white/70">
-              Use this workspace to scrape leads, append to your Google Sheet, and launch outreach
-              when you are ready.
+      <SEO title="Lead Gen Console | Viktron" description="Private lead generation console for outreach workflows." />
+
+      <section className="pt-32 pb-20 px-4">
+        <div className="container-custom">
+          <div className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#6f83a1]">Private workspace</p>
+            <h1 className="mt-3 text-5xl sm:text-6xl font-semibold tracking-tight text-[#12223e]">Lead Gen Console</h1>
+            <p className="mt-4 text-lg text-[#52637e]">
+              Use this workspace to scrape leads, push records, and launch outreach campaigns.
             </p>
           </div>
-          <div className="mt-10 flex justify-center">
+
+          <div className="mt-8">
             {isUnlocked ? (
-              <div className="w-full flex flex-col items-center gap-6">
-                <div className="flex items-center justify-end w-full max-w-md">
-                  <Button variant="secondary" size="sm" onClick={handleLock}>
-                    Lock console
+              <div className="space-y-4">
+                <div className="flex justify-end">
+                  <Button variant="secondary" size="sm" onClick={handleLock} icon={<Lock className="h-4 w-4" />}>
+                    Lock Console
                   </Button>
                 </div>
                 <Leadbot mode="page" />
               </div>
             ) : (
-              <GlassCard className="w-full max-w-md p-8">
-                <h2 className="text-2xl font-semibold text-white">Sign in to unlock</h2>
-                <p className="mt-2 text-sm text-white/60">
-                  This console is restricted. Please sign in with your approved credentials.
-                </p>
-                <form onSubmit={handleUnlock} className="mt-6 space-y-4">
-                  <div>
-                    <label className="block text-sm text-white/70 mb-2">Email</label>
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="info@viktron.ai"
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-sky-400/60"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm text-white/70 mb-2">Password</label>
-                    <input
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="********"
-                      className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-sky-400/60"
-                      required
-                    />
-                  </div>
-                  {error ? <p className="text-sm text-rose-300">{error}</p> : null}
-                  <Button type="submit" className="w-full">
-                    Unlock console
+              <div className="max-w-md rounded-3xl border border-[#d8e2ef] bg-white p-7">
+                <h2 className="text-2xl font-semibold text-[#12223e]">Sign in to unlock</h2>
+                <p className="mt-2 text-sm text-[#5c6d89]">This workspace is restricted to approved credentials.</p>
+
+                <form onSubmit={handleUnlock} className="mt-5 space-y-4">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder="info@viktron.ai"
+                    className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
+                    required
+                  />
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    placeholder="********"
+                    className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
+                    required
+                  />
+                  {error ? <p className="text-sm text-[#c03f4e]">{error}</p> : null}
+                  <Button type="submit" className="w-full" icon={<Unlock className="h-4 w-4" />}>
+                    Unlock Console
                   </Button>
                 </form>
-              </GlassCard>
+              </div>
             )}
           </div>
         </div>

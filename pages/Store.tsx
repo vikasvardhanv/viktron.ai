@@ -1,14 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { AlertTriangle, ChevronRight, CreditCard, Download, Loader2, ShoppingCart, Tags } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
 import { AnimatedSection, StaggerContainer, StaggerItem } from '../components/ui/AnimatedSection';
-import { GlassCard } from '../components/ui/GlassCard';
-import { Button } from '../components/ui/Button';
-import { GradientText } from '../components/ui/FloatingElements';
 import { SafeMarkdown } from '../components/ui/SafeMarkdown';
-import { useAuth, getAuthToken } from '../context/AuthContext';
-import { ShoppingCart, Tags, Download, ChevronRight, AlertTriangle, Loader2, CreditCard } from 'lucide-react';
+import { Button } from '../components/ui/Button';
+import { getAuthToken, useAuth } from '../context/AuthContext';
 
 const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/7sY8wQ2et19Geak1qecIE01';
 
@@ -41,12 +39,10 @@ type StoreCategoryDetail = {
 };
 
 const getApiBaseUrl = () => {
-  // @ts-ignore - Vite env
   return (import.meta.env.VITE_API_URL as string | undefined) || '/api';
 };
 
 const getStoreAssetsBaseUrl = () => {
-  // @ts-ignore - Vite env
   return (import.meta.env.VITE_STORE_ASSETS_BASE_URL as string | undefined) || '';
 };
 
@@ -56,22 +52,23 @@ const decodeFile = (encoded: string) => decodeURIComponent(encoded);
 export const Store: React.FC = () => {
   const { categorySlug, workflowFile } = useParams();
   const { isAuthenticated, user, setShowAuthModal, setAuthModalMode } = useAuth();
+
   const [categories, setCategories] = useState<StoreCategory[]>([]);
   const [categoryDetail, setCategoryDetail] = useState<StoreCategoryDetail | null>(null);
   const [workflowDetail, setWorkflowDetail] = useState<{ category: { slug: string; title: string }; workflow: StoreWorkflow } | null>(null);
-  const [storeError, setStoreError] = useState<string>('');
+  const [storeError, setStoreError] = useState('');
   const [downloading, setDownloading] = useState(false);
-  const [downloadError, setDownloadError] = useState<string>('');
+  const [downloadError, setDownloadError] = useState('');
   const [isPurchased, setIsPurchased] = useState(false);
-  const [checkingPurchase, setCheckingPurchase] = useState(false);
   const [visibleWorkflows, setVisibleWorkflows] = useState(24);
-  const [instructionsMd, setInstructionsMd] = useState<string>('');
+  const [instructionsMd, setInstructionsMd] = useState('');
   const [loadingInstructions, setLoadingInstructions] = useState(false);
-  const [instructionsError, setInstructionsError] = useState<string>('');
+  const [instructionsError, setInstructionsError] = useState('');
   const [showInstructions, setShowInstructions] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
+
     const load = async () => {
       setStoreError('');
       setCategoryDetail(null);
@@ -81,39 +78,29 @@ export const Store: React.FC = () => {
 
       try {
         if (!categorySlug) {
-          const res = await fetch(`${apiBase}/store/categories`);
-          const json = await res.json().catch(() => null);
-          if (!res.ok || !json?.success) {
-            throw new Error(json?.message || `Failed to load store categories (${res.status})`);
-          }
+          const response = await fetch(`${apiBase}/store/categories`);
+          const json = await response.json().catch(() => null);
+          if (!response.ok || !json?.success) throw new Error(json?.message || `Failed to load categories (${response.status})`);
           if (!cancelled) setCategories(Array.isArray(json.data) ? json.data : []);
           return;
         }
 
-        if (categorySlug && !workflowFile) {
-          const res = await fetch(`${apiBase}/store/categories/${encodeURIComponent(categorySlug)}`);
-          const json = await res.json().catch(() => null);
-          if (!res.ok || !json?.success) {
-            throw new Error(json?.message || `Failed to load category (${res.status})`);
-          }
+        if (!workflowFile) {
+          const response = await fetch(`${apiBase}/store/categories/${encodeURIComponent(categorySlug)}`);
+          const json = await response.json().catch(() => null);
+          if (!response.ok || !json?.success) throw new Error(json?.message || `Failed to load category (${response.status})`);
           if (!cancelled) setCategoryDetail(json.data);
           return;
         }
 
-        if (categorySlug && workflowFile) {
-          const res = await fetch(
-            `${apiBase}/store/workflows/${encodeURIComponent(categorySlug)}/${encodeURIComponent(decodeFile(workflowFile))}`,
-            undefined
-          );
-          const json = await res.json().catch(() => null);
-          if (!res.ok || !json?.success) {
-            throw new Error(json?.message || `Failed to load workflow (${res.status})`);
-          }
-          if (!cancelled) setWorkflowDetail(json.data);
-          return;
-        }
-      } catch (e: any) {
-        if (!cancelled) setStoreError(e?.message || 'Failed to load store catalog');
+        const response = await fetch(
+          `${apiBase}/store/workflows/${encodeURIComponent(categorySlug)}/${encodeURIComponent(decodeFile(workflowFile))}`
+        );
+        const json = await response.json().catch(() => null);
+        if (!response.ok || !json?.success) throw new Error(json?.message || `Failed to load workflow (${response.status})`);
+        if (!cancelled) setWorkflowDetail(json.data);
+      } catch (error: any) {
+        if (!cancelled) setStoreError(error?.message || 'Failed to load store');
       }
     };
 
@@ -123,7 +110,6 @@ export const Store: React.FC = () => {
     };
   }, [categorySlug, workflowFile]);
 
-  // Reset pagination when entering a category
   useEffect(() => {
     if (categorySlug && !workflowFile) setVisibleWorkflows(24);
   }, [categorySlug, workflowFile]);
@@ -140,40 +126,34 @@ export const Store: React.FC = () => {
     return workflowDetail?.workflow || null;
   }, [categorySlug, workflowFile, workflowDetail]);
 
-  // Check purchase status when workflow changes / user logs in
   useEffect(() => {
     let cancelled = false;
 
-    const check = async () => {
+    const checkPurchase = async () => {
       setIsPurchased(false);
-
       if (!selectedWorkflow?.id || !isAuthenticated) return;
 
-      setCheckingPurchase(true);
       const apiBase = getApiBaseUrl();
       try {
         const authToken = getAuthToken();
-        const res = await fetch(`${apiBase}/store/purchase-status/${selectedWorkflow.id}`, {
-          headers: {
-            'Authorization': `Bearer ${authToken}`,
-          },
+        const response = await fetch(`${apiBase}/store/purchase-status/${selectedWorkflow.id}`, {
+          headers: { Authorization: `Bearer ${authToken}` },
         });
-        const json = await res.json().catch(() => null);
-        if (!cancelled && res.ok && json?.success) {
+        const json = await response.json().catch(() => null);
+        if (!cancelled && response.ok && json?.success) {
           setIsPurchased(!!json?.data?.purchased);
         }
-      } finally {
-        if (!cancelled) setCheckingPurchase(false);
+      } catch {
+        // Ignore purchase check failures
       }
     };
 
-    check();
+    checkPurchase();
     return () => {
       cancelled = true;
     };
   }, [selectedWorkflow?.id, isAuthenticated]);
 
-  // Load instructions markdown (requires purchase)
   useEffect(() => {
     let cancelled = false;
 
@@ -181,28 +161,21 @@ export const Store: React.FC = () => {
       setInstructionsMd('');
       setInstructionsError('');
 
-      if (!selectedWorkflow?.id) return;
-      if (!isAuthenticated || !isPurchased) return;
-      if (!selectedWorkflow.hasInstructions) return;
-      if (!showInstructions) return;
+      if (!selectedWorkflow?.id || !selectedWorkflow.hasInstructions) return;
+      if (!isAuthenticated || !isPurchased || !showInstructions) return;
 
       setLoadingInstructions(true);
       const apiBase = getApiBaseUrl();
       try {
         const authToken = getAuthToken();
-        const res = await fetch(`${apiBase}/store/instructions/${selectedWorkflow.id}`, {
-          headers: {
-            'Authorization': `Bearer ${authToken}`,
-          },
+        const response = await fetch(`${apiBase}/store/instructions/${selectedWorkflow.id}`, {
+          headers: { Authorization: `Bearer ${authToken}` },
         });
-        const json = await res.json().catch(() => null);
-        if (!cancelled && res.ok && json?.success) {
-          setInstructionsMd(String(json?.data?.instructionsMd || ''));
-        } else if (!cancelled) {
-          throw new Error(json?.message || `Failed to load instructions (${res.status})`);
-        }
-      } catch (e: any) {
-        if (!cancelled) setInstructionsError(e?.message || 'Failed to load instructions');
+        const json = await response.json().catch(() => null);
+        if (!response.ok || !json?.success) throw new Error(json?.message || `Failed to load instructions (${response.status})`);
+        if (!cancelled) setInstructionsMd(String(json?.data?.instructionsMd || ''));
+      } catch (error: any) {
+        if (!cancelled) setInstructionsError(error?.message || 'Failed to load instructions');
       } finally {
         if (!cancelled) setLoadingInstructions(false);
       }
@@ -214,7 +187,6 @@ export const Store: React.FC = () => {
     };
   }, [selectedWorkflow?.id, selectedWorkflow?.hasInstructions, isAuthenticated, isPurchased, showInstructions]);
 
-  // Secure download handler: requires auth + purchase, fetches one-time token, triggers download
   const handleDownload = async () => {
     if (!selectedWorkflow?.id) return;
 
@@ -223,12 +195,10 @@ export const Store: React.FC = () => {
       setShowAuthModal(true);
       return;
     }
-
     if (!isPurchased) {
       setDownloadError('Please complete your purchase first.');
       return;
     }
-
     if (!selectedWorkflow.hasJson) {
       setDownloadError('Workflow JSON is not available for this item yet.');
       return;
@@ -237,29 +207,23 @@ export const Store: React.FC = () => {
     setDownloading(true);
     setDownloadError('');
 
-    const apiBase = getApiBaseUrl();
-
     try {
-      // Step 1: Request a one-time download token
+      const apiBase = getApiBaseUrl();
       const authToken = getAuthToken();
-      const tokenRes = await fetch(`${apiBase}/store/download-token/${selectedWorkflow.id}`, {
+
+      const tokenResponse = await fetch(`${apiBase}/store/download-token/${selectedWorkflow.id}`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${authToken}`,
+          Authorization: `Bearer ${authToken}`,
           'Content-Type': 'application/json',
         },
       });
+      const tokenJson = await tokenResponse.json().catch(() => null);
+      if (!tokenResponse.ok || !tokenJson?.success) throw new Error(tokenJson?.message || 'Failed to get download token');
 
-      const tokenJson = await tokenRes.json().catch(() => null);
-      if (!tokenRes.ok || !tokenJson?.success) {
-        throw new Error(tokenJson?.message || 'Failed to get download token');
-      }
-
-      // Step 2: Trigger the download via the token endpoint
-      const downloadToken = tokenJson.data.token;
-      window.location.href = `${apiBase}/store/download/${downloadToken}`;
-    } catch (e: any) {
-      setDownloadError(e?.message || 'Download failed');
+      window.location.href = `${apiBase}/store/download/${tokenJson.data.token}`;
+    } catch (error: any) {
+      setDownloadError(error?.message || 'Download failed');
     } finally {
       setDownloading(false);
     }
@@ -273,12 +237,10 @@ export const Store: React.FC = () => {
       setShowAuthModal(true);
       return;
     }
-
     if (!isPurchased) {
       setDownloadError('Please complete your purchase first.');
       return;
     }
-
     if (!selectedWorkflow.hasInstructions) {
       setDownloadError('Instructions are not available for this workflow yet.');
       return;
@@ -287,357 +249,283 @@ export const Store: React.FC = () => {
     setDownloading(true);
     setDownloadError('');
 
-    const apiBase = getApiBaseUrl();
-
     try {
+      const apiBase = getApiBaseUrl();
       const authToken = getAuthToken();
-      const tokenRes = await fetch(`${apiBase}/store/download-token/${selectedWorkflow.id}`, {
+
+      const tokenResponse = await fetch(`${apiBase}/store/download-token/${selectedWorkflow.id}`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${authToken}`,
+          Authorization: `Bearer ${authToken}`,
           'Content-Type': 'application/json',
         },
       });
+      const tokenJson = await tokenResponse.json().catch(() => null);
+      if (!tokenResponse.ok || !tokenJson?.success) throw new Error(tokenJson?.message || 'Failed to get download token');
 
-      const tokenJson = await tokenRes.json().catch(() => null);
-      if (!tokenRes.ok || !tokenJson?.success) {
-        throw new Error(tokenJson?.message || 'Failed to get download token');
-      }
-
-      const downloadToken = tokenJson.data.token;
-      window.location.href = `${apiBase}/store/download-instructions/${downloadToken}`;
-    } catch (e: any) {
-      setDownloadError(e?.message || 'Download failed');
+      window.location.href = `${apiBase}/store/download-instructions/${tokenJson.data.token}`;
+    } catch (error: any) {
+      setDownloadError(error?.message || 'Download failed');
     } finally {
       setDownloading(false);
     }
   };
 
+  const purchaseUrl =
+    user?.id && selectedWorkflow?.id
+      ? `${STRIPE_PAYMENT_LINK}?client_reference_id=${user.id}:${selectedWorkflow.id}`
+      : STRIPE_PAYMENT_LINK;
+
   return (
     <Layout>
       <SEO
         title="Store | Viktron"
-        description="Browse categorized n8n workflows. View details and download workflow JSON."
+        description="Browse categorized n8n workflows. View details and purchase workflow assets."
+        url="/store"
       />
 
-      <div className="pt-24">
-        <AnimatedSection className="relative overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute -top-24 -right-24 w-96 h-96 bg-sky-500/10 rounded-full blur-3xl" />
-            <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-          </div>
+      <section className="pt-32 pb-10 px-4">
+        <div className="container-custom">
+          <AnimatedSection>
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#d4deeb] bg-[#f8fbff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#60718c]">
+              <ShoppingCart className="h-4 w-4 text-[#3768e8]" />
+              Workflow Store
+            </div>
+            <h1 className="mt-6 text-5xl sm:text-7xl font-semibold tracking-tight text-[#12223e]">Ready-to-deploy workflows.</h1>
+            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-[#52637e]">
+              Browse by category, inspect integrations, and download paid workflow files with setup documentation.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link to="/demos/workflow-automation">
+                <Button>See Workflow Demo</Button>
+              </Link>
+              <Link to="/contact">
+                <Button variant="secondary">Contact Us</Button>
+              </Link>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
 
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-white/70">
-                <ShoppingCart className="h-4 w-4 text-sky-400" />
-                n8n workflow store
-              </div>
-
-              <h1 className="mt-6 text-4xl sm:text-5xl font-bold tracking-tight text-white">
-                <GradientText>Workflows</GradientText> you can ship today
-              </h1>
-
-              <p className="mt-4 text-lg text-white/70 leading-relaxed">
-                Browse workflows by category, open a workflow to see details, and download the JSON to import into n8n.
-              </p>
-
-              <div className="mt-8 flex flex-row gap-3 overflow-x-auto">
-                <Link to="/demos/workflow-automation">
-                  <Button variant="primary" size="lg" className="whitespace-nowrap">Demo</Button>
-                </Link>
-                <Link to="/contact">
-                  <Button variant="secondary" size="lg" className="whitespace-nowrap">
-                    Contact us
-                  </Button>
-                </Link>
+      <section className="pb-20 px-4">
+        <div className="container-custom">
+          {storeError ? (
+            <div className="rounded-2xl border border-[#f0d4b3] bg-[#fff8f0] p-4">
+              <div className="flex items-start gap-2 text-[#91511a]">
+                <AlertTriangle className="h-5 w-5 mt-0.5" />
+                <div>
+                  <p className="font-semibold">Could not load workflow catalog</p>
+                  <p className="mt-1 text-sm">{storeError}</p>
+                </div>
               </div>
             </div>
-          </div>
-        </AnimatedSection>
-
-        <AnimatedSection className="py-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {storeError ? (
-              <GlassCard className="p-6">
-                <div className="flex items-start gap-3 text-white/80">
-                  <AlertTriangle className="h-5 w-5 text-amber-400" />
-                  <div>
-                    <div className="font-semibold">Could not load workflow catalog</div>
-                    <div className="mt-1 text-sm text-white/60">{storeError}</div>
+          ) : workflowFile && selectedWorkflow && selectedCategory ? (
+            <div className="rounded-3xl border border-[#d8e2ef] bg-white p-6 sm:p-7">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#7084a1]">Workflow</p>
+                  <h2 className="mt-2 text-3xl font-semibold text-[#12223e]">{selectedWorkflow.name}</h2>
+                  <p className="mt-3 max-w-3xl text-[#54657f] leading-relaxed">
+                    {selectedWorkflow.description || 'No description provided.'}
+                  </p>
+                  <div className="mt-4 flex items-center gap-2">
+                    <span className="text-3xl font-semibold text-[#2c4f94]">$39</span>
+                    <span className="text-sm text-[#6b7d98]">one-time purchase</span>
                   </div>
                 </div>
-              </GlassCard>
-            ) : workflowFile && selectedWorkflow && selectedCategory ? (
-              <GlassCard className="p-6">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <div className="text-sm text-white/50">Workflow</div>
-                    <h2 className="mt-1 text-2xl font-bold text-white">{selectedWorkflow.name}</h2>
-                    <div className="mt-3 flex items-center gap-2">
-                      <span className="text-3xl font-bold text-sky-400">$39</span>
-                      <span className="text-sm text-white/50">one-time purchase</span>
-                    </div>
-                    {selectedWorkflow.description ? (
-                      <p className="mt-3 text-white/70 leading-relaxed">{selectedWorkflow.description}</p>
-                    ) : (
-                      <p className="mt-3 text-white/50">No description provided.</p>
-                    )}
-                  </div>
-                  <div className="shrink-0">
-                    <Link to={`/store/${selectedCategory.slug}`}>
-                      <Button variant="secondary" size="md">
-                        Back
-                      </Button>
-                    </Link>
-                  </div>
+                <Link to={`/store/${selectedCategory.slug}`}>
+                  <Button variant="secondary">Back to category</Button>
+                </Link>
+              </div>
+
+              <div className="mt-6 rounded-2xl border border-[#d8e2ef] bg-[#f8fbff] p-4">
+                <div className="flex items-center gap-2 text-sm font-semibold text-[#2d4f95]">
+                  <Tags className="h-4 w-4" />
+                  Integrations
                 </div>
-
-                <div className="mt-6">
-                  <div className="flex items-center gap-2 text-sm text-white/70">
-                    <Tags className="h-4 w-4 text-sky-400" />
-                    Key Integrations
-                  </div>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {(selectedWorkflow.integrations.length ? selectedWorkflow.integrations : ['—']).map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2.5 py-1 rounded-full text-xs font-medium bg-white/5 border border-white/10 text-white/70"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                  {selectedWorkflow.hasJson || selectedWorkflow.hasInstructions ? (
-                    <>
-                      {!isPurchased && (
-                        <a
-                          href={`${STRIPE_PAYMENT_LINK}?client_reference_id=${user?.id && selectedWorkflow.id ? `${user.id}:${selectedWorkflow.id}` : ''}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => {
-                            if (!isAuthenticated) {
-                              e.preventDefault();
-                              setAuthModalMode('login');
-                              setShowAuthModal(true);
-                            }
-                          }}
-                        >
-                          <Button variant="primary" size="md" className="w-full sm:w-auto">
-                            Buy Now
-                          </Button>
-                        </a>
-                      )}
-
-                      {isAuthenticated && isPurchased && (
-                        <>
-                          {selectedWorkflow.hasJson && (
-                            <Button
-                              variant="secondary"
-                              size="md"
-                              onClick={handleDownload}
-                              disabled={downloading}
-                            >
-                              {downloading ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                              ) : (
-                                <Download className="h-4 w-4" />
-                              )}
-                              Download JSON
-                            </Button>
-                          )}
-
-                          {selectedWorkflow.hasInstructions && (
-                            <Button
-                              variant="secondary"
-                              size="md"
-                              onClick={handleDownloadInstructions}
-                              disabled={downloading}
-                            >
-                              {downloading ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                              ) : (
-                                <Download className="h-4 w-4" />
-                              )}
-                              Download setup (.md)
-                            </Button>
-                          )}
-                        </>
-                      )}
-                    </>
-                  ) : (
-                    <Button variant="primary" size="md" className="w-full sm:w-auto" disabled>
-                      <CreditCard className="h-4 w-4" />
-                      Coming soon — $39
-                    </Button>
-                  )}
-
-                  <Link to="/contact">
-                    <Button variant="secondary" size="md" className="w-full sm:w-auto">
-                      Need help importing?
-                    </Button>
-                  </Link>
-                </div>
-
-                {downloadError && (
-                  <div className="mt-3 text-sm text-red-400">{downloadError}</div>
-                )}
-
-                {isAuthenticated && isPurchased && selectedWorkflow.hasInstructions && (
-                  <div className="mt-6 border-t border-white/10 pt-6">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="text-sm text-white/70">Setup instructions</div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setShowInstructions((v) => !v)}
-                      >
-                        {showInstructions ? 'Hide' : 'View'}
-                      </Button>
-                    </div>
-
-                    {showInstructions && (
-                      <div className="mt-4">
-                        {loadingInstructions ? (
-                          <div className="text-sm text-white/60">Loading instructions…</div>
-                        ) : instructionsError ? (
-                          <div className="text-sm text-red-400">{instructionsError}</div>
-                        ) : instructionsMd ? (
-                          <div className="text-sm text-white/80 leading-relaxed">
-                            <SafeMarkdown assetBaseUrl={getStoreAssetsBaseUrl() || undefined}>
-                              {instructionsMd}
-                            </SafeMarkdown>
-                          </div>
-                        ) : (
-                          <div className="text-sm text-white/50">No instructions found.</div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-              </GlassCard>
-            ) : categoryDetail ? (
-              <>
-                <div className="flex items-center justify-between gap-4 mb-6">
-                  <div>
-                    <div className="text-sm text-white/50">Category</div>
-                    <h2 className="mt-1 text-2xl font-bold text-white">{categoryDetail.title}</h2>
-                    <div className="mt-1 text-sm text-white/50">
-                      {categoryDetail.workflows.length} workflows listed
-                    </div>
-                  </div>
-                  <Link to="/store">
-                    <Button variant="secondary" size="md">All categories</Button>
-                  </Link>
-                </div>
-
-                <div className="grid grid-cols-1 gap-4">
-                  {(categoryDetail.workflows || []).slice(0, visibleWorkflows).map((w) => (
-                    <Link key={`${w.categorySlug}:${w.fileName}`} to={`/store/${categoryDetail.slug}/${encodeFile(w.fileName)}`}>
-                      <GlassCard className="p-5 hover:bg-white/10 transition-colors">
-                        <div className="flex items-start justify-between gap-4">
-                          <div>
-                            <div className="text-lg font-semibold text-white">{w.name}</div>
-                            <div className="mt-1 text-sm text-white/60 line-clamp-2">{w.description || 'No description provided.'}</div>
-                            {!!w.integrations.length && (
-                              <div className="mt-3 flex flex-wrap gap-2">
-                                {w.integrations.slice(0, 6).map((tag) => (
-                                  <span
-                                    key={`${w.fileName}:${tag}`}
-                                    className="px-2.5 py-1 rounded-full text-xs font-medium bg-white/5 border border-white/10 text-white/70"
-                                  >
-                                    {tag}
-                                  </span>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                          <div className="shrink-0 flex flex-col items-end gap-1">
-                            <div className="text-lg font-bold text-sky-400">$39</div>
-                            <div className="text-xs text-white/50">Buy now</div>
-                          </div>
-                        </div>
-                      </GlassCard>
-                    </Link>
-                  ))}
-                </div>
-
-                {categoryDetail.workflows.length > visibleWorkflows && (
-                  <div className="mt-6 flex justify-center">
-                    <Button
-                      variant="secondary"
-                      size="md"
-                      onClick={() => setVisibleWorkflows((v) => v + 24)}
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {(selectedWorkflow.integrations.length ? selectedWorkflow.integrations : ['—']).map((integration) => (
+                    <span
+                      key={`${selectedWorkflow.fileName}-${integration}`}
+                      className="rounded-full border border-[#d7e1ef] bg-white px-2.5 py-1 text-xs text-[#5d6f8d]"
                     >
-                      Load more
-                    </Button>
-                  </div>
-                )}
-
-                <div className="mt-10">
-                  <GlassCard className="p-6">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                      <div>
-                        <div className="text-sm text-white/50">Custom</div>
-                        <div className="mt-1 text-xl font-semibold text-white">Need a custom workflow?</div>
-                        <div className="mt-2 text-sm text-white/60">
-                          Tell us what you want to automate and we’ll build it in n8n.
-                        </div>
-                      </div>
-                      <Link to={`/contact?subject=${encodeURIComponent('Custom n8n workflow request')}`}>
-                        <Button variant="primary" size="md" className="whitespace-nowrap">
-                          Contact for custom workflow
-                        </Button>
-                      </Link>
-                    </div>
-                  </GlassCard>
-                </div>
-              </>
-            ) : (
-              <StaggerContainer>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {categories.map((cat) => (
-                    <StaggerItem key={cat.slug}>
-                      <Link to={`/store/${cat.slug}`}>
-                        <GlassCard className="h-full p-6 hover:bg-white/10 transition-colors">
-                          <div className="text-sm text-white/50">Category</div>
-                          <div className="mt-2 text-xl font-semibold text-white">{cat.title}</div>
-                          <div className="mt-2 text-sm text-white/60">
-                            {(cat.count ?? 0).toLocaleString()} workflows
-                          </div>
-                        </GlassCard>
-                      </Link>
-                    </StaggerItem>
+                      {integration}
+                    </span>
                   ))}
                 </div>
+              </div>
 
-                <div className="mt-10">
-                  <GlassCard className="p-6">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                      <div>
-                        <div className="text-sm text-white/50">Custom</div>
-                        <div className="mt-1 text-xl font-semibold text-white">Need a custom workflow?</div>
-                        <div className="mt-2 text-sm text-white/60">
-                          Tell us what you want to automate and we’ll build it in n8n.
+              <div className="mt-6 flex flex-wrap gap-3">
+                {(selectedWorkflow.hasJson || selectedWorkflow.hasInstructions) && !isPurchased ? (
+                  <a
+                    href={purchaseUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(event) => {
+                      if (isAuthenticated) return;
+                      event.preventDefault();
+                      setAuthModalMode('login');
+                      setShowAuthModal(true);
+                    }}
+                  >
+                    <Button>Buy now</Button>
+                  </a>
+                ) : null}
+
+                {isAuthenticated && isPurchased && selectedWorkflow.hasJson ? (
+                  <Button variant="secondary" onClick={handleDownload} disabled={downloading}>
+                    {downloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                    Download JSON
+                  </Button>
+                ) : null}
+
+                {isAuthenticated && isPurchased && selectedWorkflow.hasInstructions ? (
+                  <Button variant="secondary" onClick={handleDownloadInstructions} disabled={downloading}>
+                    {downloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                    Download setup (.md)
+                  </Button>
+                ) : null}
+
+                {!selectedWorkflow.hasJson && !selectedWorkflow.hasInstructions ? (
+                  <Button disabled>
+                    <CreditCard className="h-4 w-4" />
+                    Coming soon
+                  </Button>
+                ) : null}
+
+                <Link to="/contact">
+                  <Button variant="secondary">Need help importing?</Button>
+                </Link>
+              </div>
+
+              {downloadError ? <p className="mt-3 text-sm text-[#c03f4e]">{downloadError}</p> : null}
+
+              {isAuthenticated && isPurchased && selectedWorkflow.hasInstructions ? (
+                <div className="mt-7 rounded-2xl border border-[#d8e2ef] bg-[#f8fbff] p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-sm font-semibold text-[#1e3255]">Setup instructions</p>
+                    <Button variant="ghost" size="sm" onClick={() => setShowInstructions((prev) => !prev)}>
+                      {showInstructions ? 'Hide' : 'View'}
+                    </Button>
+                  </div>
+
+                  {showInstructions ? (
+                    <div className="mt-4 text-sm leading-relaxed text-[#334a6e]">
+                      {loadingInstructions ? (
+                        <p className="text-[#5f7190]">Loading instructions…</p>
+                      ) : instructionsError ? (
+                        <p className="text-[#c03f4e]">{instructionsError}</p>
+                      ) : instructionsMd ? (
+                        <SafeMarkdown assetBaseUrl={getStoreAssetsBaseUrl() || undefined}>{instructionsMd}</SafeMarkdown>
+                      ) : (
+                        <p className="text-[#5f7190]">No instructions found.</p>
+                      )}
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
+            </div>
+          ) : categoryDetail ? (
+            <>
+              <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#7084a1]">Category</p>
+                  <h2 className="mt-2 text-3xl font-semibold text-[#12223e]">{categoryDetail.title}</h2>
+                  <p className="mt-1 text-sm text-[#5f7190]">{categoryDetail.workflows.length} workflows listed</p>
+                </div>
+                <Link to="/store">
+                  <Button variant="secondary">All categories</Button>
+                </Link>
+              </div>
+
+              <div className="space-y-3">
+                {(categoryDetail.workflows || []).slice(0, visibleWorkflows).map((workflow) => (
+                  <Link key={`${workflow.categorySlug}:${workflow.fileName}`} to={`/store/${categoryDetail.slug}/${encodeFile(workflow.fileName)}`}>
+                    <article className="rounded-2xl border border-[#d8e2ef] bg-white p-4 hover:bg-[#f9fbff] transition">
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div>
+                          <h3 className="text-lg font-semibold text-[#12223e]">{workflow.name}</h3>
+                          <p className="mt-1 max-w-4xl text-sm text-[#566885] line-clamp-2">
+                            {workflow.description || 'No description provided.'}
+                          </p>
+                          {!!workflow.integrations.length && (
+                            <div className="mt-3 flex flex-wrap gap-2">
+                              {workflow.integrations.slice(0, 6).map((integration) => (
+                                <span
+                                  key={`${workflow.fileName}-${integration}`}
+                                  className="rounded-full border border-[#d7e1ef] bg-[#f8fbff] px-2.5 py-1 text-xs text-[#5d6f8d]"
+                                >
+                                  {integration}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xl font-semibold text-[#2d4f95]">$39</p>
+                          <p className="mt-1 text-xs text-[#6f83a1]">View details</p>
                         </div>
                       </div>
-                      <Link to={`/contact?subject=${encodeURIComponent('Custom n8n workflow request')}`}>
-                        <Button variant="primary" size="md" className="whitespace-nowrap">
-                          Contact for custom workflow
-                        </Button>
-                      </Link>
-                    </div>
-                  </GlassCard>
+                    </article>
+                  </Link>
+                ))}
+              </div>
+
+              {categoryDetail.workflows.length > visibleWorkflows ? (
+                <div className="mt-6 flex justify-center">
+                  <Button variant="secondary" onClick={() => setVisibleWorkflows((prev) => prev + 24)}>
+                    Load more
+                  </Button>
                 </div>
+              ) : null}
+
+              <div className="mt-8 rounded-2xl border border-[#d8e2ef] bg-[#f8fbff] p-5">
+                <h3 className="text-xl font-semibold text-[#12223e]">Need a custom workflow?</h3>
+                <p className="mt-2 text-[#556781]">
+                  Share your automation requirements and we’ll build and document a tailored n8n flow.
+                </p>
+                <div className="mt-4">
+                  <Link to={`/contact?subject=${encodeURIComponent('Custom n8n workflow request')}`}>
+                    <Button>Contact for Custom Workflow</Button>
+                  </Link>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {categories.map((category) => (
+                  <StaggerItem key={category.slug}>
+                    <Link to={`/store/${category.slug}`} className="block h-full">
+                      <div className="card h-full p-5">
+                        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#7084a1]">Category</p>
+                        <h3 className="mt-3 text-xl font-semibold text-[#12223e]">{category.title}</h3>
+                        <p className="mt-2 text-sm text-[#5f7190]">{(category.count ?? 0).toLocaleString()} workflows</p>
+                        <div className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#2d4f95]">
+                          Explore
+                          <ChevronRight className="h-4 w-4" />
+                        </div>
+                      </div>
+                    </Link>
+                  </StaggerItem>
+                ))}
               </StaggerContainer>
-            )}
-          </div>
-        </AnimatedSection>
-      </div>
+
+              <div className="mt-8 rounded-2xl border border-[#d8e2ef] bg-[#f8fbff] p-5">
+                <h3 className="text-xl font-semibold text-[#12223e]">Need a custom workflow?</h3>
+                <p className="mt-2 text-[#556781]">
+                  Tell us what to automate and we’ll design, build, and ship the full n8n workflow.
+                </p>
+                <div className="mt-4">
+                  <Link to={`/contact?subject=${encodeURIComponent('Custom n8n workflow request')}`}>
+                    <Button>Contact for Custom Workflow</Button>
+                  </Link>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </section>
     </Layout>
   );
 };

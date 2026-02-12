@@ -1,47 +1,44 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import {
-  ArrowRight,
-  BarChart3,
-  Bot,
-  Calendar,
-  MessageSquare,
-  Sparkles,
-  Workflow,
-} from 'lucide-react';
+import { ArrowRight, BarChart3, Bot, Calendar, CheckCircle2, Layers3, Sparkles, Workflow } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
 import { AnimatedSection, StaggerContainer, StaggerItem } from '../components/ui/AnimatedSection';
-import { GlassCard } from '../components/ui/GlassCard';
 import { Button } from '../components/ui/Button';
 
-const offeringTiles = [
+const solutionPillars = [
   {
-    icon: <Bot className="h-6 w-6 text-lime-200" />,
-    title: 'AI Agents',
-    description: 'Industry-focused copilots for support, intake, scheduling, and customer operations.',
+    icon: <Bot className="h-5 w-5 text-[#3768e8]" />,
+    title: 'Agent Layer',
+    description: 'Customer-facing and internal agents trained on your workflows.',
     href: '/agents',
   },
   {
-    icon: <Workflow className="h-6 w-6 text-emerald-200" />,
-    title: 'Automation Systems',
-    description: 'Operational workflows wired into your CRM, messaging channels, and internal tools.',
-    href: '/services#automation',
+    icon: <Workflow className="h-5 w-5 text-[#2fa781]" />,
+    title: 'Automation Layer',
+    description: 'Cross-tool orchestration from intake, CRM, support, and reporting.',
+    href: '/services',
   },
   {
-    icon: <BarChart3 className="h-6 w-6 text-lime-100" />,
-    title: 'Growth Intelligence',
-    description: 'Campaign automation plus analytics loops that keep performance improving weekly.',
+    icon: <BarChart3 className="h-5 w-5 text-[#6a7ce8]" />,
+    title: 'Growth Layer',
+    description: 'Campaign operations and analytics loops that compound weekly.',
     href: '/marketing',
   },
 ];
 
-const metrics = [
-  { label: 'Deployment Window', value: '7-21 Days' },
-  { label: 'Uptime Target', value: '99.9%' },
-  { label: 'Support', value: '24/7 Human + AI' },
-  { label: 'Integrations', value: '100+ APIs' },
+const momentumMetrics = [
+  { label: 'Time to first launch', value: '7-21 days' },
+  { label: 'SLA target', value: '99.9%' },
+  { label: 'Integrations', value: '100+ tools' },
+  { label: 'Support model', value: 'Human + AI' },
+];
+
+const implementationFlow = [
+  { title: 'Map ops', description: 'Audit channels, bottlenecks, and handoff points.' },
+  { title: 'Deploy stack', description: 'Ship agent flows, workflows, and dashboards.' },
+  { title: 'Tune weekly', description: 'Use outcome telemetry to improve conversion and speed.' },
 ];
 
 export const Landing: React.FC = () => {
@@ -54,55 +51,90 @@ export const Landing: React.FC = () => {
         url="/"
       />
 
-      <section className="relative pt-32 pb-20 px-4">
+      <section className="pt-32 pb-16 px-4">
         <div className="container-custom">
           <AnimatedSection>
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#38455e] bg-[#171f2d] px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-slate-300">
-              <Sparkles className="h-4 w-4 text-lime-200" />
-              Operator-Class AI Stack
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#d4deeb] bg-[#f8fbff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#5b6c87]">
+              <Sparkles className="h-4 w-4 text-[#3768e8]" />
+              Built Like a Product Team
             </div>
           </AnimatedSection>
 
-          <AnimatedSection delay={0.08}>
-            <h1 className="mt-6 max-w-5xl text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#f3f6fd] leading-[0.98]">
-              Build the AI layer your
-              <br />
-              business will run on.
-            </h1>
-          </AnimatedSection>
+          <div className="mt-7 grid gap-8 lg:grid-cols-[1.03fr_0.97fr] lg:items-center">
+            <AnimatedSection delay={0.06}>
+              <h1 className="text-[2.7rem] leading-[0.95] sm:text-[4.15rem] font-semibold tracking-tight text-[#101b2f]">
+                Build the AI layer
+                <br />
+                your business runs on.
+              </h1>
+              <p className="mt-5 max-w-2xl text-lg leading-relaxed text-[#51617c]">
+                We design customer agents, workflow automation, and growth systems as one cohesive
+                operating surface, not a pile of disconnected tools.
+              </p>
 
-          <AnimatedSection delay={0.16}>
-            <p className="mt-6 max-w-3xl text-lg text-slate-300 leading-relaxed">
-              We architect and ship intelligent customer workflows, internal copilots, and
-              growth automation systems that are production-ready from day one.
-            </p>
-          </AnimatedSection>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <Link to="/demo-form">
+                  <Button size="lg" icon={<Calendar className="h-5 w-5" />}>
+                    Book Free Consultation
+                  </Button>
+                </Link>
+                <Link to="/demos">
+                  <Button size="lg" variant="secondary" icon={<Layers3 className="h-5 w-5" />}>
+                    Launch Demos
+                  </Button>
+                </Link>
+                <Link
+                  to="/case-studies"
+                  className="inline-flex items-center gap-2 px-2 text-sm font-semibold text-[#26467f] hover:text-[#102952]"
+                >
+                  View Case Studies
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </AnimatedSection>
 
-          <AnimatedSection delay={0.24}>
-            <div className="mt-9 flex flex-wrap items-center gap-3">
-              <Link to="/demo-form">
-                <Button size="lg" icon={<Calendar className="h-5 w-5" />}>
-                  Book Free Consultation
-                </Button>
-              </Link>
-              <Link to="/demos">
-                <Button size="lg" variant="secondary" icon={<MessageSquare className="h-5 w-5" />}>
-                  Launch Demos
-                </Button>
-              </Link>
-              <Link to="/case-studies" className="inline-flex items-center gap-2 text-slate-200 hover:text-white text-sm font-medium px-2">
-                View case studies
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </AnimatedSection>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.14 }}
+              className="card overflow-hidden p-4 sm:p-5"
+            >
+              <div className="rounded-2xl border border-[#d8e2ef] bg-[#f8fbff] p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#7083a1]">Live Control Surface</p>
+                  <span className="rounded-full bg-[#e8effd] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#2d4f95]">
+                    Active
+                  </span>
+                </div>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl border border-[#d8e2ef] bg-white p-3">
+                    <p className="text-xs uppercase tracking-[0.12em] text-[#7a8da9]">Agent queue</p>
+                    <p className="mt-2 text-2xl font-semibold text-[#13213a]">24</p>
+                  </div>
+                  <div className="rounded-xl border border-[#d8e2ef] bg-white p-3">
+                    <p className="text-xs uppercase tracking-[0.12em] text-[#7a8da9]">Resolved today</p>
+                    <p className="mt-2 text-2xl font-semibold text-[#13213a]">312</p>
+                  </div>
+                </div>
+                <div className="mt-4 rounded-xl border border-[#d8e2ef] bg-white p-3">
+                  <div className="flex items-center justify-between text-xs text-[#627695]">
+                    <span>Weekly optimization score</span>
+                    <span className="font-semibold text-[#2e4f92]">+18%</span>
+                  </div>
+                  <div className="mt-2 h-2 rounded-full bg-[#edf3fd]">
+                    <div className="h-2 w-3/4 rounded-full bg-gradient-to-r from-[#3768e8] to-[#52c9a2]" />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
 
-          <AnimatedSection delay={0.3}>
-            <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {metrics.map((item) => (
-                <div key={item.label} className="rounded-xl border border-[#2f3a50] bg-[#141b28] px-4 py-4">
-                  <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{item.label}</p>
-                  <p className="mt-2 text-lg font-medium text-white">{item.value}</p>
+          <AnimatedSection delay={0.18}>
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {momentumMetrics.map((item) => (
+                <div key={item.label} className="rounded-2xl border border-[#d8e2ef] bg-white px-4 py-4">
+                  <p className="text-[11px] uppercase tracking-[0.14em] text-[#6b7d98]">{item.label}</p>
+                  <p className="mt-2 text-lg font-semibold text-[#12223e]">{item.value}</p>
                 </div>
               ))}
             </div>
@@ -110,65 +142,55 @@ export const Landing: React.FC = () => {
         </div>
       </section>
 
-      <section className="px-4 pb-20">
+      <section className="pb-16 px-4">
         <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55 }}
-            className="rounded-[28px] border border-[#2e3950] bg-[#111723] p-4 sm:p-6"
-          >
-            <div className="grid gap-4 lg:grid-cols-[1.3fr_1fr]">
-              <div className="rounded-2xl border border-[#303b52] bg-gradient-to-br from-[#151d2b] to-[#101722] p-6 sm:p-8">
-                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Live Workspace Preview</p>
-                <h3 className="mt-3 text-2xl font-medium text-white">
-                  Orchestrate agents, monitor outcomes, and ship improvements continuously.
-                </h3>
-                <div className="mt-6 flex flex-wrap gap-2 text-xs">
-                  {['Command Center', 'Agent Chain', 'Workflow State', 'Performance Feed'].map((label) => (
-                    <span key={label} className="rounded-full border border-[#3c4862] bg-[#1a2333] px-3 py-1.5 text-slate-300">
-                      {label}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-                <div className="rounded-2xl border border-[#2f3a50] bg-[#151d2b] p-4">
-                  <p className="text-xs uppercase tracking-[0.14em] text-slate-400">Agent SLA</p>
-                  <p className="mt-2 text-3xl font-medium text-lime-200">99.92%</p>
-                </div>
-                <div className="rounded-2xl border border-[#2f3a50] bg-[#151d2b] p-4">
-                  <p className="text-xs uppercase tracking-[0.14em] text-slate-400">Automations Active</p>
-                  <p className="mt-2 text-3xl font-medium text-emerald-200">128</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="px-4 pb-20">
-        <div className="container-custom">
-          <StaggerContainer className="grid gap-6 lg:grid-cols-3">
-            {offeringTiles.map((item) => (
-              <StaggerItem key={item.title}>
-                <Link to={item.href} className="block h-full">
-                  <GlassCard className="h-full p-6">
-                    <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[#34445f] bg-[#1b2434]">
-                      {item.icon}
+          <StaggerContainer className="grid gap-4 lg:grid-cols-3">
+            {solutionPillars.map((pillar) => (
+              <StaggerItem key={pillar.title}>
+                <Link to={pillar.href} className="block h-full">
+                  <div className="card h-full p-5">
+                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#eef3fd]">
+                      {pillar.icon}
                     </div>
-                    <h3 className="text-xl font-medium text-white">{item.title}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-slate-300">{item.description}</p>
-                    <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-lime-200">
+                    <h3 className="mt-4 text-xl font-semibold text-[#12223e]">{pillar.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-[#53637d]">{pillar.description}</p>
+                    <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#2d4f95]">
                       Explore
                       <ArrowRight className="h-4 w-4" />
                     </div>
-                  </GlassCard>
+                  </div>
                 </Link>
               </StaggerItem>
             ))}
           </StaggerContainer>
+        </div>
+      </section>
+
+      <section className="pb-20 px-4">
+        <div className="container-custom">
+          <div className="card p-6 sm:p-7">
+            <AnimatedSection>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#6e82a0]">Implementation Flow</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-tight text-[#12223e]">
+                Structured delivery without heavy process overhead.
+              </h2>
+            </AnimatedSection>
+
+            <StaggerContainer className="mt-6 grid gap-4 md:grid-cols-3">
+              {implementationFlow.map((step, index) => (
+                <StaggerItem key={step.title}>
+                  <div className="rounded-2xl border border-[#d9e3ef] bg-[#f8fbff] p-4 h-full">
+                    <div className="inline-flex items-center gap-2 text-sm font-semibold text-[#2a4a88]">
+                      <CheckCircle2 className="h-4 w-4 text-[#2fa781]" />
+                      Step {index + 1}
+                    </div>
+                    <h3 className="mt-3 text-lg font-semibold text-[#14253f]">{step.title}</h3>
+                    <p className="mt-2 text-sm text-[#586985] leading-relaxed">{step.description}</p>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </div>
         </div>
       </section>
     </Layout>

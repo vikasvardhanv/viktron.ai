@@ -3,7 +3,6 @@ import { Link, Navigate, useLocation } from 'react-router-dom';
 import { ArrowRight, LogIn, UserPlus } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
-import { GlassCard } from '../components/ui/GlassCard';
 import { Button } from '../components/ui/Button';
 import { useAuth } from '../context/AuthContext';
 
@@ -14,11 +13,9 @@ type AuthPageProps = {
 const getSafeRedirect = (search: string) => {
   const params = new URLSearchParams(search);
   const target = params.get('redirect');
-
   if (!target) return '/';
   if (!target.startsWith('/') || target.startsWith('//')) return '/';
   if (target === '/login' || target === '/signup') return '/';
-
   return target;
 };
 
@@ -37,7 +34,6 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
 
   useEffect(() => {
     if (isLoading || isAuthenticated) return;
-
     setAuthModalMode(mode);
     setShowAuthModal(true);
 
@@ -50,9 +46,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
     return (
       <Layout showFooter={false}>
         <div className="min-h-screen flex items-center justify-center">
-          <div className="relative">
-            <div className="w-12 h-12 rounded-full border-2 border-slate-100 border-t-[#5E6AD2] animate-spin" />
-          </div>
+          <div className="h-12 w-12 rounded-full border-2 border-[#d8e1ee] border-t-[#3568e4] animate-spin" />
         </div>
       </Layout>
     );
@@ -66,25 +60,28 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
     <Layout showFooter={false}>
       <SEO
         title={isSignup ? 'Create Account' : 'Sign In'}
-        description="Sign in or create a Viktron.ai account."
+        description="Sign in or create a Viktron account."
         url={isSignup ? '/signup' : '/login'}
         noindex
       />
+
       <section className="min-h-screen pt-28 pb-16 px-4">
-        <div className="max-w-2xl mx-auto">
-          <GlassCard className="p-8 sm:p-10 text-center">
-            <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-sky-500/15 text-sky-400">
+        <div className="container-custom max-w-2xl">
+          <article className="rounded-3xl border border-[#d8e2ef] bg-white p-8 sm:p-10 text-center">
+            <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#eef3fd] text-[#3768e8]">
               {isSignup ? <UserPlus className="h-5 w-5" /> : <LogIn className="h-5 w-5" />}
             </div>
-            <h1 className="text-3xl font-bold text-white mb-3">
-              {isSignup ? 'Create your Viktron.ai account' : 'Sign in to Viktron.ai'}
+
+            <h1 className="text-3xl font-semibold text-[#12223e]">
+              {isSignup ? 'Create your Viktron account' : 'Sign in to Viktron'}
             </h1>
-            <p className="text-base text-white/60 mb-8">
+            <p className="mt-3 text-[#54657f]">
               {isSignup
-                ? 'Create a free account to access AI demos, saved sessions, and personalized recommendations.'
-                : 'Welcome back. Sign in to access AI demos, saved sessions, and personalized recommendations.'}
+                ? 'Create a free account to access demos, saved sessions, and personalized recommendations.'
+                : 'Welcome back. Sign in to access your demos and workspace.'}
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+
+            <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Button
                 size="lg"
                 onClick={() => {
@@ -101,16 +98,14 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
                 </Button>
               </Link>
             </div>
-            <p className="text-sm text-white/50 mt-6">
+
+            <p className="mt-6 text-sm text-[#657795]">
               {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
-              <Link
-                to={authToggleHref}
-                className="text-sky-400 hover:text-sky-300"
-              >
+              <Link to={authToggleHref} className="text-[#2d4f95] font-semibold">
                 {isSignup ? 'Sign in' : 'Create one'}
               </Link>
             </p>
-          </GlassCard>
+          </article>
         </div>
       </section>
     </Layout>

@@ -20,19 +20,25 @@ export const Layout: React.FC<LayoutProps> = ({
   showBackground = true
 }) => {
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-transparent text-slate-100">
+    <div className="relative min-h-screen overflow-x-clip bg-transparent text-[#13213a]">
       {showBackground && (
-        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-emerald-400/6 to-transparent" />
-          <div className="absolute -top-20 right-[-7rem] h-72 w-72 rounded-full border border-lime-200/10 bg-lime-200/5" />
-          <div className="absolute top-24 left-[-5rem] h-56 w-56 rounded-full border border-emerald-300/10 bg-emerald-300/5" />
+        <div className="page-noise pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <img
+            src="/visuals/site-backdrop.svg"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover opacity-[0.62]"
+          />
+          <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-[#dbe6f8]/56 to-transparent" />
+          <div className="absolute -top-28 right-[-8rem] h-80 w-80 rounded-full bg-[#89b3ff]/24 blur-3xl" />
+          <div className="absolute top-28 left-[-7rem] h-64 w-64 rounded-full bg-[#89e1c7]/24 blur-3xl" />
           <div
-            className="absolute inset-0 opacity-[0.05]"
+            className="absolute inset-0 opacity-[0.06]"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)',
-              backgroundSize: '88px 88px',
-              maskImage: 'linear-gradient(to bottom, black, transparent 85%)',
+                'linear-gradient(rgba(43,67,107,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(43,67,107,0.22) 1px, transparent 1px)',
+              backgroundSize: '108px 108px',
+              maskImage: 'linear-gradient(to bottom, black, transparent 80%)',
             }}
           />
         </div>
