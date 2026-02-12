@@ -51,10 +51,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
       <Layout showFooter={false}>
         <div className="min-h-screen flex items-center justify-center">
           <div className="relative">
-            <div className="w-12 h-12 rounded-full border-2 border-white/10 border-t-sky-500 animate-spin" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-6 h-6 rounded-full bg-sky-500/20 animate-pulse" />
-            </div>
+            <div className="w-12 h-12 rounded-full border-2 border-slate-100 border-t-[#5E6AD2] animate-spin" />
           </div>
         </div>
       </Layout>

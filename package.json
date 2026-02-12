@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Viktron - AI Agency for Business Automation. Custom AI agents, chatbots, marketing automation, and enterprise LLM integration.",
   "author": "Viktron <info@viktron.ai>",
-  "homepage": "https://viktron.ai",
+  "homepage": "https://viktron-ai.vercel.app",
   "scripts": {
     "dev": "vite",
     "dev:server": "node server/index.js",

@@ -467,19 +467,19 @@
     }
     </script>
   </head>
-  <body class="antialiased bg-white text-slate-900">
+  <body class="antialiased bg-[#020617] text-slate-200 selection:bg-indigo-500/30">
     <!-- Noscript fallback for SEO and accessibility -->
     <noscript>
-      <div style="padding: 2rem; background: #ffffff; color: #0f172a; text-align: center; font-family: 'Inter', system-ui, sans-serif; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <div style="padding: 2rem; background: #020617; color: white; text-align: center; font-family: 'Inter', system-ui, sans-serif; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
         <h1 style="font-size: 2rem; margin-bottom: 1rem; font-weight: 700;">Viktron.ai</h1>
-        <p style="margin-bottom: 2rem; color: #64748b;">Experience the future of business automation.</p>
-        <p style="color: #64748b;">Please enable JavaScript to continue.</p>
+        <p style="margin-bottom: 2rem; color: #94a3b8;">Experience the future of business automation.</p>
+        <p style="color: #94a3b8;">Please enable JavaScript to continue.</p>
       </div>
     </noscript>
     
-    <!-- Instant loading indicator - Professional Linear-style Loader -->
+    <!-- Instant loading indicator - Professional Linear-style Loader (Dark) -->
     <div id="root">
-      <div id="initial-loader" style="position: fixed; inset: 0; background: #ffffff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+      <div id="initial-loader" style="position: fixed; inset: 0; background: #020617; z-index: 9999; display: flex; align-items: center; justify-content: center;">
         <style>
           @keyframes spin-ease {
             0% { transform: rotate(0deg); }
@@ -497,7 +497,7 @@
             position: absolute;
             inset: 0;
             border-radius: 50%;
-            border: 3px solid rgba(94, 106, 210, 0.1); /* Primary color low opacity */
+            border: 2px solid rgba(255, 255, 255, 0.1);
           }
           
           /* Spinning Segment */
@@ -505,8 +505,8 @@
             position: absolute;
             inset: 0;
             border-radius: 50%;
-            border: 3px solid transparent;
-            border-top-color: #5E6AD2; /* Primary Brand Color */
+            border: 2px solid transparent;
+            border-top-color: #6366f1; /* Indigo 500 */
             animation: spin-ease 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
           }
         </style>
