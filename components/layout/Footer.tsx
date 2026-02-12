@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { BrandIcon, TikTokIcon, FacebookIcon, InstagramIcon, YoutubeIcon, XIcon } from '../../constants';
-import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react';
+import { BrandIcon, FacebookIcon, InstagramIcon, TikTokIcon, XIcon, YoutubeIcon } from '../../constants';
 
 const footerLinks = {
   services: [
@@ -11,16 +10,16 @@ const footerLinks = {
     { name: 'All Services', path: '/services' },
     { name: 'Live Demos', path: '/demos' },
     { name: 'Case Studies', path: '/case-studies' },
-    { name: 'White-Label Solution', path: '/white-label' },
+    { name: 'White Label', path: '/white-label' },
   ],
   company: [
-    { name: 'Contact Us', path: '/contact' },
+    { name: 'Contact', path: '/contact' },
     { name: 'Careers', path: '/careers' },
-    { name: 'Lead Gen Console', path: '/leadbot' },
-    { name: 'Privacy Policy', path: '/privacy' },
-    { name: 'Terms of Service', path: '/terms' },
+    { name: 'Lead Console', path: '/leadbot' },
+    { name: 'Privacy', path: '/privacy' },
+    { name: 'Terms', path: '/terms' },
   ],
-  quickLinks: [
+  demos: [
     { name: 'Restaurant AI', path: '/demos/restaurant' },
     { name: 'Clinic AI', path: '/demos/clinic' },
     { name: 'Salon AI', path: '/demos/salon' },
@@ -39,51 +38,42 @@ const socialLinks = [
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-slate-50 border-t border-slate-200">
-      <div className="container py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
-          {/* Brand section */}
+    <footer className="relative border-t border-white/10 bg-[#070d1b]/70 backdrop-blur-xl">
+      <div className="container-custom py-16">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-6 group">
-              <div className="text-blue-600">
-                <BrandIcon className="h-8 w-8" />
-              </div>
-              <span className="text-xl font-bold text-slate-900">Viktron</span>
+            <Link to="/" className="inline-flex items-center gap-2">
+              <BrandIcon className="h-8 w-8" />
+              <span className="text-xl font-semibold text-white tracking-tight">Viktron</span>
             </Link>
-            <p className="text-slate-600 mb-6 max-w-sm leading-relaxed">
-              The next era of intelligence. We build AI solutions that transform businesses and create
-              exceptional customer experiences.
+            <p className="mt-5 max-w-md text-sm leading-relaxed text-slate-300">
+              We build production-ready AI experiences for modern teams: agents, automation,
+              custom integrations, and go-to-market acceleration.
             </p>
-
-            {/* Contact info */}
-            <div className="space-y-3">
-              <a href="mailto:info@viktron.ai" className="flex items-center gap-3 text-slate-600 hover:text-blue-600 transition-colors">
-                <Mail className="h-4 w-4" />
-                <span>info@viktron.ai</span>
+            <div className="mt-6 space-y-3 text-sm">
+              <a href="mailto:info@viktron.ai" className="inline-flex items-center gap-2 text-slate-300 hover:text-white">
+                <Mail className="h-4 w-4 text-sky-300" />
+                info@viktron.ai
               </a>
-              <a href="tel:+18446608065" className="flex items-center gap-3 text-slate-600 hover:text-blue-600 transition-colors">
-                <Phone className="h-4 w-4" />
-                <span>+1 (844) 660-8065</span>
+              <a href="tel:+18446608065" className="block inline-flex items-center gap-2 text-slate-300 hover:text-white">
+                <Phone className="h-4 w-4 text-sky-300" />
+                +1 (844) 660-8065
               </a>
-              <div className="flex items-center gap-3 text-slate-600">
-                <MapPin className="h-4 w-4" />
-                <span>Chicago, IL</span>
-              </div>
+              <p className="inline-flex items-center gap-2 text-slate-300">
+                <MapPin className="h-4 w-4 text-sky-300" />
+                Chicago, IL
+              </p>
             </div>
           </div>
 
-          {/* Links sections */}
           <div>
-            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4">Services</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 mb-4">Services</h3>
             <ul className="space-y-3">
               {footerLinks.services.map((link) => (
                 <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1 group"
-                  >
+                  <Link to={link.path} className="group inline-flex items-center gap-1 text-sm text-slate-300 hover:text-white">
                     {link.name}
-                    <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
                   </Link>
                 </li>
               ))}
@@ -91,16 +81,13 @@ export const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4">Company</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 mb-4">Company</h3>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1 group"
-                  >
+                  <Link to={link.path} className="group inline-flex items-center gap-1 text-sm text-slate-300 hover:text-white">
                     {link.name}
-                    <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
                   </Link>
                 </li>
               ))}
@@ -108,16 +95,13 @@ export const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4">Quick Links</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 mb-4">Demo Routes</h3>
             <ul className="space-y-3">
-              {footerLinks.quickLinks.map((link) => (
+              {footerLinks.demos.map((link) => (
                 <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1 group"
-                  >
+                  <Link to={link.path} className="group inline-flex items-center gap-1 text-sm text-slate-300 hover:text-white">
                     {link.name}
-                    <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
                   </Link>
                 </li>
               ))}
@@ -125,9 +109,7 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Bottom section */}
-        <div className="mt-16 pt-8 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6">
-          {/* Social links */}
+        <div className="mt-14 border-t border-white/10 pt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2">
             {socialLinks.map((social) => (
               <a
@@ -136,16 +118,14 @@ export const Footer: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="p-2.5 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-all"
+                className="h-9 w-9 rounded-full border border-white/12 bg-white/5 text-slate-300 hover:text-white hover:bg-white/10 inline-flex items-center justify-center"
               >
                 {social.icon}
               </a>
             ))}
           </div>
-
-          {/* Copyright */}
-          <p className="text-sm text-slate-500">
-            &copy; {new Date().getFullYear()} Viktron. All rights reserved.
+          <p className="text-xs text-slate-400">
+            &copy; {new Date().getFullYear()} Viktron. Built for teams shipping real AI products.
           </p>
         </div>
       </div>

@@ -38,6 +38,12 @@ const contactMethods = [
   },
 ];
 
+const contactMethodAccent: Record<string, string> = {
+  sky: 'bg-sky-500/20 text-sky-300',
+  emerald: 'bg-emerald-500/20 text-emerald-300',
+  green: 'bg-green-500/20 text-green-300',
+};
+
 // FAQ items
 const faqs = [
   {
@@ -203,7 +209,7 @@ export const Contact: React.FC = () => {
               <StaggerItem key={index}>
                 <a href={method.href} target={method.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="block h-full">
                   <GlassCard className="p-6 text-center h-full group">
-                    <div className={`inline-flex p-3 rounded-xl bg-${method.color}-500/20 text-${method.color}-400 mb-4 group-hover:scale-110 transition-transform`}>
+                    <div className={`inline-flex p-3 rounded-xl mb-4 group-hover:scale-110 transition-transform ${contactMethodAccent[method.color] || 'bg-sky-500/20 text-sky-300'}`}>
                       {method.icon}
                     </div>
                     <h3 className="font-bold text-white mb-1">{method.title}</h3>

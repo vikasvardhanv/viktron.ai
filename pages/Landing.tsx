@@ -1,237 +1,169 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Zap, Shield, BarChart3, MessageSquare, Code2, Smartphone } from 'lucide-react';
+import {
+  ArrowRight,
+  BarChart3,
+  Bot,
+  Calendar,
+  MessageSquare,
+  ShieldCheck,
+  Sparkles,
+  Workflow,
+} from 'lucide-react';
+import { Layout } from '../components/layout/Layout';
+import { SEO } from '../components/ui/SEO';
+import { AnimatedSection, StaggerContainer, StaggerItem } from '../components/ui/AnimatedSection';
+import { GlassCard } from '../components/ui/GlassCard';
+import { Button } from '../components/ui/Button';
 
-
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 },
-  },
-};
-
-const features = [
+const offerings = [
   {
+    icon: <Bot className="h-6 w-6 text-sky-300" />,
     title: 'AI Agents',
-    description: 'Industry-specific AI agents for restaurants, clinics, salons, dealerships, and more.',
-    icon: MessageSquare,
+    description: 'Industry-focused agents for healthcare, hospitality, legal, retail, and service teams.',
+    href: '/agents',
   },
   {
-    title: 'Marketing Hub',
-    description: 'Automate your marketing campaigns across multiple channels with ease.',
-    icon: BarChart3,
+    icon: <Workflow className="h-6 w-6 text-indigo-300" />,
+    title: 'Automation Systems',
+    description: 'Replace manual workflows with production automations integrated into your stack.',
+    href: '/services#automation',
   },
   {
-    title: 'Chatbot Development',
-    description: 'Custom AI chatbots that engage customers 24/7 with natural conversations.',
-    icon: MessageSquare,
-  },
-  {
-    title: 'Workflow Automation',
-    description: 'Streamline your business processes with intelligent automation.',
-    icon: Zap,
-  },
-  {
-    title: 'Web Development',
-    description: 'Modern, responsive websites built for performance and conversion.',
-    icon: Code2,
-  },
-  {
-    title: 'SaaS Solutions',
-    description: 'End-to-end SaaS development with AI-powered features.',
-    icon: Smartphone,
+    icon: <BarChart3 className="h-6 w-6 text-cyan-300" />,
+    title: 'Growth & Insights',
+    description: 'AI-powered marketing execution and analytics that turn traffic into revenue.',
+    href: '/marketing',
   },
 ];
 
+const valuePoints = [
+  { label: 'Deployment Window', value: '7-21 Days' },
+  { label: 'Uptime Target', value: '99.9%' },
+  { label: 'Support', value: '24/7 Human + AI' },
+  { label: 'Integrations', value: '100+ APIs' },
+];
+
 export const Landing: React.FC = () => {
-
   return (
-    <div className="bg-white text-slate-900 min-h-screen">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur-md">
-        <div className="container flex items-center justify-between h-16">
-          <div className="text-lg font-bold text-blue-600">Viktron</div>
-          <div className="hidden md:flex gap-8 text-sm font-medium">
-            <a href="#features" className="text-slate-600 hover:text-slate-900">Features</a>
-            <a href="#solutions" className="text-slate-600 hover:text-slate-900">Solutions</a>
-            <a href="#pricing" className="text-slate-600 hover:text-slate-900">Pricing</a>
-          </div>
-          <div className="flex gap-3">
-            <button className="btn-secondary">Sign In</button>
-            <button className="btn-primary">Get Started</button>
-          </div>
-        </div>
-      </nav>
+    <Layout>
+      <SEO
+        title="Viktron | AI Agents, Automation, and Growth Systems"
+        description="Viktron builds production-grade AI agents, workflow automation, and growth systems for modern businesses."
+        keywords="AI agency, AI agents, workflow automation, marketing automation, custom AI solutions"
+        url="/"
+      />
 
-      {/* Hero Section */}
-      <section className="section-padding border-b border-slate-200">
-        <div className="container max-w-4xl mx-auto text-center">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.h1
-              variants={itemVariants}
-              className="text-5xl md:text-6xl font-bold leading-tight mb-6"
-            >
-              Transform Your Business with{' '}
-              <span className="text-blue-600">Intelligent AI</span>
-            </motion.h1>
+      <section className="relative pt-32 pb-20 px-4">
+        <div className="container-custom">
+          <AnimatedSection>
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/8 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-200">
+              <Sparkles className="h-4 w-4 text-sky-300" />
+              Production AI. Not Prototypes.
+            </div>
+          </AnimatedSection>
 
-            <motion.p
-              variants={itemVariants}
-              className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto leading-relaxed"
-            >
-              From chatbots to automation, we build the technology that drives growth.
-              Simple, powerful, and designed for your business.
-            </motion.p>
+          <AnimatedSection delay={0.1}>
+            <h1 className="mt-6 max-w-5xl text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.03]">
+              Build the AI layer your business will run on.
+            </h1>
+          </AnimatedSection>
 
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
-            >
-              <button className="btn-primary flex items-center justify-center gap-2 px-8 py-3 rounded-lg">
-                <span>Try Live Demo</span>
-                <Zap size={18} />
-              </button>
-              <button className="btn-secondary flex items-center justify-center gap-2 px-8 py-3 rounded-lg">
-                <span>Learn More</span>
-                <ArrowRight size={18} />
-              </button>
-            </motion.div>
+          <AnimatedSection delay={0.2}>
+            <p className="mt-6 max-w-3xl text-lg text-slate-300 leading-relaxed">
+              We design and ship customer-facing agents, internal automation, and measurable growth
+              systems. End-to-end architecture, implementation, and iteration from one team.
+            </p>
+          </AnimatedSection>
 
-            <motion.div
-              variants={itemVariants}
-              className="flex flex-wrap gap-6 justify-center text-sm text-slate-600"
-            >
-              <div className="flex items-center gap-2">
-                <Zap size={16} className="text-blue-600" />
-                <span>Lightning Fast</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield size={16} className="text-blue-600" />
-                <span>Enterprise Security</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <BarChart3 size={16} className="text-blue-600" />
-                <span>Advanced Analytics</span>
-              </div>
-            </motion.div>
-          </motion.div>
+          <AnimatedSection delay={0.3}>
+            <div className="mt-9 flex flex-wrap items-center gap-3">
+              <Link to="/demo-form">
+                <Button size="lg" icon={<Calendar className="h-5 w-5" />}>
+                  Book Free Consultation
+                </Button>
+              </Link>
+              <Link to="/demos">
+                <Button size="lg" variant="secondary" icon={<MessageSquare className="h-5 w-5" />}>
+                  Launch Demos
+                </Button>
+              </Link>
+              <Link to="/case-studies" className="inline-flex items-center gap-2 text-slate-200 hover:text-white text-sm font-medium px-2">
+                View case studies
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </AnimatedSection>
+
+          <AnimatedSection delay={0.4}>
+            <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {valuePoints.map((item) => (
+                <div key={item.label} className="rounded-xl border border-white/12 bg-white/6 px-4 py-4">
+                  <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{item.label}</p>
+                  <p className="mt-2 text-lg font-semibold text-white">{item.value}</p>
+                </div>
+              ))}
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="section-padding border-b border-slate-200 bg-slate-50">
-        <div className="container">
+      <section className="px-4 pb-20">
+        <div className="container-custom">
+          <StaggerContainer className="grid gap-6 lg:grid-cols-3">
+            {offerings.map((item) => (
+              <StaggerItem key={item.title}>
+                <Link to={item.href} className="block h-full">
+                  <GlassCard className="h-full p-6">
+                    <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 border border-white/10">
+                      {item.icon}
+                    </div>
+                    <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-slate-300">{item.description}</p>
+                    <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-sky-300">
+                      Explore
+                      <ArrowRight className="h-4 w-4" />
+                    </div>
+                  </GlassCard>
+                </Link>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
+      <section className="px-4 pb-28">
+        <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-16"
+            viewport={{ once: true }}
+            transition={{ duration: 0.55 }}
           >
-            <h2 className="text-4xl font-bold mb-4">Our Solutions</h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              AI That Works for You. From customer service to marketing automation,
-              our AI solutions are designed to scale your business intelligently.
-            </p>
-          </motion.div>
-
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {features.map((feature, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="card group hover:border-blue-200"
-              >
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors">
-                  <feature.icon size={24} className="text-blue-600 group-hover:text-white" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">{feature.description}</p>
-              </motion.div>
-            ))}
+            <GlassCard className="p-8 sm:p-10 md:p-12 text-center">
+              <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-sky-500/20 border border-sky-400/30">
+                <ShieldCheck className="h-6 w-6 text-sky-300" />
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black text-white">Ready to modernize your stack?</h2>
+              <p className="mt-4 text-slate-300 max-w-2xl mx-auto">
+                Start with a live consultation. We will map your highest-impact opportunities and
+                propose a build plan that can ship fast.
+              </p>
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
+                <Link to="/contact">
+                  <Button size="lg">Talk to Viktron</Button>
+                </Link>
+                <Link to="/services">
+                  <Button size="lg" variant="secondary">
+                    Browse Services
+                  </Button>
+                </Link>
+              </div>
+            </GlassCard>
           </motion.div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <section className="section-padding bg-slate-900 text-white text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-2xl mx-auto"
-        >
-          <h2 className="text-4xl font-bold mb-4">Ready to Transform Your Business?</h2>
-          <p className="text-xl text-slate-300 mb-8">
-            Start with a free demo and see how Viktron AI can drive growth for your business.
-          </p>
-          <button className="btn-primary bg-white text-slate-900 hover:bg-slate-100 px-8 py-3 rounded-lg inline-flex items-center gap-2">
-            <span>Get Started Now</span>
-            <ArrowRight size={18} />
-          </button>
-        </motion.div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-slate-200 bg-slate-50 py-12">
-        <div className="container">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <h4 className="font-semibold mb-4">Viktron</h4>
-              <p className="text-sm text-slate-600">AI-powered business automation platform</p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Product</h4>
-              <ul className="space-y-2 text-sm text-slate-600">
-                <li><a href="#" className="hover:text-slate-900">Features</a></li>
-                <li><a href="#" className="hover:text-slate-900">Pricing</a></li>
-                <li><a href="#" className="hover:text-slate-900">Demos</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-sm text-slate-600">
-                <li><a href="#" className="hover:text-slate-900">About</a></li>
-                <li><a href="#" className="hover:text-slate-900">Blog</a></li>
-                <li><a href="#" className="hover:text-slate-900">Contact</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Legal</h4>
-              <ul className="space-y-2 text-sm text-slate-600">
-                <li><a href="#" className="hover:text-slate-900">Privacy</a></li>
-                <li><a href="#" className="hover:text-slate-900">Terms</a></li>
-                <li><a href="#" className="hover:text-slate-900">Security</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-slate-200 pt-8 text-center text-sm text-slate-600">
-            <p>&copy; 2026 Viktron. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </Layout>
   );
 };

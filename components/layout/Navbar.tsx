@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, User, LogOut } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronDown, LogOut, Menu, User, X } from 'lucide-react';
 import { BrandIcon } from '../../constants';
 import { useAuth } from '../../context/AuthContext';
 
@@ -15,6 +15,11 @@ const navItems = [
   { name: 'Store', path: '/store' },
 ];
 
+const isActivePath = (pathname: string, path: string) => {
+  if (path === '/') return pathname === path;
+  return pathname === path || pathname.startsWith(`${path}/`);
+};
+
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -23,219 +28,215 @@ export const Navbar: React.FC = () => {
   const { isAuthenticated, user, logout, setShowAuthModal, setAuthModalMode } = useAuth();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 12);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
-  }, [location]);
+    setShowUserMenu(false);
+  }, [location.pathname]);
+
+  const shellClass = useMemo(() => {
+    return isScrolled
+      ? 'border-white/15 bg-[#070b16]/82 shadow-[0_16px_32px_rgba(0,0,0,0.35)]'
+      : 'border-white/8 bg-[#070b16]/66';
+  }, [isScrolled]);
 
   return (
     <>
       <motion.nav
-        initial={{ y: -100 }}
+        initial={{ y: -84 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
-          isScrolled
-            ? 'bg-white/80 border-b border-slate-200 backdrop-blur-md'
-            : 'bg-transparent border-b border-transparent'
-        }`}
+        transition={{ duration: 0.45, ease: [0.25, 0.4, 0.25, 1] }}
+        className="fixed inset-x-0 top-0 z-50"
       >
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="text-blue-600">
+        <div className="container-custom pt-3">
+          <div className={`rounded-2xl border backdrop-blur-xl transition-all duration-300 ${shellClass}`}>
+            <div className="flex h-16 items-center justify-between px-4 sm:px-6">
+              <Link to="/" className="group inline-flex items-center gap-2">
                 <BrandIcon className="h-8 w-8" />
-              </div>
-              <span className={`text-lg font-bold transition-colors ${isScrolled ? 'text-slate-900' : 'text-slate-900'}`}>
-                Viktron
-              </span>
-            </Link>
+                <span className="font-semibold text-slate-100 tracking-tight">Viktron</span>
+              </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-6">
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`text-sm font-medium transition-colors ${
-                    isScrolled ? 'text-slate-600 hover:text-slate-900' : 'text-slate-600 hover:text-slate-900'
-                  } ${location.pathname === item.path ? 'text-blue-600' : ''}`}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-
-            {/* CTA Button */}
-            <div className="hidden md:flex items-center gap-3">
-              {isAuthenticated ? (
-                <div className="relative">
-                  <button
-                    onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors"
-                  >
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                      <User className="h-4 w-4 text-blue-600" />
-                    </div>
-                    <span className="text-sm font-medium text-slate-700">
-                      {user?.fullName?.split(' ')[0] || 'Account'}
-                    </span>
-                    <ChevronDown className={`h-4 w-4 text-slate-500 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
-                  </button>
-
-                  {/* User dropdown menu */}
-                  <AnimatePresence>
-                    {showUserMenu && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        className="absolute right-0 mt-2 w-48 py-2 bg-white border border-slate-200 rounded-lg shadow-lg"
-                      >
-                        <div className="px-4 py-2 border-b border-slate-100">
-                          <p className="text-sm font-medium text-slate-900 truncate">{user?.fullName}</p>
-                          <p className="text-xs text-slate-500 truncate">{user?.email}</p>
-                        </div>
-                        <button
-                          onClick={() => {
-                            logout();
-                            setShowUserMenu(false);
-                          }}
-                          className="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
-                        >
-                          <LogOut className="h-4 w-4" />
-                          Sign Out
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ) : (
-                <button
-                  onClick={() => {
-                    setAuthModalMode('login');
-                    setShowAuthModal(true);
-                  }}
-                  className="btn-ghost text-sm font-medium"
-                >
-                  Sign In
-                </button>
-              )}
-              <button
-                onClick={() => {
-                  if (isAuthenticated) {
-                    window.location.href = '/contact';
-                  } else {
-                    setAuthModalMode('signup');
-                    setShowAuthModal(true);
-                  }
-                }}
-                  className="btn-primary text-sm"
-                >
-                  Get Started
-                </button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-white/70 hover:text-white transition-colors"
-            >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
-        </div>
-      </motion.nav>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 md:hidden"
-          >
-            <div className="absolute inset-0 bg-[#0a0d13]" />
-            <div className="relative pt-24 px-6">
-              <div className="flex flex-col gap-2">
-                {navItems.map((item, index) => (
-                  <motion.div
-                    key={item.path}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
+              <div className="hidden lg:flex items-center gap-1">
+                {navItems.map((item) => {
+                  const active = isActivePath(location.pathname, item.path);
+                  return (
                     <Link
+                      key={item.path}
                       to={item.path}
-                      className={`block px-4 py-3 text-lg font-medium rounded-xl transition-colors ${
-                        location.pathname === item.path
-                          ? 'bg-white/10 text-white border border-white/10'
-                          : 'text-white/70 hover:text-white hover:bg-white/5 border border-transparent'
+                      className={`rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
+                        active
+                          ? 'bg-white/12 text-white'
+                          : 'text-slate-300 hover:bg-white/7 hover:text-white'
                       }`}
                     >
                       {item.name}
                     </Link>
-                  </motion.div>
-                ))}
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: navItems.length * 0.1 }}
-                  className="mt-4 space-y-3"
-                >
-                  {isAuthenticated ? (
-                    <>
-                      <div className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl">
-                        <p className="text-sm font-medium text-white">{user?.fullName}</p>
-                        <p className="text-xs text-white/50">{user?.email}</p>
-                      </div>
-                      <button
-                        onClick={() => {
-                          logout();
-                          setIsMobileMenuOpen(false);
-                        }}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-3 text-lg font-medium text-white/70 hover:text-white border border-white/10 rounded-xl bg-[#121724]"
-                      >
-                        <LogOut className="h-5 w-5" />
-                        Sign Out
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => {
-                          setIsMobileMenuOpen(false);
-                          setAuthModalMode('login');
-                          setShowAuthModal(true);
-                        }}
-                        className="w-full px-4 py-3 text-center text-lg font-medium text-white/70 hover:text-white border border-white/10 rounded-xl bg-[#121724]"
-                      >
-                        Sign In
-                      </button>
-                      <button
-                        onClick={() => {
-                          setIsMobileMenuOpen(false);
-                          setAuthModalMode('signup');
-                          setShowAuthModal(true);
-                        }}
-                        className="block w-full px-4 py-3 text-center text-lg font-semibold text-slate-950 bg-white rounded-xl"
-                      >
-                        Get Started
-                      </button>
-                    </>
-                  )}
-                </motion.div>
+                  );
+                })}
               </div>
+
+              <div className="hidden lg:flex items-center gap-3">
+                {isAuthenticated ? (
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowUserMenu((prev) => !prev)}
+                      className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/6 px-3 py-2 hover:bg-white/10 transition-colors"
+                    >
+                      <div className="h-7 w-7 rounded-full bg-sky-500/20 flex items-center justify-center">
+                        <User className="h-4 w-4 text-sky-300" />
+                      </div>
+                      <span className="text-sm font-medium text-slate-100 max-w-[9rem] truncate">
+                        {user?.fullName?.split(' ')[0] || 'Account'}
+                      </span>
+                      <ChevronDown className={`h-4 w-4 text-slate-300 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    <AnimatePresence>
+                      {showUserMenu && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                          className="absolute right-0 mt-2 w-56 rounded-xl border border-white/12 bg-[#0d1427]/96 p-2 shadow-2xl backdrop-blur-xl"
+                        >
+                          <div className="px-3 py-2 border-b border-white/10">
+                            <p className="text-sm font-medium text-white truncate">{user?.fullName}</p>
+                            <p className="text-xs text-slate-300 truncate">{user?.email}</p>
+                          </div>
+                          <button
+                            onClick={() => {
+                              logout();
+                              setShowUserMenu(false);
+                            }}
+                            className="mt-1 w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-white/8"
+                          >
+                            <LogOut className="h-4 w-4" />
+                            Sign Out
+                          </button>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setAuthModalMode('login');
+                      setShowAuthModal(true);
+                    }}
+                    className="btn-ghost text-sm"
+                  >
+                    Sign In
+                  </button>
+                )}
+
+                <button
+                  onClick={() => {
+                    if (isAuthenticated) {
+                      window.location.href = '/contact';
+                    } else {
+                      setAuthModalMode('signup');
+                      setShowAuthModal(true);
+                    }
+                  }}
+                  className="btn-primary text-sm"
+                >
+                  Get Started
+                </button>
+              </div>
+
+              <button
+                onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+                className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/6 text-slate-100 hover:bg-white/10"
+              >
+                {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
             </div>
+          </div>
+        </div>
+      </motion.nav>
+
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-40 lg:hidden"
+          >
+            <div className="absolute inset-0 bg-[#04070f]/92 backdrop-blur-xl" />
+            <motion.div
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -20, opacity: 0 }}
+              className="relative mt-24 mx-4 rounded-2xl border border-white/12 bg-[#0c1326]/95 p-4"
+            >
+              <div className="space-y-1">
+                {navItems.map((item) => {
+                  const active = isActivePath(location.pathname, item.path);
+                  return (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className={`block rounded-xl px-4 py-3 text-sm font-medium ${
+                        active ? 'bg-white/12 text-white' : 'text-slate-200 hover:bg-white/8'
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  );
+                })}
+              </div>
+
+              <div className="mt-4 grid grid-cols-1 gap-2">
+                {isAuthenticated ? (
+                  <>
+                    <div className="rounded-xl border border-white/10 bg-white/6 px-4 py-3">
+                      <p className="text-sm font-medium text-white truncate">{user?.fullName}</p>
+                      <p className="text-xs text-slate-300 truncate">{user?.email}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="btn-secondary justify-center"
+                    >
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setAuthModalMode('login');
+                      setShowAuthModal(true);
+                    }}
+                    className="btn-secondary justify-center"
+                  >
+                    Sign In
+                  </button>
+                )}
+
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    if (isAuthenticated) {
+                      window.location.href = '/contact';
+                    } else {
+                      setAuthModalMode('signup');
+                      setShowAuthModal(true);
+                    }
+                  }}
+                  className="btn-primary justify-center"
+                >
+                  Get Started
+                </button>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
