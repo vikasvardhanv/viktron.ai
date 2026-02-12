@@ -1,28 +1,29 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="64" y1="44" x2="448" y2="476" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#121A2A"/>
-      <stop offset="1" stop-color="#1A263D"/>
+    <linearGradient id="bg" x1="64" y1="40" x2="448" y2="472" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#121927"/>
+      <stop offset="1" stop-color="#1A263B"/>
     </linearGradient>
-    <linearGradient id="core" x1="122" y1="98" x2="390" y2="414" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#E8FF92"/>
-      <stop offset="1" stop-color="#4BBC89"/>
+    <linearGradient id="vgrad" x1="144" y1="136" x2="372" y2="370" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E4FF8C"/>
+      <stop offset="1" stop-color="#46BC8A"/>
     </linearGradient>
-    <linearGradient id="ring" x1="90" y1="70" x2="430" y2="440" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#8EA5D8" stop-opacity="0.75"/>
-      <stop offset="1" stop-color="#7A8FBF" stop-opacity="0.35"/>
-    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(362 152) rotate(90) scale(120)">
+      <stop stop-color="#DFFF92" stop-opacity="0.52"/>
+      <stop offset="1" stop-color="#DFFF92" stop-opacity="0"/>
+    </radialGradient>
   </defs>
 
-  <rect x="24" y="24" width="464" height="464" rx="138" fill="url(#bg)"/>
-  <rect x="24" y="24" width="464" height="464" rx="138" stroke="#2E3B57" stroke-width="10"/>
+  <rect x="24" y="24" width="464" height="464" rx="136" fill="url(#bg)"/>
+  <rect x="24" y="24" width="464" height="464" rx="136" stroke="#2D3A54" stroke-width="10"/>
+  <rect x="24" y="24" width="464" height="464" rx="136" fill="url(#glow)"/>
 
-  <path d="M98 294C114 198 194 122 292 122C341 122 386 140 422 170" stroke="url(#ring)" stroke-width="18" stroke-linecap="round"/>
-  <path d="M92 340C110 246 190 178 286 178C326 178 364 190 396 212" stroke="#3E4F72" stroke-opacity="0.55" stroke-width="14" stroke-linecap="round"/>
+  <path d="M144 142L230 348C235 360 245 366 256 366C267 366 277 360 282 348L368 142"
+        stroke="url(#vgrad)" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <path d="M154 344L218 250L268 305L356 182" stroke="url(#core)" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M356 182L324 184M356 182L352 214" stroke="url(#core)" stroke-width="30" stroke-linecap="round"/>
+  <path d="M272 294L336 210" stroke="url(#vgrad)" stroke-width="26" stroke-linecap="round"/>
+  <path d="M336 210L312 213M336 210L333 234" stroke="url(#vgrad)" stroke-width="18" stroke-linecap="round"/>
 
-  <circle cx="386" cy="132" r="18" fill="#E8FF92"/>
-  <circle cx="386" cy="132" r="7" fill="#1D2A45"/>
+  <circle cx="368" cy="146" r="16" fill="#E4FF8C"/>
+  <circle cx="368" cy="146" r="6" fill="#1A263B"/>
 </svg>
