@@ -1,0 +1,32 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgB" x1="0" y1="0" x2="1200" y2="800" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F2F4F7"/>
+      <stop offset="1" stop-color="#DCE1E9"/>
+    </linearGradient>
+    <linearGradient id="emeraldB" x1="420" y1="590" x2="1100" y2="590" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DFFF8F"/>
+      <stop offset="1" stop-color="#42B583"/>
+    </linearGradient>
+    <filter id="fogB" x="410" y="180" width="690" height="360" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="62"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="800" rx="46" fill="url(#bgB)"/>
+  <rect x="72" y="78" width="1056" height="624" rx="42" fill="#ECEFF3" stroke="#CED6E1"/>
+
+  <g filter="url(#fogB)">
+    <ellipse cx="760" cy="340" rx="260" ry="114" fill="#0E1522" fill-opacity="0.9"/>
+  </g>
+
+  <rect x="132" y="154" width="362" height="72" rx="22" fill="#F8FAFD" stroke="#D7DEE7"/>
+  <rect x="520" y="154" width="548" height="72" rx="22" fill="#F8FAFD" stroke="#D7DEE7"/>
+
+  <rect x="132" y="264" width="936" height="238" rx="34" fill="#F9FBFE" stroke="#D5DDE7"/>
+  <path d="M214 430C300 328 372 318 462 394C544 464 620 470 704 382C790 292 872 298 954 370" stroke="#0F1726" stroke-opacity="0.85" stroke-width="22" stroke-linecap="round"/>
+
+  <rect x="132" y="540" width="278" height="112" rx="26" fill="#F9FBFE" stroke="#D5DDE7"/>
+  <rect x="432" y="540" width="314" height="112" rx="26" fill="url(#emeraldB)"/>
+  <rect x="768" y="540" width="300" height="112" rx="26" fill="#F9FBFE" stroke="#D5DDE7"/>
+</svg>

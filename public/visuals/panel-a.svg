@@ -1,0 +1,36 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgA" x1="0" y1="0" x2="1200" y2="800" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EEF1F5"/>
+      <stop offset="1" stop-color="#DCE2E9"/>
+    </linearGradient>
+    <linearGradient id="limeA" x1="420" y1="530" x2="1020" y2="740" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E9FF92" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#58C18D" stop-opacity="0.9"/>
+    </linearGradient>
+    <filter id="blurA" x="350" y="120" width="760" height="460" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="56"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="800" rx="46" fill="url(#bgA)"/>
+  <rect x="58" y="66" width="1084" height="70" rx="24" fill="#F7F9FC" stroke="#D5DCE5"/>
+  <rect x="90" y="89" width="360" height="24" rx="12" fill="#DFE5EC"/>
+  <rect x="994" y="87" width="118" height="30" rx="15" fill="#10151E"/>
+
+  <g filter="url(#blurA)">
+    <ellipse cx="760" cy="310" rx="250" ry="120" fill="#111826" fill-opacity="0.95"/>
+  </g>
+
+  <rect x="132" y="198" width="452" height="360" rx="34" fill="#F5F7FA" stroke="#D2D8E0"/>
+  <rect x="618" y="198" width="452" height="160" rx="34" fill="#F5F7FA" stroke="#D2D8E0"/>
+  <rect x="618" y="398" width="452" height="160" rx="34" fill="#F5F7FA" stroke="#D2D8E0"/>
+
+  <rect x="132" y="592" width="452" height="82" rx="24" fill="#D6DEE7"/>
+  <rect x="618" y="592" width="452" height="82" rx="24" fill="url(#limeA)"/>
+
+  <circle cx="206" cy="274" r="14" fill="#121A28"/>
+  <rect x="244" y="258" width="216" height="22" rx="11" fill="#D6DEE8"/>
+  <rect x="244" y="298" width="286" height="16" rx="8" fill="#E2E8EF"/>
+  <rect x="244" y="324" width="192" height="16" rx="8" fill="#E2E8EF"/>
+</svg>
