@@ -1,0 +1,82 @@
+# Viktron.ai - Robots.txt
+# https://viktron.ai
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Allow AI Crawlers explicitly
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Standard Search Engine Bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-Mobile
+Allow: /
+
+User-agent: bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Block unnecessary paths to save crawl budget
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /node_modules/
+
+# Sitemap location
+Sitemap: https://viktron.ai/sitemap.xml
+
+# Crawl-delay for polite crawling (optional, respected by some bots)
+Crawl-delay: 1
+
+# Host directive for Yandex
+Host: https://viktron.ai

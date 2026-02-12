@@ -1,0 +1,315 @@
+// Scheduling Service - Integrates with Modal scheduling endpoint
+// Replaces Calendly with custom scheduling system
+// All times are in CST (America/Chicago timezone)
+
+const SCHEDULING_ENDPOINT = '/api/scheduling/schedule';
+const AVAILABILITY_ENDPOINT = '/api/scheduling/availability';
+const HEALTH_CHECK_ENDPOINT = '/api/scheduling/health';
+
+// Request deduplication cache to prevent duplicate requests
+const requestCache = new Map<string, { result: any; timestamp: number }>();
+const CACHE_DURATION = 3000; // 3 seconds
+
+function getCacheKey(params: any): string {
+  return JSON.stringify(params);
+}
+
+function getCachedResult(key: string): any | null {
+  const cached = requestCache.get(key);
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    return cached.result;
+  }
+  requestCache.delete(key);
+  return null;
+}
+
+function setCachedResult(key: string, result: any): void {
+  requestCache.set(key, { result, timestamp: Date.now() });
+}
+
+export interface SchedulingRequest {
+  name: string;
+  email: string;
+  phone?: string;
+  date: string; // Format: YYYY-MM-DD
+  time: string; // Format: HH:MM (24-hour)
+  service?: string;
+  duration?: number; // Minutes, default 60
+  send_email?: boolean;
+  send_sms?: boolean;
+}
+
+export interface SchedulingResponse {
+  success: boolean;
+  message?: string;
+  appointment?: {
+    name: string;
+    email: string;
+    start_time: string;
+    service: string;
+  };
+  confirmations?: {
+    calendar?: { event_id: string; html_link: string };
+    zoom?: { join_url: string; meeting_id: string };
+    email?: { success: boolean };
+    sms?: { success: boolean };
+  };
+  error?: string;
+}
+
+export interface AvailabilityRequest {
+  start_date: string; // Format: YYYY-MM-DD
+  end_date: string; // Format: YYYY-MM-DD
+  duration_minutes?: number; // Default 60
+  business_hours_only?: boolean; // 9 AM - 6 PM CST
+}
+
+export interface AvailableSlot {
+  datetime: string;
+  formatted: string;
+  date: string;
+  time: string;
+}
+
+export interface AvailabilityResponse {
+  success: boolean;
+  available_slots: AvailableSlot[];
+  total_available: number;
+  duration_minutes: number;
+  timezone: string;
+  error?: string;
+}
+
+/**
+ * Schedule an appointment via the Modal scheduling endpoint
+ * Creates calendar event, Zoom meeting, and sends confirmation email/SMS
+ */
+export async function scheduleAppointment(request: SchedulingRequest): Promise<SchedulingResponse> {
+  try {
+    const payload = {
+      name: request.name,
+      email: request.email,
+      phone: request.phone || '',
+      date: request.date,
+      time: request.time,
+      service: request.service || 'AI Consultation',
+      duration: request.duration || 60,
+      send_email: request.send_email ?? true,
+      send_sms: request.send_sms ?? (!!request.phone),
+    };
+
+    const response = await fetch(SCHEDULING_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      
+      // Handle rate limiting specifically
+      if (response.status === 429) {
+        const errorData = JSON.parse(errorText).retryAfter || 60;
+        throw new Error(`Scheduling service is temporarily busy. Please retry in ${errorData} seconds.`);
+      }
+      
+      throw new Error(`Scheduling failed: ${response.status} - ${errorText}`);
+    }
+
+    const data = await response.json();
+
+    return {
+      success: data.success ?? true,
+      message: 'Appointment scheduled successfully!',
+      appointment: data.appointment,
+      confirmations: data.confirmations,
+    };
+  } catch (error: any) {
+    console.error('Scheduling error:', error);
+    return {
+      success: false,
+      message: 'Failed to schedule appointment',
+      error: error.message || 'Unknown error occurred',
+    };
+  }
+}
+
+/**
+ * Check if the scheduling service is healthy
+ */
+export async function checkSchedulingHealth(): Promise<boolean> {
+  try {
+    const response = await fetch(HEALTH_CHECK_ENDPOINT, {
+      method: 'GET',
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Check availability for a date range from Google Calendar
+ * Returns available slots filtered by business hours (9 AM - 6 PM CST)
+ */
+export async function checkAvailability(request: AvailabilityRequest): Promise<AvailabilityResponse> {
+  try {
+    const payload = {
+      start_date: request.start_date,
+      end_date: request.end_date,
+      duration_minutes: request.duration_minutes || 60,
+      business_hours_only: request.business_hours_only ?? true,
+    };
+
+    const response = await fetch(AVAILABILITY_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      
+      // Handle rate limiting specifically
+      if (response.status === 429) {
+        const errorData = JSON.parse(errorText).retryAfter || 60;
+        throw new Error(`Scheduling service is temporarily busy. Please retry in ${errorData} seconds.`);
+      }
+      
+      throw new Error(`Availability check failed: ${response.status} - ${errorText}`);
+    }
+
+    const data = await response.json();
+
+    return {
+      success: true,
+      available_slots: data.available_slots || [],
+      total_available: data.total_available || 0,
+      duration_minutes: data.duration_minutes || 60,
+      timezone: data.timezone || 'America/Chicago (CST)',
+    };
+  } catch (error: any) {
+    console.error('Availability check error:', error);
+    return {
+      success: false,
+      available_slots: [],
+      total_available: 0,
+      duration_minutes: 60,
+      timezone: 'America/Chicago (CST)',
+      error: error.message || 'Failed to check availability',
+    };
+  }
+}
+
+/**
+ * Get available time slots for a given date from Google Calendar
+ * Calls the real availability endpoint and filters by the requested date
+ * All times are in CST (America/Chicago timezone)
+ * Only returns slots from the API - booked slots will not be included
+ */
+export async function getAvailableSlots(date: string): Promise<string[]> {
+  try {
+    // Check local cache first
+    const cacheKey = `slots:${date}`;
+    const cached = getCachedResult(cacheKey);
+    if (cached !== null) {
+      return cached;
+    }
+
+    // Check availability for the single date
+    const response = await checkAvailability({
+      start_date: date,
+      end_date: date,
+      duration_minutes: 60, // 60-minute consultation slots
+      business_hours_only: true,
+    });
+
+    if (response.success) {
+      // Only return slots from the API - booked slots won't be included
+      const slots = response.available_slots
+        .filter(slot => slot.date === date)
+        .map(slot => slot.time);
+      
+      // Cache the result
+      setCachedResult(cacheKey, slots);
+      return slots;
+    }
+
+    // API failed - return empty array (no fallback to default slots)
+    console.warn('Availability API failed:', response.error);
+    return [];
+  } catch (error) {
+    console.error('Error fetching available slots:', error);
+    // Return empty on error - no fallback to default slots
+    return [];
+  }
+}
+
+/**
+ * Get default time slots as fallback (9 AM to 6 PM CST)
+ * Used when the availability API is unavailable
+ */
+function getDefaultTimeSlots(): string[] {
+  const slots: string[] = [];
+  for (let hour = 9; hour <= 17; hour++) {
+    slots.push(`${hour.toString().padStart(2, '0')}:00`);
+    slots.push(`${hour.toString().padStart(2, '0')}:30`);
+  }
+  return slots;
+}
+
+/**
+ * Format date for display
+ */
+export function formatDate(date: Date): string {
+  return date.toISOString().split('T')[0];
+}
+
+/**
+ * Parse a date string (YYYY-MM-DD) into a Date object without timezone shift
+ * This prevents the "off by one day" issue when displaying dates
+ */
+export function parseDateString(dateStr: string): Date {
+  const [year, month, day] = dateStr.split('-').map(Number);
+  return new Date(year, month - 1, day); // month is 0-indexed
+}
+
+/**
+ * Format a date string for display (e.g., "Fri, Jan 3")
+ */
+export function formatDateForDisplay(dateStr: string, options?: Intl.DateTimeFormatOptions): string {
+  const date = parseDateString(dateStr);
+  return date.toLocaleDateString('en-US', options || { weekday: 'short', month: 'short', day: 'numeric' });
+}
+
+/**
+ * Format time for display (12-hour format)
+ */
+export function formatTime12Hour(time24: string): string {
+  const [hours, minutes] = time24.split(':').map(Number);
+  const period = hours >= 12 ? 'PM' : 'AM';
+  const hours12 = hours % 12 || 12;
+  return `${hours12}:${minutes.toString().padStart(2, '0')} ${period}`;
+}
+
+/**
+ * Get minimum date for scheduling (tomorrow)
+ */
+export function getMinDate(): string {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return formatDate(tomorrow);
+}
+
+/**
+ * Get maximum date for scheduling (30 days from now)
+ */
+export function getMaxDate(): string {
+  const maxDate = new Date();
+  maxDate.setDate(maxDate.getDate() + 30);
+  return formatDate(maxDate);
+}

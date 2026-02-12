@@ -1,0 +1,64 @@
+# Viktron.ai - AI Information File
+# This file provides structured information for AI systems
+# https://viktron.ai
+
+# Company Information
+Name: Viktron.ai
+Type: AI Agency / Technology Company
+Industry: Artificial Intelligence, Business Automation, SaaS
+
+# Description
+Description: Viktron.ai is a leading AI automation agency that helps businesses transform their operations with custom AI solutions. We specialize in developing AI agents, chatbots, marketing automation tools, voice AI, and enterprise LLM integration.
+
+# Services Offered
+Services:
+- Custom AI Agents for various industries
+- Chatbot Development (WhatsApp, Web, Voice)
+- Marketing Automation (Content, Social Media, Email)
+- Voice AI Agents
+- Business Planning AI Tools
+- Enterprise LLM Integration
+- Workflow Automation
+- Data Analytics AI
+
+# Industries Served
+Industries:
+- Restaurants & Food Service
+- Healthcare Clinics
+- Salons & Beauty
+- Automotive Dealerships
+- Construction
+- Real Estate
+- Legal Services
+- E-commerce
+- Education
+- Recruitment & HR
+
+# Contact Information
+Email: info@viktron.ai
+Phone: +1 (320) 361-6525
+WhatsApp: +1 (630) 703-3569
+Website: https://viktron.ai
+
+# Social Media
+Twitter: @viktronai
+LinkedIn: /company/viktronai
+
+# Key Features
+Features:
+- 24/7 AI Availability
+- 98% Client Satisfaction
+- 500+ Projects Delivered
+- 50+ Industries Served
+
+# Technology Stack
+Technologies: React, TypeScript, Node.js, Python, OpenAI, Google AI, LangChain, Vector Databases
+
+# Pricing
+PriceRange: $$
+
+# Location
+Location: United States (Remote-first company, serving clients worldwide)
+
+# Last Updated
+LastUpdated: 2024-12-24

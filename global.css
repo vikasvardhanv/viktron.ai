@@ -1,0 +1,187 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #4f8cff;
+  --primary-strong: #3f7cf0;
+  --background: #08090c;
+  --surface: #101219;
+  --surface-2: #161922;
+  --foreground: #f4f6fb;
+  --muted: #9da3b6;
+  --border: #232938;
+  --line: rgba(255, 255, 255, 0.07);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at 12% 10%, rgba(79, 140, 255, 0.2), transparent 34%),
+    radial-gradient(circle at 88% 78%, rgba(36, 182, 255, 0.12), transparent 36%),
+    var(--background);
+  color: var(--foreground);
+  font-family: 'Manrope', 'Avenir Next', 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #f8f9ff;
+  font-family: 'Space Grotesk', 'Manrope', sans-serif;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+
+h1 {
+  font-size: clamp(2rem, 6vw, 4.4rem);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(1.7rem, 4vw, 2.9rem);
+  font-weight: 700;
+}
+
+h3 {
+  font-size: clamp(1.2rem, 3vw, 1.75rem);
+  font-weight: 600;
+}
+
+p {
+  color: var(--muted);
+}
+
+a {
+  color: #d7e5ff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #ffffff;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #7baaff;
+  outline-offset: 2px;
+}
+
+input,
+textarea,
+select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: #eef2ff;
+  padding: 0.625rem 0.8rem;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #3f7cf0;
+  box-shadow: 0 0 0 3px rgba(79, 140, 255, 0.2);
+}
+
+::selection {
+  background: rgba(79, 140, 255, 0.4);
+  color: #f8fbff;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2c3344;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #424b61;
+}
+
+.text-gradient {
+  background: linear-gradient(95deg, #ffffff 0%, #dce7ff 50%, #9bc2ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Remove old glassmorphism everywhere */
+.glass,
+.glass-light,
+.glass-card,
+.glass-panel {
+  background: var(--surface) !important;
+  border: 1px solid var(--line) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: 0 8px 30px rgba(2, 5, 15, 0.35) !important;
+}
+
+.backdrop-blur-sm,
+.backdrop-blur,
+.backdrop-blur-md,
+.backdrop-blur-lg,
+.backdrop-blur-xl,
+.backdrop-blur-2xl,
+[class*="backdrop-blur"] {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+code,
+pre {
+  font-family: 'SF Mono', 'JetBrains Mono', 'Cascadia Code', monospace;
+}
+
+code {
+  background: #141826;
+  color: #d7e5ff;
+  border-radius: 6px;
+  padding: 0.15rem 0.4rem;
+}
+
+pre {
+  background: #0d111b;
+  border: 1px solid var(--border);
+  color: #e8ecfb;
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 14px;
+  }
+}

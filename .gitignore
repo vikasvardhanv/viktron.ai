@@ -1,0 +1,44 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+node_modules
+.env
+.env.test
+todo.md
+.env.local
+.env.production
+
+# n8n workflow JSONs contain API keys - keep local only for seeding
+n8n/
+DEPLOYMENT.md
+highshift-media.json
+/n8n    
+/build
+
+# Documentation and implementation guides (local reference only)
+FORGE_REBRAND_COMPLETE.md
+HYPEY_AI_INTEGRATION_GUIDE.md
+HYPEY_IMPLEMENTATION.md
+HYPEY_QUICKSTART.md
+megreged.md

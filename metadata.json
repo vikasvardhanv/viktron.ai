@@ -1,0 +1,7 @@
+{
+  "name": "Viktron AI Consultation",
+  "description": "An AI-powered chatbot to help you define your AI service needs and book a consultation call with Viktron.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

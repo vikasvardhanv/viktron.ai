@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+                            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  
+  <!-- Homepage - Highest priority -->
+  <url>
+    <loc>https://viktron.ai/</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <!-- Main Pages -->
+  <url>
+    <loc>https://viktron.ai/services</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/agents</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/marketing</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/case-studies</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/contact</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Industry Agent Demo Pages -->
+  <url>
+    <loc>https://viktron.ai/demos/restaurant</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/clinic</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/salon</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/dealership</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/construction</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/real_estate</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/legal</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/ecommerce</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/education</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/recruitment</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Other Demo Pages -->
+  <url>
+    <loc>https://viktron.ai/demos/whatsapp</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/voice</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/business-plan</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Advanced AI Service Demos -->
+  <url>
+    <loc>https://viktron.ai/demos/workflow-automation</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/data-analytics</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/content-generator</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/agent-orchestration</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>https://viktron.ai/demos/custom-model</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Service Detail Pages -->
+  <url>
+    <loc>https://viktron.ai/services/chatbot</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://viktron.ai/services/industry_agents</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://viktron.ai/services/marketing_hub</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Legal Pages -->
+  <url>
+    <loc>https://viktron.ai/privacy</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://viktron.ai/terms</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://viktron.ai/cookies</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+</urlset>
