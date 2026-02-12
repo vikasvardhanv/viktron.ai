@@ -142,8 +142,6 @@ export const Navbar: React.FC = () => {
                   Get Started
                 </button>
             </div>
-                </button>
-            </div>
 
             {/* Mobile Menu Button */}
             <button

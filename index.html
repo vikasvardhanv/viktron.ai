@@ -467,32 +467,54 @@
     }
     </script>
   </head>
-  <body class="text-white antialiased">
+  <body class="antialiased bg-white text-slate-900">
     <!-- Noscript fallback for SEO and accessibility -->
     <noscript>
-      <div style="padding: 2rem; background: #0a0a0f; color: white; text-align: center; font-family: system-ui, sans-serif;">
-        <h1>Viktron.ai - AI Agency</h1>
-        <p>Transform your business with AI-powered solutions. Custom AI agents, chatbots, marketing automation, and enterprise AI integration.</p>
-        <p>Contact us: <a href="mailto:info@viktron.ai" style="color: #0ea5e9;">info@viktron.ai</a> | <a href="tel:+18446608065" style="color: #0ea5e9;">+1 (844) 660-8065</a></p>
-        <p style="margin-top: 1rem; color: #888;">Please enable JavaScript to use this website.</p>
+      <div style="padding: 2rem; background: #ffffff; color: #0f172a; text-align: center; font-family: 'Inter', system-ui, sans-serif; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <h1 style="font-size: 2rem; margin-bottom: 1rem; font-weight: 700;">Viktron.ai</h1>
+        <p style="margin-bottom: 2rem; color: #64748b;">Experience the future of business automation.</p>
+        <p style="color: #64748b;">Please enable JavaScript to continue.</p>
       </div>
     </noscript>
     
-    <!-- Instant loading indicator - shows immediately while JS loads -->
+    <!-- Instant loading indicator - Professional Linear-style Loader -->
     <div id="root">
-      <div id="initial-loader" style="min-height: 100vh; background: #0a0a0f; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+      <div id="initial-loader" style="position: fixed; inset: 0; background: #ffffff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
         <style>
-          @keyframes spin { to { transform: rotate(360deg); } }
-          @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
-          #initial-loader .spinner { width: 48px; height: 48px; border: 2px solid rgba(255,255,255,0.1); border-top-color: #0ea5e9; border-radius: 50%; animation: spin 0.8s linear infinite; }
-          #initial-loader .pulse { width: 24px; height: 24px; background: rgba(14,165,233,0.3); border-radius: 50%; animation: pulse 1.5s ease-in-out infinite; position: absolute; }
-          #initial-loader .text { margin-top: 20px; color: rgba(255,255,255,0.5); font-family: system-ui, sans-serif; font-size: 14px; }
+          @keyframes spin-ease {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          
+          #initial-loader .loader-container {
+            position: relative;
+            width: 48px;
+            height: 48px;
+          }
+          
+          /* Background Ring */
+          #initial-loader .loader-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 3px solid rgba(94, 106, 210, 0.1); /* Primary color low opacity */
+          }
+          
+          /* Spinning Segment */
+          #initial-loader .loader-segment {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #5E6AD2; /* Primary Brand Color */
+            animation: spin-ease 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+          }
         </style>
-        <div style="position: relative; display: flex; align-items: center; justify-content: center;">
-          <div class="spinner"></div>
-          <div class="pulse"></div>
+        
+        <div class="loader-container">
+          <div class="loader-ring"></div>
+          <div class="loader-segment"></div>
         </div>
-        <p class="text">Loading...</p>
       </div>
     </div>
     

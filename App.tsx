@@ -57,12 +57,9 @@ const SnakeGame = lazy(() => import('./components/SnakeGame').then(m => ({ defau
 
 // Loading spinner for lazy loaded components
 const LoadingSpinner: React.FC = () => (
-  <div className="min-h-screen bg-[#07090d] flex items-center justify-center">
+  <div className="min-h-screen bg-white flex items-center justify-center">
     <div className="relative">
-      <div className="w-12 h-12 rounded-full border-2 border-white/10 border-t-blue-400 animate-spin" />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-6 h-6 rounded-full bg-blue-400/20 animate-pulse" />
-      </div>
+      <div className="w-12 h-12 rounded-full border-2 border-slate-100 border-t-[#5E6AD2] animate-spin" />
     </div>
   </div>
 );
@@ -209,7 +206,7 @@ function App() {
         <CookieConsentProvider>
           <ScrollToTop />
           <GoogleSignInWarmup />
-          <div className="w-full min-h-screen bg-[#07090d] text-white">
+          <div className="w-full min-h-screen bg-white text-slate-900">
             <Suspense fallback={<LoadingSpinner />}>
               <AnimatedRoutes />
             </Suspense>
