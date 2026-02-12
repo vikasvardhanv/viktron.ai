@@ -91,7 +91,7 @@ export const Marketing: React.FC = () => {
             <motion.div
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-white/5 border border-white/10"
+              className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-[#020617]/5 border border-white/10"
             >
               <Megaphone className="h-4 w-4 text-purple-400" />
               <span className="text-sm text-white/70">Marketing & Automation Hub</span>
@@ -119,7 +119,7 @@ export const Marketing: React.FC = () => {
                 <motion.div
                   key={platform.name}
                   whileHover={{ scale: 1.1, y: -4 }}
-                  className="p-3 rounded-xl bg-white/5 text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+                  className="p-3 rounded-xl bg-[#020617]/5 text-white/50 hover:text-white hover:bg-[#020617]/10 transition-colors"
                   title={platform.name}
                 >
                   {platform.icon}
@@ -167,7 +167,7 @@ export const Marketing: React.FC = () => {
                       type="text"
                       value={demoContent.topic}
                       readOnly
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-sky-500"
+                      className="w-full px-4 py-3 bg-[#020617]/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-sky-500"
                     />
                   </div>
 
@@ -183,7 +183,7 @@ export const Marketing: React.FC = () => {
                           className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                             selectedPlatform === platform
                               ? 'bg-sky-500 text-white'
-                              : 'bg-white/5 text-white/60 hover:bg-white/10'
+                              : 'bg-[#020617]/5 text-white/60 hover:bg-[#020617]/10'
                           }`}
                         >
                           {platform.charAt(0).toUpperCase() + platform.slice(1)}
@@ -213,7 +213,7 @@ export const Marketing: React.FC = () => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="p-4 bg-white/5 border border-white/10 rounded-xl min-h-[200px]"
+                      className="p-4 bg-[#020617]/5 border border-white/10 rounded-xl min-h-[200px]"
                     >
                       <pre className="whitespace-pre-wrap text-sm text-white/80 font-sans">
                         {demoContent.platforms[selectedPlatform]}

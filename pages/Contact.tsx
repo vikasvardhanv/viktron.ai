@@ -243,7 +243,7 @@ export const Contact: React.FC = () => {
                         required
                         value={formData.name}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-sky-500 transition-colors"
+                        className="w-full px-4 py-3 bg-[#020617]/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-sky-500 transition-colors"
                         placeholder="John Doe"
                       />
                     </div>
@@ -257,7 +257,7 @@ export const Contact: React.FC = () => {
                         required
                         value={formData.email}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-sky-500 transition-colors"
+                        className="w-full px-4 py-3 bg-[#020617]/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-sky-500 transition-colors"
                         placeholder="john@company.com"
                       />
                     </div>
@@ -272,7 +272,7 @@ export const Contact: React.FC = () => {
                       name="company"
                       value={formData.company}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-sky-500 transition-colors"
+                      className="w-full px-4 py-3 bg-[#020617]/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-sky-500 transition-colors"
                       placeholder="Your Company"
                     />
                   </div>
@@ -285,7 +285,7 @@ export const Contact: React.FC = () => {
                       name="service"
                       value={formData.service}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-sky-500 transition-colors"
+                      className="w-full px-4 py-3 bg-[#020617]/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-sky-500 transition-colors"
                     >
                       <option value="" className="bg-gray-900">Select a service</option>
                       <option value="ai-agents" className="bg-gray-900">AI Agents</option>
@@ -306,7 +306,7 @@ export const Contact: React.FC = () => {
                       rows={4}
                       value={formData.message}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-sky-500 transition-colors resize-none"
+                      className="w-full px-4 py-3 bg-[#020617]/5 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-sky-500 transition-colors resize-none"
                       placeholder="Tell us about your project..."
                     />
                   </div>

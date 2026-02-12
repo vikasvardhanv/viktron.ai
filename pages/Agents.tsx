@@ -110,7 +110,7 @@ export const Agents: React.FC = () => {
             <motion.div
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-white/5 border border-white/10"
+              className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-[#020617]/5 border border-white/10"
             >
               <Bot className="h-4 w-4 text-sky-400" />
               <span className="text-sm text-white/70">Industry-Specific AI Agents</span>
@@ -160,7 +160,7 @@ export const Agents: React.FC = () => {
                       {/* Left: Agent Info */}
                       <div>
                         <div className="flex items-start gap-4 mb-6">
-                          <div className="p-4 rounded-2xl bg-white/5">{agent.icon}</div>
+                          <div className="p-4 rounded-2xl bg-[#020617]/5">{agent.icon}</div>
                           <div>
                             <h2 className="text-2xl font-bold text-white">{agent.name}</h2>
                             <p className="text-sky-400">{agent.industry}</p>
@@ -178,7 +178,7 @@ export const Agents: React.FC = () => {
                             {agent.features.map((feature, i) => (
                               <span
                                 key={i}
-                                className="px-3 py-1 text-sm bg-white/5 text-white/70 rounded-full"
+                                className="px-3 py-1 text-sm bg-[#020617]/5 text-white/70 rounded-full"
                               >
                                 {feature}
                               </span>

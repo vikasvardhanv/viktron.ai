@@ -138,18 +138,18 @@ const ServiceDetailModal: React.FC<{
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl"
+        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#020617] rounded-2xl shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="sticky top-0 z-10 flex items-start justify-between p-6 border-b border-slate-100 bg-white/80 backdrop-blur-md">
+        <div className="sticky top-0 z-10 flex items-start justify-between p-6 border-b border-white/10 bg-[#020617]/80 backdrop-blur-md">
           <div className="flex items-start gap-4">
             <div className="text-blue-600 mt-1 p-2 bg-blue-50 rounded-lg">
               {service.icon}
             </div>
             <div>
               <div className="flex items-center gap-3 mb-1">
-                <h2 className="text-2xl font-bold text-slate-900">{service.name}</h2>
+                <h2 className="text-2xl font-bold text-white">{service.name}</h2>
                 {service.highlight && (
                   <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
                     service.highlight === 'New'
@@ -165,7 +165,7 @@ const ServiceDetailModal: React.FC<{
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600"
+            className="p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-400"
           >
             <X className="h-5 w-5" />
           </button>
@@ -176,7 +176,7 @@ const ServiceDetailModal: React.FC<{
           {/* Long Description */}
           {service.longDescription && (
             <div>
-              <p className="text-slate-600 text-lg leading-relaxed">
+              <p className="text-slate-400 text-lg leading-relaxed">
                 {service.longDescription}
               </p>
             </div>
@@ -187,7 +187,7 @@ const ServiceDetailModal: React.FC<{
             {/* Benefits */}
             {service.benefits && service.benefits.length > 0 && (
               <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-5">
-                <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 text-emerald-600" />
                   Key Benefits
                 </h3>
@@ -205,7 +205,7 @@ const ServiceDetailModal: React.FC<{
             {/* Features */}
             {service.features && service.features.length > 0 && (
               <div className="bg-blue-50 border border-blue-100 rounded-xl p-5">
-                <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                   <Settings className="h-5 w-5 text-blue-600" />
                   Features Included
                 </h3>
@@ -224,7 +224,7 @@ const ServiceDetailModal: React.FC<{
           {/* Use Cases */}
           {service.useCases && service.useCases.length > 0 && (
             <div>
-              <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                 <Building2 className="h-5 w-5 text-purple-600" />
                 Perfect For
               </h3>
@@ -244,7 +244,7 @@ const ServiceDetailModal: React.FC<{
           {/* Integrations */}
           {service.integrations && service.integrations.length > 0 && (
             <div>
-              <h3 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+              <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                 <ExternalLink className="h-5 w-5 text-amber-600" />
                 Integrates With
               </h3>
@@ -252,7 +252,7 @@ const ServiceDetailModal: React.FC<{
                 {service.integrations.map((integration, index) => (
                   <span
                     key={index}
-                    className="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 text-sm font-medium"
+                    className="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-400 text-sm font-medium"
                   >
                     {integration}
                   </span>
@@ -263,7 +263,7 @@ const ServiceDetailModal: React.FC<{
         </div>
 
         {/* Footer CTAs */}
-        <div className="sticky bottom-0 flex flex-col sm:flex-row items-center justify-between gap-4 p-6 border-t border-slate-100 bg-slate-50">
+        <div className="sticky bottom-0 flex flex-col sm:flex-row items-center justify-between gap-4 p-6 border-t border-white/10 bg-white/5">
           <p className="text-slate-500 text-sm">
             Ready to get started? Let's discuss your needs.
           </p>
@@ -384,7 +384,7 @@ export const Services: React.FC = () => {
       />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-4 bg-slate-50">
+      <section className="pt-32 pb-16 px-4 bg-white/5">
         <div className="max-w-7xl mx-auto text-center">
             <AnimatedSection>
               <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full bg-blue-50 border border-blue-100">
@@ -394,7 +394,7 @@ export const Services: React.FC = () => {
             </AnimatedSection>
 
             <AnimatedSection delay={0.1}>
-              <h1 className="text-5xl sm:text-7xl font-black text-slate-900 mb-6 tracking-tight">
+              <h1 className="text-5xl sm:text-7xl font-black text-white mb-6 tracking-tight">
                 AI Solutions That
                 <br />
                 <span className="text-blue-600">Actually Work</span>
@@ -402,7 +402,7 @@ export const Services: React.FC = () => {
             </AnimatedSection>
 
             <AnimatedSection delay={0.2}>
-              <p className="text-xl text-slate-600 max-w-3xl mx-auto mb-10 leading-relaxed">
+              <p className="text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed">
                 From intelligent agents that handle your customers 24/7 to automation that eliminates repetitive work.
                 We build AI that delivers real ROI.
               </p>
@@ -412,8 +412,8 @@ export const Services: React.FC = () => {
             <AnimatedSection delay={0.3}>
               <div className="flex flex-wrap justify-center gap-8 mb-12">
                 {heroStats.map((stat, index) => (
-                  <div key={index} className="text-center p-4 bg-white rounded-xl shadow-sm border border-slate-100 w-40">
-                    <div className="text-3xl font-black text-slate-900">{stat.value}</div>
+                  <div key={index} className="text-center p-4 bg-[#020617] rounded-xl shadow-sm border border-white/10 w-40">
+                    <div className="text-3xl font-black text-white">{stat.value}</div>
                     <div className="text-sm text-slate-500 font-medium">{stat.label}</div>
                   </div>
                 ))}
@@ -439,7 +439,7 @@ export const Services: React.FC = () => {
       </section>
 
       {/* Category Filter */}
-      <section className="py-8 px-4 border-y border-slate-100 bg-white">
+      <section className="py-8 px-4 border-y border-white/10 bg-[#020617]">
         <div className="max-w-7xl mx-auto">
           <AnimatedSection>
             <div className="flex flex-wrap items-center justify-center gap-3">
@@ -450,13 +450,13 @@ export const Services: React.FC = () => {
                   className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ${
                     activeCategory === category.id
                       ? 'bg-blue-600 text-white shadow-md shadow-blue-200'
-                      : 'bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-slate-100'
+                      : 'bg-white/5 text-slate-400 hover:bg-slate-100 hover:text-white border border-white/10'
                   }`}
                 >
                   {category.icon}
                   <span>{category.name}</span>
                   <span className={`px-1.5 py-0.5 rounded text-xs ${
-                    activeCategory === category.id ? 'bg-white/20' : 'bg-slate-200 text-slate-600'
+                    activeCategory === category.id ? 'bg-[#020617]/20' : 'bg-slate-200 text-slate-400'
                   }`}>
                     {getCategoryCount(category.id)}
                   </span>
@@ -468,7 +468,7 @@ export const Services: React.FC = () => {
       </section>
 
       {/* Services Grid */}
-      <section className="py-20 px-4 bg-slate-50/50">
+      <section className="py-20 px-4 bg-white/5/50">
         <div className="max-w-7xl mx-auto">
           <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredServices.map((service) => (
@@ -482,7 +482,7 @@ export const Services: React.FC = () => {
                     onClick={() => handleServiceClick(service)}
                     className="block h-full cursor-pointer"
                   >
-                    <div className="card p-6 h-full group hover:shadow-xl hover:shadow-blue-900/5 hover:border-blue-200 transition-all relative overflow-hidden bg-white rounded-2xl border border-slate-200">
+                    <div className="card p-6 h-full group hover:shadow-xl hover:shadow-blue-900/5 hover:border-blue-200 transition-all relative overflow-hidden bg-[#020617] rounded-2xl border border-white/10">
                       {/* Highlight Badge */}
                       {service.highlight && (
                         <div className="absolute top-4 right-4">
@@ -502,7 +502,7 @@ export const Services: React.FC = () => {
                       </div>
 
                       {/* Title */}
-                      <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                      <h3 className="text-lg font-bold text-white mb-2 group-hover:text-blue-600 transition-colors">
                         {service.name}
                       </h3>
 
@@ -526,16 +526,16 @@ export const Services: React.FC = () => {
       </section>
 
       {/* How We Work - Detailed */}
-      <section className="py-20 px-4 bg-white border-t border-slate-100">
+      <section className="py-20 px-4 bg-[#020617] border-t border-white/10">
         <div className="max-w-6xl mx-auto">
           <AnimatedSection className="text-center mb-16">
             <span className="text-blue-600 text-sm font-bold uppercase tracking-wider mb-4 block">
               Our Process
             </span>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-6">
               How We Build Your AI
             </h2>
-            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
               A proven process that takes you from idea to deployed AI in weeks, not months.
             </p>
           </AnimatedSection>
@@ -543,10 +543,10 @@ export const Services: React.FC = () => {
           <div className="space-y-6">
             {processSteps.map((step, index) => (
               <AnimatedSection key={index} delay={index * 0.1}>
-                <div className="card p-8 bg-white border border-slate-200 rounded-2xl hover:shadow-lg transition-all">
+                <div className="card p-8 bg-[#020617] border border-white/10 rounded-2xl hover:shadow-lg transition-all">
                   <div className="flex flex-col md:flex-row gap-8">
                     {/* Step Number & Icon */}
-                    <div className="flex md:flex-col items-center gap-4 md:w-32 shrink-0 border-b md:border-b-0 md:border-r border-slate-100 pb-6 md:pb-0 md:pr-6">
+                    <div className="flex md:flex-col items-center gap-4 md:w-32 shrink-0 border-b md:border-b-0 md:border-r border-white/10 pb-6 md:pb-0 md:pr-6">
                       <div className="text-5xl font-black text-slate-100">{step.step}</div>
                       <div className="p-4 rounded-xl bg-blue-50 text-blue-600">
                         {step.icon}
@@ -556,16 +556,16 @@ export const Services: React.FC = () => {
                     {/* Content */}
                     <div className="flex-1 pt-2 md:pt-0">
                       <div className="flex flex-wrap items-center gap-3 mb-3">
-                        <h3 className="text-xl font-bold text-slate-900">{step.title}</h3>
-                        <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-medium flex items-center gap-1">
+                        <h3 className="text-xl font-bold text-white">{step.title}</h3>
+                        <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-400 text-xs font-medium flex items-center gap-1">
                           <Clock className="h-3 w-3" />
                           {step.duration}
                         </span>
                       </div>
-                      <p className="text-slate-600 mb-6 leading-relaxed">{step.desc}</p>
+                      <p className="text-slate-400 mb-6 leading-relaxed">{step.desc}</p>
                       <div className="flex flex-wrap gap-2">
                         {step.details.map((detail, i) => (
-                          <span key={i} className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-50 text-slate-700 text-sm font-medium border border-slate-100">
+                          <span key={i} className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white/5 text-slate-700 text-sm font-medium border border-white/10">
                             <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
                             {detail}
                           </span>
@@ -581,17 +581,17 @@ export const Services: React.FC = () => {
       </section>
 
       {/* What's Included */}
-      <section className="py-20 px-4 bg-slate-50 border-t border-slate-200">
+      <section className="py-20 px-4 bg-white/5 border-t border-white/10">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <AnimatedSection>
               <span className="text-blue-600 text-sm font-bold uppercase tracking-wider mb-4 block">
                 What's Included
               </span>
-              <h2 className="text-4xl font-black text-slate-900 mb-6">
+              <h2 className="text-4xl font-black text-white mb-6">
                 Everything You Need to Succeed
               </h2>
-              <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+              <p className="text-lg text-slate-400 mb-8 leading-relaxed">
                 Every engagement includes comprehensive support to ensure your AI solution delivers results.
               </p>
               <div className="grid sm:grid-cols-2 gap-4">
@@ -605,13 +605,13 @@ export const Services: React.FC = () => {
             </AnimatedSection>
 
             <AnimatedSection delay={0.2}>
-              <div className="card p-8 bg-white border border-slate-200 shadow-xl shadow-blue-900/5">
-                <h3 className="text-xl font-bold text-slate-900 mb-6">Technologies We Use</h3>
+              <div className="card p-8 bg-[#020617] border border-white/10 shadow-xl shadow-blue-900/5">
+                <h3 className="text-xl font-bold text-white mb-6">Technologies We Use</h3>
                 <div className="flex flex-wrap gap-2">
                   {techStack.map((tech, index) => (
                     <span
                       key={index}
-                      className="px-4 py-2 rounded-lg bg-slate-50 border border-slate-100 text-slate-600 text-sm font-medium hover:bg-white hover:border-blue-200 hover:text-blue-600 hover:shadow-sm transition-all cursor-default"
+                      className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-slate-400 text-sm font-medium hover:bg-[#020617] hover:border-blue-200 hover:text-blue-600 hover:shadow-sm transition-all cursor-default"
                     >
                       {tech}
                     </span>
@@ -624,10 +624,10 @@ export const Services: React.FC = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 px-4 bg-white border-t border-slate-200">
+      <section className="py-20 px-4 bg-[#020617] border-t border-white/10">
         <div className="max-w-6xl mx-auto">
           <AnimatedSection className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
               Why Businesses Choose Viktron.ai
             </h2>
           </AnimatedSection>
@@ -640,11 +640,11 @@ export const Services: React.FC = () => {
               { icon: <Users className="h-6 w-6" />, title: 'Dedicated Support', desc: '24/7 monitoring and optimization', metric: '24/7 Support' },
             ].map((item, index) => (
               <StaggerItem key={index}>
-                <div className="card p-6 h-full text-center hover:shadow-lg transition-all border border-slate-100">
+                <div className="card p-6 h-full text-center hover:shadow-lg transition-all border border-white/10">
                   <div className="inline-flex p-3 rounded-xl bg-blue-50 text-blue-600 mb-4">
                     {item.icon}
                   </div>
-                  <div className="text-2xl font-black text-slate-900 mb-2">{item.metric}</div>
+                  <div className="text-2xl font-black text-white mb-2">{item.metric}</div>
                   <h3 className="text-lg font-bold text-slate-700 mb-2">{item.title}</h3>
                   <p className="text-sm text-slate-500">{item.desc}</p>
                 </div>
@@ -655,11 +655,11 @@ export const Services: React.FC = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-4 bg-slate-50">
+      <section className="py-20 px-4 bg-white/5">
         <div className="max-w-4xl mx-auto">
           <AnimatedSection>
             <div className="card p-12 text-center relative overflow-hidden bg-blue-600 text-white rounded-3xl shadow-2xl shadow-blue-600/20">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 blur-[60px] rounded-full" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#020617]/10 blur-[60px] rounded-full" />
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 blur-[60px] rounded-full" />
               
               <div className="relative z-10">
@@ -671,7 +671,7 @@ export const Services: React.FC = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Link to="/contact">
-                    <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 border-transparent shadow-lg" icon={<ArrowRight className="h-5 w-5" />}>
+                    <Button size="lg" className="bg-[#020617] text-blue-600 hover:bg-blue-50 border-transparent shadow-lg" icon={<ArrowRight className="h-5 w-5" />}>
                       Book Free Consultation
                     </Button>
                   </Link>
