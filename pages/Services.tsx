@@ -48,17 +48,13 @@ const ServiceCard: React.FC<{ service: Service; isFocused: boolean }> = ({ servi
   const isExternal = Boolean(service.externalUrl);
 
   const card = (
-    <GlassCard
-      className={`h-full p-6 border transition-colors ${
-        isFocused ? 'border-sky-400/50 bg-sky-500/10' : 'border-white/12'
-      }`}
-    >
+    <GlassCard className={`h-full p-6 border ${isFocused ? 'border-lime-300/50 bg-[#1a2333]' : 'border-[#2d3a52]'}`}>
       <div className="h-full flex flex-col">
         <div className="flex items-start justify-between gap-3">
-          <div className="text-sky-300">{service.icon}</div>
+          <div className="text-lime-200">{service.icon}</div>
           <div className="flex items-center gap-2">
             {service.highlight ? (
-              <span className="rounded-full border border-sky-400/40 bg-sky-500/15 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-sky-200">
+              <span className="rounded-full border border-[#4a5b3a] bg-[#1d2517] px-2 py-1 text-[11px] font-medium uppercase tracking-wide text-lime-200">
                 {service.highlight}
               </span>
             ) : null}
@@ -66,10 +62,10 @@ const ServiceCard: React.FC<{ service: Service; isFocused: boolean }> = ({ servi
           </div>
         </div>
 
-        <h3 className="mt-4 text-xl font-semibold text-white">{service.name}</h3>
+        <h3 className="mt-4 text-xl font-medium text-white">{service.name}</h3>
         <p className="mt-2 text-sm leading-relaxed text-slate-300 flex-grow">{service.description}</p>
 
-        <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-sky-300">
+        <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-lime-200">
           Explore
           <ArrowRight className="h-4 w-4" />
         </div>
@@ -136,20 +132,20 @@ export const Services: React.FC = () => {
       <section className="pt-32 pb-16 px-4">
         <div className="container-custom">
           <AnimatedSection>
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/8 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-200">
-              <Sparkles className="h-4 w-4 text-sky-300" />
-              End-to-End Delivery
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#38455e] bg-[#171f2d] px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-slate-300">
+              <Sparkles className="h-4 w-4 text-lime-200" />
+              Delivery Blueprints
             </div>
           </AnimatedSection>
 
           <AnimatedSection delay={0.1}>
-            <h1 className="mt-6 text-5xl sm:text-6xl font-black text-white tracking-tight">Services</h1>
+            <h1 className="mt-6 text-5xl sm:text-6xl font-semibold text-white tracking-tight">Services</h1>
           </AnimatedSection>
 
           <AnimatedSection delay={0.2}>
             <p className="mt-5 max-w-3xl text-lg text-slate-300 leading-relaxed">
-              Choose a service line and launch quickly. Every engagement includes architecture,
-              build, testing, and rollout support.
+              Every service module is implementation-ready. Pick the stack that fits your timeline
+              and we ship architecture, delivery, and optimization together.
             </p>
           </AnimatedSection>
 
@@ -171,8 +167,8 @@ export const Services: React.FC = () => {
           <div className="container-custom">
             <AnimatedSection>
               <div className="mb-8">
-                <h2 className="text-2xl sm:text-3xl font-bold text-white">{CATEGORY_LABELS[category]}</h2>
-                <div className="mt-3 h-1 w-24 rounded-full bg-gradient-to-r from-sky-400 to-indigo-400" />
+                <h2 className="text-2xl sm:text-3xl font-medium text-white">{CATEGORY_LABELS[category]}</h2>
+                <div className="mt-3 h-1 w-24 rounded-full bg-gradient-to-r from-lime-300 to-emerald-300" />
               </div>
             </AnimatedSection>
 

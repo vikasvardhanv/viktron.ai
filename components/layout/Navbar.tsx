@@ -40,8 +40,8 @@ export const Navbar: React.FC = () => {
 
   const shellClass = useMemo(() => {
     return isScrolled
-      ? 'border-white/15 bg-[#070b16]/82 shadow-[0_16px_32px_rgba(0,0,0,0.35)]'
-      : 'border-white/8 bg-[#070b16]/66';
+      ? 'border-[#2b3549] bg-[#0f1520] shadow-[0_16px_32px_rgba(0,0,0,0.35)]'
+      : 'border-[#263041] bg-[#0e1420]';
   }, [isScrolled]);
 
   return (
@@ -53,7 +53,7 @@ export const Navbar: React.FC = () => {
         className="fixed inset-x-0 top-0 z-50"
       >
         <div className="container-custom pt-3">
-          <div className={`rounded-2xl border backdrop-blur-xl transition-all duration-300 ${shellClass}`}>
+          <div className={`rounded-2xl border transition-all duration-300 ${shellClass}`}>
             <div className="flex h-16 items-center justify-between px-4 sm:px-6">
               <Link to="/" className="group inline-flex items-center gap-2">
                 <BrandIcon className="h-8 w-8" />
@@ -69,8 +69,8 @@ export const Navbar: React.FC = () => {
                       to={item.path}
                       className={`rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
                         active
-                          ? 'bg-white/12 text-white'
-                          : 'text-slate-300 hover:bg-white/7 hover:text-white'
+                          ? 'bg-[#1a2332] text-white'
+                          : 'text-slate-300 hover:bg-[#181f2c] hover:text-white'
                       }`}
                     >
                       {item.name}
@@ -84,10 +84,10 @@ export const Navbar: React.FC = () => {
                   <div className="relative">
                     <button
                       onClick={() => setShowUserMenu((prev) => !prev)}
-                      className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/6 px-3 py-2 hover:bg-white/10 transition-colors"
+                      className="inline-flex items-center gap-2 rounded-xl border border-[#2d3b55] bg-[#182132] px-3 py-2 hover:bg-[#1b2538] transition-colors"
                     >
-                      <div className="h-7 w-7 rounded-full bg-sky-500/20 flex items-center justify-center">
-                        <User className="h-4 w-4 text-sky-300" />
+                      <div className="h-7 w-7 rounded-full bg-[#22304a] flex items-center justify-center">
+                        <User className="h-4 w-4 text-lime-200" />
                       </div>
                       <span className="text-sm font-medium text-slate-100 max-w-[9rem] truncate">
                         {user?.fullName?.split(' ')[0] || 'Account'}
@@ -101,9 +101,9 @@ export const Navbar: React.FC = () => {
                           initial={{ opacity: 0, y: 10, scale: 0.98 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.98 }}
-                          className="absolute right-0 mt-2 w-56 rounded-xl border border-white/12 bg-[#0d1427]/96 p-2 shadow-2xl backdrop-blur-xl"
+                          className="absolute right-0 mt-2 w-56 rounded-xl border border-[#2c384d] bg-[#111a29] p-2 shadow-2xl"
                         >
-                          <div className="px-3 py-2 border-b border-white/10">
+                          <div className="px-3 py-2 border-b border-[#2c384d]">
                             <p className="text-sm font-medium text-white truncate">{user?.fullName}</p>
                             <p className="text-xs text-slate-300 truncate">{user?.email}</p>
                           </div>
@@ -112,7 +112,7 @@ export const Navbar: React.FC = () => {
                               logout();
                               setShowUserMenu(false);
                             }}
-                            className="mt-1 w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-white/8"
+                            className="mt-1 w-full flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-[#1d2738]"
                           >
                             <LogOut className="h-4 w-4" />
                             Sign Out
@@ -150,7 +150,7 @@ export const Navbar: React.FC = () => {
 
               <button
                 onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-                className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/6 text-slate-100 hover:bg-white/10"
+                className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#2d3b55] bg-[#182132] text-slate-100 hover:bg-[#1f2a3d]"
               >
                 {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
@@ -167,12 +167,12 @@ export const Navbar: React.FC = () => {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-40 lg:hidden"
           >
-            <div className="absolute inset-0 bg-[#04070f]/92 backdrop-blur-xl" />
+            <div className="absolute inset-0 bg-[#05080f]/94" />
             <motion.div
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -20, opacity: 0 }}
-              className="relative mt-24 mx-4 rounded-2xl border border-white/12 bg-[#0c1326]/95 p-4"
+              className="relative mt-24 mx-4 rounded-2xl border border-[#2d3950] bg-[#121a28] p-4"
             >
               <div className="space-y-1">
                 {navItems.map((item) => {
@@ -182,7 +182,7 @@ export const Navbar: React.FC = () => {
                       key={item.path}
                       to={item.path}
                       className={`block rounded-xl px-4 py-3 text-sm font-medium ${
-                        active ? 'bg-white/12 text-white' : 'text-slate-200 hover:bg-white/8'
+                        active ? 'bg-[#1c2638] text-white' : 'text-slate-200 hover:bg-[#1a2232]'
                       }`}
                     >
                       {item.name}
@@ -194,7 +194,7 @@ export const Navbar: React.FC = () => {
               <div className="mt-4 grid grid-cols-1 gap-2">
                 {isAuthenticated ? (
                   <>
-                    <div className="rounded-xl border border-white/10 bg-white/6 px-4 py-3">
+                    <div className="rounded-xl border border-[#2d3950] bg-[#1a2333] px-4 py-3">
                       <p className="text-sm font-medium text-white truncate">{user?.fullName}</p>
                       <p className="text-xs text-slate-300 truncate">{user?.email}</p>
                     </div>

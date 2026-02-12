@@ -23,10 +23,10 @@ export const GlassCard: React.FC<GlassCardProps> = ({
 }) => {
   const glowClass = glow
     ? {
-        sky: 'shadow-[0_18px_45px_rgba(56,189,248,0.14)]',
-        indigo: 'shadow-[0_18px_45px_rgba(99,102,241,0.15)]',
-        emerald: 'shadow-[0_18px_45px_rgba(16,185,129,0.14)]',
-      }[glowColor] || 'shadow-[0_18px_45px_rgba(56,189,248,0.14)]'
+        sky: 'shadow-[0_16px_34px_rgba(71,187,135,0.12)]',
+        indigo: 'shadow-[0_16px_34px_rgba(217,255,114,0.1)]',
+        emerald: 'shadow-[0_16px_34px_rgba(71,187,135,0.16)]',
+      }[glowColor] || 'shadow-[0_16px_34px_rgba(71,187,135,0.12)]'
     : '';
 
   return (
@@ -40,7 +40,7 @@ export const GlassCard: React.FC<GlassCardProps> = ({
       )}
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
-      whileHover={tilt ? { y: -6, rotateX: 1.2, rotateY: -1.2 } : { y: -4 }}
+      whileHover={tilt ? { y: -4, rotateX: 0.8, rotateY: -0.8 } : { y: -3 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4 }}
       style={{ transformStyle: tilt ? 'preserve-3d' : 'flat' }}

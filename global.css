@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Manrope", "Avenir Next", "Segoe UI", sans-serif;
-  --font-display: "Space Grotesk", "Manrope", "Avenir Next", sans-serif;
+  --font-sans: "Outfit", "Avenir Next", "Segoe UI", sans-serif;
+  --font-display: "Space Grotesk", "Outfit", "Avenir Next", sans-serif;
 
   --animate-fade-in: fadeIn 0.5s ease-out;
   --animate-slide-up: slideUp 0.5s ease-out;
@@ -19,9 +19,15 @@
 }
 
 :root {
-  --site-bg: #060a13;
-  --site-bg-soft: #0b1224;
-  --site-text: #e9efff;
+  --site-bg: #090d13;
+  --site-bg-soft: #111721;
+  --site-surface: #141a25;
+  --site-surface-elevated: #1a2230;
+  --site-border: #273247;
+  --site-text: #ecf0f7;
+  --site-muted: #9aa5b9;
+  --site-accent: #d9ff72;
+  --site-accent-strong: #47bb87;
 }
 
 * {
@@ -38,9 +44,9 @@ body {
   margin: 0;
   color: var(--site-text);
   background:
-    radial-gradient(1200px circle at 8% -10%, rgba(56, 189, 248, 0.18), transparent 35%),
-    radial-gradient(900px circle at 92% 8%, rgba(99, 102, 241, 0.15), transparent 40%),
-    linear-gradient(180deg, #050913 0%, #0b1224 55%, #060a13 100%);
+    radial-gradient(900px circle at 18% -10%, rgba(71, 187, 135, 0.08), transparent 34%),
+    radial-gradient(1200px circle at 92% 10%, rgba(217, 255, 114, 0.08), transparent 42%),
+    linear-gradient(180deg, #080c12 0%, #0f141e 45%, #090d13 100%);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -51,31 +57,43 @@ a {
 }
 
 .card {
-  @apply rounded-2xl border border-white/12 bg-white/[0.04] backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.25)] transition-all duration-300;
+  @apply rounded-2xl border transition-all duration-300;
+  border-color: var(--site-border);
+  background: linear-gradient(180deg, #141a25 0%, #121824 100%);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.35);
 }
 
 .card:hover {
-  @apply border-white/20 bg-white/[0.06];
+  border-color: #334260;
+  background: linear-gradient(180deg, #171f2c 0%, #141c29 100%);
 }
 
 .btn {
-  @apply inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold tracking-[0.01em] transition-all duration-200 focus-visible:outline-none focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer;
+  @apply inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold tracking-[0.01em] transition-all duration-200 focus-visible:outline-none focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer border;
+  border-color: transparent;
 }
 
 .btn-primary {
-  @apply text-white border border-transparent bg-gradient-to-r from-sky-500 to-indigo-500 hover:from-sky-400 hover:to-indigo-400 shadow-[0_16px_32px_rgba(56,189,248,0.28)];
+  color: #081110;
+  border-color: #d6f86f;
+  background: linear-gradient(135deg, #d9ff72 0%, #8be89f 100%);
+  box-shadow: 0 14px 28px rgba(139, 232, 159, 0.24);
 }
 
 .btn-secondary {
-  @apply text-white border border-white/18 bg-white/8 hover:bg-white/12;
+  @apply text-slate-100;
+  border-color: var(--site-border);
+  background: #161d29;
 }
 
 .btn-ghost {
-  @apply text-slate-300 hover:text-white hover:bg-white/8 border border-transparent;
+  @apply text-slate-300 hover:text-white border border-transparent;
+  background: transparent;
 }
 
 .btn-outline {
-  @apply text-slate-200 border border-slate-300/30 bg-transparent hover:bg-white/8;
+  @apply text-slate-200 bg-transparent;
+  border-color: #4a5a78;
 }
 
 .container-custom {
@@ -87,7 +105,7 @@ a {
 }
 
 .text-gradient-primary {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-sky-400 via-indigo-400 to-cyan-300;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-lime-200 via-lime-300 to-emerald-300;
 }
 
 ::-webkit-scrollbar {
@@ -101,4 +119,34 @@ a {
 
 ::-webkit-scrollbar-thumb {
   @apply bg-white/15 rounded-full hover:bg-white/30 transition-colors;
+}
+
+/* Global removal of old glassmorphism */
+.backdrop-blur,
+.backdrop-blur-sm,
+.backdrop-blur-md,
+.backdrop-blur-lg,
+.backdrop-blur-xl,
+.backdrop-blur-2xl,
+.backdrop-blur-3xl {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Normalize old translucent utility usage to solid surfaces */
+.bg-white\/5,
+.bg-white\/6,
+.bg-white\/7,
+.bg-white\/8,
+.bg-white\/10,
+.bg-white\/12 {
+  background-color: var(--site-surface) !important;
+}
+
+.border-white\/10,
+.border-white\/12,
+.border-white\/15,
+.border-white\/18,
+.border-white\/20 {
+  border-color: var(--site-border) !important;
 }

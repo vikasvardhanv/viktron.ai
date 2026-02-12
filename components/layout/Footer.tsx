@@ -38,7 +38,7 @@ const socialLinks = [
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="relative border-t border-white/10 bg-[#070d1b]/70 backdrop-blur-xl">
+    <footer className="relative border-t border-[#29344a] bg-[#0f1521]">
       <div className="container-custom py-16">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
           <div className="lg:col-span-2">
@@ -52,15 +52,15 @@ export const Footer: React.FC = () => {
             </p>
             <div className="mt-6 space-y-3 text-sm">
               <a href="mailto:info@viktron.ai" className="inline-flex items-center gap-2 text-slate-300 hover:text-white">
-                <Mail className="h-4 w-4 text-sky-300" />
+                <Mail className="h-4 w-4 text-lime-200" />
                 info@viktron.ai
               </a>
               <a href="tel:+18446608065" className="block inline-flex items-center gap-2 text-slate-300 hover:text-white">
-                <Phone className="h-4 w-4 text-sky-300" />
+                <Phone className="h-4 w-4 text-lime-200" />
                 +1 (844) 660-8065
               </a>
               <p className="inline-flex items-center gap-2 text-slate-300">
-                <MapPin className="h-4 w-4 text-sky-300" />
+                <MapPin className="h-4 w-4 text-lime-200" />
                 Chicago, IL
               </p>
             </div>
@@ -118,7 +118,7 @@ export const Footer: React.FC = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="h-9 w-9 rounded-full border border-white/12 bg-white/5 text-slate-300 hover:text-white hover:bg-white/10 inline-flex items-center justify-center"
+                className="h-9 w-9 rounded-full border border-[#2f3b54] bg-[#1a2232] text-slate-300 hover:text-white hover:bg-[#202b3e] inline-flex items-center justify-center"
               >
                 {social.icon}
               </a>

@@ -23,16 +23,16 @@ export const Layout: React.FC<LayoutProps> = ({
     <div className="relative min-h-screen overflow-x-clip bg-transparent text-slate-100">
       {showBackground && (
         <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute -top-36 -left-24 h-96 w-96 rounded-full bg-sky-500/20 blur-3xl" />
-          <div className="absolute top-1/3 -right-24 h-[28rem] w-[28rem] rounded-full bg-indigo-500/16 blur-3xl" />
-          <div className="absolute -bottom-40 left-1/2 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-3xl" />
+          <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-emerald-400/6 to-transparent" />
+          <div className="absolute -top-20 right-[-7rem] h-72 w-72 rounded-full border border-lime-200/10 bg-lime-200/5" />
+          <div className="absolute top-24 left-[-5rem] h-56 w-56 rounded-full border border-emerald-300/10 bg-emerald-300/5" />
           <div
-            className="absolute inset-0 opacity-[0.08]"
+            className="absolute inset-0 opacity-[0.05]"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(255,255,255,0.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.16) 1px, transparent 1px)',
-              backgroundSize: '72px 72px',
-              maskImage: 'radial-gradient(circle at center, black, transparent 72%)',
+                'linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)',
+              backgroundSize: '88px 88px',
+              maskImage: 'linear-gradient(to bottom, black, transparent 85%)',
             }}
           />
         </div>

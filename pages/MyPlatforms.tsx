@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Plus, ExternalLink, Settings, Mail, ArrowLeft } from 'lucide-react';
+import { ExternalLink, Mail, Plus, Settings } from 'lucide-react';
+import { Layout } from '../components/layout/Layout';
+import { SEO } from '../components/ui/SEO';
+import { Button } from '../components/ui/Button';
+import { GlassCard } from '../components/ui/GlassCard';
 
 interface Platform {
   id: string;
@@ -18,19 +22,23 @@ interface Platform {
   status: 'pending' | 'active' | 'setup-requested';
 }
 
+const statusPill: Record<Platform['status'], string> = {
+  active: 'bg-emerald-500/15 text-emerald-300 border-emerald-400/30',
+  pending: 'bg-amber-500/15 text-amber-300 border-amber-400/30',
+  'setup-requested': 'bg-lime-300/12 text-lime-200 border-lime-200/35',
+};
+
 export const MyPlatforms: React.FC = () => {
-  // This will eventually come from a database/API
   const [platforms, setPlatforms] = useState<Platform[]>([
-    // Example platform - replace with actual data
     {
       id: '1',
       name: 'AutomateHub',
       subdomain: 'automatehub23.viktron.ai',
       tagline: 'Marketing on Autopilot',
-      description: 'AI automation platform helping small business streamline operations',
-      color: '#7C3AED',
+      description: 'AI automation platform helping small businesses streamline operations.',
+      color: '#47bb87',
       pricing: 29.99,
-      logo: '🤖',
+      logo: 'A',
       createdAt: new Date(),
       sector: 'Marketing & Advertising',
       targetAudience: 'small business',
@@ -48,259 +56,183 @@ export const MyPlatforms: React.FC = () => {
 
   const handleContactSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle contact form submission
-    alert('Setup request submitted! We\'ll contact you soon.');
     setShowContactModal(false);
-    
-    // Update platform status
     if (selectedPlatform) {
-      setPlatforms(platforms.map(p => 
-        p.id === selectedPlatform.id 
-          ? { ...p, status: 'setup-requested' as const }
-          : p
-      ));
+      setPlatforms((prev) =>
+        prev.map((p) => (p.id === selectedPlatform.id ? { ...p, status: 'setup-requested' } : p))
+      );
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
-      {/* Header */}
-      <div className="container mx-auto px-6 py-8">
-        <Link to="/" className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors mb-8">
-          <ArrowLeft className="w-5 h-5" />
-          Back to Home
-        </Link>
+    <Layout>
+      <SEO
+        title="My Platforms | Viktron"
+        description="Manage your white-label and AI automation platforms."
+        url="/my-platforms"
+      />
 
-        <div className="flex items-center justify-between mb-12">
-          <div>
-            <h1 className="text-4xl font-bold text-white mb-2">My Platforms</h1>
-            <p className="text-white/60">Manage and view your AI automation platforms</p>
-          </div>
-          <Link
-            to="/white-label"
-            className="px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-sky-500 text-white font-semibold hover:shadow-lg hover:shadow-emerald-500/50 transition-all flex items-center gap-2"
-          >
-            <Plus className="w-5 h-5" />
-            Create New Platform
-          </Link>
-        </div>
-      </div>
-
-      {/* Platforms Grid */}
-      <div className="container mx-auto px-6 pb-20">
-        {platforms.length === 0 ? (
-          <div className="text-center py-20">
-            <div className="inline-block p-8 rounded-full bg-white/5 mb-6">
-              <Plus className="w-12 h-12 text-white/40" />
+      <section className="pt-32 pb-14 px-4">
+        <div className="container-custom">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Workspace</p>
+              <h1 className="mt-2 text-4xl sm:text-5xl font-semibold text-white">My Platforms</h1>
+              <p className="mt-4 text-slate-300 max-w-2xl">
+                Track your generated platform instances, request deployment setup, and monitor state.
+              </p>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">No platforms yet</h3>
-            <p className="text-white/60 mb-8">Create your first AI automation platform!</p>
-            <Link
-              to="/white-label"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-emerald-500 to-sky-500 text-white font-semibold hover:shadow-lg hover:shadow-emerald-500/50 transition-all"
-            >
-              <Plus className="w-5 h-5" />
-              Create Platform
+            <Link to="/white-label">
+              <Button icon={<Plus className="h-4 w-4" />}>Create New Platform</Button>
             </Link>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {platforms.map((platform) => (
-              <motion.div
-                key={platform.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-white/10 overflow-hidden hover:border-white/20 transition-all group"
-              >
-                {/* Platform Header */}
-                <div
-                  className="p-6 relative"
-                  style={{
-                    background: `linear-gradient(135deg, ${platform.color}20 0%, transparent 100%)`,
-                  }}
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-4xl" style={{ backgroundColor: platform.color + '20' }}>
-                      {platform.logo}
+        </div>
+      </section>
+
+      <section className="px-4 pb-20">
+        <div className="container-custom">
+          {platforms.length === 0 ? (
+            <GlassCard className="p-10 text-center">
+              <p className="text-white text-xl font-medium">No platforms yet.</p>
+              <p className="text-slate-300 mt-2">Create your first deployment template.</p>
+              <Link to="/white-label" className="inline-block mt-6">
+                <Button icon={<Plus className="h-4 w-4" />}>Create Platform</Button>
+              </Link>
+            </GlassCard>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {platforms.map((platform) => (
+                <motion.div key={platform.id} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}>
+                  <GlassCard className="p-6 h-full">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex items-start gap-4">
+                        <div
+                          className="h-12 w-12 rounded-xl flex items-center justify-center text-sm font-semibold text-black"
+                          style={{ backgroundColor: platform.color }}
+                        >
+                          {platform.logo}
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-medium text-white">{platform.name}</h3>
+                          <p className="text-sm text-slate-300">{platform.tagline}</p>
+                        </div>
+                      </div>
+                      <span className={`px-3 py-1 text-[11px] uppercase tracking-[0.14em] rounded-full border ${statusPill[platform.status]}`}>
+                        {platform.status.replace('-', ' ')}
+                      </span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      {platform.status === 'active' && (
-                        <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-semibold border border-emerald-500/30">
-                          Active
+
+                    <p className="mt-4 text-sm text-slate-300 leading-relaxed">{platform.description}</p>
+
+                    <div className="mt-5 grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <p className="text-slate-400 uppercase tracking-[0.12em] text-[11px]">Subdomain</p>
+                        <a
+                          href={`https://${platform.subdomain}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-1 inline-flex items-center gap-1 text-lime-200 hover:text-lime-100"
+                        >
+                          {platform.subdomain}
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </a>
+                      </div>
+                      <div>
+                        <p className="text-slate-400 uppercase tracking-[0.12em] text-[11px]">Pricing</p>
+                        <p className="mt-1 text-white">${platform.pricing}/seat</p>
+                      </div>
+                      <div>
+                        <p className="text-slate-400 uppercase tracking-[0.12em] text-[11px]">Sector</p>
+                        <p className="mt-1 text-white">{platform.sector}</p>
+                      </div>
+                      <div>
+                        <p className="text-slate-400 uppercase tracking-[0.12em] text-[11px]">Audience</p>
+                        <p className="mt-1 text-white capitalize">{platform.targetAudience}</p>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 flex flex-wrap gap-2">
+                      {platform.status === 'pending' ? (
+                        <button
+                          onClick={() => handleRequestSetup(platform)}
+                          className="btn-primary text-xs"
+                        >
+                          <Mail className="h-4 w-4" />
+                          Request Setup
+                        </button>
+                      ) : null}
+                      {platform.status === 'active' ? (
+                        <>
+                          <button className="btn-secondary text-xs">
+                            <Settings className="h-4 w-4" />
+                            Settings
+                          </button>
+                          <a
+                            href={`https://${platform.subdomain}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-primary text-xs inline-flex items-center gap-2"
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                            Visit
+                          </a>
+                        </>
+                      ) : null}
+                      {platform.status === 'setup-requested' ? (
+                        <span className="px-4 py-2 rounded-xl border border-lime-300/30 bg-lime-300/10 text-lime-200 text-xs uppercase tracking-[0.12em]">
+                          Team notified. We will contact you.
                         </span>
-                      )}
-                      {platform.status === 'pending' && (
-                        <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-semibold border border-amber-500/30">
-                          Pending Setup
-                        </span>
-                      )}
-                      {platform.status === 'setup-requested' && (
-                        <span className="px-3 py-1 rounded-full bg-sky-500/20 text-sky-400 text-xs font-semibold border border-sky-500/30">
-                          Setup Requested
-                        </span>
-                      )}
+                      ) : null}
                     </div>
-                  </div>
+                  </GlassCard>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
 
-                  <h3 className="text-xl font-bold text-white mb-1">{platform.name}</h3>
-                  <p className="text-white/60 text-sm mb-3">{platform.tagline}</p>
-                  <p className="text-white/40 text-xs line-clamp-2">{platform.description}</p>
-                </div>
-
-                {/* Platform Details */}
-                <div className="p-6 space-y-4">
-                  <div>
-                    <p className="text-white/40 text-xs mb-1">Subdomain</p>
-                    <a
-                      href={`https://${platform.subdomain}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-white font-mono text-sm flex items-center gap-2 hover:text-emerald-400 transition-colors"
-                    >
-                      {platform.subdomain}
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-white/40 text-xs mb-1">Sector</p>
-                      <p className="text-white text-sm font-semibold">{platform.sector}</p>
-                    </div>
-                    <div>
-                      <p className="text-white/40 text-xs mb-1">Pricing</p>
-                      <p className="text-white text-sm font-semibold">${platform.pricing}/seat</p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="text-white/40 text-xs mb-1">Target Audience</p>
-                    <p className="text-white text-sm capitalize">{platform.targetAudience}</p>
-                  </div>
-
-                  <div>
-                    <p className="text-white/40 text-xs mb-1">Created</p>
-                    <p className="text-white text-sm">
-                      {platform.createdAt.toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Actions */}
-                <div className="p-6 pt-0 flex gap-3">
-                  {platform.status === 'pending' && (
-                    <button
-                      onClick={() => handleRequestSetup(platform)}
-                      className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-sky-500 text-white font-semibold hover:shadow-lg hover:shadow-emerald-500/50 transition-all flex items-center justify-center gap-2"
-                    >
-                      <Mail className="w-4 h-4" />
-                      Request Setup
-                    </button>
-                  )}
-                  {platform.status === 'active' && (
-                    <>
-                      <button className="flex-1 px-4 py-3 rounded-xl bg-white/5 text-white font-semibold hover:bg-white/10 transition-all flex items-center justify-center gap-2 border border-white/10">
-                        <Settings className="w-4 h-4" />
-                        Settings
-                      </button>
-                      <a
-                        href={`https://${platform.subdomain}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-sky-500 text-white font-semibold hover:shadow-lg hover:shadow-emerald-500/50 transition-all flex items-center justify-center gap-2"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        Visit
-                      </a>
-                    </>
-                  )}
-                  {platform.status === 'setup-requested' && (
-                    <div className="flex-1 px-4 py-3 rounded-xl bg-sky-500/10 text-sky-400 text-center border border-sky-500/30">
-                      We'll contact you soon!
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Contact Modal */}
-      {showContactModal && selectedPlatform && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm">
+      {showContactModal && selectedPlatform ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-gray-900 rounded-2xl border border-white/10 max-w-md w-full p-8"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full max-w-lg rounded-2xl border border-[#2f3b54] bg-[#111927] p-8"
           >
-            <h3 className="text-2xl font-bold text-white mb-2">Request Platform Setup</h3>
-            <p className="text-white/60 mb-6">
-              We'll set up <strong className="text-white">{selectedPlatform.name}</strong> for you!
+            <h3 className="text-2xl font-medium text-white">Request Platform Setup</h3>
+            <p className="mt-2 text-slate-300">
+              We will configure <span className="text-lime-200">{selectedPlatform.name}</span> and send next steps.
             </p>
-
-            <form onSubmit={handleContactSubmit} className="space-y-4">
-              <div>
-                <label className="block text-white/60 text-sm mb-2">Your Name</label>
-                <input
-                  type="text"
-                  required
-                  className="w-full px-4 py-3 rounded-xl bg-gray-800 border border-white/10 focus:border-emerald-500/50 focus:outline-none text-white placeholder-white/40"
-                  placeholder="John Doe"
-                />
-              </div>
-
-              <div>
-                <label className="block text-white/60 text-sm mb-2">Email</label>
-                <input
-                  type="email"
-                  required
-                  className="w-full px-4 py-3 rounded-xl bg-gray-800 border border-white/10 focus:border-emerald-500/50 focus:outline-none text-white placeholder-white/40"
-                  placeholder="john@example.com"
-                />
-              </div>
-
-              <div>
-                <label className="block text-white/60 text-sm mb-2">Phone (Optional)</label>
-                <input
-                  type="tel"
-                  className="w-full px-4 py-3 rounded-xl bg-gray-800 border border-white/10 focus:border-emerald-500/50 focus:outline-none text-white placeholder-white/40"
-                  placeholder="+1 (555) 123-4567"
-                />
-              </div>
-
-              <div>
-                <label className="block text-white/60 text-sm mb-2">Additional Notes</label>
-                <textarea
-                  rows={3}
-                  className="w-full px-4 py-3 rounded-xl bg-gray-800 border border-white/10 focus:border-emerald-500/50 focus:outline-none text-white placeholder-white/40 resize-none"
-                  placeholder="Any specific requirements or questions..."
-                />
-              </div>
-
-              <div className="flex gap-3 pt-4">
-                <button
-                  type="button"
-                  onClick={() => setShowContactModal(false)}
-                  className="flex-1 px-6 py-3 rounded-xl bg-gray-800 text-white font-semibold hover:bg-gray-700 transition-all border border-white/10"
-                >
+            <form onSubmit={handleContactSubmit} className="mt-6 space-y-4">
+              <input
+                type="text"
+                placeholder="Your Name"
+                required
+                className="w-full rounded-xl border border-[#2f3b54] bg-[#182235] px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:border-lime-300/50"
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                required
+                className="w-full rounded-xl border border-[#2f3b54] bg-[#182235] px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:border-lime-300/50"
+              />
+              <textarea
+                rows={3}
+                placeholder="Notes"
+                className="w-full rounded-xl border border-[#2f3b54] bg-[#182235] px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:border-lime-300/50 resize-none"
+              />
+              <div className="flex gap-2 pt-2">
+                <button type="button" onClick={() => setShowContactModal(false)} className="btn-secondary flex-1 justify-center">
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="flex-1 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-sky-500 text-white font-semibold hover:shadow-lg hover:shadow-emerald-500/50 transition-all"
-                >
-                  Submit Request
+                <button type="submit" className="btn-primary flex-1 justify-center">
+                  Submit
                 </button>
               </div>
             </form>
           </motion.div>
         </div>
-      )}
-    </div>
+      ) : null}
+    </Layout>
   );
 };

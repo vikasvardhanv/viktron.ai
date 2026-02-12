@@ -7,7 +7,6 @@ import {
   Bot,
   Calendar,
   MessageSquare,
-  ShieldCheck,
   Sparkles,
   Workflow,
 } from 'lucide-react';
@@ -17,28 +16,28 @@ import { AnimatedSection, StaggerContainer, StaggerItem } from '../components/ui
 import { GlassCard } from '../components/ui/GlassCard';
 import { Button } from '../components/ui/Button';
 
-const offerings = [
+const offeringTiles = [
   {
-    icon: <Bot className="h-6 w-6 text-sky-300" />,
+    icon: <Bot className="h-6 w-6 text-lime-200" />,
     title: 'AI Agents',
-    description: 'Industry-focused agents for healthcare, hospitality, legal, retail, and service teams.',
+    description: 'Industry-focused copilots for support, intake, scheduling, and customer operations.',
     href: '/agents',
   },
   {
-    icon: <Workflow className="h-6 w-6 text-indigo-300" />,
+    icon: <Workflow className="h-6 w-6 text-emerald-200" />,
     title: 'Automation Systems',
-    description: 'Replace manual workflows with production automations integrated into your stack.',
+    description: 'Operational workflows wired into your CRM, messaging channels, and internal tools.',
     href: '/services#automation',
   },
   {
-    icon: <BarChart3 className="h-6 w-6 text-cyan-300" />,
-    title: 'Growth & Insights',
-    description: 'AI-powered marketing execution and analytics that turn traffic into revenue.',
+    icon: <BarChart3 className="h-6 w-6 text-lime-100" />,
+    title: 'Growth Intelligence',
+    description: 'Campaign automation plus analytics loops that keep performance improving weekly.',
     href: '/marketing',
   },
 ];
 
-const valuePoints = [
+const metrics = [
   { label: 'Deployment Window', value: '7-21 Days' },
   { label: 'Uptime Target', value: '99.9%' },
   { label: 'Support', value: '24/7 Human + AI' },
@@ -58,26 +57,28 @@ export const Landing: React.FC = () => {
       <section className="relative pt-32 pb-20 px-4">
         <div className="container-custom">
           <AnimatedSection>
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/8 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-200">
-              <Sparkles className="h-4 w-4 text-sky-300" />
-              Production AI. Not Prototypes.
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#38455e] bg-[#171f2d] px-4 py-2 text-xs font-medium uppercase tracking-[0.16em] text-slate-300">
+              <Sparkles className="h-4 w-4 text-lime-200" />
+              Operator-Class AI Stack
             </div>
           </AnimatedSection>
 
-          <AnimatedSection delay={0.1}>
-            <h1 className="mt-6 max-w-5xl text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.03]">
-              Build the AI layer your business will run on.
+          <AnimatedSection delay={0.08}>
+            <h1 className="mt-6 max-w-5xl text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#f3f6fd] leading-[0.98]">
+              Build the AI layer your
+              <br />
+              business will run on.
             </h1>
           </AnimatedSection>
 
-          <AnimatedSection delay={0.2}>
+          <AnimatedSection delay={0.16}>
             <p className="mt-6 max-w-3xl text-lg text-slate-300 leading-relaxed">
-              We design and ship customer-facing agents, internal automation, and measurable growth
-              systems. End-to-end architecture, implementation, and iteration from one team.
+              We architect and ship intelligent customer workflows, internal copilots, and
+              growth automation systems that are production-ready from day one.
             </p>
           </AnimatedSection>
 
-          <AnimatedSection delay={0.3}>
+          <AnimatedSection delay={0.24}>
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <Link to="/demo-form">
                 <Button size="lg" icon={<Calendar className="h-5 w-5" />}>
@@ -96,12 +97,12 @@ export const Landing: React.FC = () => {
             </div>
           </AnimatedSection>
 
-          <AnimatedSection delay={0.4}>
+          <AnimatedSection delay={0.3}>
             <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {valuePoints.map((item) => (
-                <div key={item.label} className="rounded-xl border border-white/12 bg-white/6 px-4 py-4">
+              {metrics.map((item) => (
+                <div key={item.label} className="rounded-xl border border-[#2f3a50] bg-[#141b28] px-4 py-4">
                   <p className="text-xs uppercase tracking-[0.16em] text-slate-400">{item.label}</p>
-                  <p className="mt-2 text-lg font-semibold text-white">{item.value}</p>
+                  <p className="mt-2 text-lg font-medium text-white">{item.value}</p>
                 </div>
               ))}
             </div>
@@ -111,17 +112,55 @@ export const Landing: React.FC = () => {
 
       <section className="px-4 pb-20">
         <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55 }}
+            className="rounded-[28px] border border-[#2e3950] bg-[#111723] p-4 sm:p-6"
+          >
+            <div className="grid gap-4 lg:grid-cols-[1.3fr_1fr]">
+              <div className="rounded-2xl border border-[#303b52] bg-gradient-to-br from-[#151d2b] to-[#101722] p-6 sm:p-8">
+                <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Live Workspace Preview</p>
+                <h3 className="mt-3 text-2xl font-medium text-white">
+                  Orchestrate agents, monitor outcomes, and ship improvements continuously.
+                </h3>
+                <div className="mt-6 flex flex-wrap gap-2 text-xs">
+                  {['Command Center', 'Agent Chain', 'Workflow State', 'Performance Feed'].map((label) => (
+                    <span key={label} className="rounded-full border border-[#3c4862] bg-[#1a2333] px-3 py-1.5 text-slate-300">
+                      {label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+                <div className="rounded-2xl border border-[#2f3a50] bg-[#151d2b] p-4">
+                  <p className="text-xs uppercase tracking-[0.14em] text-slate-400">Agent SLA</p>
+                  <p className="mt-2 text-3xl font-medium text-lime-200">99.92%</p>
+                </div>
+                <div className="rounded-2xl border border-[#2f3a50] bg-[#151d2b] p-4">
+                  <p className="text-xs uppercase tracking-[0.14em] text-slate-400">Automations Active</p>
+                  <p className="mt-2 text-3xl font-medium text-emerald-200">128</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="px-4 pb-20">
+        <div className="container-custom">
           <StaggerContainer className="grid gap-6 lg:grid-cols-3">
-            {offerings.map((item) => (
+            {offeringTiles.map((item) => (
               <StaggerItem key={item.title}>
                 <Link to={item.href} className="block h-full">
                   <GlassCard className="h-full p-6">
-                    <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 border border-white/10">
+                    <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[#34445f] bg-[#1b2434]">
                       {item.icon}
                     </div>
-                    <h3 className="text-xl font-semibold text-white">{item.title}</h3>
+                    <h3 className="text-xl font-medium text-white">{item.title}</h3>
                     <p className="mt-3 text-sm leading-relaxed text-slate-300">{item.description}</p>
-                    <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-sky-300">
+                    <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-lime-200">
                       Explore
                       <ArrowRight className="h-4 w-4" />
                     </div>
@@ -130,38 +169,6 @@ export const Landing: React.FC = () => {
               </StaggerItem>
             ))}
           </StaggerContainer>
-        </div>
-      </section>
-
-      <section className="px-4 pb-28">
-        <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55 }}
-          >
-            <GlassCard className="p-8 sm:p-10 md:p-12 text-center">
-              <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-sky-500/20 border border-sky-400/30">
-                <ShieldCheck className="h-6 w-6 text-sky-300" />
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-black text-white">Ready to modernize your stack?</h2>
-              <p className="mt-4 text-slate-300 max-w-2xl mx-auto">
-                Start with a live consultation. We will map your highest-impact opportunities and
-                propose a build plan that can ship fast.
-              </p>
-              <div className="mt-8 flex flex-wrap justify-center gap-3">
-                <Link to="/contact">
-                  <Button size="lg">Talk to Viktron</Button>
-                </Link>
-                <Link to="/services">
-                  <Button size="lg" variant="secondary">
-                    Browse Services
-                  </Button>
-                </Link>
-              </div>
-            </GlassCard>
-          </motion.div>
         </div>
       </section>
     </Layout>
