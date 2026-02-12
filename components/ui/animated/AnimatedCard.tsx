@@ -1,48 +1,60 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import clsx from 'clsx';
 
-interface AnimatedCardProps {
+interface AnimatedCardProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  className?: string;
   delay?: number;
-  hover?: boolean;
+  interactive?: boolean;
   variant?: 'default' | 'surface';
 }
 
-export const AnimatedCard: React.FC<AnimatedCardProps> = ({
-  children,
-  className,
-  delay = 0,
-  hover = true,
-  variant = 'default',
-}) => {
-  const baseClasses = variant === 'surface' 
-    ? 'bg-gray-50 border border-gray-200'
-    : 'bg-white border border-gray-200';
+export const AnimatedCard = React.forwardRef<
+  HTMLDivElement,
+  AnimatedCardProps
+>(
+  (
+    {
+      children,
+      className,
+      delay = 0,
+      interactive = true,
+      variant = 'default',
+      ...props
+    },
+    ref
+  ) => {
+    const variantClasses = {
+      default: 'bg-white border-slate-200',
+      surface: 'bg-slate-50 border-slate-200',
+    };
 
-  return (
-    <motion.div
-      className={clsx(
-        baseClasses,
-        'rounded-lg p-6 transition-all duration-200',
-        className
-      )}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay }}
-      whileHover={hover ? {
-        y: -2,
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
-        borderColor: 'rgb(124, 58, 237)',
-      } : {}}
-    >
-      {children}
-    </motion.div>
-  );
-};
+    return (
+      <motion.div
+        ref={ref}
+        className={`card ${variantClasses[variant]} ${className || ''}`}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay }}
+        whileHover={
+          interactive
+            ? {
+                y: -2,
+                borderColor: 'rgb(59, 130, 246)',
+              }
+            : {}
+        }
+        {...props}
+      >
+        {children}
+      </motion.div>
+    );
+  }
+);
 
-interface AnimatedGlassCardProps {
+AnimatedCard.displayName = 'AnimatedCard';
+
+interface AnimatedFeatureCardProps {
   icon?: React.ReactNode;
   title: string;
   description: string;
@@ -50,7 +62,7 @@ interface AnimatedGlassCardProps {
   onClick?: () => void;
 }
 
-export const AnimatedGlassCard: React.FC<AnimatedGlassCardProps> = ({
+export const AnimatedFeatureCard: React.FC<AnimatedFeatureCardProps> = ({
   icon,
   title,
   description,
@@ -61,16 +73,14 @@ export const AnimatedGlassCard: React.FC<AnimatedGlassCardProps> = ({
     <AnimatedCard delay={delay} className="cursor-pointer group" onClick={onClick}>
       <div className="space-y-3">
         {icon && (
-          <motion.div
-            className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center text-xl text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors"
-          >
+          <motion.div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center text-lg text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
             {icon}
           </motion.div>
         )}
-        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
+        <h3 className="text-lg font-semibold text-slate-900 group-hover:text-blue-600 transition-colors">
           {title}
         </h3>
-        <p className="text-gray-600 text-sm leading-relaxed">
+        <p className="text-slate-600 text-sm leading-relaxed">
           {description}
         </p>
       </div>

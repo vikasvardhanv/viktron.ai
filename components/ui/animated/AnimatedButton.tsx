@@ -1,70 +1,67 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import clsx from 'clsx';
 
-interface AnimatedButtonProps {
-  children: React.ReactNode;
-  onClick?: () => void;
-  variant?: 'primary' | 'secondary' | 'neutral' | 'ghost';
+interface AnimatedButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'ghost' | 'outline';
   size?: 'sm' | 'md' | 'lg';
-  className?: string;
-  disabled?: boolean;
-  icon?: React.ReactNode;
-  loading?: boolean;
+  children: React.ReactNode;
+  isLoading?: boolean;
 }
 
-export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
-  children,
-  onClick,
-  variant = 'primary',
-  size = 'md',
-  className,
-  disabled = false,
-  icon,
-  loading = false,
-}) => {
-  const baseClasses = 'font-medium transition-all duration-200 flex items-center gap-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2';
+export const AnimatedButton = React.forwardRef<
+  HTMLButtonElement,
+  AnimatedButtonProps
+>(
+  (
+    {
+      variant = 'primary',
+      size = 'md',
+      className,
+      disabled = false,
+      isLoading = false,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const variantClasses = {
+      primary: 'btn-primary',
+      secondary: 'btn-secondary',
+      ghost: 'btn-ghost',
+      outline: 'btn-outline',
+    };
 
-  const variantClasses = {
-    primary: 'bg-purple-600 text-white hover:bg-purple-700 focus:ring-purple-500',
-    secondary: 'bg-purple-100 text-purple-700 hover:bg-purple-200 focus:ring-purple-500',
-    neutral: 'bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500',
-    ghost: 'bg-transparent border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500',
-  };
+    const sizeClasses = {
+      sm: 'px-3 py-1.5 text-sm',
+      md: 'px-4 py-2 text-base',
+      lg: 'px-6 py-3 text-lg',
+    };
 
-  const sizeClasses = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-base',
-    lg: 'px-6 py-3 text-base',
-  };
+    const classes = `${variantClasses[variant]} ${sizeClasses[size]} rounded-lg font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 ${
+      disabled && 'opacity-50 cursor-not-allowed'
+    } ${isLoading && 'pointer-events-none'} ${className || ''}`;
 
-  return (
-    <motion.button
-      onClick={onClick}
-      disabled={disabled || loading}
-      className={clsx(
-        baseClasses,
-        variantClasses[variant],
-        sizeClasses[size],
-        disabled && 'opacity-50 cursor-not-allowed',
-        className
-      )}
-      whileHover={!disabled ? { y: -1 } : {}}
-      whileTap={!disabled ? { y: 0 } : {}}
-      initial={{ opacity: 0, y: 5 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2 }}
-    >
-      {loading ? (
-        <motion.div
-          className="w-4 h-4 border-2 border-current border-t-transparent rounded-full"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 0.6, repeat: Infinity, ease: 'linear' }}
-        />
-      ) : (
-        icon
-      )}
-      {children}
-    </motion.button>
-  );
-};
+    return (
+      <motion.button
+        ref={ref}
+        whileHover={{ scale: disabled ? 1 : 1.02 }}
+        whileTap={{ scale: disabled ? 1 : 0.98 }}
+        disabled={disabled || isLoading}
+        className={classes}
+        {...props}
+      >
+        {isLoading ? (
+          <span className="flex items-center gap-2">
+            <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
+            Loading...
+          </span>
+        ) : (
+          children
+        )}
+      </motion.button>
+    );
+  }
+);
+
+AnimatedButton.displayName = 'AnimatedButton';

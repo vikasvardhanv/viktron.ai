@@ -24,7 +24,7 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -40,83 +40,75 @@ export const Navbar: React.FC = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
           isScrolled
-            ? 'bg-[#0b0e14] border-b border-white/10 shadow-[0_14px_48px_rgba(0,0,0,0.55)]'
+            ? 'bg-white/80 border-b border-slate-200 backdrop-blur-md'
             : 'bg-transparent border-b border-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 group">
-              <motion.div
-                whileHover={{ scale: 1.05, rotate: 5 }}
-                transition={{ type: 'spring', stiffness: 400 }}
-              >
-                <BrandIcon className="h-12 w-12" />
-              </motion.div>
-              <span className="text-xl font-bold text-white group-hover:text-blue-300 transition-colors">
-                Viktron.ai
+            <Link to="/" className="flex items-center gap-2 group">
+              <div className="text-blue-600">
+                <BrandIcon className="h-8 w-8" />
+              </div>
+              <span className={`text-lg font-bold transition-colors ${isScrolled ? 'text-slate-900' : 'text-slate-900'}`}>
+                Viktron
               </span>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-1">
+            <div className="hidden md:flex items-center gap-6">
               {navItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
-                  className="relative px-4 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors group"
+                  className={`text-sm font-medium transition-colors ${
+                    isScrolled ? 'text-slate-600 hover:text-slate-900' : 'text-slate-600 hover:text-slate-900'
+                  } ${location.pathname === item.path ? 'text-blue-600' : ''}`}
                 >
-                  {location.pathname === item.path && (
-                    <motion.div
-                      layoutId="navbar-indicator"
-                      className="absolute inset-0 bg-white/[0.08] border border-white/10 rounded-lg"
-                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                    />
-                  )}
-                  <span className="relative z-10">{item.name}</span>
+                  {item.name}
                 </Link>
               ))}
             </div>
 
             {/* CTA Button */}
-            <div className="hidden md:flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-3">
               {isAuthenticated ? (
                 <div className="relative">
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg border border-transparent hover:bg-white/5 hover:border-white/10 transition-colors"
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors"
                   >
-                    <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
-                      <User className="h-4 w-4 text-blue-300" />
+                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                      <User className="h-4 w-4 text-blue-600" />
                     </div>
-                    <span className="text-sm font-medium text-white/80">
+                    <span className="text-sm font-medium text-slate-700">
                       {user?.fullName?.split(' ')[0] || 'Account'}
                     </span>
-                    <ChevronDown className={`h-4 w-4 text-white/60 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`h-4 w-4 text-slate-500 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
                   </button>
 
                   {/* User dropdown menu */}
                   <AnimatePresence>
                     {showUserMenu && (
                       <motion.div
-                        initial={{ opacity: 0, y: -10 }}
+                        initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="absolute right-0 mt-2 w-48 py-2 bg-[#111620] border border-white/10 rounded-xl shadow-xl"
+                        exit={{ opacity: 0, y: 10 }}
+                        className="absolute right-0 mt-2 w-48 py-2 bg-white border border-slate-200 rounded-lg shadow-lg"
                       >
-                        <div className="px-4 py-2 border-b border-white/10">
-                          <p className="text-sm font-medium text-white truncate">{user?.fullName}</p>
-                          <p className="text-xs text-white/50 truncate">{user?.email}</p>
+                        <div className="px-4 py-2 border-b border-slate-100">
+                          <p className="text-sm font-medium text-slate-900 truncate">{user?.fullName}</p>
+                          <p className="text-xs text-slate-500 truncate">{user?.email}</p>
                         </div>
                         <button
                           onClick={() => {
                             logout();
                             setShowUserMenu(false);
                           }}
-                          className="w-full flex items-center gap-2 px-4 py-2 text-sm text-white/70 hover:text-white hover:bg-white/[0.08] transition-colors"
+                          className="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
                         >
                           <LogOut className="h-4 w-4" />
                           Sign Out
@@ -131,7 +123,7 @@ export const Navbar: React.FC = () => {
                     setAuthModalMode('login');
                     setShowAuthModal(true);
                   }}
-                  className="text-sm font-medium text-white/70 hover:text-white transition-colors"
+                  className="btn-ghost text-sm font-medium"
                 >
                   Sign In
                 </button>
@@ -139,16 +131,17 @@ export const Navbar: React.FC = () => {
               <button
                 onClick={() => {
                   if (isAuthenticated) {
-                    // Go to contact page if already logged in
                     window.location.href = '/contact';
                   } else {
                     setAuthModalMode('signup');
                     setShowAuthModal(true);
                   }
                 }}
-                  className="px-5 py-2.5 text-sm font-semibold text-slate-950 bg-white border border-white rounded-xl hover:bg-slate-100 transition-all shadow-[0_8px_24px_rgba(255,255,255,0.14)]"
+                  className="btn-primary text-sm"
                 >
                   Get Started
+                </button>
+            </div>
                 </button>
             </div>
 

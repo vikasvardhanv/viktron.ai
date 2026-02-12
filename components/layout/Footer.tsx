@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { BrandIcon, TikTokIcon, FacebookIcon, InstagramIcon, YoutubeIcon, XIcon, WhatsAppIcon } from '../../constants';
+import { BrandIcon, TikTokIcon, FacebookIcon, InstagramIcon, YoutubeIcon, XIcon } from '../../constants';
 import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
 
 const footerLinks = {
@@ -39,34 +39,33 @@ const socialLinks = [
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="relative bg-[#0b0f17] border-t border-white/10">
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0d14] to-transparent pointer-events-none" />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <footer className="bg-slate-50 border-t border-slate-200">
+      <div className="container py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* Brand section */}
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-3 mb-6">
-              <BrandIcon className="h-12 w-12" />
-              <span className="text-2xl font-bold text-white">Viktron.ai</span>
+            <Link to="/" className="flex items-center gap-2 mb-6 group">
+              <div className="text-blue-600">
+                <BrandIcon className="h-8 w-8" />
+              </div>
+              <span className="text-xl font-bold text-slate-900">Viktron</span>
             </Link>
-            <p className="text-white/60 mb-6 max-w-sm leading-relaxed">
+            <p className="text-slate-600 mb-6 max-w-sm leading-relaxed">
               The next era of intelligence. We build AI solutions that transform businesses and create
               exceptional customer experiences.
             </p>
 
             {/* Contact info */}
             <div className="space-y-3">
-              <a href="mailto:info@viktron.ai" className="flex items-center gap-3 text-white/60 hover:text-blue-300 transition-colors">
+              <a href="mailto:info@viktron.ai" className="flex items-center gap-3 text-slate-600 hover:text-blue-600 transition-colors">
                 <Mail className="h-4 w-4" />
                 <span>info@viktron.ai</span>
               </a>
-              <a href="tel:+18446608065" className="flex items-center gap-3 text-white/60 hover:text-blue-300 transition-colors">
+              <a href="tel:+18446608065" className="flex items-center gap-3 text-slate-600 hover:text-blue-600 transition-colors">
                 <Phone className="h-4 w-4" />
                 <span>+1 (844) 660-8065</span>
               </a>
-              <div className="flex items-center gap-3 text-white/60">
+              <div className="flex items-center gap-3 text-slate-600">
                 <MapPin className="h-4 w-4" />
                 <span>Chicago, IL</span>
               </div>
@@ -75,13 +74,13 @@ export const Footer: React.FC = () => {
 
           {/* Links sections */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Services</h3>
+            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4">Services</h3>
             <ul className="space-y-3">
               {footerLinks.services.map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-white/60 hover:text-white transition-colors flex items-center gap-1 group"
+                    className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1 group"
                   >
                     {link.name}
                     <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -92,13 +91,13 @@ export const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Company</h3>
+            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4">Company</h3>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-white/60 hover:text-white transition-colors flex items-center gap-1 group"
+                    className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1 group"
                   >
                     {link.name}
                     <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -109,13 +108,13 @@ export const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Quick Links</h3>
+            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-4">Quick Links</h3>
             <ul className="space-y-3">
               {footerLinks.quickLinks.map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-white/60 hover:text-white transition-colors flex items-center gap-1 group"
+                    className="text-slate-600 hover:text-slate-900 transition-colors flex items-center gap-1 group"
                   >
                     {link.name}
                     <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -127,42 +126,27 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Bottom section */}
-        <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="mt-16 pt-8 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Social links */}
           <div className="flex items-center gap-2">
             {socialLinks.map((social) => (
-              <motion.a
+              <a
                 key={social.label}
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className="p-2.5 text-white/40 hover:text-white hover:bg-white/10 rounded-full border border-transparent hover:border-white/10 transition-all"
+                className="p-2.5 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-all"
               >
                 {social.icon}
-              </motion.a>
+              </a>
             ))}
           </div>
 
           {/* Copyright */}
-          <p className="text-sm text-white/40">
-            &copy; {new Date().getFullYear()} Viktron.ai. All rights reserved.
+          <p className="text-sm text-slate-500">
+            &copy; {new Date().getFullYear()} Viktron. All rights reserved.
           </p>
-
-          {/* Legal links */}
-          <div className="flex items-center gap-6 text-sm">
-            <Link to="/privacy" className="text-white/40 hover:text-white transition-colors">
-              Privacy Policy
-            </Link>
-            <Link to="/terms" className="text-white/40 hover:text-white transition-colors">
-              Terms of Service
-            </Link>
-            <Link to="/cookies" className="text-white/40 hover:text-white transition-colors">
-              Cookie Policy
-            </Link>
-          </div>
         </div>
       </div>
     </footer>
