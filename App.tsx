@@ -18,9 +18,12 @@ const Contact = lazy(() => import('./pages/Contact').then(m => ({ default: m.Con
 const CaseStudies = lazy(() => import('./pages/CaseStudies').then(m => ({ default: m.CaseStudies })));
 const Careers = lazy(() => import('./pages/Careers').then(m => ({ default: m.Careers })));
 const AuthPage = lazy(() => import('./pages/AuthPage').then(m => ({ default: m.AuthPage })));
-const Store = lazy(() => import('./pages/Store').then(m => ({ default: m.Store })));
 const WhiteLabel = lazy(() => import('./pages/WhiteLabel').then(m => ({ default: m.WhiteLabel })));
 const MyPlatforms = lazy(() => import('./pages/MyPlatforms').then(m => ({ default: m.MyPlatforms })));
+// New Pages
+const About = lazy(() => import('./pages/About').then(m => ({ default: m.About })));
+const UseCases = lazy(() => import('./pages/UseCases').then(m => ({ default: m.UseCases })));
+const ServiceDetail = lazy(() => import('./pages/ServiceDetail').then(m => ({ default: m.ServiceDetail })));
 const LeadbotConsole = lazy(() => import('./pages/LeadbotConsole').then(m => ({ default: m.LeadbotConsole })));
 
 // Legal pages - lazy loaded
@@ -51,15 +54,17 @@ const ContentGeneratorDemo = lazy(() => import('./pages/demos/ContentGeneratorDe
 const AgentOrchestrationDemo = lazy(() => import('./pages/demos/AgentOrchestrationDemo').then(m => ({ default: m.AgentOrchestrationDemo })));
 const CustomModelDemo = lazy(() => import('./pages/demos/CustomModelDemo').then(m => ({ default: m.CustomModelDemo })));
 
+const DemoVideo = lazy(() => import('./pages/DemoVideo').then(m => ({ default: m.DemoVideo })));
+
 // Legacy components - lazy loaded
 const MarketingHub = lazy(() => import('./components/MarketingHub').then(m => ({ default: m.MarketingHub })));
 const SnakeGame = lazy(() => import('./components/SnakeGame').then(m => ({ default: m.SnakeGame })));
 
 // Loading spinner for lazy loaded components
 const LoadingSpinner: React.FC = () => (
-  <div className="min-h-screen bg-[#f3f6fb] flex items-center justify-center">
+  <div className="min-h-screen bg-[#020617] flex items-center justify-center">
     <div className="relative">
-      <div className="w-12 h-12 rounded-full border-2 border-[#d8e1ee] border-t-[#3568e4] animate-spin" />
+      <div className="w-12 h-12 rounded-full border-2 border-slate-800 border-t-indigo-500 animate-spin" />
     </div>
   </div>
 );
@@ -122,15 +127,14 @@ const AnimatedRoutes: React.FC = () => {
         {/* Main pages */}
         <Route path="/" element={<PageTransition><Landing /></PageTransition>} />
         <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
-        <Route path="/services/:serviceId" element={<PageTransition><Services /></PageTransition>} />
+        <Route path="/services/:serviceId" element={<PageTransition><ServiceDetail /></PageTransition>} />
+        <Route path="/use-cases" element={<PageTransition><UseCases /></PageTransition>} />
         <Route path="/agents" element={<PageTransition><Agents /></PageTransition>} />
         <Route path="/agents/:agentId" element={<PageTransition><Agents /></PageTransition>} />
         <Route path="/marketing" element={<PageTransition><Marketing /></PageTransition>} />
         <Route path="/case-studies" element={<PageTransition><CaseStudies /></PageTransition>} />
+        <Route path="/about" element={<PageTransition><About /></PageTransition>} />
         <Route path="/demos" element={<PageTransition><Demos /></PageTransition>} />
-        <Route path="/store" element={<PageTransition><Store /></PageTransition>} />
-        <Route path="/store/:categorySlug" element={<PageTransition><Store /></PageTransition>} />
-        <Route path="/store/:categorySlug/:workflowFile" element={<PageTransition><Store /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         <Route path="/careers" element={<PageTransition><Careers /></PageTransition>} />
         <Route path="/demo-form" element={<PageTransition><DemoForm /></PageTransition>} />
@@ -139,6 +143,9 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/leadbot" element={<PageTransition><LeadbotConsole /></PageTransition>} />
         <Route path="/login" element={<PageTransition><AuthPage mode="login" /></PageTransition>} />
         <Route path="/signup" element={<PageTransition><AuthPage mode="signup" /></PageTransition>} />
+
+        {/* Demo video - cinematic screen recording page */}
+        <Route path="/demo-video" element={<DemoVideo />} />
 
         {/* Legal pages */}
         <Route path="/privacy" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
@@ -206,7 +213,7 @@ function App() {
         <CookieConsentProvider>
           <ScrollToTop />
           <GoogleSignInWarmup />
-          <div className="w-full min-h-screen bg-transparent text-[#13213a]">
+          <div className="w-full min-h-screen bg-[#020617] text-slate-200">
             <Suspense fallback={<LoadingSpinner />}>
               <AnimatedRoutes />
             </Suspense>

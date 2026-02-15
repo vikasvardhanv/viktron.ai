@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BarChart3, Calendar, Check, FileText, Mail, Megaphone, Share2, Sparkles, Zap } from 'lucide-react';
+import { BarChart3, Calendar, Check, FileText, Mail, Megaphone, Share2, Sparkles, Zap, Users } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
 import { AnimatedSection, StaggerContainer, StaggerItem } from '../components/ui/AnimatedSection';
@@ -10,31 +10,31 @@ import { Button } from '../components/ui/Button';
 const modules = [
   {
     id: 'content',
-    title: 'Content Engine',
+    title: 'Content Strategist',
     icon: <FileText className="h-5 w-5 text-[#3768e8]" />,
-    description: 'Generate briefs, posts, and campaign copy aligned to brand voice.',
-    features: ['Post ideas', 'Long-form copy', 'Ad angles', 'Creative variants'],
+    description: 'An AI agent that researches trends, drafts briefs, and generates on-brand copy 24/7.',
+    features: ['Trend Research', 'Long-form Copy', 'Ad Variations', 'SEO Optimization'],
   },
   {
     id: 'social',
-    title: 'Social Operations',
+    title: 'Social Media Manager',
     icon: <Share2 className="h-5 w-5 text-[#2fa781]" />,
-    description: 'Plan and schedule omnichannel publishing with smart timing logic.',
-    features: ['Cross-posting', 'Best-time scheduling', 'Queue automation', 'Performance sync'],
+    description: 'Autonomous scheduling and engagement across LinkedIn, Twitter, and Instagram.',
+    features: ['Smart Scheduling', 'Auto-Replies', 'Cross-posting', 'Viral Monitoring'],
   },
   {
     id: 'email',
-    title: 'Lifecycle Email',
+    title: 'Lifecycle Specialist',
     icon: <Mail className="h-5 w-5 text-[#6a7ce8]" />,
-    description: 'Deploy nurture, onboarding, and win-back campaigns from one system.',
-    features: ['Segmentation', 'A/B content', 'Sequence builder', 'Deliverability checks'],
+    description: 'Orchestrates complex nurture sequences and win-back campaigns based on user behavior.',
+    features: ['Segment Logic', 'A/B Testing', 'Drip Campaigns', 'Deliverability Watch'],
   },
   {
     id: 'analytics',
-    title: 'Performance Insights',
+    title: 'Revenue Analyst',
     icon: <BarChart3 className="h-5 w-5 text-[#3a88db]" />,
-    description: 'Attribute outcomes and identify the highest-leverage optimization points.',
-    features: ['ROI visibility', 'Trend detection', 'Funnel diagnostics', 'Weekly recaps'],
+    description: 'Continuously monitors campaign performance and reallocates budget to high-ROI channels.',
+    features: ['Attribution Models', 'Spend Optimization', 'Funnel Analysis', 'Weekly Reports'],
   },
 ];
 
@@ -61,9 +61,9 @@ export const Marketing: React.FC = () => {
   return (
     <Layout>
       <SEO
-        title="Marketing Automation & Content Systems | Viktron"
-        description="AI-powered marketing operations: content generation, social automation, lifecycle email, and analytics loops."
-        keywords="AI marketing automation, content systems, social automation, lifecycle campaigns"
+        title="AgentOps Growth Systems | Viktron"
+        description="Run growth workflows on top of AgentOps: content, campaign orchestration, and measurable performance loops."
+        keywords="AgentOps marketing, growth operations, AI campaign automation, performance loops"
         url="/marketing"
       />
 
@@ -72,26 +72,25 @@ export const Marketing: React.FC = () => {
           <AnimatedSection>
             <div className="inline-flex items-center gap-2 rounded-full border border-[#d4deeb] bg-[#f8fbff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#60718c]">
               <Megaphone className="h-4 w-4 text-[#3768e8]" />
-              Marketing Operating Layer
+              Marketing Operations Force
             </div>
           </AnimatedSection>
           <AnimatedSection delay={0.08}>
             <h1 className="mt-6 text-5xl sm:text-7xl font-semibold tracking-tight text-[#12223e]">
-              Marketing
-              <span className="text-gradient-primary"> on iteration loops.</span>
+              Hire an Automated
+              <span className="text-gradient-primary"> Growth Team.</span>
             </h1>
             <p className="mt-4 max-w-3xl text-lg leading-relaxed text-[#52637e]">
-              Replace scattered campaign work with one coordinated system for content, publishing,
-              and performance optimization.
+              Deploy autonomous agents that act as your Content Analysts, Campaign Managers, and Data Scientists. Scale your marketing operations without headcount.
             </p>
           </AnimatedSection>
           <AnimatedSection delay={0.16}>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link to="/demo-form">
-                <Button icon={<Calendar className="h-5 w-5" />}>Book Free Consultation</Button>
+              <Link to="/agents">
+                 <Button icon={<Users className="h-5 w-5" />}>Browse Marketing Agents</Button>
               </Link>
-              <Link to="/case-studies">
-                <Button variant="secondary">View Case Studies</Button>
+              <Link to="/demo-form">
+                <Button variant="secondary">Book Strategy Call</Button>
               </Link>
             </div>
           </AnimatedSection>
@@ -180,11 +179,9 @@ export const Marketing: React.FC = () => {
             <div className="rounded-3xl border border-[#d8e2ef] bg-[#f8fbff] p-7">
               <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
                 <div>
-                  <h2 className="text-3xl font-semibold tracking-tight text-[#12223e]">
-                    Ready to run marketing like a system?
-                  </h2>
+                  <h2 className="text-3xl font-semibold tracking-tight text-[#12223e]">Ready for production-grade growth ops?</h2>
                   <p className="mt-3 text-[#52637e] leading-relaxed">
-                    We’ll set up your content operations, publishing workflows, and weekly optimization cadence.
+                    We set up your growth stack with reliability controls, integration stability, and weekly ROI optimization.
                   </p>
                   <div className="mt-6 flex flex-wrap gap-3">
                     <Link to="/demo-form">

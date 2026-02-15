@@ -1,0 +1,33 @@
+<svg width="1800" height="1400" viewBox="0 0 1800 1400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="waveA" x1="120" y1="320" x2="1670" y2="1020" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3D6FE8" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#4EC3A0" stop-opacity="0.28"/>
+    </linearGradient>
+    <linearGradient id="waveB" x1="260" y1="220" x2="1700" y2="1160" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7E95F2" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#6DD2B0" stop-opacity="0.2"/>
+    </linearGradient>
+    <radialGradient id="spotA" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(260 240) rotate(8) scale(460 300)">
+      <stop stop-color="#4E7FF2" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#4E7FF2" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="spotB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1530 280) rotate(-12) scale(420 280)">
+      <stop stop-color="#57CBA6" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#57CBA6" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softBlur" x="-40" y="-40" width="1880" height="1480" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+
+  <rect width="1800" height="1400" fill="#F5F8FD"/>
+  <ellipse cx="260" cy="240" rx="460" ry="300" fill="url(#spotA)"/>
+  <ellipse cx="1530" cy="280" rx="420" ry="280" fill="url(#spotB)"/>
+
+  <g filter="url(#softBlur)" opacity="0.88">
+    <path d="M120 840C290 660 480 560 690 560C920 560 1080 760 1290 760C1470 760 1590 660 1720 520" stroke="url(#waveA)" stroke-width="4.5" stroke-linecap="round"/>
+    <path d="M180 980C350 790 530 690 770 690C1000 690 1160 890 1370 890C1530 890 1650 810 1740 710" stroke="url(#waveB)" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M220 1120C390 960 590 860 830 860C1080 860 1220 1040 1440 1040C1600 1040 1700 980 1760 920" stroke="url(#waveA)" stroke-width="3.2" stroke-linecap="round" opacity="0.8"/>
+  </g>
+</svg>

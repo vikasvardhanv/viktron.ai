@@ -1,8 +1,7 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 
-interface AnimatedCardProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+interface AnimatedCardProps extends HTMLMotionProps<'div'> {
   children: React.ReactNode;
   delay?: number;
   interactive?: boolean;
@@ -30,6 +29,7 @@ export const AnimatedCard = React.forwardRef<
     };
 
     return (
+      // @ts-ignore
       <motion.div
         ref={ref}
         className={`card ${variantClasses[variant]} ${className || ''}`}
@@ -53,6 +53,22 @@ export const AnimatedCard = React.forwardRef<
 );
 
 AnimatedCard.displayName = 'AnimatedCard';
+
+export const AnimatedGlassCard = React.forwardRef<
+  HTMLDivElement,
+  AnimatedCardProps
+>(({ children, className, ...props }, ref) => (
+  <AnimatedCard
+    ref={ref}
+    className={`bg-white/5 backdrop-blur-xl border border-white/10 ${
+      className || ''
+    }`}
+    {...props}
+  >
+    {children}
+  </AnimatedCard>
+));
+AnimatedGlassCard.displayName = 'AnimatedGlassCard';
 
 interface AnimatedFeatureCardProps {
   icon?: React.ReactNode;

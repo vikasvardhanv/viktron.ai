@@ -1,0 +1,27 @@
+<svg width="1800" height="620" viewBox="0 0 1800 620" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fA" x1="120" y1="80" x2="1700" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3E6FE7" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#57C8A4" stop-opacity="0.24"/>
+    </linearGradient>
+    <linearGradient id="fB" x1="80" y1="30" x2="1680" y2="580" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7B92EE" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#6CD0AF" stop-opacity="0.16"/>
+    </linearGradient>
+    <radialGradient id="glowL" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(250 130) rotate(8) scale(360 200)">
+      <stop stop-color="#5C84F0" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#5C84F0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowR" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1560 150) rotate(-10) scale(320 180)">
+      <stop stop-color="#63CEA9" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#63CEA9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1800" height="620" fill="#F8FAFF"/>
+  <ellipse cx="250" cy="130" rx="360" ry="200" fill="url(#glowL)"/>
+  <ellipse cx="1560" cy="150" rx="320" ry="180" fill="url(#glowR)"/>
+
+  <path d="M80 440C260 320 470 260 700 260C930 260 1090 400 1320 400C1510 400 1650 340 1740 280" stroke="url(#fA)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M120 520C300 400 520 340 770 340C1010 340 1180 480 1420 480C1590 480 1700 430 1760 390" stroke="url(#fB)" stroke-width="3.2" stroke-linecap="round"/>
+</svg>

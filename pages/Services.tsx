@@ -1,267 +1,237 @@
-import React, { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, ExternalLink, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout';
+import {
+  Bot, Database, ShieldCheck, Terminal,
+  Workflow, Microscope, ArrowRight, CheckCircle2,
+  Target, MessageSquare, BrainCircuit, Sparkles, Phone,
+  Mic, Mail, Globe, BarChart3, Layers, Users, Cpu, Shield
+} from 'lucide-react';
+import { ServicesPopup, SERVICE_CATEGORIES } from '../components/ServicesPopup';
 import { SEO } from '../components/ui/SEO';
-import { AnimatedSection, StaggerContainer, StaggerItem } from '../components/ui/AnimatedSection';
-import { Button } from '../components/ui/Button';
-import { SERVICES } from '../constants';
-import type { Service, ServiceCategory } from '../types';
 
-const categoryOrder: ServiceCategory[] = [
-  'agents',
-  'industry',
-  'marketing',
-  'automation',
-  'consulting',
-  'communication',
-  'other',
+const HIGHLIGHT_SERVICES = [
+  {
+    title: "AI Agent Teams",
+    desc: "Hire a coordinated AI workforce — Sales, Support, Content, and CEO agents that communicate, delegate, and execute together.",
+    icon: Users,
+    link: '/services/ai-sales-agent',
+    features: [
+      "Sales Agent — Qualify leads & close",
+      "Support Agent — Auto-resolve tickets",
+      "Content Agent — Social & email copy",
+      "CEO Agent — Coordinates everything"
+    ]
+  },
+  {
+    title: "Voice & Chat Agents",
+    desc: "AI-powered phone agents, WhatsApp bots, website chatbots, and SMS automation — on every channel your customers use.",
+    icon: Phone,
+    link: '/services/voice-ai-agent',
+    features: [
+      "Voice AI — Human-like phone calls",
+      "WhatsApp Automation",
+      "Website Chatbot",
+      "SMS Follow-ups"
+    ]
+  },
+  {
+    title: "Workflow Automation",
+    desc: "AI-powered automation that reasons about edge cases instead of breaking. Connects to 100+ enterprise tools.",
+    icon: Workflow,
+    link: '/services/workflow-automation',
+    features: [
+      "AI Decision Points",
+      "ERP/CRM Integration",
+      "Approval Workflows",
+      "Error Recovery"
+    ]
+  },
+  {
+    title: "Digital Marketing AI",
+    desc: "SEO content, social media campaigns, email sequences, and lead generation — all powered by AI and trained on your brand.",
+    icon: Globe,
+    link: '/services/seo-content-ai',
+    features: [
+      "SEO & Content Generation",
+      "Social Media Automation",
+      "Email Campaigns",
+      "Lead Generation"
+    ]
+  },
+  {
+    title: "AgentIRL Platform",
+    desc: "The infrastructure layer that makes multi-agent systems production-ready. Orchestration, reliability, monitoring.",
+    icon: Cpu,
+    link: '/services/agent-orchestration',
+    features: [
+      "Multi-Agent Orchestration",
+      "Reliability Engineering",
+      "Enterprise Integration",
+      "99.9% Uptime SLA"
+    ]
+  },
+  {
+    title: "AI Audit & Consulting",
+    desc: "Assess your AI readiness, identify high-impact automation opportunities, and build a custom implementation roadmap.",
+    icon: Microscope,
+    link: '/services/ai-audit-consulting',
+    features: [
+      "ROI Analysis",
+      "Technical Feasibility",
+      "Vendor Selection",
+      "Implementation Roadmap"
+    ]
+  }
 ];
 
-const categoryLabels: Record<ServiceCategory, string> = {
-  agents: 'AI Agents',
-  industry: 'Industry Systems',
-  marketing: 'Marketing Engines',
-  automation: 'Automation Systems',
-  consulting: 'Strategy & Consulting',
-  communication: 'Communication',
-  other: 'Other Solutions',
-};
-
-const routeOverrides: Record<string, string> = {
-  industry_agents: '/agents',
-  marketing_hub: '/marketing',
-  white_label: '/white-label',
-  snake: '/snake',
-};
-
-const demoRouteMap: Record<string, string> = {
-  restaurant: '/demos/restaurant',
-  clinic: '/demos/clinic',
-  salon: '/demos/salon',
-  dealership: '/demos/dealership',
-  construction: '/demos/construction',
-  whatsapp: '/demos/whatsapp',
-  voice: '/demos/voice',
-  'business-plan': '/demos/business-plan',
-  real_estate: '/demos/real_estate',
-  legal: '/demos/legal',
-  ecommerce: '/demos/ecommerce',
-  education: '/demos/education',
-  recruitment: '/demos/recruitment',
-  'workflow-automation': '/demos/workflow-automation',
-  'data-analytics': '/demos/data-analytics',
-  'content-generator': '/demos/content-generator',
-  'agent-orchestration': '/demos/agent-orchestration',
-  'custom-model': '/demos/custom-model',
-  'lead-gen': '/demos/lead-gen',
-};
-
-const resolveServiceUrl = (service: Service): string => {
-  if (service.externalUrl) return service.externalUrl;
-  if (routeOverrides[service.id]) return routeOverrides[service.id];
-  if (service.demoId && demoRouteMap[service.demoId]) return demoRouteMap[service.demoId];
-  if (service.demoId) return '/demo-form';
-  return `/contact?subject=${encodeURIComponent(`Service inquiry: ${service.name}`)}`;
-};
-
-const hueByCategory: Record<ServiceCategory, string> = {
-  agents: '#3466e3',
-  industry: '#2ea884',
-  marketing: '#6a7ce8',
-  automation: '#3a88db',
-  consulting: '#7a63df',
-  communication: '#2f9f93',
-  other: '#5f7393',
-};
-
-const ServiceItem: React.FC<{ service: Service; active: boolean }> = ({ service, active }) => {
-  const target = resolveServiceUrl(service);
-  const isExternal = Boolean(service.externalUrl);
-  const category = service.category ?? 'other';
-  const accent = hueByCategory[category];
-
-  const item = (
-    <motion.article
-      id={service.id}
-      whileHover={{ y: -3 }}
-      className={`rounded-2xl border p-5 transition-all duration-300 ${
-        active
-          ? 'border-[#89a8ee] bg-[#edf3ff] shadow-[0_16px_36px_-30px_rgba(41,75,162,0.85)]'
-          : 'border-[#d8e2ef] bg-white'
-      }`}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[#d5e0ee] bg-[#f8fbff] text-[#2d4f95]">
-          {service.icon}
-        </div>
-        <div className="flex items-center gap-2">
-          {service.highlight ? (
-            <span
-              className="rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]"
-              style={{ backgroundColor: `${accent}1a`, color: accent }}
-            >
-              {service.highlight}
-            </span>
-          ) : null}
-          {isExternal ? <ExternalLink className="h-4 w-4 text-[#7285a4]" /> : null}
-        </div>
-      </div>
-
-      <h3 className="mt-4 text-xl font-semibold text-[#12223e]">{service.name}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-[#53637d]">{service.description}</p>
-
-      <div className="mt-4 flex flex-wrap gap-2">
-        {(service.features || service.useCases || []).slice(0, 3).map((itemText) => (
-          <span
-            key={`${service.id}-${itemText}`}
-            className="rounded-full border border-[#d7e1ef] bg-[#f8fbff] px-2.5 py-1 text-xs text-[#5f7190]"
-          >
-            {itemText}
-          </span>
-        ))}
-      </div>
-
-      <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold" style={{ color: accent }}>
-        Explore
-        <ArrowRight className="h-4 w-4" />
-      </div>
-    </motion.article>
-  );
-
-  if (isExternal) {
-    return (
-      <a href={target} target="_blank" rel="noopener noreferrer" className="block h-full">
-        {item}
-      </a>
-    );
-  }
-
-  return (
-    <Link to={target} className="block h-full">
-      {item}
-    </Link>
-  );
-};
-
-export const Services: React.FC = () => {
-  const { serviceId } = useParams();
-  const visibleServices = SERVICES.filter((service) => service.id !== 'snake');
-
-  useEffect(() => {
-    if (!serviceId) return;
-    requestAnimationFrame(() => {
-      const target = document.getElementById(serviceId);
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-  }, [serviceId]);
-
-  const grouped = visibleServices.reduce<Record<ServiceCategory, Service[]>>(
-    (acc, service) => {
-      const category = service.category ?? 'other';
-      acc[category].push(service);
-      return acc;
-    },
-    {
-      agents: [],
-      industry: [],
-      marketing: [],
-      automation: [],
-      consulting: [],
-      communication: [],
-      other: [],
-    }
-  );
-
-  const categories = categoryOrder.filter((category) => grouped[category].length > 0);
+export const Services = () => {
+  const [showAllServices, setShowAllServices] = useState(false);
 
   return (
     <Layout>
       <SEO
-        title="AI Services for Business | Viktron"
-        description="Explore Viktron services: AI agents, automation systems, growth marketing, integrations, and consulting."
-        keywords="AI services, automation, AI agents, business AI, growth systems"
+        title="AI Services | Agent Teams, Voice AI, Automation & Marketing"
+        description="Explore Viktron's AI services: coordinated agent teams, voice & chat agents, workflow automation, digital marketing AI, and the AgentIRL enterprise platform. Start from $199/mo."
+        keywords="AI services, AI agent teams, voice AI agent, workflow automation, digital marketing AI, AgentIRL platform, AI consulting, AI audit, chatbot, WhatsApp bot, SMS automation"
         url="/services"
       />
+      {/* Hero */}
+      <section className="pt-32 pb-20 bg-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-50/50 rounded-full blur-[130px] pointer-events-none" />
+        <div className="container-custom relative z-10 text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-mono mb-6">
+            Our Services
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6 tracking-tight">
+            AI Solutions That <br className="hidden md:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">Grow Your Business</span>
+          </h1>
+          <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed mb-10">
+            From AI agent teams that handle sales and support, to voice agents, workflow automation,
+            and digital marketing — we build the AI systems that drive real revenue.
+          </p>
+          <button
+            onClick={() => setShowAllServices(true)}
+            className="btn btn-primary rounded-xl px-8 py-3 text-lg shadow-lg shadow-blue-500/20 inline-flex items-center gap-2"
+          >
+            Explore All Services <ArrowRight className="w-5 h-5" />
+          </button>
+        </div>
+      </section>
 
-      <section className="pt-32 pb-12 px-4">
+      {/* Services Grid */}
+      <section className="py-20 bg-slate-50 border-t border-slate-200">
         <div className="container-custom">
-          <div className="card p-6 md:p-8">
-            <AnimatedSection>
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#d4deeb] bg-[#f8fbff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#60718c]">
-                <Sparkles className="h-4 w-4 text-[#3768e8]" />
-                Service Architecture
-              </div>
-            </AnimatedSection>
-            <div className="mt-6 grid gap-6 lg:grid-cols-[1.06fr_0.94fr] lg:items-center">
-              <AnimatedSection delay={0.08}>
-                <h1 className="text-5xl sm:text-6xl font-semibold text-[#141f33] tracking-tight leading-[0.98]">
-                  Services built for
-                  <br />
-                  practical operators.
-                </h1>
-                <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[#4f607b]">
-                  Each lane is implementation-ready. Pick your path, connect your stack, and run
-                  measurable AI operations without heavy rebuild cycles.
-                </p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Link to="/demo-form">
-                    <Button>Book a Demo</Button>
-                  </Link>
-                  <Link to="/contact">
-                    <Button variant="secondary">Talk to an Architect</Button>
-                  </Link>
-                </div>
-              </AnimatedSection>
-
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {HIGHLIGHT_SERVICES.map((service, idx) => (
               <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded-2xl border border-[#d8e2ef] bg-[#f8fbff] p-5"
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="bg-white p-8 rounded-2xl border border-slate-200 hover:border-blue-200 hover:shadow-lg transition-all duration-300 group flex flex-col"
               >
-                <p className="text-xs uppercase tracking-[0.16em] text-[#7084a1]">Execution Snapshot</p>
-                <div className="mt-4 space-y-3">
-                  {['Channel + CRM mapping', 'Workflow orchestration', 'Monitoring + optimization'].map((item, idx) => (
-                    <div key={item} className="rounded-xl border border-[#d8e2ef] bg-white px-4 py-3">
-                      <p className="text-sm font-semibold text-[#1a2d4b]">0{idx + 1}</p>
-                      <p className="mt-1 text-sm text-[#54647f]">{item}</p>
-                    </div>
-                  ))}
+                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <service.icon className="w-6 h-6 text-blue-600" />
                 </div>
+
+                <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
+                  {service.title}
+                </h3>
+                <p className="text-slate-600 mb-6 leading-relaxed text-sm flex-1">
+                  {service.desc}
+                </p>
+
+                <ul className="space-y-2 mb-6">
+                  {service.features.map((feature, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm text-slate-600">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <Link
+                  to={service.link}
+                  className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors mt-auto"
+                >
+                  Learn more <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Engagement Models */}
+      <section className="py-24 bg-white border-t border-slate-200">
+        <div className="container-custom">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">Pricing That Scales With You</h2>
+            <p className="text-slate-600 max-w-xl mx-auto">Start small, grow big. No long-term contracts.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white transition-colors">
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Starter</h3>
+              <div className="text-3xl font-bold text-slate-900 mb-1">$199<span className="text-base font-normal text-slate-500">/mo</span></div>
+              <p className="text-slate-600 mb-6 text-sm">Single AI agent for one use case.</p>
+              <ul className="space-y-3 mb-8">
+                {['1 AI Agent (Sales or Support)', 'Up to 500 conversations/mo', 'Email & SMS channels', 'Basic analytics'].map((f, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm text-slate-700">
+                    <CheckCircle2 className="w-4 h-4 text-blue-600" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link to="/contact" className="block text-center py-3 rounded-xl bg-slate-200 text-slate-700 hover:bg-slate-300 font-medium text-sm transition-colors">
+                Get Started
+              </Link>
+            </div>
+
+            <div className="p-8 rounded-2xl border border-blue-200 bg-blue-50/50 relative overflow-hidden">
+              <div className="absolute top-4 right-4 bg-blue-600 text-white text-[10px] uppercase font-bold px-2 py-1 rounded">Most Popular</div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Team</h3>
+              <div className="text-3xl font-bold text-slate-900 mb-1">$499<span className="text-base font-normal text-slate-500">/mo</span></div>
+              <p className="text-slate-600 mb-6 text-sm">Full AI team with CEO coordination.</p>
+              <ul className="space-y-3 mb-8">
+                {['Sales + Support + Content + CEO agents', 'Unlimited conversations', 'All channels (voice, chat, email, SMS)', 'Full analytics & daily reports'].map((f, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm text-slate-700">
+                    <CheckCircle2 className="w-4 h-4 text-blue-600" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link to="/contact" className="block text-center py-3 rounded-xl bg-blue-600 text-white hover:bg-blue-700 font-medium text-sm shadow-sm transition-colors">
+                Get Started
+              </Link>
+            </div>
+
+            <div className="p-8 rounded-2xl border border-slate-200 bg-slate-50 hover:bg-white transition-colors">
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Enterprise</h3>
+              <div className="text-3xl font-bold text-slate-900 mb-1">Custom</div>
+              <p className="text-slate-600 mb-6 text-sm">AgentIRL platform + custom agents.</p>
+              <ul className="space-y-3 mb-8">
+                {['AgentIRL platform access', 'Custom agent development', 'Enterprise integrations (SAP, Oracle)', 'Dedicated engineering pod'].map((f, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm text-slate-700">
+                    <CheckCircle2 className="w-4 h-4 text-blue-600" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link to="/contact" className="block text-center py-3 rounded-xl bg-slate-200 text-slate-700 hover:bg-slate-300 font-medium text-sm transition-colors">
+                Contact Sales
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {categories.map((category) => (
-        <section key={category} className="pb-10 px-4">
-          <div className="container-custom">
-            <AnimatedSection>
-              <div className="mb-5 flex items-end justify-between gap-3">
-                <div>
-                  <h2 className="text-3xl sm:text-4xl font-semibold text-[#12223e] tracking-tight">
-                    {categoryLabels[category]}
-                  </h2>
-                  <div
-                    className="mt-2 h-[3px] w-24 rounded-full"
-                    style={{ background: `linear-gradient(90deg, ${hueByCategory[category]}, #8eb3ff)` }}
-                  />
-                </div>
-              </div>
-            </AnimatedSection>
-
-            <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {grouped[category].map((service) => (
-                <StaggerItem key={service.id}>
-                  <ServiceItem service={service} active={serviceId === service.id} />
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
-          </div>
-        </section>
-      ))}
+      {/* All Services Popup */}
+      <ServicesPopup isOpen={showAllServices} onClose={() => setShowAllServices(false)} />
     </Layout>
   );
 };

@@ -1,198 +1,203 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, BarChart3, Bot, Calendar, CheckCircle2, Layers3, Sparkles, Workflow } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import {
+  ArrowRight, Activity, Shield, Terminal, Play, Zap, CheckCircle2,
+  Bot, Users, BrainCircuit, Target, Sparkles, Phone, MessageSquare
+} from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
-import { AnimatedSection, StaggerContainer, StaggerItem } from '../components/ui/AnimatedSection';
-import { Button } from '../components/ui/Button';
+import { AgentSimulation } from '../components/landing/AgentSimulation';
+import { LiveMetricsDashboard } from '../components/landing/LiveMetricsDashboard';
+import { ProcessWorkflow } from '../components/landing/ProcessWorkflow';
+import { FeatureGrid } from '../components/landing/FeatureGrid';
+import { UseCaseDemo } from '../components/landing/UseCaseDemo';
+import { TrustSection } from '../components/landing/TrustSection';
+import { AgentTeamShowcase } from '../components/landing/AgentTeamShowcase';
 
-const solutionPillars = [
-  {
-    icon: <Bot className="h-5 w-5 text-[#3768e8]" />,
-    title: 'Agent Layer',
-    description: 'Customer-facing and internal agents trained on your workflows.',
-    href: '/agents',
-  },
-  {
-    icon: <Workflow className="h-5 w-5 text-[#2fa781]" />,
-    title: 'Automation Layer',
-    description: 'Cross-tool orchestration from intake, CRM, support, and reporting.',
-    href: '/services',
-  },
-  {
-    icon: <BarChart3 className="h-5 w-5 text-[#6a7ce8]" />,
-    title: 'Growth Layer',
-    description: 'Campaign operations and analytics loops that compound weekly.',
-    href: '/marketing',
-  },
-];
+export const Landing = () => {
+    return (
+        <Layout>
+            <SEO
+              title="Viktron | AI Agent Teams & AgentIRL Platform"
+              description="Hire coordinated AI employees — Sales, Support, Content, and CEO agents that work 24/7. Powered by AgentIRL, the infrastructure layer for production-ready multi-agent systems. Plans from $199/mo."
+              keywords="AI agent teams, AI employees, AI sales agent, AI support agent, AI CEO agent, AgentIRL, multi-agent orchestration, AI automation, voice AI, chatbot, WhatsApp automation, business AI"
+              url="/"
+            />
+            {/* 1. Hero Section */}
+            <section className="relative pt-32 pb-20 overflow-hidden bg-white">
+                {/* Background Glows */}
+                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100/50 blur-[130px] rounded-full pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-100/50 blur-[130px] rounded-full pointer-events-none" />
 
-const momentumMetrics = [
-  { label: 'Time to first launch', value: '7-21 days' },
-  { label: 'SLA target', value: '99.9%' },
-  { label: 'Integrations', value: '100+ tools' },
-  { label: 'Support model', value: 'Human + AI' },
-];
+                <div className="container-custom relative z-10">
+                    <div className="flex flex-col lg:flex-row gap-16 items-center mb-24">
+                        {/* Text Content */}
+                        <div className="lg:w-1/2">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-mono text-blue-600 mb-8 backdrop-blur-md">
+                                    <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+                                    AI Agent Teams — Powered by AgentIRL
+                                </div>
 
-const implementationFlow = [
-  { title: 'Map ops', description: 'Audit channels, bottlenecks, and handoff points.' },
-  { title: 'Deploy stack', description: 'Ship agent flows, workflows, and dashboards.' },
-  { title: 'Tune weekly', description: 'Use outcome telemetry to improve conversion and speed.' },
-];
+                                <h1 className="text-5xl lg:text-7xl font-bold text-slate-900 tracking-tight mb-8 leading-[1.1]">
+                                    Your AI Team.<br />
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">Ready to Work.</span>
+                                </h1>
 
-export const Landing: React.FC = () => {
-  return (
-    <Layout>
-      <SEO
-        title="Viktron | AI Agents, Automation, and Growth Systems"
-        description="Viktron builds production-grade AI agents, workflow automation, and growth systems for modern businesses."
-        keywords="AI agency, AI agents, workflow automation, marketing automation, custom AI solutions"
-        url="/"
-      />
+                                <p className="text-xl text-slate-600 mb-10 leading-relaxed max-w-lg">
+                                    Hire coordinated AI employees — Sales, Support, Content, and a CEO agent
+                                    that runs your team. 24/7 availability, instant responses, real results.
+                                </p>
 
-      <section className="pt-32 pb-16 px-4">
-        <div className="container-custom">
-          <AnimatedSection>
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#d4deeb] bg-[#f8fbff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#5b6c87]">
-              <Sparkles className="h-4 w-4 text-[#3768e8]" />
-              Built Like a Product Team
-            </div>
-          </AnimatedSection>
+                                <div className="flex flex-col sm:flex-row gap-4 mb-12">
+                                    <Link to="/agents" className="btn btn-primary btn-lg rounded-lg h-14 px-8 text-lg shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 group">
+                                        <Play size={20} className="fill-current" />
+                                        Browse Agents
+                                    </Link>
+                                    <Link to="/use-cases" className="btn btn-secondary btn-lg rounded-lg h-14 px-8 text-lg flex items-center justify-center border-slate-200 bg-white hover:bg-slate-50 text-slate-900">
+                                        See Use Cases
+                                    </Link>
+                                </div>
 
-          <div className="mt-7 grid gap-8 lg:grid-cols-[1.03fr_0.97fr] lg:items-center">
-            <AnimatedSection delay={0.06}>
-              <h1 className="text-[2.7rem] leading-[0.95] sm:text-[4.15rem] font-semibold tracking-tight text-[#101b2f]">
-                Build the AI layer
-                <br />
-                your business runs on.
-              </h1>
-              <p className="mt-5 max-w-2xl text-lg leading-relaxed text-[#51617c]">
-                We design customer agents, workflow automation, and growth systems as one cohesive
-                operating surface, not a pile of disconnected tools.
-              </p>
+                                {/* Trust Badges */}
+                                <div className="flex flex-wrap items-center gap-6 text-sm text-slate-500 font-mono">
+                                    <div className="flex items-center gap-2">
+                                        <CheckCircle2 size={16} className="text-blue-600" />
+                                        <span>SOC2 Compliant</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <CheckCircle2 size={16} className="text-blue-600" />
+                                        <span>99.99% Uptime</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <CheckCircle2 size={16} className="text-blue-600" />
+                                        <span>From $199/mo</span>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
 
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <Link to="/demo-form">
-                  <Button size="lg" icon={<Calendar className="h-5 w-5" />}>
-                    Book Free Consultation
-                  </Button>
-                </Link>
-                <Link to="/demos">
-                  <Button size="lg" variant="secondary" icon={<Layers3 className="h-5 w-5" />}>
-                    Launch Demos
-                  </Button>
-                </Link>
-                <Link
-                  to="/case-studies"
-                  className="inline-flex items-center gap-2 px-2 text-sm font-semibold text-[#26467f] hover:text-[#102952]"
-                >
-                  View Case Studies
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </AnimatedSection>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.14 }}
-              className="card overflow-hidden p-4 sm:p-5"
-            >
-              <div className="rounded-2xl border border-[#d8e2ef] bg-[#f8fbff] p-4">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#7083a1]">Live Control Surface</p>
-                  <span className="rounded-full bg-[#e8effd] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#2d4f95]">
-                    Active
-                  </span>
-                </div>
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-xl border border-[#d8e2ef] bg-white p-3">
-                    <p className="text-xs uppercase tracking-[0.12em] text-[#7a8da9]">Agent queue</p>
-                    <p className="mt-2 text-2xl font-semibold text-[#13213a]">24</p>
-                  </div>
-                  <div className="rounded-xl border border-[#d8e2ef] bg-white p-3">
-                    <p className="text-xs uppercase tracking-[0.12em] text-[#7a8da9]">Resolved today</p>
-                    <p className="mt-2 text-2xl font-semibold text-[#13213a]">312</p>
-                  </div>
-                </div>
-                <div className="mt-4 rounded-xl border border-[#d8e2ef] bg-white p-3">
-                  <div className="flex items-center justify-between text-xs text-[#627695]">
-                    <span>Weekly optimization score</span>
-                    <span className="font-semibold text-[#2e4f92]">+18%</span>
-                  </div>
-                  <div className="mt-2 h-2 rounded-full bg-[#edf3fd]">
-                    <div className="h-2 w-3/4 rounded-full bg-gradient-to-r from-[#3768e8] to-[#52c9a2]" />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          <AnimatedSection delay={0.18}>
-            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {momentumMetrics.map((item) => (
-                <div key={item.label} className="rounded-2xl border border-[#d8e2ef] bg-white px-4 py-4">
-                  <p className="text-[11px] uppercase tracking-[0.14em] text-[#6b7d98]">{item.label}</p>
-                  <p className="mt-2 text-lg font-semibold text-[#12223e]">{item.value}</p>
-                </div>
-              ))}
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      <section className="pb-16 px-4">
-        <div className="container-custom">
-          <StaggerContainer className="grid gap-4 lg:grid-cols-3">
-            {solutionPillars.map((pillar) => (
-              <StaggerItem key={pillar.title}>
-                <Link to={pillar.href} className="block h-full">
-                  <div className="card h-full p-5">
-                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#eef3fd]">
-                      {pillar.icon}
+                        {/* Hero Graphic - Agent Simulation */}
+                        <div className="lg:w-1/2 h-[500px] w-full relative group perspective-1000">
+                            <motion.div
+                                initial={{ opacity: 0, rotateY: 10, scale: 0.9 }}
+                                animate={{ opacity: 1, rotateY: 0, scale: 1 }}
+                                transition={{ duration: 0.8, delay: 0.2 }}
+                                className="w-full h-full transform transition-all duration-500 group-hover:rotate-y-2"
+                            >
+                                <AgentSimulation />
+                            </motion.div>
+                        </div>
                     </div>
-                    <h3 className="mt-4 text-xl font-semibold text-[#12223e]">{pillar.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-[#53637d]">{pillar.description}</p>
-                    <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#2d4f95]">
-                      Explore
-                      <ArrowRight className="h-4 w-4" />
-                    </div>
-                  </div>
-                </Link>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
+                </div>
 
-      <section className="pb-20 px-4">
-        <div className="container-custom">
-          <div className="card p-6 sm:p-7">
-            <AnimatedSection>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#6e82a0]">Implementation Flow</p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-tight text-[#12223e]">
-                Structured delivery without heavy process overhead.
-              </h2>
-            </AnimatedSection>
+                {/* 2. Real Metrics Section */}
+                <div className="container-custom relative z-20 -mb-32">
+                     <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                     >
+                        <div className="text-center mb-8">
+                            <h2 className="text-sm font-mono text-slate-500 uppercase tracking-widest">Real-time Platform Observability</h2>
+                        </div>
+                        <LiveMetricsDashboard />
+                     </motion.div>
+                </div>
+            </section>
 
-            <StaggerContainer className="mt-6 grid gap-4 md:grid-cols-3">
-              {implementationFlow.map((step, index) => (
-                <StaggerItem key={step.title}>
-                  <div className="rounded-2xl border border-[#d9e3ef] bg-[#f8fbff] p-4 h-full">
-                    <div className="inline-flex items-center gap-2 text-sm font-semibold text-[#2a4a88]">
-                      <CheckCircle2 className="h-4 w-4 text-[#2fa781]" />
-                      Step {index + 1}
+            {/* Spacer for the overlapping dashboard */}
+            <div className="h-40 bg-white" />
+
+            {/* 3. Agent Team Showcase — The flagship interactive section */}
+            <AgentTeamShowcase />
+
+            {/* 4. What Your AI Team Can Do */}
+            <section className="py-24 bg-slate-50 border-t border-slate-200">
+                <div className="container-custom">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
+                            One Platform, Endless Capabilities
+                        </h2>
+                        <p className="text-slate-600 max-w-2xl mx-auto text-lg">
+                            AI agents for sales, support, marketing, voice, and more — all coordinated by AgentIRL.
+                        </p>
                     </div>
-                    <h3 className="mt-3 text-lg font-semibold text-[#14253f]">{step.title}</h3>
-                    <p className="mt-2 text-sm text-[#586985] leading-relaxed">{step.description}</p>
-                  </div>
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
-          </div>
-        </div>
-      </section>
-    </Layout>
-  );
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                        {[
+                            { icon: Target, label: 'AI Sales', desc: 'Qualify & close leads', link: '/services/ai-sales-agent' },
+                            { icon: MessageSquare, label: 'AI Support', desc: 'Answer questions 24/7', link: '/services/ai-support-agent' },
+                            { icon: Sparkles, label: 'AI Content', desc: 'Social & email copy', link: '/services/ai-content-agent' },
+                            { icon: Phone, label: 'Voice AI', desc: 'Phone agents', link: '/services/voice-ai-agent' },
+                            { icon: BrainCircuit, label: 'CEO Agent', desc: 'Team coordination', link: '/services/ai-ceo-agent' },
+                            { icon: Users, label: 'Full Team', desc: 'All agents working', link: '/agents' },
+                        ].map((item, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: idx * 0.08 }}
+                            >
+                                <Link
+                                    to={item.link}
+                                    className="flex flex-col items-center p-5 rounded-2xl bg-white border border-slate-200 hover:border-blue-200 hover:shadow-md transition-all text-center group h-full"
+                                >
+                                    <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                        <item.icon className="w-6 h-6 text-blue-600" />
+                                    </div>
+                                    <span className="font-bold text-slate-900 text-sm mb-1">{item.label}</span>
+                                    <span className="text-xs text-slate-500">{item.desc}</span>
+                                </Link>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* 5. Process / How It Works */}
+            <ProcessWorkflow />
+
+            {/* 6. Feature Grid */}
+            <FeatureGrid />
+
+            {/* 7. Use Case Demos */}
+            <UseCaseDemo />
+
+            {/* 8. Social Proof / Trust */}
+            <TrustSection />
+
+            {/* 9. Footer CTA */}
+            <section className="py-24 relative overflow-hidden">
+                <div className="absolute inset-0 bg-slate-50" />
+                <div className="container-custom relative z-10 text-center">
+                    <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Ready to hire your AI team?</h2>
+                    <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto">
+                        Deploy a coordinated AI workforce today. Start with one agent or hire the full team.
+                        No long-term contracts. Results in the first week.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <Link to="/agents" className="btn btn-primary btn-lg rounded-lg h-12 px-8 shadow-lg shadow-blue-500/20 flex items-center justify-center">
+                            Hire Agents
+                        </Link>
+                        <Link to="/contact" className="btn btn-secondary btn-lg rounded-lg h-12 px-8 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 flex items-center justify-center">
+                            Book Free Consultation
+                        </Link>
+                    </div>
+
+                    {/* Pricing hint */}
+                    <p className="mt-8 text-sm text-slate-500 font-mono">
+                        Plans from $199/mo — Cancel anytime
+                    </p>
+                </div>
+            </section>
+        </Layout>
+    );
 };

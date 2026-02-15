@@ -10,7 +10,8 @@ import {
   MessageSquare, FileText, Settings, Globe, Box, Gamepad2, Briefcase, Mic, Video,
   Mail, Phone, Users, Search, BarChart3, Zap, Database, Link, Lightbulb, GraduationCap,
   Target, TrendingUp, Share2, Megaphone, ShoppingCart, Building2, Stethoscope, Car, Home,
-  UtensilsCrossed, Scissors, BookOpen, HeadphonesIcon, Layers, Bot, Workflow, PieChart
+  UtensilsCrossed, Scissors, BookOpen, HeadphonesIcon, Layers, Bot, Workflow, PieChart,
+  ShieldCheck, Server, Truck, Coins, ClipboardCheck
 } from 'lucide-react';
 
 export { IndustryAgentsIcon, MarketingHubIcon, ClinicIcon, ConstructionIcon, DealershipIcon, RestaurantIcon, SalonIcon, RealEstateIcon, LegalIcon, EcommerceIcon, EducationIcon, RecruitmentIcon, EmailIcon, SocialMediaIcon };
@@ -102,13 +103,37 @@ export const BrandLogo = ({ className = "h-32 w-32" }: { className?: string }) =
 };
 
 export const BrandIcon = ({ className = "h-12 w-12" }: { className?: string }) => (
-  <img
-    src="/viktron-icon.svg"
-    alt="Viktron.ai"
+  <svg
+    viewBox="0 0 512 512"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
     className={`shrink-0 ${className}`}
-    loading="eager"
-    decoding="async"
-  />
+  >
+    <defs>
+      <linearGradient id="brandIconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#3B82F6" />
+        <stop offset="100%" stopColor="#8B5CF6" />
+      </linearGradient>
+    </defs>
+    
+    {/* V Shape */}
+    <path 
+      d="M110 80 L256 380 L402 80" 
+      stroke="url(#brandIconGradient)" 
+      strokeWidth="60" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+    />
+    
+    {/* Tech Nodes */}
+    <circle cx="256" cy="380" r="30" fill="white" />
+    <circle cx="256" cy="380" r="15" fill="#8B5CF6" />
+    <circle cx="110" cy="80" r="20" fill="#3B82F6" />
+    <circle cx="402" cy="80" r="20" fill="#8B5CF6" />
+    
+    {/* Functional Crossbar (The 'Bridge') */}
+    <path d="M190 240 L322 240" stroke="white" strokeWidth="20" strokeLinecap="round" strokeOpacity="0.5" />
+  </svg>
 );
 
 // Service Icons
@@ -1307,93 +1332,93 @@ export const DEALERSHIP_VEHICLES = [
 
 export const INDUSTRY_AGENTS: IndustryAgent[] = [
   {
-    id: 'clinic',
-    name: 'Clinic Agent',
-    industry: 'Healthcare',
-    description: 'Automated patient scheduling, triage, and FAQs for medical clinics.',
-    icon: <ClinicIcon className="w-8 h-8 text-rose-400" />,
-    features: ['Appointment Booking', 'Symptom Triage', 'Patient FAQs', 'Prescription Refills'],
+    id: 'hr_ops',
+    name: 'HR Operations Manager',
+    industry: 'Human Resources',
+    description: 'Automated onboarding, policy compliance queries, and benefits administration.',
+    icon: <Users className="w-8 h-8 text-rose-400" />,
+    features: ['Employee Onboarding', 'Policy Q&A', 'Leave Management', 'Benefits Inquiry'],
     demoAvailable: true
   },
   {
-    id: 'construction',
-    name: 'Construction Agent',
-    industry: 'Construction',
-    description: 'Project management, safety compliance, and resource allocation assistant.',
-    icon: <ConstructionIcon className="w-8 h-8 text-amber-400" />,
-    features: ['Project Tracking', 'Safety Checklists', 'Resource Management', 'Daily Reports'],
+    id: 'it_support',
+    name: 'IT Support Engineer',
+    industry: 'Information Technology',
+    description: 'Tier 1 support automation, access provisioning, and system troubleshooting.',
+    icon: <Server className="w-8 h-8 text-amber-400" />,
+    features: ['Password Resets', 'Access Provisioning', 'Software Deployment', 'Incident Triage'],
     demoAvailable: true
   },
   {
-    id: 'dealership',
-    name: 'Dealership Agent',
-    industry: 'Automotive',
-    description: 'Vehicle inventory, test drive scheduling, and service appointments.',
-    icon: <DealershipIcon className="w-8 h-8 text-blue-400" />,
-    features: ['Inventory Search', 'Test Drive Booking', 'Service Scheduling', 'Financing Calc'],
+    id: 'finance_analyst',
+    name: 'Financial Analyst',
+    industry: 'Finance',
+    description: 'Invoice processing, expense auditing, and automated financial reporting.',
+    icon: <Coins className="w-8 h-8 text-blue-400" />,
+    features: ['Invoice Processing', 'Expense Audits', 'Budget Tracking', 'Financial Reports'],
     demoAvailable: true
   },
   {
-    id: 'restaurant',
-    name: 'Restaurant Agent',
-    industry: 'Hospitality',
-    description: 'Table reservations, menu inquiries, and order management.',
-    icon: <RestaurantIcon className="w-8 h-8 text-emerald-400" />,
-    features: ['Table Reservations', 'Menu Q&A', 'Order Taking', 'Event Booking'],
+    id: 'supply_chain',
+    name: 'Supply Chain Coord',
+    industry: 'Logistics',
+    description: 'Inventory optimization, shipment tracking, and vendor management.',
+    icon: <Truck className="w-8 h-8 text-emerald-400" />,
+    features: ['Inventory Tracking', 'Shipment Updates', 'Vendor Communication', 'Demand Forecasting'],
     demoAvailable: true
   },
   {
-    id: 'salon',
-    name: 'Salon Agent',
-    industry: 'Beauty & Wellness',
-    description: 'Appointment booking, stylist selection, and service consultations.',
-    icon: <SalonIcon className="w-8 h-8 text-purple-400" />,
-    features: ['Appointment Booking', 'Stylist Selection', 'Service Menu', 'Reminders'],
+    id: 'compliance',
+    name: 'Compliance Officer',
+    industry: 'Risk & Legal',
+    description: 'Automated regulatory checks, GDPR/SOC2 monitoring, and policy enforcement.',
+    icon: <ShieldCheck className="w-8 h-8 text-purple-400" />,
+    features: ['GDPR Monitoring', 'Policy Enforcement', 'Audit Trails', 'Risk Assessment'],
     demoAvailable: true
   },
   {
-    id: 'real_estate',
-    name: 'Real Estate Agent',
-    industry: 'Real Estate',
-    description: 'Lead qualification, property viewings, and listing inquiries.',
-    icon: <RealEstateIcon className="w-8 h-8 text-indigo-400" />,
-    features: ['Lead Qualification', 'Schedule Viewings', 'Property Search', 'Mortgage Calc'],
+    id: 'sdr',
+    name: 'Sales Development',
+    industry: 'Sales',
+    description: 'Lead qualification, outbound outreach, and CRM data enrichment.',
+    icon: <TrendingUp className="w-8 h-8 text-indigo-400" />,
+    features: ['Lead Qualification', 'Outbound Campaigns', 'CRM Updates', 'Meeting Booking'],
     demoAvailable: true
   },
   {
-    id: 'legal',
-    name: 'Legal Intake Agent',
+    id: 'legal_assistant',
+    name: 'Legal Assistant',
     industry: 'Legal',
-    description: 'Client intake, case screening, and consultation scheduling.',
-    icon: <LegalIcon className="w-8 h-8 text-slate-400" />,
-    features: ['Case Screening', 'Client Intake', 'FAQ Automation', 'Consultation Booking'],
+    description: 'Contract review, NDA generation, and legal inquiry triage.',
+    icon: <ClipboardCheck className="w-8 h-8 text-slate-400" />,
+    features: ['Contract Review', 'NDA Generation', 'Clause Library', 'Legal Triage'],
     demoAvailable: true
   },
   {
-    id: 'ecommerce',
-    name: 'E-commerce Support',
-    industry: 'Retail',
-    description: 'Order tracking, product recommendations, and returns processing.',
-    icon: <EcommerceIcon className="w-8 h-8 text-pink-400" />,
-    features: ['Order Tracking', 'Product Recommender', 'Returns & Refunds', '24/7 Support'],
+    id: 'csm',
+    name: 'Customer Success',
+    industry: 'Customer Support',
+    description: 'Onboarding guidance, renewal monitoring, and QBR preparation.',
+    icon: <HeadphonesIcon className="w-8 h-8 text-pink-400" />,
+    features: ['Onboarding Flows', 'Renewal Alerts', 'QBR Prep', 'Usage Monitoring'],
     demoAvailable: true
   },
   {
-    id: 'education',
-    name: 'Education Agent',
-    industry: 'Education',
-    description: 'Student enrollment, course inquiries, and campus support.',
-    icon: <EducationIcon className="w-8 h-8 text-yellow-400" />,
-    features: ['Course Info', 'Enrollment Help', 'Student Support', 'Campus Guide'],
+    id: 'marketing_ops',
+    name: 'Marketing Ops',
+    industry: 'Marketing',
+    description: 'Campaign analytics, asset management, and performance reporting.',
+    icon: <Megaphone className="w-8 h-8 text-yellow-400" />,
+    features: ['Campaign Analytics', 'Asset Tagging', 'Performance Reports', 'Lead Scoring'],
     demoAvailable: true
   },
   {
     id: 'recruitment',
-    name: 'Recruitment Agent',
-    industry: 'HR & Staffing',
-    description: 'Candidate screening, interview scheduling, and job FAQs.',
-    icon: <RecruitmentIcon className="w-8 h-8 text-cyan-400" />,
-    features: ['Resume Screening', 'Interview Scheduling', 'Job FAQs', 'Application Status'],
+    name: 'Recruitment Coord',
+    industry: 'Talent Acquisition',
+    description: 'Candidate screening, interview scheduling, and pipeline management.',
+    icon: <Briefcase className="w-8 h-8 text-cyan-400" />,
+    features: ['Resume Screening', 'Interview Scheduling', 'Candidate Comms', 'Pipeline Analytics'],
     demoAvailable: true
   }
 ];

@@ -4,7 +4,7 @@ import { GlassCard } from './ui/GlassCard';
 import { Button } from './ui/Button';
 import {
   X, Calendar, Mail, MessageSquare, ArrowRight, Bot,
-  Clock, CheckCircle, Send, Loader2
+  Clock, CheckCircle, Send, Loader2, ExternalLink
 } from 'lucide-react';
 import { SchedulingModal } from './SchedulingModal';
 

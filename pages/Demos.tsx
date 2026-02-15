@@ -94,9 +94,9 @@ export const Demos: React.FC = () => {
   return (
     <Layout>
       <SEO
-        title="Try AI Demos | Viktron"
-        description="Experience live demos of Viktron AI agents, automation systems, and growth tools."
-        keywords="AI demos, chatbot demo, voice demo, workflow automation demo"
+        title="AgentOps Prototype Lab | Viktron"
+        description="Test live AgentOps prototypes across reliability, integration, orchestration, and industry-specific workflows."
+        keywords="AgentOps demos, AI reliability demo, integration demo, orchestration prototype"
         url="/demos"
       />
 
@@ -105,17 +105,17 @@ export const Demos: React.FC = () => {
           <AnimatedSection>
             <div className="inline-flex items-center gap-2 rounded-full border border-[#d4deeb] bg-[#f8fbff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#60718c]">
               <Play className="h-4 w-4 text-[#3768e8]" />
-              Interactive Demo Library
+              AgentOps Prototype Lab
             </div>
           </AnimatedSection>
           <AnimatedSection delay={0.08}>
-            <h1 className="mt-6 text-5xl sm:text-7xl font-semibold tracking-tight text-[#12223e]">Try before you build.</h1>
+            <h1 className="mt-6 text-5xl sm:text-7xl font-semibold tracking-tight text-[#12223e]">Prototype before production.</h1>
             <p className="mt-4 max-w-3xl text-lg leading-relaxed text-[#52637e]">
-              Explore live demos by capability. Each flow reflects the same production architecture we deploy for clients.
+              Explore live workflows by capability. Each prototype reflects the same AgentOps architecture used in production rollouts.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link to="/demo-form">
-                <Button icon={<Calendar className="h-5 w-5" />}>Book Free Consultation</Button>
+                <Button icon={<Calendar className="h-5 w-5" />}>Book Prototype Review</Button>
               </Link>
               <Link to="/case-studies">
                 <Button variant="secondary">View Case Studies</Button>

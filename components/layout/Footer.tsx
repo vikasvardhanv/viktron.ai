@@ -1,79 +1,74 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react';
-import { BrandIcon, FacebookIcon, InstagramIcon, TikTokIcon, XIcon, YoutubeIcon } from '../../constants';
+import { motion } from 'framer-motion';
+import { Activity, Github, Twitter, Linkedin, MessageSquare } from 'lucide-react';
 
 const footerLinks = {
-  services: [
-    { name: 'AI Agents', path: '/agents' },
-    { name: 'Marketing Hub', path: '/marketing' },
-    { name: 'All Services', path: '/services' },
-    { name: 'Live Demos', path: '/demos' },
-    { name: 'Case Studies', path: '/case-studies' },
-    { name: 'White Label', path: '/white-label' },
+  platform: [
+    { name: 'Observability', path: '/platform/observability' },
+    { name: 'Security & Governance', path: '/platform/security' },
+    { name: 'Integrations', path: '/platform/integrations' },
+    { name: 'Enterprise', path: '/enterprise' },
+    { name: 'Changelog', path: '/changelog' },
+  ],
+  resources: [
+    { name: 'Documentation', path: '/docs' },
+    { name: 'API Reference', path: '/docs/api' },
+    { name: 'Patterns & Guides', path: '/guides' },
+    { name: 'System Status', path: '/status' },
+    { name: 'Community', path: '/community' },
   ],
   company: [
-    { name: 'Contact', path: '/contact' },
+    { name: 'About', path: '/about' },
+    { name: 'Blog', path: '/blog' },
     { name: 'Careers', path: '/careers' },
-    { name: 'Lead Console', path: '/leadbot' },
-    { name: 'Privacy', path: '/privacy' },
-    { name: 'Terms', path: '/terms' },
+    { name: 'Contact', path: '/contact' },
   ],
-  demos: [
-    { name: 'Restaurant AI', path: '/demos/restaurant' },
-    { name: 'Clinic AI', path: '/demos/clinic' },
-    { name: 'Salon AI', path: '/demos/salon' },
-    { name: 'Real Estate AI', path: '/demos/real_estate' },
-    { name: 'Legal AI', path: '/demos/legal' },
-  ],
+  legal: [
+    { name: 'Privacy Policy', path: '/privacy' },
+    { name: 'Terms of Service', path: '/terms' },
+    { name: 'Security', path: '/security-policy' },
+  ]
 };
 
-const socialLinks = [
-  { icon: <TikTokIcon />, href: 'https://www.tiktok.com/@viktron', label: 'TikTok' },
-  { icon: <FacebookIcon />, href: 'https://www.facebook.com/profile.php?id=61582587125978', label: 'Facebook' },
-  { icon: <InstagramIcon />, href: 'https://www.instagram.com/viktron.ai/', label: 'Instagram' },
-  { icon: <YoutubeIcon />, href: 'https://www.youtube.com/@viktron', label: 'YouTube' },
-  { icon: <XIcon />, href: 'https://x.com/viktronai', label: 'X' },
-];
-
-export const Footer: React.FC = () => {
+export const Footer = () => {
   return (
-    <footer className="relative border-t border-[#d5deeb] bg-[#f8faff]">
-      <div className="container-custom py-16">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
+    <footer className="bg-slate-50 border-t border-slate-200 pt-20 pb-10">
+      <div className="container-custom">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-16">
           <div className="lg:col-span-2">
-            <Link to="/" className="inline-flex items-center gap-2">
-              <BrandIcon className="h-8 w-8" />
-              <span className="text-xl font-semibold text-[#13213a] tracking-tight">Viktron</span>
+            <Link to="/" className="flex items-center gap-2 mb-6 group">
+              <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center border border-blue-100 group-hover:bg-blue-100 transition-colors">
+                <Activity className="w-4 h-4 text-blue-600" />
+              </div>
+              <span className="font-bold text-lg tracking-tight text-slate-900 font-mono">Viktron</span>
             </Link>
-            <p className="mt-5 max-w-md text-sm leading-relaxed text-[#51617c]">
-              We build production-ready AI experiences for modern teams: agents, automation,
-              custom integrations, and go-to-market acceleration.
+            <p className="text-slate-600 mb-6 max-w-sm leading-relaxed">
+              The control plane for autonomous agents. Ensure reliability, security, and compliance for your AI workforce.
             </p>
-            <div className="mt-6 space-y-3 text-sm">
-              <a href="mailto:info@viktron.ai" className="inline-flex items-center gap-2 text-[#51617c] hover:text-[#1e3050]">
-                <Mail className="h-4 w-4 text-[#3568e4]" />
-                info@viktron.ai
+            <div className="flex items-center gap-4">
+              <a href="#" className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-blue-50 text-slate-500 hover:text-blue-600 transition-all shadow-sm">
+                <Github size={18} />
               </a>
-              <a href="tel:+18446608065" className="block inline-flex items-center gap-2 text-[#51617c] hover:text-[#1e3050]">
-                <Phone className="h-4 w-4 text-[#3568e4]" />
-                +1 (844) 660-8065
+              <a href="#" className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-blue-50 text-slate-500 hover:text-blue-600 transition-all shadow-sm">
+                <Twitter size={18} />
               </a>
-              <p className="inline-flex items-center gap-2 text-[#51617c]">
-                <MapPin className="h-4 w-4 text-[#3568e4]" />
-                Chicago, IL
-              </p>
+              <a href="#" className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-blue-50 text-slate-500 hover:text-blue-600 transition-all shadow-sm">
+                <Linkedin size={18} />
+              </a>
+              <a href="#" className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-blue-50 text-slate-500 hover:text-blue-600 transition-all shadow-sm">
+                <MessageSquare size={18} />
+              </a>
             </div>
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#7a8ba8] mb-4">Services</h3>
+            <h4 className="font-semibold text-slate-900 mb-6">Platform</h4>
             <ul className="space-y-3">
-              {footerLinks.services.map((link) => (
-                <li key={link.path}>
-                  <Link to={link.path} className="group inline-flex items-center gap-1 text-sm text-[#51617c] hover:text-[#1e3050]">
+              {footerLinks.platform.map((link) => (
+                <li key={link.name}>
+                  <Link to={link.path} className="text-slate-600 hover:text-blue-600 transition-colors text-sm">
                     {link.name}
-                    <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
                   </Link>
                 </li>
               ))}
@@ -81,27 +76,38 @@ export const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#7a8ba8] mb-4">Company</h3>
+            <h4 className="font-semibold text-slate-900 mb-6">Resources</h4>
+            <ul className="space-y-3">
+              {footerLinks.resources.map((link) => (
+                <li key={link.name}>
+                  <Link to={link.path} className="text-slate-600 hover:text-blue-600 transition-colors text-sm">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-slate-900 mb-6">Company</h4>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
-                <li key={link.path}>
-                  <Link to={link.path} className="group inline-flex items-center gap-1 text-sm text-[#51617c] hover:text-[#1e3050]">
+                <li key={link.name}>
+                  <Link to={link.path} className="text-slate-600 hover:text-blue-600 transition-colors text-sm">
                     {link.name}
-                    <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#7a8ba8] mb-4">Demo Routes</h3>
+          
+           <div>
+            <h4 className="font-semibold text-slate-900 mb-6">Legal</h4>
             <ul className="space-y-3">
-              {footerLinks.demos.map((link) => (
-                <li key={link.path}>
-                  <Link to={link.path} className="group inline-flex items-center gap-1 text-sm text-[#51617c] hover:text-[#1e3050]">
+              {footerLinks.legal.map((link) => (
+                <li key={link.name}>
+                  <Link to={link.path} className="text-slate-600 hover:text-blue-600 transition-colors text-sm">
                     {link.name}
-                    <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
                   </Link>
                 </li>
               ))}
@@ -109,26 +115,18 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-14 border-t border-[#dbe4f1] pt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-2">
-            {socialLinks.map((social) => (
-              <a
-                key={social.label}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={social.label}
-                className="h-9 w-9 rounded-full border border-[#d4deec] bg-[#f4f8fe] text-[#4f5f79] hover:text-[#1e3050] hover:bg-[#eaf1fc] inline-flex items-center justify-center"
-              >
-                {social.icon}
-              </a>
-            ))}
-          </div>
-          <p className="text-xs text-[#7586a3]">
-            &copy; {new Date().getFullYear()} Viktron. Built for teams shipping real AI products.
+        <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-slate-500 text-sm">
+            © {new Date().getFullYear()} Viktron Inc. All rights reserved.
           </p>
+          <div className="flex items-center gap-2 text-sm text-slate-500">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            All systems operational
+          </div>
         </div>
       </div>
     </footer>
   );
 };
+
+
