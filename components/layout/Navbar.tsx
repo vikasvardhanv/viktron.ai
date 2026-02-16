@@ -65,6 +65,7 @@ export const Navbar: React.FC = () => {
                 item.isPopup ? (
                   <button
                     key={item.path}
+                    onMouseEnter={() => setIsServicesOpen(true)}
                     onClick={() => setIsServicesOpen(true)}
                     className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
                       isScrolled ? 'text-slate-600 hover:text-slate-900' : 'text-slate-600 hover:text-slate-900'
