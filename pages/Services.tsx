@@ -166,6 +166,38 @@ export const Services = () => {
         </div>
       </section>
 
+      {/* How It Works */}
+      <section className="py-20 bg-white border-t border-slate-200">
+        <div className="container-custom">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">How It Works</h2>
+            <p className="text-slate-600 max-w-xl mx-auto">From onboarding to results in days, not months.</p>
+          </div>
+          <div className="flex flex-col md:flex-row items-start gap-8 md:gap-0">
+            {[
+              { step: '01', title: 'Tell Us Your Business', desc: 'Share your services, pricing, and brand voice. We map the best AI agent setup for your needs.' },
+              { step: '02', title: 'We Deploy Your Agents', desc: 'Your AI team goes live — connected to your phone, email, chat, and CRM channels.' },
+              { step: '03', title: 'They Work 24/7', desc: 'Agents handle leads, support, content, and report daily. You focus on growing your business.' },
+            ].map((s, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="flex-1 flex items-start gap-4 md:px-8 md:border-l md:first:border-l-0 border-slate-200"
+              >
+                <span className="text-4xl font-bold text-blue-100 shrink-0">{s.step}</span>
+                <div>
+                  <h3 className="text-base font-bold text-slate-900 mb-2">{s.title}</h3>
+                  <p className="text-sm text-slate-500 leading-relaxed">{s.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Engagement Models */}
       <section className="py-24 bg-white border-t border-slate-200">
         <div className="container-custom">

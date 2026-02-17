@@ -296,18 +296,18 @@ export const Agents: React.FC = () => {
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 18 }}
-                  className="mx-auto mt-3 w-full max-w-4xl rounded-2xl border border-[#cfdbef] bg-white p-5 shadow-[0_30px_56px_-38px_rgba(19,40,79,0.45)]"
+                  className="mx-auto mt-3 w-full max-w-4xl rounded-2xl border border-slate-200 bg-white p-5 shadow-lg"
                 >
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div className="min-w-0">
-                      <p className="text-xs uppercase tracking-[0.14em] text-[#768aa8]">Selected Agent</p>
-                      <h2 className="mt-1 text-2xl font-semibold text-[#152745]">{selectedAgent.name}</h2>
-                      <p className="mt-2 max-w-2xl text-sm text-[#5b6d89]">{selectedAgent.description}</p>
+                      <p className="text-xs uppercase tracking-[0.14em] text-slate-500">Selected Agent</p>
+                      <h2 className="mt-1 text-2xl font-semibold text-slate-900">{selectedAgent.name}</h2>
+                      <p className="mt-2 max-w-2xl text-sm text-slate-600">{selectedAgent.description}</p>
                       <div className="mt-3 flex flex-wrap gap-2">
                         {selectedAgent.features.slice(0, 4).map((feature) => (
                           <span
                             key={`${selectedAgent.id}-${feature}`}
-                            className="rounded-full border border-[#d0dbef] bg-[#f6f9ff] px-2.5 py-1 text-[11px] text-[#607493]"
+                            className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] text-slate-500"
                           >
                             {feature}
                           </span>
@@ -318,14 +318,14 @@ export const Agents: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => launchAgent(selectedAgent.id)}
-                        className="inline-flex items-center gap-2 rounded-lg bg-[#4f7df4] px-3 py-2 text-xs font-semibold text-white hover:bg-[#3f6fe8]"
+                        className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-xs font-semibold text-white hover:bg-blue-700"
                       >
                         Launch Demo
                         <ArrowRight className="h-3.5 w-3.5" />
                       </button>
                       <button
                         onClick={() => navigate('/demo-form')}
-                        className="inline-flex items-center gap-2 rounded-lg border border-[#cbd8ee] bg-[#f7f9fd] px-3 py-2 text-xs font-semibold text-[#244171] hover:bg-[#edf3fd]"
+                        className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-800 hover:bg-blue-50"
                       >
                         Book
                       </button>

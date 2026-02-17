@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Calendar, CheckCircle, Clock, Mail, MapPin, MessageSquare, Phone } from 'lucide-react';
+import { ArrowRight, Calendar, CheckCircle2, Clock, Mail, MapPin, MessageSquare, Phone, Bot, Shield } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
 import { AnimatedSection, StaggerContainer, StaggerItem } from '../components/ui/AnimatedSection';
@@ -11,19 +11,19 @@ import { SendEmailModal, SendEmailModalStatus } from '../components/SendEmailMod
 
 const contactMethods = [
   {
-    icon: <Mail className="h-5 w-5 text-[#3768e8]" />,
+    icon: <Mail className="h-5 w-5 text-blue-600" />,
     title: 'Email us',
     value: 'info@viktron.ai',
     href: 'mailto:info@viktron.ai',
   },
   {
-    icon: <Phone className="h-5 w-5 text-[#2fa781]" />,
+    icon: <Phone className="h-5 w-5 text-emerald-500" />,
     title: 'Call us',
     value: '+1 (844) 660-8065',
     href: 'tel:+18446608065',
   },
   {
-    icon: <MessageSquare className="h-5 w-5 text-[#6b7de8]" />,
+    icon: <MessageSquare className="h-5 w-5 text-indigo-500" />,
     title: 'WhatsApp',
     value: 'Chat with us',
     href: 'https://Wa.me/+16307033569',
@@ -31,11 +31,12 @@ const contactMethods = [
 ];
 
 const serviceOptions = [
-  'AI Agents',
+  'AI Agent Team (Full)',
+  'Voice & Chat Agents',
   'Workflow Automation',
-  'Marketing Automation',
-  'Voice Agents',
-  'Custom Build',
+  'Digital Marketing AI',
+  'AgentIRL Platform (Enterprise)',
+  'AI Audit & Consulting',
 ];
 
 const faqs = [
@@ -45,13 +46,35 @@ const faqs = [
   },
   {
     question: 'Do you support after launch?',
-    answer: 'Yes. We provide ongoing optimization, monitoring, and iteration support.',
+    answer: 'Yes. We provide ongoing optimization, monitoring, and iteration support with dedicated account managers.',
   },
   {
     question: 'Can we start with a pilot?',
     answer: 'Yes. We can define a scoped pilot with clear success metrics before broader rollout.',
   },
+  {
+    question: 'What industries do you work with?',
+    answer: 'We serve restaurants, medical clinics, real estate, legal, e-commerce, SaaS, finance, recruitment, and more.',
+  },
+  {
+    question: 'How does pricing work?',
+    answer: 'Plans start at $199/mo for a single agent and scale to $999/mo for full AI teams. Enterprise custom pricing available.',
+  },
+  {
+    question: 'Do agents integrate with our existing tools?',
+    answer: 'Yes. We integrate with CRMs, ERPs, Slack, email, calendars, payment systems, and custom APIs out of the box.',
+  },
+  {
+    question: 'Is our data secure?',
+    answer: 'Absolutely. All data is encrypted end-to-end, we are SOC 2 ready, and your data never trains our models.',
+  },
+  {
+    question: 'Can we train agents on our own data?',
+    answer: 'Yes. Every agent is trained on your brand voice, knowledge base, and business processes before deployment.',
+  },
 ];
+
+const INPUT_CLASS = "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20 focus:outline-none transition-colors";
 
 export const Contact: React.FC = () => {
   const location = useLocation();
@@ -140,19 +163,25 @@ export const Contact: React.FC = () => {
       />
 
       <SEO
-        title="Contact Viktron | Book a Consultation"
-        description="Talk to Viktron about AI agents, workflow automation, and growth systems."
+        title="Contact Viktron | Deploy Your AI Team"
+        description="Talk to Viktron about deploying AI agent teams, voice AI, workflow automation, and the AgentIRL platform for your business."
         url="/contact"
       />
 
-      <section className="pt-32 pb-12 px-4">
-        <div className="container-custom">
+      {/* Hero */}
+      <section className="pt-32 pb-12 px-4 bg-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-50/50 rounded-full blur-[130px] pointer-events-none" />
+        <div className="container-custom relative z-10">
           <AnimatedSection>
-            <h1 className="text-5xl sm:text-7xl font-semibold tracking-tight text-[#12223e]">
-              Let’s build your AI stack.
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-xs font-mono text-blue-600 mb-6">
+              <Bot className="w-3 h-3" /> Let's Talk
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight leading-[1.1]">
+              Let's Build Your <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">AI Team.</span>
             </h1>
-            <p className="mt-4 max-w-3xl text-lg text-[#52637e] leading-relaxed">
-              Share your goals and constraints. We’ll map practical next steps and a deployment path.
+            <p className="mt-4 max-w-3xl text-lg text-slate-600 leading-relaxed">
+              Share your goals and constraints. We'll map practical next steps and a deployment path — typically live in 1-3 weeks.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Button icon={<Calendar className="h-4 w-4" />} onClick={() => setIsSchedulingOpen(true)}>
@@ -166,16 +195,17 @@ export const Contact: React.FC = () => {
         </div>
       </section>
 
-      <section className="pb-12 px-4">
+      {/* Contact Methods */}
+      <section className="pb-12 px-4 bg-white">
         <div className="container-custom">
           <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {contactMethods.map((method) => (
               <StaggerItem key={method.title}>
                 <a href={method.href} target={method.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer">
-                  <div className="card p-5 h-full">
-                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#eef3fd]">{method.icon}</div>
-                    <h2 className="mt-4 text-xl font-semibold text-[#12223e]">{method.title}</h2>
-                    <p className="mt-1 text-sm text-[#53637d]">{method.value}</p>
+                  <div className="p-5 rounded-xl border border-slate-200 bg-white hover:border-blue-200 hover:shadow-md transition-all h-full">
+                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50">{method.icon}</div>
+                    <h2 className="mt-4 text-xl font-semibold text-slate-900">{method.title}</h2>
+                    <p className="mt-1 text-sm text-slate-600">{method.value}</p>
                   </div>
                 </a>
               </StaggerItem>
@@ -184,19 +214,20 @@ export const Contact: React.FC = () => {
         </div>
       </section>
 
-      <section className="pb-16 px-4">
+      {/* Form + Sidebar */}
+      <section className="pb-16 px-4 bg-white">
         <div className="container-custom">
           <div className="grid gap-6 lg:grid-cols-[1.12fr_0.88fr]">
             <AnimatedSection>
-              <div className="card p-6 sm:p-7">
-                <h2 className="text-2xl font-semibold text-[#12223e]">Send a message</h2>
-                <p className="mt-2 text-[#566885]">We usually respond within one business day.</p>
+              <div className="p-6 sm:p-8 rounded-2xl border border-slate-200 bg-white">
+                <h2 className="text-2xl font-bold text-slate-900">Send a message</h2>
+                <p className="mt-2 text-slate-600">We usually respond within one business day.</p>
 
                 {error ? (
-                  <div className="mt-4 rounded-xl border border-[#f0c4c9] bg-[#fff4f5] p-3 text-sm text-[#bb3a48]">{error}</div>
+                  <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-600">{error}</div>
                 ) : null}
 
-                <form onSubmit={handleSubmit} className="mt-5 space-y-4">
+                <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                   <div className="grid gap-4 sm:grid-cols-2">
                     <input
                       type="text"
@@ -205,7 +236,7 @@ export const Contact: React.FC = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
+                      className={INPUT_CLASS}
                     />
                     <input
                       type="email"
@@ -214,7 +245,7 @@ export const Contact: React.FC = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
+                      className={INPUT_CLASS}
                     />
                   </div>
 
@@ -225,13 +256,13 @@ export const Contact: React.FC = () => {
                       placeholder="Company name"
                       value={formData.company}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
+                      className={INPUT_CLASS}
                     />
                     <select
                       name="service"
                       value={formData.service}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] focus:border-[#7d9fee] focus:outline-none"
+                      className={INPUT_CLASS}
                     >
                       <option value="">Select service</option>
                       {serviceOptions.map((service) => (
@@ -249,7 +280,7 @@ export const Contact: React.FC = () => {
                     onChange={handleChange}
                     required
                     rows={5}
-                    className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none resize-none"
+                    className={`${INPUT_CLASS} resize-none`}
                   />
 
                   <button type="submit" disabled={isSubmitting} className="btn-primary">
@@ -262,34 +293,45 @@ export const Contact: React.FC = () => {
 
             <AnimatedSection delay={0.08}>
               <div className="space-y-4">
-                <div className="card p-5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#6f83a1]">Availability</p>
+                {/* Availability */}
+                <div className="p-5 rounded-xl border border-slate-200 bg-white">
+                  <p className="text-xs font-mono uppercase tracking-wider text-slate-500">Availability</p>
                   <div className="mt-3 space-y-3">
-                    <div className="flex items-center gap-2 text-sm text-[#334a6e]">
-                      <Clock className="h-4 w-4 text-[#2fa781]" />
+                    <div className="flex items-center gap-2 text-sm text-slate-700">
+                      <Clock className="h-4 w-4 text-emerald-500" />
                       Mon-Fri, 9:00 AM - 6:00 PM CST
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-[#334a6e]">
-                      <MapPin className="h-4 w-4 text-[#3768e8]" />
+                    <div className="flex items-center gap-2 text-sm text-slate-700">
+                      <MapPin className="h-4 w-4 text-blue-600" />
                       Chicago, IL (remote-first team)
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-[#334a6e]">
-                      <CheckCircle className="h-4 w-4 text-[#2fa781]" />
+                    <div className="flex items-center gap-2 text-sm text-slate-700">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                       Typical response: same business day
                     </div>
                   </div>
                 </div>
 
-                <div className="card p-5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#6f83a1]">FAQ</p>
+                {/* FAQ */}
+                <div className="p-5 rounded-xl border border-slate-200 bg-white">
+                  <p className="text-xs font-mono uppercase tracking-wider text-slate-500">FAQ</p>
                   <div className="mt-4 space-y-3">
                     {faqs.map((faq) => (
-                      <div key={faq.question} className="rounded-xl border border-[#d8e2ef] bg-[#f8fbff] p-3">
-                        <p className="text-sm font-semibold text-[#1e3255]">{faq.question}</p>
-                        <p className="mt-1 text-sm text-[#596b88]">{faq.answer}</p>
+                      <div key={faq.question} className="rounded-xl border border-slate-100 bg-slate-50 p-3">
+                        <p className="text-sm font-semibold text-slate-900">{faq.question}</p>
+                        <p className="mt-1 text-sm text-slate-600">{faq.answer}</p>
                       </div>
                     ))}
                   </div>
+                </div>
+
+                {/* Trust */}
+                <div className="p-5 rounded-xl border border-slate-200 bg-slate-50">
+                  <div className="flex items-center gap-2 text-sm text-slate-700">
+                    <Shield className="h-4 w-4 text-blue-600" />
+                    <span className="font-medium">Enterprise-grade security</span>
+                  </div>
+                  <p className="mt-1 text-xs text-slate-500">End-to-end encrypted. SOC 2 ready. Your data never trains our models.</p>
                 </div>
               </div>
             </AnimatedSection>

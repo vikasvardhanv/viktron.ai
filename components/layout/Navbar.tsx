@@ -5,20 +5,22 @@ import { Menu, X, ChevronDown, User, LogOut } from 'lucide-react';
 import { BrandIcon } from '../../constants';
 import { useAuth } from '../../context/AuthContext';
 import { ServicesPopup } from '../ServicesPopup';
+import { AboutPopup } from '../AboutPopup';
 
-const navItems = [
+const navItems: { name: string; path: string; isPopup?: 'services' | 'about' }[] = [
   { name: 'Home', path: '/' },
-  { name: 'Services', path: '/services', isPopup: true },
+  { name: 'Services', path: '/services', isPopup: 'services' },
   { name: 'AI Agents', path: '/agents' },
   { name: 'Use Cases', path: '/use-cases' },
-  { name: 'About', path: '/about' },
-  { name: 'Demos', path: '/demos' },
+  { name: 'About', path: '/about', isPopup: 'about' },
+  { name: 'Pricing', path: '/pricing' },
 ];
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const location = useLocation();
   const { isAuthenticated, user, logout, setShowAuthModal, setAuthModalMode } = useAuth();
@@ -54,7 +56,7 @@ export const Navbar: React.FC = () => {
               <div className="text-blue-600">
                 <BrandIcon className="h-8 w-8" />
               </div>
-              <span className={`text-lg font-bold transition-colors ${isScrolled ? 'text-slate-900' : 'text-slate-900'}`}>
+              <span className="text-lg font-bold text-slate-900">
                 Viktron
               </span>
             </Link>
@@ -63,24 +65,46 @@ export const Navbar: React.FC = () => {
             <div className="hidden md:flex items-center gap-6">
               {navItems.map((item) => (
                 item.isPopup ? (
-                  <button
+                  <div
                     key={item.path}
-                    onMouseEnter={() => setIsServicesOpen(true)}
-                    onClick={() => setIsServicesOpen(true)}
-                    className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer ${
-                      isScrolled ? 'text-slate-600 hover:text-slate-900' : 'text-slate-600 hover:text-slate-900'
-                    } ${location.pathname.startsWith('/services') ? 'text-blue-600' : ''}`}
+                    className="relative"
+                    onMouseEnter={() => {
+                      if (item.isPopup === 'services') setIsServicesOpen(true);
+                      if (item.isPopup === 'about') setIsAboutOpen(true);
+                    }}
+                    onMouseLeave={() => {
+                      if (item.isPopup === 'services') setIsServicesOpen(false);
+                      if (item.isPopup === 'about') setIsAboutOpen(false);
+                    }}
                   >
-                    {item.name}
-                    <ChevronDown className="w-3 h-3" />
-                  </button>
+                    <button
+                      onClick={() => {
+                        if (item.isPopup === 'services') setIsServicesOpen(!isServicesOpen);
+                        if (item.isPopup === 'about') setIsAboutOpen(!isAboutOpen);
+                      }}
+                      className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer text-slate-600 hover:text-slate-900 ${
+                        location.pathname.startsWith(item.path) && item.path !== '/' ? 'text-blue-600' : ''
+                      }`}
+                    >
+                      {item.name}
+                      <ChevronDown className={`w-3 h-3 transition-transform ${
+                        (item.isPopup === 'services' && isServicesOpen) || (item.isPopup === 'about' && isAboutOpen) ? 'rotate-180' : ''
+                      }`} />
+                    </button>
+                    {item.isPopup === 'services' && (
+                      <ServicesPopup isOpen={isServicesOpen} onClose={() => setIsServicesOpen(false)} />
+                    )}
+                    {item.isPopup === 'about' && (
+                      <AboutPopup isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+                    )}
+                  </div>
                 ) : (
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`text-sm font-medium transition-colors ${
-                      isScrolled ? 'text-slate-600 hover:text-slate-900' : 'text-slate-600 hover:text-slate-900'
-                    } ${location.pathname === item.path ? 'text-blue-600' : ''}`}
+                    className={`text-sm font-medium transition-colors text-slate-600 hover:text-slate-900 ${
+                      location.pathname === item.path ? 'text-blue-600' : ''
+                    }`}
                   >
                     {item.name}
                   </Link>
@@ -105,7 +129,6 @@ export const Navbar: React.FC = () => {
                     <ChevronDown className={`h-4 w-4 text-slate-500 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
                   </button>
 
-                  {/* User dropdown menu */}
                   <AnimatePresence>
                     {showUserMenu && (
                       <motion.div
@@ -143,34 +166,21 @@ export const Navbar: React.FC = () => {
                   Sign In
                 </button>
               )}
-              <button
-                onClick={() => {
-                  if (isAuthenticated) {
-                    window.location.href = '/contact';
-                  } else {
-                    setAuthModalMode('signup');
-                    setShowAuthModal(true);
-                  }
-                }}
-                  className="btn-primary text-sm"
-                >
-                  Get Started
-                </button>
+              <Link to="/contact" className="btn btn-primary text-sm">
+                Get Started
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-white/70 hover:text-white transition-colors"
+              className="md:hidden p-2 text-slate-600 hover:text-slate-900 transition-colors"
             >
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
       </motion.nav>
-
-      {/* Services Popup */}
-      <ServicesPopup isOpen={isServicesOpen} onClose={() => setIsServicesOpen(false)} />
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -182,7 +192,7 @@ export const Navbar: React.FC = () => {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 md:hidden"
           >
-            <div className="absolute inset-0 bg-[#0a0d13]" />
+            <div className="absolute inset-0 bg-slate-900" />
             <div className="relative pt-24 px-6">
               <div className="flex flex-col gap-2">
                 {navItems.map((item, index) => (
@@ -193,15 +203,13 @@ export const Navbar: React.FC = () => {
                     transition={{ delay: index * 0.1 }}
                   >
                     {item.isPopup ? (
-                      <button
-                        onClick={() => {
-                          setIsMobileMenuOpen(false);
-                          setIsServicesOpen(true);
-                        }}
+                      <Link
+                        to={item.path}
+                        onClick={() => setIsMobileMenuOpen(false)}
                         className="block w-full text-left px-4 py-3 text-lg font-medium rounded-xl transition-colors text-white/70 hover:text-white hover:bg-white/5 border border-transparent"
                       >
                         {item.name}
-                      </button>
+                      </Link>
                     ) : (
                       <Link
                         to={item.path}
@@ -233,7 +241,7 @@ export const Navbar: React.FC = () => {
                           logout();
                           setIsMobileMenuOpen(false);
                         }}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-3 text-lg font-medium text-white/70 hover:text-white border border-white/10 rounded-xl bg-[#121724]"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-3 text-lg font-medium text-white/70 hover:text-white border border-white/10 rounded-xl bg-slate-800"
                       >
                         <LogOut className="h-5 w-5" />
                         Sign Out
@@ -247,20 +255,17 @@ export const Navbar: React.FC = () => {
                           setAuthModalMode('login');
                           setShowAuthModal(true);
                         }}
-                        className="w-full px-4 py-3 text-center text-lg font-medium text-white/70 hover:text-white border border-white/10 rounded-xl bg-[#121724]"
+                        className="w-full px-4 py-3 text-center text-lg font-medium text-white/70 hover:text-white border border-white/10 rounded-xl bg-slate-800"
                       >
                         Sign In
                       </button>
-                      <button
-                        onClick={() => {
-                          setIsMobileMenuOpen(false);
-                          setAuthModalMode('signup');
-                          setShowAuthModal(true);
-                        }}
+                      <Link
+                        to="/contact"
+                        onClick={() => setIsMobileMenuOpen(false)}
                         className="block w-full px-4 py-3 text-center text-lg font-semibold text-slate-950 bg-white rounded-xl"
                       >
                         Get Started
-                      </button>
+                      </Link>
                     </>
                   )}
                 </motion.div>

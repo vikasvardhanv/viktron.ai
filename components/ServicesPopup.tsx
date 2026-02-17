@@ -2,9 +2,9 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
-  X, Bot, Phone, Megaphone, Workflow, BrainCircuit, Users,
+  Bot, Phone, Megaphone, Workflow, BrainCircuit, Users,
   MessageSquare, BarChart3, Shield, Sparkles, ArrowRight,
-  Mic, Mail, Globe, Database, Cpu, Target, Layers, Zap
+  Mic, Mail, Globe, Database, Cpu, Target, Layers
 } from 'lucide-react';
 
 interface ServicesPopupProps {
@@ -18,6 +18,7 @@ const SERVICE_CATEGORIES = [
     description: 'Hire a coordinated AI workforce that runs your business operations 24/7.',
     icon: Users,
     color: 'blue',
+    link: '/services/ai-sales-agent',
     services: [
       { name: 'AI Sales Agent', slug: 'ai-sales-agent', icon: Target, desc: 'Qualify leads, respond instantly, close deals while you sleep.' },
       { name: 'AI Support Agent', slug: 'ai-support-agent', icon: MessageSquare, desc: 'Answer customer questions from your knowledge base, escalate when needed.' },
@@ -30,6 +31,7 @@ const SERVICE_CATEGORIES = [
     description: 'AI-powered voice and conversational agents for every channel.',
     icon: Mic,
     color: 'purple',
+    link: '/services/voice-ai-agent',
     services: [
       { name: 'Voice AI Agent', slug: 'voice-ai-agent', icon: Phone, desc: 'Human-like phone agents that handle calls, book appointments, qualify leads.' },
       { name: 'WhatsApp Agent', slug: 'whatsapp-agent', icon: MessageSquare, desc: 'Automated WhatsApp conversations for sales, support, and notifications.' },
@@ -42,6 +44,7 @@ const SERVICE_CATEGORIES = [
     description: 'End-to-end business automation and AI-powered SaaS solutions.',
     icon: Workflow,
     color: 'emerald',
+    link: '/services/workflow-automation',
     services: [
       { name: 'Workflow Automation', slug: 'workflow-automation', icon: Workflow, desc: 'Automate complex business processes with AI decision-making.' },
       { name: 'Data Analytics AI', slug: 'data-analytics-ai', icon: BarChart3, desc: 'AI-powered dashboards, reporting, and business intelligence.' },
@@ -54,6 +57,7 @@ const SERVICE_CATEGORIES = [
     description: 'AI-powered marketing that generates leads and scales your brand.',
     icon: Megaphone,
     color: 'amber',
+    link: '/services/seo-content-ai',
     services: [
       { name: 'SEO & Content AI', slug: 'seo-content-ai', icon: Globe, desc: 'AI-generated SEO content, blog posts, and keyword optimization.' },
       { name: 'Social Media AI', slug: 'social-media-ai', icon: Sparkles, desc: 'Automated social media posting, engagement, and analytics.' },
@@ -66,6 +70,7 @@ const SERVICE_CATEGORIES = [
     description: 'The infrastructure layer that makes AI agents production-ready.',
     icon: Cpu,
     color: 'cyan',
+    link: '/services/agent-orchestration',
     services: [
       { name: 'Agent Orchestration', slug: 'agent-orchestration', icon: BrainCircuit, desc: 'Multi-agent coordination, task delegation, and swarm intelligence.' },
       { name: 'Reliability Engineering', slug: 'reliability-engineering', icon: Shield, desc: 'Error recovery, fallbacks, guardrails, and 99.9% uptime SLA.' },
@@ -75,120 +80,63 @@ const SERVICE_CATEGORIES = [
   },
 ];
 
-const colorMap: Record<string, { bg: string; text: string; border: string; hoverBg: string }> = {
-  blue: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-200', hoverBg: 'hover:bg-blue-50/50' },
-  purple: { bg: 'bg-purple-50', text: 'text-purple-600', border: 'border-purple-200', hoverBg: 'hover:bg-purple-50/50' },
-  emerald: { bg: 'bg-emerald-50', text: 'text-emerald-600', border: 'border-emerald-200', hoverBg: 'hover:bg-emerald-50/50' },
-  amber: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-amber-200', hoverBg: 'hover:bg-amber-50/50' },
-  cyan: { bg: 'bg-cyan-50', text: 'text-cyan-600', border: 'border-cyan-200', hoverBg: 'hover:bg-cyan-50/50' },
+const colorMap: Record<string, { bg: string; text: string }> = {
+  blue: { bg: 'bg-blue-50', text: 'text-blue-600' },
+  purple: { bg: 'bg-purple-50', text: 'text-purple-600' },
+  emerald: { bg: 'bg-emerald-50', text: 'text-emerald-600' },
+  amber: { bg: 'bg-amber-50', text: 'text-amber-600' },
+  cyan: { bg: 'bg-cyan-50', text: 'text-cyan-600' },
 };
 
 export const ServicesPopup: React.FC<ServicesPopupProps> = ({ isOpen, onClose }) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60]"
-          />
-
-          {/* Popup */}
-          <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.98 }}
-            transition={{ duration: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
-            className="fixed inset-4 md:inset-8 lg:inset-12 xl:inset-x-24 xl:inset-y-12 bg-white rounded-2xl shadow-2xl z-[61] overflow-hidden flex flex-col"
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between px-8 py-5 border-b border-slate-200 shrink-0">
-              <div>
-                <h2 className="text-2xl font-bold text-slate-900">Our Services</h2>
-                <p className="text-sm text-slate-500 mt-1">AI solutions that grow your business on autopilot</p>
-              </div>
-              <button
-                onClick={onClose}
-                className="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors"
-              >
-                <X className="w-5 h-5 text-slate-600" />
-              </button>
-            </div>
-
-            {/* Content - Scrollable */}
-            <div className="flex-1 overflow-y-auto p-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-                {SERVICE_CATEGORIES.map((category, catIdx) => {
-                  const colors = colorMap[category.color];
-                  return (
-                    <motion.div
-                      key={catIdx}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: catIdx * 0.08 }}
-                      className="group"
-                    >
-                      {/* Category Header */}
-                      <div className="flex items-center gap-3 mb-4">
-                        <div className={`w-10 h-10 rounded-xl ${colors.bg} flex items-center justify-center`}>
-                          <category.icon className={`w-5 h-5 ${colors.text}`} />
-                        </div>
-                        <div>
-                          <h3 className="font-bold text-slate-900 text-lg">{category.title}</h3>
-                          <p className="text-xs text-slate-500">{category.description}</p>
-                        </div>
-                      </div>
-
-                      {/* Service Items */}
-                      <div className="space-y-2">
-                        {category.services.map((service, svcIdx) => (
-                          <Link
-                            key={svcIdx}
-                            to={`/services/${service.slug}`}
-                            onClick={onClose}
-                            className={`flex items-start gap-3 p-3 rounded-xl border border-transparent ${colors.hoverBg} hover:border-slate-200 transition-all duration-200 group/item`}
-                          >
-                            <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center shrink-0 mt-0.5 group-hover/item:shadow-sm transition-shadow">
-                              <service.icon className="w-4 h-4 text-slate-500 group-hover/item:text-slate-700" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm font-semibold text-slate-800 group-hover/item:text-blue-600 transition-colors">
-                                  {service.name}
-                                </span>
-                                <ArrowRight className="w-3 h-3 text-slate-400 opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-0.5 transition-all" />
-                              </div>
-                              <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{service.desc}</p>
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              {/* Bottom CTA */}
-              <div className="mt-10 p-6 rounded-2xl bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div>
-                  <h3 className="text-lg font-bold text-slate-900">Not sure which service fits?</h3>
-                  <p className="text-sm text-slate-600 mt-1">Book a free 15-minute consultation. We'll map your needs to the right solution.</p>
-                </div>
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 8 }}
+          transition={{ duration: 0.2, ease: [0.25, 0.4, 0.25, 1] }}
+          onMouseLeave={onClose}
+          className="absolute top-full left-0 mt-2 w-[340px] bg-white rounded-xl shadow-xl border border-slate-200 z-[61] overflow-hidden"
+        >
+          <div className="py-2">
+            {SERVICE_CATEGORIES.map((category, idx) => {
+              const colors = colorMap[category.color];
+              return (
                 <Link
-                  to="/contact"
+                  key={idx}
+                  to={category.link}
                   onClick={onClose}
-                  className="btn btn-primary px-6 py-3 rounded-xl whitespace-nowrap flex items-center gap-2"
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors group"
                 >
-                  Talk to Us <ArrowRight className="w-4 h-4" />
+                  <div className={`w-9 h-9 rounded-lg ${colors.bg} flex items-center justify-center shrink-0`}>
+                    <category.icon className={`w-4.5 h-4.5 ${colors.text}`} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-sm font-semibold text-slate-900 group-hover:text-blue-600 transition-colors block">
+                      {category.title}
+                    </span>
+                    <span className="text-xs text-slate-500 leading-tight line-clamp-1">
+                      {category.description}
+                    </span>
+                  </div>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-blue-500 group-hover:translate-x-0.5 transition-all shrink-0" />
                 </Link>
-              </div>
-            </div>
-          </motion.div>
-        </>
+              );
+            })}
+          </div>
+
+          <div className="border-t border-slate-100 px-4 py-3">
+            <Link
+              to="/services"
+              onClick={onClose}
+              className="flex items-center justify-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+            >
+              View All Services <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );

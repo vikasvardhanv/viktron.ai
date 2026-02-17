@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { GlassCard } from '../ui/GlassCard';
 import { Button } from '../ui/Button';
 import {
   X, Mail, Lock, User, Building2, Phone, ArrowRight, Eye, EyeOff,
@@ -255,11 +254,11 @@ export const AuthModal: React.FC = () => {
           className="relative w-full max-w-md max-h-[90vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
-          <GlassCard className="p-8" tilt={false}>
+          <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xl">
             {/* Close button */}
             <button
               onClick={() => setShowAuthModal(false)}
-              className="absolute top-4 right-4 p-2 rounded-lg hover:bg-white/10 transition-colors text-white/60 hover:text-white"
+              className="absolute top-4 right-4 p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600"
             >
               <X className="h-5 w-5" />
             </button>
@@ -268,7 +267,7 @@ export const AuthModal: React.FC = () => {
             {view !== 'options' && (
               <button
                 onClick={() => setView('options')}
-                className="absolute top-4 left-4 p-2 rounded-lg hover:bg-white/10 transition-colors text-white/60 hover:text-white"
+                className="absolute top-4 left-4 p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600"
               >
                 <ArrowLeft className="h-5 w-5" />
               </button>
@@ -276,7 +275,7 @@ export const AuthModal: React.FC = () => {
 
             {/* Header */}
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-white mb-2">
+              <h2 className="text-2xl font-bold text-slate-900 mb-2">
                 {view === 'options'
                   ? (isSignUp ? 'Create Account' : 'Welcome Back')
                   : view === 'email-login'
@@ -284,7 +283,7 @@ export const AuthModal: React.FC = () => {
                     : 'Sign up with Email'
                 }
               </h2>
-              <p className="text-white/60 text-sm">
+              <p className="text-slate-500 text-sm">
                 {view === 'options'
                   ? (isSignUp ? 'Choose how to create your account' : 'Choose how to sign in')
                   : (view === 'email-login' ? 'Enter your email and password' : 'Fill in your details')
@@ -294,13 +293,13 @@ export const AuthModal: React.FC = () => {
 
             {/* Error/Success Messages */}
             {error && (
-              <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center gap-2 text-red-400 text-sm">
+              <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 flex items-center gap-2 text-red-600 text-sm">
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 {error}
               </div>
             )}
             {success && (
-              <div className="mb-4 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2 text-emerald-400 text-sm">
+              <div className="mb-4 p-3 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center gap-2 text-emerald-600 text-sm">
                 <CheckCircle2 className="h-4 w-4 shrink-0" />
                 {success}
               </div>
@@ -309,15 +308,15 @@ export const AuthModal: React.FC = () => {
             {/* Options View */}
             {view === 'options' && (
               <div className="space-y-3">
-                {/* Google Sign-In Button - Server-side redirect */}
+                {/* Google Sign-In Button */}
                 <button
                   onClick={handleGoogleSignIn}
                   disabled={oauthLoading !== null}
-                  className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition-colors border border-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors border border-slate-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {oauthLoading === 'google' ? (
                     <>
-                      <Loader2 className="h-5 w-5 animate-spin text-gray-500" />
+                      <Loader2 className="h-5 w-5 animate-spin text-slate-400" />
                       <span>Redirecting to Google...</span>
                     </>
                   ) : (
@@ -332,7 +331,7 @@ export const AuthModal: React.FC = () => {
                 <button
                   onClick={handleAppleSignIn}
                   disabled={oauthLoading !== null}
-                  className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-black text-white font-medium rounded-xl hover:bg-gray-900 transition-colors border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-slate-900 text-white font-medium rounded-xl hover:bg-slate-800 transition-colors border border-slate-900 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {oauthLoading === 'apple' ? (
                     <>
@@ -350,10 +349,10 @@ export const AuthModal: React.FC = () => {
                 {/* Divider */}
                 <div className="relative my-6">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-white/10" />
+                    <div className="w-full border-t border-slate-200" />
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-4 bg-gray-900 text-white/50">or</span>
+                    <span className="px-4 bg-white text-slate-400">or</span>
                   </div>
                 </div>
 
@@ -361,30 +360,30 @@ export const AuthModal: React.FC = () => {
                 <button
                   onClick={() => setView(isSignUp ? 'email-signup' : 'email-login')}
                   disabled={oauthLoading !== null}
-                  className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white/5 text-white font-medium rounded-xl hover:bg-white/10 transition-colors border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-slate-50 text-slate-700 font-medium rounded-xl hover:bg-slate-100 transition-colors border border-slate-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Mail className="h-5 w-5" />
                   <span>Continue with Email</span>
                 </button>
 
                 {/* Terms notice */}
-                <p className="text-xs text-white/40 text-center mt-6">
+                <p className="text-xs text-slate-400 text-center mt-6">
                   By continuing, you agree to our{' '}
-                  <Link to="/terms" onClick={() => setShowAuthModal(false)} className="text-sky-400 hover:underline">
+                  <Link to="/terms" onClick={() => setShowAuthModal(false)} className="text-blue-600 hover:underline">
                     Terms of Service
                   </Link>{' '}
                   and{' '}
-                  <Link to="/privacy" onClick={() => setShowAuthModal(false)} className="text-sky-400 hover:underline">
+                  <Link to="/privacy" onClick={() => setShowAuthModal(false)} className="text-blue-600 hover:underline">
                     Privacy Policy
                   </Link>
                 </p>
 
                 {/* Go to Home link */}
-                <div className="text-center mt-4 pt-4 border-t border-white/10">
+                <div className="text-center mt-4 pt-4 border-t border-slate-100">
                   <Link
                     to="/"
                     onClick={() => setShowAuthModal(false)}
-                    className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors"
+                    className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-slate-600 transition-colors"
                   >
                     <Home className="h-4 w-4" />
                     Go to Home
@@ -397,36 +396,36 @@ export const AuthModal: React.FC = () => {
             {view === 'email-login' && (
               <form onSubmit={handleEmailSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-white/70 mb-2">Email</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Email</label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white/30" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                     <input
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white placeholder-white/30 focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/50"
+                      className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
                       placeholder="you@company.com"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white/70 mb-2">Password</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Password</label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white/30" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-12 text-white placeholder-white/30 focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/50"
+                      className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-12 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
                       placeholder="••••••••"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                     >
                       {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
@@ -442,7 +441,7 @@ export const AuthModal: React.FC = () => {
                   {isLoading ? 'Signing in...' : 'Sign In'}
                 </Button>
 
-                <p className="text-center text-sm text-white/50 mt-4">
+                <p className="text-center text-sm text-slate-500 mt-4">
                   Don't have an account?{' '}
                   <button
                     type="button"
@@ -450,7 +449,7 @@ export const AuthModal: React.FC = () => {
                       setAuthModalMode('signup');
                       setView('options');
                     }}
-                    className="text-sky-400 hover:text-sky-300"
+                    className="text-blue-600 hover:text-blue-700 font-medium"
                   >
                     Sign up
                   </button>
@@ -462,83 +461,83 @@ export const AuthModal: React.FC = () => {
             {view === 'email-signup' && (
               <form onSubmit={handleEmailSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-white/70 mb-2">Full Name *</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Full Name *</label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white/30" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                     <input
                       type="text"
                       required
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white placeholder-white/30 focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/50"
+                      className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
                       placeholder="John Doe"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white/70 mb-2">Email *</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Email *</label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white/30" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                     <input
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white placeholder-white/30 focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/50"
+                      className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
                       placeholder="you@company.com"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white/70 mb-2">Password *</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Password *</label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white/30" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-12 text-white placeholder-white/30 focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/50"
+                      className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-12 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
                       placeholder="••••••••"
                       minLength={8}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                     >
                       {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
                   </div>
-                  <p className="text-xs text-white/40 mt-1">Minimum 8 characters</p>
+                  <p className="text-xs text-slate-400 mt-1">Minimum 8 characters</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white/70 mb-2">Confirm Password *</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Confirm Password *</label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white/30" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       required
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white placeholder-white/30 focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/50"
+                      className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
                       placeholder="••••••••"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white/70 mb-2">Company (Optional)</label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Company (Optional)</label>
                   <div className="relative">
-                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white/30" />
+                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                     <input
                       type="text"
                       value={company}
                       onChange={(e) => setCompany(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-4 text-white placeholder-white/30 focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/50"
+                      className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
                       placeholder="Acme Inc."
                     />
                   </div>
@@ -550,15 +549,15 @@ export const AuthModal: React.FC = () => {
                     type="checkbox"
                     checked={agreeToTerms}
                     onChange={(e) => setAgreeToTerms(e.target.checked)}
-                    className="mt-1 h-4 w-4 rounded border-white/20 bg-white/5 text-sky-500 focus:ring-sky-500/50"
+                    className="mt-1 h-4 w-4 rounded border-slate-300 bg-white text-blue-600 focus:ring-blue-500/50"
                   />
-                  <span className="text-sm text-white/60">
+                  <span className="text-sm text-slate-500">
                     I agree to the{' '}
-                    <Link to="/terms" onClick={() => setShowAuthModal(false)} className="text-sky-400 hover:underline">
+                    <Link to="/terms" onClick={() => setShowAuthModal(false)} className="text-blue-600 hover:underline">
                       Terms of Service
                     </Link>{' '}
                     and{' '}
-                    <Link to="/privacy" onClick={() => setShowAuthModal(false)} className="text-sky-400 hover:underline">
+                    <Link to="/privacy" onClick={() => setShowAuthModal(false)} className="text-blue-600 hover:underline">
                       Privacy Policy
                     </Link>
                   </span>
@@ -573,7 +572,7 @@ export const AuthModal: React.FC = () => {
                   {isLoading ? 'Creating account...' : 'Create Account'}
                 </Button>
 
-                <p className="text-center text-sm text-white/50 mt-4">
+                <p className="text-center text-sm text-slate-500 mt-4">
                   Already have an account?{' '}
                   <button
                     type="button"
@@ -581,7 +580,7 @@ export const AuthModal: React.FC = () => {
                       setAuthModalMode('login');
                       setView('options');
                     }}
-                    className="text-sky-400 hover:text-sky-300"
+                    className="text-blue-600 hover:text-blue-700 font-medium"
                   >
                     Sign in
                   </button>
@@ -590,11 +589,11 @@ export const AuthModal: React.FC = () => {
             )}
 
             {/* Security note */}
-            <div className="flex items-center justify-center gap-2 text-xs text-white/40 mt-6">
+            <div className="flex items-center justify-center gap-2 text-xs text-slate-400 mt-6">
               <Lock className="h-3 w-3" />
               <span>256-bit SSL Encrypted</span>
             </div>
-          </GlassCard>
+          </div>
         </motion.div>
       </motion.div>
     </AnimatePresence>

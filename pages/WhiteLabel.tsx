@@ -25,9 +25,9 @@ export const WhiteLabel: React.FC = () => {
   const handlePlatformGenerated = (config: PlatformConfig) => setGeneratedPlatform(config);
 
   return (
-    <div className="min-h-screen bg-[#0a1018] text-slate-100">
+    <div className="min-h-screen bg-slate-900 text-slate-100">
       {!showPreview ? (
-        <div className="fixed left-0 right-0 top-0 z-50 border-b border-[#2a354b] bg-[#0f1624]">
+        <div className="fixed left-0 right-0 top-0 z-50 border-b border-slate-700 bg-slate-800">
           <div className="container-custom h-16 flex items-center justify-between">
             <Link to="/" className="inline-flex items-center gap-2 text-slate-300 hover:text-white text-sm">
               <ArrowLeft className="h-4 w-4" />
@@ -39,8 +39,8 @@ export const WhiteLabel: React.FC = () => {
               disabled={!generatedPlatform}
               className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs uppercase tracking-[0.12em] ${
                 generatedPlatform
-                  ? 'bg-lime-300 text-[#0b130d] border border-lime-200'
-                  : 'bg-[#1a2234] border border-[#2e3b56] text-slate-500 cursor-not-allowed'
+                  ? 'bg-lime-300 text-slate-900 border border-lime-200'
+                  : 'bg-slate-800 border border-slate-600 text-slate-500 cursor-not-allowed'
               }`}
             >
               <Eye className="h-4 w-4" />

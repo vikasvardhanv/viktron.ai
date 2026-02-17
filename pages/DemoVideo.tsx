@@ -133,7 +133,7 @@ export const DemoVideo = () => {
   const activeAgent = AGENT_SEQUENCE[currentAgent];
 
   return (
-    <div className="min-h-screen bg-[#0a0a12] text-white flex flex-col font-mono selection:bg-blue-500/30">
+    <div className="min-h-screen bg-slate-950 text-white flex flex-col font-mono selection:bg-blue-500/30">
       {/* Top bar */}
       <div className="flex items-center justify-between px-6 py-3 border-b border-white/5">
         <div className="flex items-center gap-3">

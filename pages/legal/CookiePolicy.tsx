@@ -49,11 +49,11 @@ export const CookiePolicy: React.FC = () => {
       <section className="pt-32 pb-14 px-4">
         <div className="container-custom max-w-4xl">
           <AnimatedSection>
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#eef3fd]">
-              <Cookie className="h-6 w-6 text-[#3768e8]" />
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50">
+              <Cookie className="h-6 w-6 text-blue-600" />
             </div>
-            <h1 className="mt-5 text-4xl sm:text-5xl font-semibold tracking-tight text-[#12223e]">Cookie Policy</h1>
-            <p className="mt-2 text-[#5b6d89]">Last updated: {lastUpdated}</p>
+            <h1 className="mt-5 text-4xl sm:text-5xl font-semibold tracking-tight text-slate-900">Cookie Policy</h1>
+            <p className="mt-2 text-slate-600">Last updated: {lastUpdated}</p>
             <div className="mt-5">
               <Button variant="secondary" icon={<Settings className="h-4 w-4" />} onClick={openPreferences}>
                 Manage Cookie Preferences
@@ -66,47 +66,47 @@ export const CookiePolicy: React.FC = () => {
       <section className="pb-20 px-4">
         <div className="container-custom max-w-4xl">
           <AnimatedSection>
-            <article className="rounded-3xl border border-[#d8e2ef] bg-white p-6 sm:p-8 space-y-6">
+            <article className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 space-y-6">
               <section>
-                <h2 className="text-2xl font-semibold text-[#12223e]">How we use cookies</h2>
-                <p className="mt-3 text-[#53637d] leading-relaxed">
+                <h2 className="text-2xl font-semibold text-slate-900">How we use cookies</h2>
+                <p className="mt-3 text-slate-600 leading-relaxed">
                   Cookies are small browser files used to keep the site secure, remember preferences, and improve performance.
                 </p>
               </section>
 
               <section className="grid gap-3 sm:grid-cols-2">
                 {categories.map((category) => (
-                  <div key={category.title} className="rounded-2xl border border-[#d8e2ef] bg-[#f8fbff] p-4">
+                  <div key={category.title} className="rounded-2xl border border-slate-200 bg-white p-4">
                     <div className="flex items-center justify-between gap-2">
-                      <h3 className="text-lg font-semibold text-[#1e3255]">{category.title}</h3>
-                      <span className="rounded-full bg-[#e8effd] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#2f5395]">
+                      <h3 className="text-lg font-semibold text-slate-700">{category.title}</h3>
+                      <span className="rounded-full bg-blue-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-blue-700">
                         {category.badge}
                       </span>
                     </div>
-                    <p className="mt-2 text-sm text-[#5d6f8d]">{category.description}</p>
+                    <p className="mt-2 text-sm text-slate-600">{category.description}</p>
                   </div>
                 ))}
               </section>
 
               <section>
-                <h2 className="text-2xl font-semibold text-[#12223e]">Common cookies</h2>
-                <div className="mt-3 overflow-x-auto rounded-2xl border border-[#d8e2ef]">
+                <h2 className="text-2xl font-semibold text-slate-900">Common cookies</h2>
+                <div className="mt-3 overflow-x-auto rounded-2xl border border-slate-200">
                   <table className="min-w-full text-sm">
-                    <thead className="bg-[#f8fbff]">
+                    <thead className="bg-white">
                       <tr>
-                        <th className="px-4 py-3 text-left text-[#5c6d89]">Name</th>
-                        <th className="px-4 py-3 text-left text-[#5c6d89]">Purpose</th>
-                        <th className="px-4 py-3 text-left text-[#5c6d89]">Duration</th>
-                        <th className="px-4 py-3 text-left text-[#5c6d89]">Provider</th>
+                        <th className="px-4 py-3 text-left text-slate-600">Name</th>
+                        <th className="px-4 py-3 text-left text-slate-600">Purpose</th>
+                        <th className="px-4 py-3 text-left text-slate-600">Duration</th>
+                        <th className="px-4 py-3 text-left text-slate-600">Provider</th>
                       </tr>
                     </thead>
                     <tbody>
                       {cookieRows.map((row) => (
-                        <tr key={row.name} className="border-t border-[#e2eaf5]">
-                          <td className="px-4 py-3 font-mono text-xs text-[#2d4f95]">{row.name}</td>
-                          <td className="px-4 py-3 text-[#53637d]">{row.purpose}</td>
-                          <td className="px-4 py-3 text-[#53637d]">{row.duration}</td>
-                          <td className="px-4 py-3 text-[#53637d]">{row.provider}</td>
+                        <tr key={row.name} className="border-t border-blue-100">
+                          <td className="px-4 py-3 font-mono text-xs text-slate-700">{row.name}</td>
+                          <td className="px-4 py-3 text-slate-600">{row.purpose}</td>
+                          <td className="px-4 py-3 text-slate-600">{row.duration}</td>
+                          <td className="px-4 py-3 text-slate-600">{row.provider}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -114,22 +114,22 @@ export const CookiePolicy: React.FC = () => {
                 </div>
               </section>
 
-              <section className="rounded-2xl border border-[#d8e2ef] bg-[#f8fbff] p-5">
-                <h2 className="text-xl font-semibold text-[#12223e]">Related policies</h2>
-                <p className="mt-2 text-[#5d6f8d]">
-                  See our <Link to="/privacy" className="text-[#2d4f95] font-semibold">Privacy Policy</Link> and{' '}
-                  <Link to="/terms" className="text-[#2d4f95] font-semibold">Terms of Service</Link>.
+              <section className="rounded-2xl border border-slate-200 bg-white p-5">
+                <h2 className="text-xl font-semibold text-slate-900">Related policies</h2>
+                <p className="mt-2 text-slate-600">
+                  See our <Link to="/privacy" className="text-slate-700 font-semibold">Privacy Policy</Link> and{' '}
+                  <Link to="/terms" className="text-slate-700 font-semibold">Terms of Service</Link>.
                 </p>
               </section>
 
-              <section className="rounded-2xl border border-[#d8e2ef] bg-[#f8fbff] p-5">
-                <h2 className="text-xl font-semibold text-[#12223e]">Contact</h2>
-                <a href="mailto:privacy@viktron.ai" className="mt-2 inline-flex items-center gap-2 text-[#2d4f95] font-semibold">
+              <section className="rounded-2xl border border-slate-200 bg-white p-5">
+                <h2 className="text-xl font-semibold text-slate-900">Contact</h2>
+                <a href="mailto:privacy@viktron.ai" className="mt-2 inline-flex items-center gap-2 text-slate-700 font-semibold">
                   <Mail className="h-4 w-4" />
                   privacy@viktron.ai
                 </a>
-                <p className="mt-2 inline-flex items-center gap-2 text-sm text-[#5d6f8d]">
-                  <Shield className="h-4 w-4 text-[#3768e8]" />
+                <p className="mt-2 inline-flex items-center gap-2 text-sm text-slate-600">
+                  <Shield className="h-4 w-4 text-blue-600" />
                   We honor cookie consent preferences in real time.
                 </p>
               </section>

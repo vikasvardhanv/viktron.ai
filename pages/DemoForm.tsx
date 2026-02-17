@@ -47,6 +47,8 @@ const features = [
   { icon: <Settings className="h-4 w-4" />, title: 'Operations Automation', desc: 'Backend workflows and integrations.' },
 ];
 
+const INPUT_CLASS = "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20 focus:outline-none transition-colors";
+
 export const DemoForm: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -144,79 +146,36 @@ export const DemoForm: React.FC = () => {
 
       <section className="pt-32 pb-20 px-4">
         <div className="container-custom">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-[#4f607b] hover:text-[#213654]">
+          <Link to="/" className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-900">
             <ArrowLeft className="h-4 w-4" />
             Back to Home
           </Link>
 
           <div className="mt-6 grid gap-5 lg:grid-cols-[1.08fr_0.92fr]">
-            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="card p-6 sm:p-7">
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-7 shadow-sm">
               {!isSuccess ? (
                 <>
-                  <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#12223e]">
+                  <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">
                     Generate your live demo in under a minute.
                   </h1>
-                  <p className="mt-3 text-[#52637e]">
-                    Share your details and we’ll create a custom preview link for your use case.
+                  <p className="mt-3 text-slate-600">
+                    Share your details and we'll create a custom preview link for your use case.
                   </p>
 
                   {error ? (
-                    <div className="mt-5 flex items-start gap-2 rounded-xl border border-[#f0c4c9] bg-[#fff4f5] p-3 text-[#bb3a48]">
+                    <div className="mt-5 flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-red-600">
                       <AlertCircle className="h-4 w-4 mt-0.5" />
                       <span className="text-sm">{error}</span>
                     </div>
                   ) : null}
 
                   <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      placeholder="Your name"
-                      required
-                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
-                    />
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="Work email"
-                      required
-                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
-                    />
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder="Phone (optional)"
-                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
-                    />
-                    <input
-                      type="text"
-                      name="company_name"
-                      value={formData.company_name}
-                      onChange={handleInputChange}
-                      placeholder="Company name"
-                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
-                    />
-                    <input
-                      type="url"
-                      name="website_url"
-                      value={formData.website_url}
-                      onChange={handleInputChange}
-                      placeholder="Website URL (optional)"
-                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
-                    />
-                    <select
-                      name="use_case"
-                      value={formData.use_case}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] focus:border-[#7d9fee] focus:outline-none"
-                    >
+                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="Your name" required className={INPUT_CLASS} />
+                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="Work email" required className={INPUT_CLASS} />
+                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="Phone (optional)" className={INPUT_CLASS} />
+                    <input type="text" name="company_name" value={formData.company_name} onChange={handleInputChange} placeholder="Company name" className={INPUT_CLASS} />
+                    <input type="url" name="website_url" value={formData.website_url} onChange={handleInputChange} placeholder="Website URL (optional)" className={INPUT_CLASS} />
+                    <select name="use_case" value={formData.use_case} onChange={handleInputChange} required className={INPUT_CLASS}>
                       <option value="">Select a primary use case</option>
                       {useCases.map((useCase) => (
                         <option key={useCase.value} value={useCase.value}>
@@ -226,7 +185,7 @@ export const DemoForm: React.FC = () => {
                     </select>
 
                     <div>
-                      <p className="text-xs uppercase tracking-[0.14em] text-[#6f83a1] mb-2 font-semibold">Delivery</p>
+                      <p className="text-xs uppercase tracking-[0.14em] text-slate-500 mb-2 font-semibold">Delivery</p>
                       <div className="flex flex-wrap gap-2">
                         {deliveryOptions.map((option) => {
                           const active = delivery.includes(option.value);
@@ -237,8 +196,8 @@ export const DemoForm: React.FC = () => {
                               onClick={() => handleDeliveryChange(option.value)}
                               className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-semibold uppercase tracking-[0.06em] ${
                                 active
-                                  ? 'border-[#8ca9eb] bg-[#e8effd] text-[#2d4f95]'
-                                  : 'border-[#d7e1ef] bg-[#f7f9fd] text-[#596b88]'
+                                  ? 'border-blue-300 bg-blue-50 text-blue-600'
+                                  : 'border-slate-200 bg-slate-50 text-slate-600'
                               }`}
                             >
                               {option.icon}
@@ -266,12 +225,12 @@ export const DemoForm: React.FC = () => {
                 </>
               ) : (
                 <div className="py-8 text-center">
-                  <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full border border-[#b9e9d9] bg-[#e8fbf3]">
-                    <CheckCircle className="h-7 w-7 text-[#2f9f78]" />
+                  <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-full border border-emerald-200 bg-emerald-50">
+                    <CheckCircle className="h-7 w-7 text-emerald-500" />
                   </div>
-                  <h2 className="text-2xl font-semibold text-[#12223e]">Your demo is ready</h2>
-                  <p className="mt-2 text-[#54657f]">Open or copy the generated link below.</p>
-                  <div className="mt-5 rounded-xl border border-[#d8e2ef] bg-[#f8fbff] px-4 py-3 text-sm text-[#2a477f] break-all">
+                  <h2 className="text-2xl font-semibold text-slate-900">Your demo is ready</h2>
+                  <p className="mt-2 text-slate-600">Open or copy the generated link below.</p>
+                  <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-blue-600 break-all">
                     {demoLink}
                   </div>
                   <div className="mt-4 flex flex-wrap justify-center gap-2">
@@ -287,16 +246,16 @@ export const DemoForm: React.FC = () => {
             </motion.div>
 
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }}>
-              <div className="card h-full p-6 sm:p-7">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#6f83a1]">What you get</p>
+              <div className="bg-white rounded-2xl border border-slate-200 h-full p-6 sm:p-7 shadow-sm">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">What you get</p>
                 <div className="mt-4 space-y-3">
                   {features.map((feature) => (
-                    <div key={feature.title} className="rounded-xl border border-[#d8e2ef] bg-[#f8fbff] p-3">
-                      <div className="inline-flex items-center gap-2 text-sm font-semibold text-[#2d4f95]">
+                    <div key={feature.title} className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                      <div className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600">
                         {feature.icon}
                         {feature.title}
                       </div>
-                      <p className="mt-2 text-sm text-[#566885]">{feature.desc}</p>
+                      <p className="mt-2 text-sm text-slate-600">{feature.desc}</p>
                     </div>
                   ))}
                 </div>

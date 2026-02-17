@@ -78,10 +78,10 @@ const positions: Position[] = [
 ];
 
 const benefits = [
-  { icon: <Globe className="h-5 w-5 text-[#3768e8]" />, title: 'Remote-first team' },
-  { icon: <Heart className="h-5 w-5 text-[#2fa781]" />, title: 'Health and wellness support' },
-  { icon: <Zap className="h-5 w-5 text-[#6a7ce8]" />, title: 'Work with latest AI stack' },
-  { icon: <Users className="h-5 w-5 text-[#3a88db]" />, title: 'High ownership culture' },
+  { icon: <Globe className="h-5 w-5 text-blue-600" />, title: 'Remote-first team' },
+  { icon: <Heart className="h-5 w-5 text-emerald-500" />, title: 'Health and wellness support' },
+  { icon: <Zap className="h-5 w-5 text-indigo-500" />, title: 'Work with latest AI stack' },
+  { icon: <Users className="h-5 w-5 text-blue-500" />, title: 'High ownership culture' },
 ];
 
 export const Careers: React.FC = () => {
@@ -101,20 +101,21 @@ export const Careers: React.FC = () => {
         url="/careers"
       />
 
-      <section className="pt-32 pb-12 px-4">
-        <div className="container-custom">
+      <section className="pt-32 pb-12 px-4 bg-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-50/50 rounded-full blur-[130px] pointer-events-none" />
+        <div className="container-custom relative z-10">
           <AnimatedSection>
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#d4deeb] bg-[#f8fbff] px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#60718c]">
-              <Briefcase className="h-4 w-4 text-[#3768e8]" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              <Briefcase className="h-4 w-4 text-blue-600" />
               Careers
             </div>
-            <h1 className="mt-6 text-5xl sm:text-7xl font-semibold tracking-tight text-[#12223e]">
+            <h1 className="mt-6 text-5xl sm:text-7xl font-semibold tracking-tight text-slate-900">
               Build practical AI
               <br />
-              with us.
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">with us.</span>
             </h1>
-            <p className="mt-4 max-w-3xl text-lg text-[#52637e] leading-relaxed">
-              We’re hiring builders who care about shipping real systems, not demo-only features.
+            <p className="mt-4 max-w-3xl text-lg text-slate-600 leading-relaxed">
+              We're hiring builders who care about shipping real systems, not demo-only features.
             </p>
           </AnimatedSection>
         </div>
@@ -125,11 +126,11 @@ export const Careers: React.FC = () => {
           <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {benefits.map((benefit) => (
               <StaggerItem key={benefit.title}>
-                <div className="card p-4 h-full">
-                  <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#eef3fd]">
+                <div className="bg-white rounded-2xl border border-slate-200 p-4 h-full hover:border-blue-200 hover:shadow-lg transition-all duration-300">
+                  <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50">
                     {benefit.icon}
                   </div>
-                  <p className="mt-3 text-sm font-semibold text-[#1e3255]">{benefit.title}</p>
+                  <p className="mt-3 text-sm font-semibold text-slate-800">{benefit.title}</p>
                 </div>
               </StaggerItem>
             ))}
@@ -140,17 +141,17 @@ export const Careers: React.FC = () => {
       <section className="pb-20 px-4">
         <div className="container-custom">
           <AnimatedSection>
-            <div className="rounded-3xl border border-[#d8e2ef] bg-[#f8fbff] p-6">
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
               <div className="mb-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#6f83a1]">Open positions</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Open positions</p>
               </div>
               <div className="space-y-3">
                 {positions.map((position, index) => (
-                  <article key={position.title} className="rounded-2xl border border-[#d8e2ef] bg-white p-5">
+                  <article key={position.title} className="rounded-2xl border border-slate-200 bg-white p-5">
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div>
-                        <h2 className="text-xl font-semibold text-[#12223e]">{position.title}</h2>
-                        <p className="mt-1 text-sm text-[#5d6f8d]">
+                        <h2 className="text-xl font-semibold text-slate-900">{position.title}</h2>
+                        <p className="mt-1 text-sm text-slate-600">
                           {position.department} · {position.location} · {position.type}
                         </p>
                       </div>
@@ -159,13 +160,13 @@ export const Careers: React.FC = () => {
                       </Button>
                     </div>
 
-                    <p className="mt-3 text-sm text-[#566885]">{position.description}</p>
+                    <p className="mt-3 text-sm text-slate-600">{position.description}</p>
 
                     {selectedIndex === index ? (
                       <div className="mt-4 space-y-2">
                         {position.requirements.map((requirement) => (
-                          <div key={requirement} className="flex items-start gap-2 text-sm text-[#334a6e]">
-                            <CheckCircle2 className="h-4 w-4 mt-0.5 text-[#2fa781]" />
+                          <div key={requirement} className="flex items-start gap-2 text-sm text-slate-700">
+                            <CheckCircle2 className="h-4 w-4 mt-0.5 text-emerald-500" />
                             {requirement}
                           </div>
                         ))}
@@ -188,10 +189,10 @@ export const Careers: React.FC = () => {
       <section className="pb-20 px-4">
         <div className="container-custom">
           <AnimatedSection>
-            <div className="rounded-3xl border border-[#d8e2ef] bg-white p-7 text-center">
-              <Sparkles className="h-9 w-9 mx-auto text-[#3768e8]" />
-              <h2 className="mt-4 text-3xl font-semibold text-[#12223e]">No perfect match listed?</h2>
-              <p className="mt-3 max-w-2xl mx-auto text-[#53637d]">
+            <div className="rounded-3xl border border-slate-200 bg-white p-7 text-center">
+              <Sparkles className="h-9 w-9 mx-auto text-blue-600" />
+              <h2 className="mt-4 text-3xl font-semibold text-slate-900">No perfect match listed?</h2>
+              <p className="mt-3 max-w-2xl mx-auto text-slate-600">
                 Send your resume and what you want to build at Viktron. We review every strong profile.
               </p>
               <div className="mt-6">

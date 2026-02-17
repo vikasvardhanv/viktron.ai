@@ -197,7 +197,7 @@ export const MyPlatforms: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-lg rounded-2xl border border-[#2f3b54] bg-[#111927] p-8"
+            className="w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-900 p-8"
           >
             <h3 className="text-2xl font-medium text-white">Request Platform Setup</h3>
             <p className="mt-2 text-slate-300">
@@ -208,18 +208,18 @@ export const MyPlatforms: React.FC = () => {
                 type="text"
                 placeholder="Your Name"
                 required
-                className="w-full rounded-xl border border-[#2f3b54] bg-[#182235] px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:border-lime-300/50"
+                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:border-lime-300/50"
               />
               <input
                 type="email"
                 placeholder="Email"
                 required
-                className="w-full rounded-xl border border-[#2f3b54] bg-[#182235] px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:border-lime-300/50"
+                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:border-lime-300/50"
               />
               <textarea
                 rows={3}
                 placeholder="Notes"
-                className="w-full rounded-xl border border-[#2f3b54] bg-[#182235] px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:border-lime-300/50 resize-none"
+                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:outline-none focus:border-lime-300/50 resize-none"
               />
               <div className="flex gap-2 pt-2">
                 <button type="button" onClick={() => setShowContactModal(false)} className="btn-secondary flex-1 justify-center">

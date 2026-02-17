@@ -5,29 +5,27 @@ import { Activity, Github, Twitter, Linkedin, MessageSquare } from 'lucide-react
 
 const footerLinks = {
   platform: [
-    { name: 'Observability', path: '/platform/observability' },
-    { name: 'Security & Governance', path: '/platform/security' },
-    { name: 'Integrations', path: '/platform/integrations' },
-    { name: 'Enterprise', path: '/enterprise' },
-    { name: 'Changelog', path: '/changelog' },
+    { name: 'AI Agent Teams', path: '/services/ai-sales-agent' },
+    { name: 'Voice & Chat Agents', path: '/services/voice-ai-agent' },
+    { name: 'AgentIRL Platform', path: '/services/agent-orchestration' },
+    { name: 'Analytics & Observability', path: '/services/data-analytics-ai' },
+    { name: 'AI Audit & Consulting', path: '/services/ai-audit-consulting' },
   ],
   resources: [
-    { name: 'Documentation', path: '/docs' },
-    { name: 'API Reference', path: '/docs/api' },
-    { name: 'Patterns & Guides', path: '/guides' },
-    { name: 'System Status', path: '/status' },
-    { name: 'Community', path: '/community' },
+    { name: 'All Services', path: '/services' },
+    { name: 'Use Cases', path: '/use-cases' },
+    { name: 'AI Agents', path: '/agents' },
+    { name: 'Pricing', path: '/pricing' },
+    { name: 'Blog', path: '/blog' },
   ],
   company: [
     { name: 'About', path: '/about' },
-    { name: 'Blog', path: '/blog' },
     { name: 'Careers', path: '/careers' },
     { name: 'Contact', path: '/contact' },
   ],
   legal: [
     { name: 'Privacy Policy', path: '/privacy' },
     { name: 'Terms of Service', path: '/terms' },
-    { name: 'Security', path: '/security-policy' },
   ]
 };
 
@@ -63,7 +61,7 @@ export const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-semibold text-slate-900 mb-6">Platform</h4>
+            <h4 className="font-semibold text-slate-900 mb-6">Services</h4>
             <ul className="space-y-3">
               {footerLinks.platform.map((link) => (
                 <li key={link.name}>

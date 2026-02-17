@@ -50,9 +50,9 @@ export const LeadbotConsole: React.FC = () => {
       <section className="pt-32 pb-20 px-4">
         <div className="container-custom">
           <div className="max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#6f83a1]">Private workspace</p>
-            <h1 className="mt-3 text-5xl sm:text-6xl font-semibold tracking-tight text-[#12223e]">Lead Gen Console</h1>
-            <p className="mt-4 text-lg text-[#52637e]">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Private workspace</p>
+            <h1 className="mt-3 text-5xl sm:text-6xl font-semibold tracking-tight text-slate-900">Lead Gen Console</h1>
+            <p className="mt-4 text-lg text-slate-600">
               Use this workspace to scrape leads, push records, and launch outreach campaigns.
             </p>
           </div>
@@ -68,9 +68,9 @@ export const LeadbotConsole: React.FC = () => {
                 <Leadbot mode="page" />
               </div>
             ) : (
-              <div className="max-w-md rounded-3xl border border-[#d8e2ef] bg-white p-7">
-                <h2 className="text-2xl font-semibold text-[#12223e]">Sign in to unlock</h2>
-                <p className="mt-2 text-sm text-[#5c6d89]">This workspace is restricted to approved credentials.</p>
+              <div className="max-w-md rounded-3xl border border-slate-200 bg-white p-7">
+                <h2 className="text-2xl font-semibold text-slate-900">Sign in to unlock</h2>
+                <p className="mt-2 text-sm text-slate-600">This workspace is restricted to approved credentials.</p>
 
                 <form onSubmit={handleUnlock} className="mt-5 space-y-4">
                   <input
@@ -78,7 +78,7 @@ export const LeadbotConsole: React.FC = () => {
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                     placeholder="info@viktron.ai"
-                    className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none"
                     required
                   />
                   <input
@@ -86,10 +86,10 @@ export const LeadbotConsole: React.FC = () => {
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                     placeholder="********"
-                    className="w-full rounded-xl border border-[#d7e1ef] bg-[#f9fbff] px-4 py-3 text-[#13213a] placeholder:text-[#7a8ba6] focus:border-[#7d9fee] focus:outline-none"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none"
                     required
                   />
-                  {error ? <p className="text-sm text-[#c03f4e]">{error}</p> : null}
+                  {error ? <p className="text-sm text-red-600">{error}</p> : null}
                   <Button type="submit" className="w-full" icon={<Unlock className="h-4 w-4" />}>
                     Unlock Console
                   </Button>

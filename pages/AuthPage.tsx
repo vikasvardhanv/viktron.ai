@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
-import { ArrowRight, LogIn, UserPlus } from 'lucide-react';
+import { ArrowRight, Bot, CheckCircle2, LogIn, Shield, UserPlus, Zap } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
 import { Button } from '../components/ui/Button';
@@ -46,7 +46,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
     return (
       <Layout showFooter={false}>
         <div className="min-h-screen flex items-center justify-center">
-          <div className="h-12 w-12 rounded-full border-2 border-[#d8e1ee] border-t-[#3568e4] animate-spin" />
+          <div className="h-12 w-12 rounded-full border-2 border-slate-200 border-t-blue-600 animate-spin" />
         </div>
       </Layout>
     );
@@ -65,47 +65,63 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
         noindex
       />
 
-      <section className="min-h-screen pt-28 pb-16 px-4">
-        <div className="container-custom max-w-2xl">
-          <article className="rounded-3xl border border-[#d8e2ef] bg-white p-8 sm:p-10 text-center">
-            <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-[#eef3fd] text-[#3768e8]">
+      <section className="min-h-screen pt-28 pb-16 px-4 flex items-start justify-center">
+        <div className="w-full max-w-md">
+          <article className="rounded-2xl border border-slate-200 bg-white p-8 text-center">
+            <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
               {isSignup ? <UserPlus className="h-5 w-5" /> : <LogIn className="h-5 w-5" />}
             </div>
 
-            <h1 className="text-3xl font-semibold text-[#12223e]">
+            <h1 className="text-2xl font-semibold text-slate-900">
               {isSignup ? 'Create your Viktron account' : 'Sign in to Viktron'}
             </h1>
-            <p className="mt-3 text-[#54657f]">
+            <p className="mt-2 text-sm text-slate-600">
               {isSignup
-                ? 'Create a free account to access demos, saved sessions, and personalized recommendations.'
-                : 'Welcome back. Sign in to access your demos and workspace.'}
+                ? 'Get started with AI agent teams for your business.'
+                : 'Welcome back. Access your agents and workspace.'}
             </p>
 
-            <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div className="mt-6 flex flex-col gap-3">
               <Button
                 size="lg"
+                className="w-full justify-center"
                 onClick={() => {
                   setAuthModalMode(mode);
                   setShowAuthModal(true);
                 }}
                 icon={<ArrowRight className="h-5 w-5" />}
               >
-                {isSignup ? 'Create account' : 'Sign in'}
+                {isSignup ? 'Create Free Account' : 'Sign In'}
               </Button>
-              <Link to={redirectPath}>
-                <Button variant="secondary" size="lg">
+              <Link to={redirectPath} className="w-full">
+                <Button variant="secondary" size="lg" className="w-full justify-center">
                   Back to site
                 </Button>
               </Link>
             </div>
 
-            <p className="mt-6 text-sm text-[#657795]">
+            <p className="mt-5 text-sm text-slate-500">
               {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
-              <Link to={authToggleHref} className="text-[#2d4f95] font-semibold">
+              <Link to={authToggleHref} className="text-blue-600 font-semibold hover:text-blue-700">
                 {isSignup ? 'Sign in' : 'Create one'}
               </Link>
             </p>
           </article>
+
+          {isSignup && (
+            <div className="mt-6 space-y-3">
+              {[
+                { icon: Zap, text: 'Deploy AI agent teams in minutes' },
+                { icon: Bot, text: 'Sales, Support, Content & CEO agents' },
+                { icon: Shield, text: 'Enterprise-grade security & compliance' },
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-3 rounded-xl border border-slate-100 bg-white px-4 py-3">
+                  <item.icon className="w-4 h-4 text-blue-500 shrink-0" />
+                  <span className="text-sm text-slate-600">{item.text}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </Layout>

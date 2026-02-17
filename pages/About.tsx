@@ -14,8 +14,8 @@ export const About = () => {
     <Layout>
       <SEO
         title="About Viktron | AI Agent Teams & AgentIRL Infrastructure"
-        description="Viktron builds AI agent teams that actually work — Sales, Support, Content, and CEO agents coordinated by AgentIRL, the reliability layer for production multi-agent systems. Built on CrewAI, LangGraph, and CAMEL."
-        keywords="about Viktron, AgentIRL, AI infrastructure, multi-agent orchestration, CrewAI, LangGraph, CAMEL, AI reliability, agent coordination, AI platform"
+        description="Viktron builds AI agent teams that actually work — Sales, Support, Content, and CEO agents coordinated by AgentIRL, the reliability layer for production multi-agent systems."
+        keywords="about Viktron, AgentIRL, AI infrastructure, multi-agent orchestration, AI reliability, agent coordination, AI platform"
         url="/about"
       />
       {/* Hero Section */}
@@ -147,47 +147,6 @@ export const About = () => {
         </div>
       </section>
 
-      {/* Our Research & Open Source Foundations */}
-      <section className="py-20 bg-slate-50 border-y border-slate-200">
-        <div className="container-custom">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Built on Research, Powered by Open Source</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">
-              We don't reinvent the wheel. We take the best open-source agent frameworks,
-              add the reliability layer that's missing, and package it as a managed product.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {[
-              { name: 'CrewAI', stars: '44K', role: 'Simple role agents' },
-              { name: 'LangGraph', stars: '25K', role: 'Stateful workflows' },
-              { name: 'CAMEL', stars: '16K', role: 'Agent coordination' },
-              { name: 'Nanobot', stars: '18.5K', role: 'Lightweight kernel' },
-              { name: 'MCP', stars: '7.2K', role: 'Universal tools' },
-              { name: 'OpenAI SDK', stars: '19K', role: 'GPT integration' },
-              { name: 'Google ADK', stars: '17.6K', role: 'Gemini tasks' },
-              { name: 'ADAS', stars: 'ICLR \'25', role: 'Self-improving' },
-              { name: 'MiniCPM-o', stars: '23.8K', role: 'On-device AI' },
-              { name: 'pgvector', stars: '14K', role: 'Vector search' },
-            ].map((tool, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.05 }}
-                className="bg-white p-4 rounded-xl border border-slate-200 text-center hover:border-blue-200 hover:shadow-sm transition-all"
-              >
-                <div className="text-sm font-bold text-slate-900">{tool.name}</div>
-                <div className="text-xs text-blue-600 font-mono mt-1">{tool.stars} stars</div>
-                <div className="text-xs text-slate-500 mt-1">{tool.role}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* How We Scale */}
       <section className="py-24 bg-white">
         <div className="container-custom">
@@ -275,6 +234,25 @@ export const About = () => {
                 <h3 className="text-xl font-bold text-slate-900 mb-2">{card.title}</h3>
                 <p className="text-slate-600 leading-relaxed">{card.desc}</p>
               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Badges */}
+      <section className="py-12 bg-white border-b border-slate-200">
+        <div className="container-custom">
+          <div className="flex flex-wrap items-center justify-center gap-8">
+            {[
+              { icon: ShieldCheck, label: 'SOC 2 Ready' },
+              { icon: Shield, label: 'End-to-End Encrypted' },
+              { icon: Zap, label: '99.9% Uptime SLA' },
+              { icon: Globe, label: 'Multi-Region Deploy' },
+            ].map((item, idx) => (
+              <div key={idx} className="flex items-center gap-2 text-sm text-slate-500">
+                <item.icon className="w-4 h-4 text-slate-400" />
+                {item.label}
+              </div>
             ))}
           </div>
         </div>
