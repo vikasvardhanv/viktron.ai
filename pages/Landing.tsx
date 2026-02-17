@@ -499,6 +499,15 @@ export const Landing = () => {
                   </div>
                 ))}
               </div>
+              {/* Agent Teams Visual */}
+              <div className="mb-6 rounded-xl border border-slate-100 bg-slate-50 p-1 overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1000"
+                  alt="AI Agent Teams Collaboration"
+                  className="w-full h-48 object-cover rounded-lg opacity-90 hover:opacity-100 transition-opacity"
+                />
+              </div>
+
               <Link to="/agents" className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700">
                 Meet the agents <ArrowRight className="w-4 h-4" />
               </Link>
