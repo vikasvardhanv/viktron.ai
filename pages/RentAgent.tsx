@@ -1,11 +1,13 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search, Star, Download, Shield, Zap, Code2, Megaphone,
-  HeartHandshake, FlaskConical, BarChart3, Filter,
+  HeartHandshake, BarChart3,
   ChevronRight, Copy, Check, ExternalLink, Globe,
   Lock, Cpu, Terminal, Layout, Users, ShoppingBag,
   X, ArrowRight, Package, CloudUpload, Play,
+  Crown, FileText, FlaskConical, ShieldCheck,
 } from 'lucide-react';
 import { Layout as PageLayout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
@@ -53,6 +55,24 @@ interface AgentEntry {
   pulls_count: number;
   stars_count: number;
 }
+
+// ── Agent avatar map — unique icon + gradient per slug ───────────────────────
+const AGENT_AVATAR: Record<string, { icon: React.ReactNode; bg: string; ring: string }> = {
+  ceo:            { icon: <Crown size={22} />,         bg: 'bg-violet-500/15', ring: 'border-violet-500/30 text-violet-400' },
+  marketing:      { icon: <Megaphone size={22} />,     bg: 'bg-pink-500/15',   ring: 'border-pink-500/30 text-pink-400' },
+  developer:      { icon: <Code2 size={22} />,         bg: 'bg-blue-500/15',   ring: 'border-blue-500/30 text-blue-400' },
+  hermes:         { icon: <Zap size={22} />,           bg: 'bg-green-500/15',  ring: 'border-green-500/30 text-green-400' },
+  outreach:       { icon: <Users size={22} />,         bg: 'bg-yellow-500/15', ring: 'border-yellow-500/30 text-yellow-400' },
+  support:        { icon: <HeartHandshake size={22} />,bg: 'bg-teal-500/15',   ring: 'border-teal-500/30 text-teal-400' },
+  content:        { icon: <FileText size={22} />,      bg: 'bg-orange-500/15', ring: 'border-orange-500/30 text-orange-400' },
+  research:       { icon: <Search size={22} />,        bg: 'bg-cyan-500/15',   ring: 'border-cyan-500/30 text-cyan-400' },
+  qa:             { icon: <ShieldCheck size={22} />,   bg: 'bg-indigo-500/15', ring: 'border-indigo-500/30 text-indigo-400' },
+  'data-analyst': { icon: <BarChart3 size={22} />,     bg: 'bg-emerald-500/15',ring: 'border-emerald-500/30 text-emerald-400' },
+  'social-autopilot': { icon: <Globe size={22} />,    bg: 'bg-sky-500/15',    ring: 'border-sky-500/30 text-sky-400' },
+  ecommerce:      { icon: <ShoppingBag size={22} />,   bg: 'bg-amber-500/15',  ring: 'border-amber-500/30 text-amber-400' },
+  pm:             { icon: <Layout size={22} />,         bg: 'bg-rose-500/15',   ring: 'border-rose-500/30 text-rose-400' },
+};
+const defaultAvatar = { icon: <Cpu size={22} />, bg: 'bg-slate-500/15', ring: 'border-slate-500/30 text-slate-400' };
 
 // ── Inline catalog (mirrors backend catalog.py) ───────────────────────────────
 // In production this is fetched from /api/v1/registry/agents
@@ -723,38 +743,49 @@ const AgentCard: React.FC<{ agent: AgentEntry; onDeploy: (agent: AgentEntry) => 
   agent,
   onDeploy,
 }) => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const catMeta = CATEGORY_META[agent.category] || CATEGORY_META.all;
+  const avatar = AGENT_AVATAR[agent.slug] || defaultAvatar;
+
+  const handleDeploy = () => {
+    // Paid agents require sign-in
+    if (agent.hosted_price_usd_month !== null && !isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+    onDeploy(agent);
+  };
 
   return (
     <motion.div
-      className="group relative bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-600 transition-all duration-300 flex flex-col"
+      className="group relative bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-600 transition-all duration-300 flex flex-col h-full min-h-[340px]"
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -2 }}
     >
-      {/* Featured badge */}
-      {agent.is_featured && (
-        <div className="absolute top-4 right-4 px-2 py-0.5 bg-primary/10 border border-primary/20 rounded-full text-[10px] text-primary font-semibold tracking-wide uppercase">
-          Featured
-        </div>
-      )}
+      {/* Top badge — one slot, open-source takes priority */}
+      <div className="absolute top-4 right-4">
+        {agent.is_open_source ? (
+          <span className="px-2 py-0.5 bg-green-500/10 border border-green-500/20 rounded-full text-[10px] text-green-400 font-semibold tracking-wide uppercase">
+            Open Source
+          </span>
+        ) : agent.is_featured ? (
+          <span className="px-2 py-0.5 bg-primary/10 border border-primary/20 rounded-full text-[10px] text-primary font-semibold tracking-wide uppercase">
+            Featured
+          </span>
+        ) : null}
+      </div>
 
-      {/* Open-source badge */}
-      {agent.is_open_source && (
-        <div className="absolute top-4 right-4 px-2 py-0.5 bg-green-500/10 border border-green-500/20 rounded-full text-[10px] text-green-400 font-semibold tracking-wide uppercase">
-          Open Source
-        </div>
-      )}
+      {/* Agent avatar */}
+      <div className={`w-12 h-12 rounded-xl ${avatar.bg} border ${avatar.ring} flex items-center justify-center shrink-0 mb-4`}>
+        {avatar.icon}
+      </div>
 
-      {/* Agent icon & title */}
-      <div className="flex items-start gap-3 mb-4">
-        <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center shrink-0">
-          <span className={catMeta.color}>{catMeta.icon}</span>
-        </div>
-        <div className="min-w-0">
-          <h3 className="text-sm font-semibold text-white leading-tight">{agent.display_name}</h3>
-          <p className={`text-xs mt-0.5 ${catMeta.color}`}>{catMeta.label}</p>
-        </div>
+      {/* Title + category */}
+      <div className="mb-3">
+        <h3 className="text-sm font-semibold text-white leading-tight">{agent.display_name}</h3>
+        <p className={`text-xs mt-0.5 ${catMeta.color}`}>{catMeta.label}</p>
       </div>
 
       {/* Tagline */}
@@ -806,7 +837,7 @@ const AgentCard: React.FC<{ agent: AgentEntry; onDeploy: (agent: AgentEntry) => 
       </div>
 
       {/* Pricing + Deploy */}
-      <div className="flex items-center justify-between pt-3 border-t border-slate-800">
+      <div className="flex items-center justify-between pt-3 border-t border-slate-800 mt-auto">
         <div>
           {agent.hosted_price_usd_month === null ? (
             <span className="text-xs text-green-400 font-medium">Free</span>
@@ -818,10 +849,12 @@ const AgentCard: React.FC<{ agent: AgentEntry; onDeploy: (agent: AgentEntry) => 
           )}
         </div>
         <button
-          onClick={() => onDeploy(agent)}
+          onClick={handleDeploy}
           className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 hover:bg-primary text-primary hover:text-white border border-primary/30 hover:border-primary rounded-lg text-xs font-medium transition-all duration-200"
         >
-          <ChevronRight size={12} /> Deploy
+          {agent.hosted_price_usd_month !== null && !isAuthenticated
+            ? <><Lock size={12} /> Sign in</>
+            : <><ChevronRight size={12} /> Deploy</>}
         </button>
       </div>
     </motion.div>

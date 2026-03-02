@@ -69,12 +69,12 @@ export const PrivacyPolicy: React.FC = () => {
       <section className="pt-32 pb-14 px-4">
         <div className="container-custom max-w-4xl">
           <AnimatedSection>
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50">
-              <Shield className="h-6 w-6 text-blue-600" />
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 border border-primary/20">
+              <Shield className="h-6 w-6 text-primary" />
             </div>
-            <h1 className="mt-5 text-4xl sm:text-5xl font-semibold tracking-tight text-slate-900">Privacy Policy</h1>
-            <p className="mt-2 text-slate-600">Last updated: {lastUpdated}</p>
-            <p className="mt-4 text-slate-600 leading-relaxed">
+            <h1 className="mt-5 text-4xl sm:text-5xl font-semibold tracking-tight text-white">Privacy Policy</h1>
+            <p className="mt-2 text-slate-400">Last updated: {lastUpdated}</p>
+            <p className="mt-4 text-slate-400 leading-relaxed">
               This policy explains how Viktron handles personal information across our website and services.
             </p>
           </AnimatedSection>
@@ -84,35 +84,35 @@ export const PrivacyPolicy: React.FC = () => {
       <section className="pb-20 px-4">
         <div className="container-custom max-w-4xl">
           <AnimatedSection>
-            <article className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 space-y-6">
+            <article className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 sm:p-8 space-y-6">
               {sections.map((section) => (
                 <section key={section.title}>
-                  <h2 className="text-2xl font-semibold text-slate-900">{section.title}</h2>
+                  <h2 className="text-2xl font-semibold text-white">{section.title}</h2>
                   <div className="mt-3 space-y-2">
                     {section.body.map((text) => (
-                      <p key={text} className="text-slate-600 leading-relaxed">{text}</p>
+                      <p key={text} className="text-slate-400 leading-relaxed">{text}</p>
                     ))}
                   </div>
                 </section>
               ))}
 
-              <section className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h2 className="text-xl font-semibold text-slate-900">Related policies</h2>
-                <p className="mt-2 text-slate-600">
-                  Review our <Link to="/cookies" className="text-slate-700 font-semibold">Cookie Policy</Link> and{' '}
-                  <Link to="/terms" className="text-slate-700 font-semibold">Terms of Service</Link>.
+              <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+                <h2 className="text-xl font-semibold text-white">Related policies</h2>
+                <p className="mt-2 text-slate-400">
+                  Review our <Link to="/cookies" className="text-primary font-semibold">Cookie Policy</Link> and{' '}
+                  <Link to="/terms" className="text-primary font-semibold">Terms of Service</Link>.
                 </p>
               </section>
 
-              <section className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h2 className="text-xl font-semibold text-slate-900">Contact</h2>
+              <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+                <h2 className="text-xl font-semibold text-white">Contact</h2>
                 <div className="mt-3 space-y-2 text-sm">
-                  <a href="mailto:privacy@viktron.ai" className="inline-flex items-center gap-2 text-slate-700 font-semibold">
+                  <a href="mailto:privacy@viktron.ai" className="inline-flex items-center gap-2 text-primary font-semibold">
                     <Mail className="h-4 w-4" />
                     privacy@viktron.ai
                   </a>
-                  <p className="inline-flex items-center gap-2 text-slate-600">
-                    <MapPin className="h-4 w-4 text-blue-600" />
+                  <p className="inline-flex items-center gap-2 text-slate-400">
+                    <MapPin className="h-4 w-4 text-primary" />
                     Viktron, United States
                   </p>
                 </div>

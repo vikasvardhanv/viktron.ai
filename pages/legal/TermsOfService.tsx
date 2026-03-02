@@ -78,11 +78,11 @@ export const TermsOfService: React.FC = () => {
       <section className="pt-32 pb-14 px-4">
         <div className="container-custom max-w-4xl">
           <AnimatedSection>
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50">
-              <FileText className="h-6 w-6 text-blue-600" />
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 border border-primary/20">
+              <FileText className="h-6 w-6 text-primary" />
             </div>
-            <h1 className="mt-5 text-4xl sm:text-5xl font-semibold tracking-tight text-slate-900">Terms of Service</h1>
-            <p className="mt-2 text-slate-600">Last updated: {lastUpdated}</p>
+            <h1 className="mt-5 text-4xl sm:text-5xl font-semibold tracking-tight text-white">Terms of Service</h1>
+            <p className="mt-2 text-slate-400">Last updated: {lastUpdated}</p>
           </AnimatedSection>
         </div>
       </section>
@@ -90,13 +90,13 @@ export const TermsOfService: React.FC = () => {
       <section className="pb-20 px-4">
         <div className="container-custom max-w-4xl">
           <AnimatedSection>
-            <article className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 space-y-6">
+            <article className="rounded-3xl border border-slate-800 bg-slate-900/60 p-6 sm:p-8 space-y-6">
               {sections.map((section) => (
                 <section key={section.title}>
-                  <h2 className="text-2xl font-semibold text-slate-900">{section.title}</h2>
+                  <h2 className="text-2xl font-semibold text-white">{section.title}</h2>
                   <ul className="mt-3 space-y-2">
                     {section.points.map((point) => (
-                      <li key={point} className="text-slate-600 leading-relaxed list-disc ml-5">
+                      <li key={point} className="text-slate-400 leading-relaxed list-disc ml-5">
                         {point}
                       </li>
                     ))}
@@ -104,22 +104,22 @@ export const TermsOfService: React.FC = () => {
                 </section>
               ))}
 
-              <section className="rounded-2xl border border-slate-200 bg-white p-5">
-                <p className="text-slate-600">
-                  Also review our <Link to="/privacy" className="text-slate-700 font-semibold">Privacy Policy</Link> and{' '}
-                  <Link to="/cookies" className="text-slate-700 font-semibold">Cookie Policy</Link>.
+              <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+                <p className="text-slate-400">
+                  Also review our <Link to="/privacy" className="text-primary font-semibold">Privacy Policy</Link> and{' '}
+                  <Link to="/cookies" className="text-primary font-semibold">Cookie Policy</Link>.
                 </p>
               </section>
 
-              <section className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h2 className="text-xl font-semibold text-slate-900">Contact</h2>
+              <section className="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+                <h2 className="text-xl font-semibold text-white">Contact</h2>
                 <div className="mt-3 space-y-2 text-sm">
-                  <a href="mailto:legal@viktron.ai" className="inline-flex items-center gap-2 text-slate-700 font-semibold">
+                  <a href="mailto:legal@viktron.ai" className="inline-flex items-center gap-2 text-primary font-semibold">
                     <Mail className="h-4 w-4" />
                     legal@viktron.ai
                   </a>
-                  <p className="inline-flex items-center gap-2 text-slate-600">
-                    <MapPin className="h-4 w-4 text-blue-600" />
+                  <p className="inline-flex items-center gap-2 text-slate-400">
+                    <MapPin className="h-4 w-4 text-primary" />
                     Viktron, United States
                   </p>
                 </div>
