@@ -1109,7 +1109,7 @@ export const RentAgent: React.FC = () => {
                     <p className="text-xs text-slate-500 leading-relaxed">{item.body}</p>
                   </div>
                 </div>
-              ))}}
+              ))}
             </div>
           </div>
         </div>
