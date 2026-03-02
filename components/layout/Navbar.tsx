@@ -69,58 +69,88 @@ export const Navbar: React.FC = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-6">
-              {navItems.map((item) => (
-                item.isPopup ? (
-                  <div
-                    key={item.path}
-                    className="relative"
-                    onMouseEnter={() => {
-                      if (item.isPopup === 'services') setIsServicesOpen(true);
-                      if (item.isPopup === 'about') setIsAboutOpen(true);
-                    }}
-                    onMouseLeave={() => {
-                      if (item.isPopup === 'services') setIsServicesOpen(false);
-                      if (item.isPopup === 'about') setIsAboutOpen(false);
-                    }}
-                  >
-                    <button
-                      onClick={() => {
-                        if (item.isPopup === 'services') setIsServicesOpen(!isServicesOpen);
-                        if (item.isPopup === 'about') setIsAboutOpen(!isAboutOpen);
+              {navItems.map((item) => {
+                // On rent subdomain: popup items become plain anchor links to main domain
+                if (item.isPopup && isRentSubdomain) {
+                  return (
+                    <a
+                      key={item.path}
+                      href={`https://viktron.ai${item.path}`}
+                      className="text-sm font-medium transition-colors flex items-center gap-1 text-slate-600 hover:text-slate-900"
+                    >
+                      {item.name}
+                      <ChevronDown className="w-3 h-3" />
+                    </a>
+                  );
+                }
+                // Normal popup items (not on rent subdomain)
+                if (item.isPopup) {
+                  return (
+                    <div
+                      key={item.path}
+                      className="relative"
+                      onMouseEnter={() => {
+                        if (item.isPopup === 'services') setIsServicesOpen(true);
+                        if (item.isPopup === 'about') setIsAboutOpen(true);
                       }}
-                      className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer text-slate-600 hover:text-slate-900 ${
-                        location.pathname.startsWith(item.path) && item.path !== '/' ? 'text-blue-600' : ''
+                      onMouseLeave={() => {
+                        if (item.isPopup === 'services') setIsServicesOpen(false);
+                        if (item.isPopup === 'about') setIsAboutOpen(false);
+                      }}
+                    >
+                      <button
+                        onClick={() => {
+                          if (item.isPopup === 'services') setIsServicesOpen(!isServicesOpen);
+                          if (item.isPopup === 'about') setIsAboutOpen(!isAboutOpen);
+                        }}
+                        className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer text-slate-600 hover:text-slate-900 ${
+                          location.pathname.startsWith(item.path) && item.path !== '/' ? 'text-blue-600' : ''
+                        }`}
+                      >
+                        {item.name}
+                        <ChevronDown className={`w-3 h-3 transition-transform ${
+                          (item.isPopup === 'services' && isServicesOpen) || (item.isPopup === 'about' && isAboutOpen) ? 'rotate-180' : ''
+                        }`} />
+                      </button>
+                      {item.isPopup === 'services' && (
+                        <ServicesPopup isOpen={isServicesOpen} onClose={() => setIsServicesOpen(false)} />
+                      )}
+                      {item.isPopup === 'about' && (
+                        <AboutPopup isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+                      )}
+                    </div>
+                  );
+                }
+                // Rent Agents pill — always external to rent.viktron.ai
+                if (item.external) {
+                  return (
+                    <a
+                      key={item.path}
+                      href={item.external}
+                      className={`flex items-center gap-1.5 text-sm font-medium px-3 py-1 rounded-full border transition-colors ${
+                        isRentSubdomain
+                          ? 'bg-blue-600 border-blue-600 text-white'
+                          : 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100'
                       }`}
                     >
                       {item.name}
-                      <ChevronDown className={`w-3 h-3 transition-transform ${
-                        (item.isPopup === 'services' && isServicesOpen) || (item.isPopup === 'about' && isAboutOpen) ? 'rotate-180' : ''
-                      }`} />
-                    </button>
-                    {item.isPopup === 'services' && (
-                      <ServicesPopup isOpen={isServicesOpen} onClose={() => setIsServicesOpen(false)} />
-                    )}
-                    {item.isPopup === 'about' && (
-                      <AboutPopup isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
-                    )}
-                  </div>
-                ) : item.name === 'Home' && isRentSubdomain ? (
-                  <a
-                    key="home-external"
-                    href="https://viktron.ai"
-                    className="text-sm font-medium transition-colors text-slate-600 hover:text-slate-900"
-                  >
-                    Home
-                  </a>
-                ) : item.external ? (
-                  <a
-                    key={item.path}
-                    href={item.external}
-                    className="flex items-center gap-1.5 text-sm font-medium px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 transition-colors"
-                  >
-                    {item.name}
-                  </a>
-                ) : (
+                    </a>
+                  );
+                }
+                // On rent subdomain: all other links go to main domain
+                if (isRentSubdomain) {
+                  return (
+                    <a
+                      key={item.path}
+                      href={item.path === '/' ? 'https://viktron.ai' : `https://viktron.ai${item.path}`}
+                      className="text-sm font-medium transition-colors text-slate-600 hover:text-slate-900"
+                    >
+                      {item.name}
+                    </a>
+                  );
+                }
+                // Normal React Router link
+                return (
                   <Link
                     key={item.path}
                     to={item.path}
@@ -130,8 +160,8 @@ export const Navbar: React.FC = () => {
                   >
                     {item.name}
                   </Link>
-                )
-              ))}
+                );
+              })}
             </div>
 
             {/* CTA Button */}
@@ -224,7 +254,21 @@ export const Navbar: React.FC = () => {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                   >
-                    {item.isPopup ? (
+                    {item.external ? (
+                      <a
+                        href={item.external}
+                        className="block px-4 py-3 text-lg font-medium rounded-xl transition-colors text-blue-400 hover:text-blue-300 hover:bg-white/5 border border-blue-500/20"
+                      >
+                        {item.name}
+                      </a>
+                    ) : isRentSubdomain ? (
+                      <a
+                        href={item.path === '/' ? 'https://viktron.ai' : `https://viktron.ai${item.path}`}
+                        className="block px-4 py-3 text-lg font-medium rounded-xl transition-colors text-white/70 hover:text-white hover:bg-white/5 border border-transparent"
+                      >
+                        {item.name}
+                      </a>
+                    ) : item.isPopup ? (
                       <Link
                         to={item.path}
                         onClick={() => setIsMobileMenuOpen(false)}
@@ -232,13 +276,6 @@ export const Navbar: React.FC = () => {
                       >
                         {item.name}
                       </Link>
-                    ) : item.external ? (
-                      <a
-                        href={item.external}
-                        className="block px-4 py-3 text-lg font-medium rounded-xl transition-colors text-blue-400 hover:text-blue-300 hover:bg-white/5 border border-blue-500/20"
-                      >
-                        {item.name}
-                      </a>
                     ) : (
                       <Link
                         to={item.path}
