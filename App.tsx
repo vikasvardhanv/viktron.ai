@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AuthProvider } from './context/AuthContext';
 import { CookieConsentProvider } from './context/CookieConsentContext';
@@ -27,6 +27,7 @@ const ServiceDetail = lazy(() => import('./pages/ServiceDetail').then(m => ({ de
 const LeadbotConsole = lazy(() => import('./pages/LeadbotConsole').then(m => ({ default: m.LeadbotConsole })));
 const Pricing = lazy(() => import('./pages/Pricing').then(m => ({ default: m.Pricing })));
 const Blog = lazy(() => import('./pages/Blog').then(m => ({ default: m.Blog })));
+const RentAgent = lazy(() => import('./pages/RentAgent').then(m => ({ default: m.RentAgent })));
 
 // Legal pages - lazy loaded
 const PrivacyPolicy = lazy(() => import('./pages/legal/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
@@ -119,6 +120,19 @@ const GoogleSignInWarmup: React.FC = () => {
   return null;
 };
 
+// Subdomain-based redirect: rent.viktron.ai → /rent
+const SubdomainRedirect: React.FC = () => {
+  const navigate = useNavigate();
+  React.useEffect(() => {
+    const host = window.location.hostname; // e.g. "rent.viktron.ai"
+    const subdomain = host.split('.')[0];   // "rent"
+    if (subdomain === 'rent' && window.location.pathname === '/') {
+      navigate('/rent', { replace: true });
+    }
+  }, [navigate]);
+  return null;
+};
+
 // Animated routes wrapper
 const AnimatedRoutes: React.FC = () => {
   const location = useLocation();
@@ -145,6 +159,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/white-label" element={<PageTransition><WhiteLabel /></PageTransition>} />
         <Route path="/my-platforms" element={<PageTransition><MyPlatforms /></PageTransition>} />
         <Route path="/leadbot" element={<PageTransition><LeadbotConsole /></PageTransition>} />
+        <Route path="/rent" element={<PageTransition><RentAgent /></PageTransition>} />
         <Route path="/login" element={<PageTransition><AuthPage mode="login" /></PageTransition>} />
         <Route path="/signup" element={<PageTransition><AuthPage mode="signup" /></PageTransition>} />
 
@@ -216,6 +231,7 @@ function App() {
       <AuthProvider>
         <CookieConsentProvider>
           <ScrollToTop />
+          <SubdomainRedirect />
           <GoogleSignInWarmup />
           <div className="w-full min-h-screen bg-[#020617] text-slate-200">
             <Suspense fallback={<LoadingSpinner />}>
