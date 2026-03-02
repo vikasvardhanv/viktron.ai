@@ -58,21 +58,38 @@ interface AgentEntry {
 
 // ── Agent avatar map — unique icon + gradient per slug ───────────────────────
 const AGENT_AVATAR: Record<string, { icon: React.ReactNode; bg: string; ring: string }> = {
-  ceo:            { icon: <Crown size={22} />,         bg: 'bg-violet-500/15', ring: 'border-violet-500/30 text-violet-400' },
-  marketing:      { icon: <Megaphone size={22} />,     bg: 'bg-pink-500/15',   ring: 'border-pink-500/30 text-pink-400' },
-  developer:      { icon: <Code2 size={22} />,         bg: 'bg-blue-500/15',   ring: 'border-blue-500/30 text-blue-400' },
-  hermes:         { icon: <Zap size={22} />,           bg: 'bg-green-500/15',  ring: 'border-green-500/30 text-green-400' },
-  outreach:       { icon: <Users size={22} />,         bg: 'bg-yellow-500/15', ring: 'border-yellow-500/30 text-yellow-400' },
-  support:        { icon: <HeartHandshake size={22} />,bg: 'bg-teal-500/15',   ring: 'border-teal-500/30 text-teal-400' },
-  content:        { icon: <FileText size={22} />,      bg: 'bg-orange-500/15', ring: 'border-orange-500/30 text-orange-400' },
-  research:       { icon: <Search size={22} />,        bg: 'bg-cyan-500/15',   ring: 'border-cyan-500/30 text-cyan-400' },
-  qa:             { icon: <ShieldCheck size={22} />,   bg: 'bg-indigo-500/15', ring: 'border-indigo-500/30 text-indigo-400' },
-  'data-analyst': { icon: <BarChart3 size={22} />,     bg: 'bg-emerald-500/15',ring: 'border-emerald-500/30 text-emerald-400' },
-  'social-autopilot': { icon: <Globe size={22} />,    bg: 'bg-sky-500/15',    ring: 'border-sky-500/30 text-sky-400' },
-  ecommerce:      { icon: <ShoppingBag size={22} />,   bg: 'bg-amber-500/15',  ring: 'border-amber-500/30 text-amber-400' },
-  pm:             { icon: <Layout size={22} />,         bg: 'bg-rose-500/15',   ring: 'border-rose-500/30 text-rose-400' },
+  ceo:            { icon: <Crown size={20} />,         bg: 'bg-violet-100', ring: 'border-violet-200 text-violet-600' },
+  marketing:      { icon: <Megaphone size={20} />,     bg: 'bg-pink-100',   ring: 'border-pink-200 text-pink-600' },
+  developer:      { icon: <Code2 size={20} />,         bg: 'bg-blue-100',   ring: 'border-blue-200 text-blue-600' },
+  hermes:         { icon: <Zap size={20} />,           bg: 'bg-green-100',  ring: 'border-green-200 text-green-600' },
+  outreach:       { icon: <Users size={20} />,         bg: 'bg-yellow-100', ring: 'border-yellow-200 text-yellow-700' },
+  support:        { icon: <HeartHandshake size={20} />,bg: 'bg-teal-100',   ring: 'border-teal-200 text-teal-600' },
+  content:        { icon: <FileText size={20} />,      bg: 'bg-orange-100', ring: 'border-orange-200 text-orange-600' },
+  research:       { icon: <Search size={20} />,        bg: 'bg-cyan-100',   ring: 'border-cyan-200 text-cyan-700' },
+  qa:             { icon: <ShieldCheck size={20} />,   bg: 'bg-indigo-100', ring: 'border-indigo-200 text-indigo-600' },
+  'data-analyst': { icon: <BarChart3 size={20} />,     bg: 'bg-emerald-100',ring: 'border-emerald-200 text-emerald-600' },
+  'social-autopilot': { icon: <Globe size={20} />,    bg: 'bg-sky-100',    ring: 'border-sky-200 text-sky-700' },
+  ecommerce:      { icon: <ShoppingBag size={20} />,   bg: 'bg-amber-100',  ring: 'border-amber-200 text-amber-600' },
+  pm:             { icon: <Layout size={20} />,         bg: 'bg-rose-100',   ring: 'border-rose-200 text-rose-600' },
 };
-const defaultAvatar = { icon: <Cpu size={22} />, bg: 'bg-slate-100', ring: 'border-slate-300 text-slate-500' };
+const defaultAvatar = { icon: <Cpu size={20} />, bg: 'bg-slate-100', ring: 'border-slate-200 text-slate-500' };
+
+// ── Per-agent banner images ───────────────────────────────────────────────────
+const AGENT_IMAGES: Record<string, string> = {
+  ceo:            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600&h=200',
+  marketing:      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600&h=200',
+  developer:      'https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&q=80&w=600&h=200',
+  hermes:         'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=600&h=200',
+  outreach:       'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=600&h=200',
+  support:        'https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&q=80&w=600&h=200',
+  content:        'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=600&h=200',
+  research:       'https://images.unsplash.com/photo-1532094349884-543559c5b916?auto=format&fit=crop&q=80&w=600&h=200',
+  qa:             'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&q=80&w=600&h=200',
+  'data-analyst': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=600&h=200',
+  'social-autopilot': 'https://images.unsplash.com/photo-1611605698335-8b1569810432?auto=format&fit=crop&q=80&w=600&h=200',
+  ecommerce:      'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=600&h=200',
+  pm:             'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=600&h=200',
+};
 
 // ── Inline catalog (mirrors backend catalog.py) ───────────────────────────────
 // In production this is fetched from /api/v1/registry/agents
@@ -747,9 +764,9 @@ const AgentCard: React.FC<{ agent: AgentEntry; onDeploy: (agent: AgentEntry) => 
   const navigate = useNavigate();
   const catMeta = CATEGORY_META[agent.category] || CATEGORY_META.all;
   const avatar = AGENT_AVATAR[agent.slug] || defaultAvatar;
+  const image = AGENT_IMAGES[agent.slug];
 
   const handleDeploy = () => {
-    // Paid agents require sign-in
     if (agent.hosted_price_usd_month !== null && !isAuthenticated) {
       navigate('/login');
       return;
@@ -759,103 +776,98 @@ const AgentCard: React.FC<{ agent: AgentEntry; onDeploy: (agent: AgentEntry) => 
 
   return (
     <motion.div
-      className="group relative bg-white border border-slate-200 rounded-2xl p-5 hover:border-blue-300 hover:shadow-md transition-all duration-300 flex flex-col h-full min-h-[340px]"
+      className="group relative bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-blue-300 hover:shadow-lg transition-all duration-300 flex flex-col h-full"
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -2 }}
+      whileHover={{ y: -3 }}
     >
-      {/* Top badge — one slot, open-source takes priority */}
-      <div className="absolute top-4 right-4">
-        {agent.is_open_source ? (
-          <span className="px-2 py-0.5 bg-green-500/10 border border-green-500/20 rounded-full text-[10px] text-green-400 font-semibold tracking-wide uppercase">
-            Open Source
-          </span>
-        ) : agent.is_featured ? (
-          <span className="px-2 py-0.5 bg-primary/10 border border-primary/20 rounded-full text-[10px] text-primary font-semibold tracking-wide uppercase">
-            Featured
-          </span>
-        ) : null}
-      </div>
-
-      {/* Agent avatar */}
-      <div className={`w-12 h-12 rounded-xl ${avatar.bg} border ${avatar.ring} flex items-center justify-center shrink-0 mb-4`}>
-        {avatar.icon}
-      </div>
-
-      {/* Title + category */}
-      <div className="mb-3">
-        <h3 className="text-sm font-semibold text-slate-900 leading-tight">{agent.display_name}</h3>
-        <p className={`text-xs mt-0.5 ${catMeta.color}`}>{catMeta.label}</p>
-      </div>
-
-      {/* Tagline */}
-      <p className="text-xs text-slate-500 leading-relaxed mb-3 line-clamp-2 flex-1">
-        {agent.tagline}
-      </p>
-
-      {/* LLM badge */}
-      <div className="flex items-center gap-2 mb-3">
-        <span className="px-2 py-0.5 bg-slate-100 border border-slate-200 rounded-full text-[10px] text-slate-600 font-mono">
-          {agent.llm_model}
-        </span>
-        <span className="text-[10px] text-slate-500">v{agent.version}</span>
-      </div>
-
-      {/* Capabilities chips */}
-      <div className="flex flex-wrap gap-1 mb-4">
-        {agent.capabilities.slice(0, 3).map(cap => (
-          <span key={cap} className="px-1.5 py-0.5 bg-slate-100 rounded text-[10px] text-slate-600">
-            {cap.replace(/_/g, ' ')}
-          </span>
-        ))}
-        {agent.capabilities.length > 3 && (
-          <span className="px-1.5 py-0.5 text-[10px] text-slate-500">
-            +{agent.capabilities.length - 3} more
-          </span>
+      {/* Banner image */}
+      <div className="relative h-32 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 shrink-0">
+        {image && (
+          <img
+            src={image}
+            alt={agent.display_name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
         )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+
+        {/* Badge */}
+        <div className="absolute top-2.5 right-2.5">
+          {agent.is_open_source ? (
+            <span className="px-2 py-0.5 bg-green-500/90 backdrop-blur-sm rounded-full text-[10px] text-white font-semibold tracking-wide uppercase">Open Source</span>
+          ) : agent.is_featured ? (
+            <span className="px-2 py-0.5 bg-blue-600/90 backdrop-blur-sm rounded-full text-[10px] text-white font-semibold tracking-wide uppercase">Featured</span>
+          ) : null}
+        </div>
+
+        {/* Avatar floated over image */}
+        <div className={`absolute bottom-0 left-4 translate-y-1/2 w-11 h-11 rounded-xl ${avatar.bg} border-2 border-white ${avatar.ring} flex items-center justify-center shadow-md`}>
+          {avatar.icon}
+        </div>
       </div>
 
-      {/* Stats */}
-      <div className="flex items-center gap-4 mb-4 text-xs text-slate-500">
-        <span className="flex items-center gap-1">
-          <Download size={11} /> {formatCount(agent.pulls_count)}
-        </span>
-        <span className="flex items-center gap-1">
-          <Star size={11} /> {formatCount(agent.stars_count)}
-        </span>
-        {agent.is_open_source && agent.source_repo && (
-          <a
-            href={agent.source_repo}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 hover:text-slate-700 transition-colors ml-auto"
-            onClick={e => e.stopPropagation()}
-          >
-            <ExternalLink size={10} /> Source
-          </a>
-        )}
-      </div>
+      {/* Card body */}
+      <div className="flex flex-col flex-1 p-4 pt-8">
+        <div className="mb-2">
+          <h3 className="text-sm font-semibold text-slate-900 leading-tight">{agent.display_name}</h3>
+          <p className={`text-xs mt-0.5 ${catMeta.color}`}>{catMeta.label}</p>
+        </div>
 
-      {/* Pricing + Deploy */}
-      <div className="flex items-center justify-between pt-3 border-t border-slate-200 mt-auto">
-        <div>
-          {agent.hosted_price_usd_month === null ? (
-            <span className="text-xs text-green-400 font-medium">Free</span>
-          ) : (
-            <span className="text-xs text-slate-700">
-              <span className="text-slate-900 font-semibold">${agent.hosted_price_usd_month}</span>
-              <span className="text-slate-500">/mo hosted</span>
+        <p className="text-xs text-slate-500 leading-relaxed mb-3 line-clamp-2 flex-1">
+          {agent.tagline}
+        </p>
+
+        <div className="flex items-center gap-2 mb-3">
+          <span className="px-2 py-0.5 bg-slate-100 border border-slate-200 rounded-full text-[10px] text-slate-600 font-mono">
+            {agent.llm_model}
+          </span>
+          <span className="text-[10px] text-slate-400">v{agent.version}</span>
+        </div>
+
+        <div className="flex flex-wrap gap-1 mb-3">
+          {agent.capabilities.slice(0, 3).map(cap => (
+            <span key={cap} className="px-1.5 py-0.5 bg-slate-100 rounded text-[10px] text-slate-600">
+              {cap.replace(/_/g, ' ')}
             </span>
+          ))}
+          {agent.capabilities.length > 3 && (
+            <span className="px-1.5 py-0.5 text-[10px] text-slate-400">+{agent.capabilities.length - 3} more</span>
           )}
         </div>
-        <button
-          onClick={handleDeploy}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 hover:bg-primary text-primary hover:text-white border border-primary/30 hover:border-primary rounded-lg text-xs font-medium transition-all duration-200"
-        >
-          {agent.hosted_price_usd_month !== null && !isAuthenticated
-            ? <><Lock size={12} /> Sign in</>
-            : <><ChevronRight size={12} /> Deploy</>}
-        </button>
+
+        <div className="flex items-center gap-4 mb-4 text-xs text-slate-400">
+          <span className="flex items-center gap-1"><Download size={11} /> {formatCount(agent.pulls_count)}</span>
+          <span className="flex items-center gap-1"><Star size={11} /> {formatCount(agent.stars_count)}</span>
+          {agent.is_open_source && agent.source_repo && (
+            <a href={agent.source_repo} target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-1 hover:text-slate-700 transition-colors ml-auto"
+              onClick={e => e.stopPropagation()}>
+              <ExternalLink size={10} /> Source
+            </a>
+          )}
+        </div>
+
+        <div className="flex items-center justify-between pt-3 border-t border-slate-100 mt-auto">
+          <div>
+            {agent.hosted_price_usd_month === null ? (
+              <span className="text-xs text-green-600 font-medium">Free</span>
+            ) : (
+              <span className="text-xs">
+                <span className="text-slate-900 font-semibold">${agent.hosted_price_usd_month}</span>
+                <span className="text-slate-400">/mo</span>
+              </span>
+            )}
+          </div>
+          <button
+            onClick={handleDeploy}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-medium transition-all duration-200 shadow-sm"
+          >
+            {agent.hosted_price_usd_month !== null && !isAuthenticated
+              ? <><Lock size={12} /> Sign in</>
+              : <><ChevronRight size={12} /> Deploy</>}
+          </button>
+        </div>
       </div>
     </motion.div>
   );
@@ -965,7 +977,7 @@ export const RentAgent: React.FC = () => {
               </div>
 
               {/* How it works */}
-              <div className="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-5 py-3 text-sm text-slate-600 shadow-sm">
+              <div className="inline-flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-xl px-5 py-3 text-sm shadow-sm">
                 <code className="text-green-400 font-mono text-xs">docker pull ghcr.io/viktron/agent-marketing</code>
                 <CopyButton text="docker pull ghcr.io/viktron/agent-marketing" />
               </div>

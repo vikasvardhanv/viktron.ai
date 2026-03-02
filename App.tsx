@@ -65,9 +65,42 @@ const SnakeGame = lazy(() => import('./components/SnakeGame').then(m => ({ defau
 
 // Loading spinner for lazy loaded components
 const LoadingSpinner: React.FC = () => (
-  <div className="min-h-screen bg-white flex items-center justify-center">
-    <div className="relative">
-      <div className="w-12 h-12 rounded-full border-2 border-slate-200 border-t-blue-500 animate-spin" />
+  <div className="min-h-screen bg-white flex flex-col items-center justify-center gap-6">
+    {/* Agent network animation */}
+    <div className="relative w-24 h-24">
+      {/* Outer orbit ring */}
+      <div className="absolute inset-0 rounded-full border-2 border-blue-100 animate-spin" style={{ animationDuration: '3s' }} />
+      {/* Middle orbit ring */}
+      <div className="absolute inset-3 rounded-full border-2 border-indigo-100 animate-spin" style={{ animationDuration: '2s', animationDirection: 'reverse' }} />
+      {/* Center agent brain */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 3 3v1a3 3 0 0 1-3 3h-1v1a4 4 0 0 1-8 0v-1H7a3 3 0 0 1-3-3v-1a3 3 0 0 1 3-3h1V6a4 4 0 0 1 4-4z"/>
+            <circle cx="9" cy="10" r="1" fill="white" stroke="none"/>
+            <circle cx="15" cy="10" r="1" fill="white" stroke="none"/>
+          </svg>
+        </div>
+      </div>
+      {/* Orbiting agent dots */}
+      {[0, 120, 240].map((deg, i) => (
+        <div
+          key={i}
+          className="absolute w-3 h-3 rounded-full bg-blue-500 shadow-sm shadow-blue-400/50"
+          style={{
+            top: '50%', left: '50%',
+            transform: `rotate(${deg}deg) translateX(38px) translateY(-50%)`,
+            animation: `spin ${2 + i * 0.5}s linear infinite`,
+          }}
+        />
+      ))}
+    </div>
+    <div className="text-center">
+      <p className="text-sm font-semibold text-slate-900">Initializing agents</p>
+      <p className="text-xs text-slate-400 mt-1 font-mono flex items-center gap-1.5 justify-center">
+        <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+        Connecting to AgentIRL runtime...
+      </p>
     </div>
   </div>
 );
