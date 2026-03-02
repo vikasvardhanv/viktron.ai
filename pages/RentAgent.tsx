@@ -72,7 +72,7 @@ const AGENT_AVATAR: Record<string, { icon: React.ReactNode; bg: string; ring: st
   ecommerce:      { icon: <ShoppingBag size={22} />,   bg: 'bg-amber-500/15',  ring: 'border-amber-500/30 text-amber-400' },
   pm:             { icon: <Layout size={22} />,         bg: 'bg-rose-500/15',   ring: 'border-rose-500/30 text-rose-400' },
 };
-const defaultAvatar = { icon: <Cpu size={22} />, bg: 'bg-slate-500/15', ring: 'border-slate-500/30 text-slate-400' };
+const defaultAvatar = { icon: <Cpu size={22} />, bg: 'bg-slate-100', ring: 'border-slate-300 text-slate-500' };
 
 // ── Inline catalog (mirrors backend catalog.py) ───────────────────────────────
 // In production this is fetched from /api/v1/registry/agents
@@ -426,16 +426,16 @@ const AGENTS: AgentEntry[] = [
 // ── Category config ───────────────────────────────────────────────────────────
 
 const CATEGORY_META: Record<string, { label: string; icon: React.ReactNode; color: string }> = {
-  all: { label: 'All Agents', icon: <Layout size={14} />, color: 'text-slate-400' },
-  orchestration: { label: 'Orchestration', icon: <Cpu size={14} />, color: 'text-violet-400' },
-  marketing: { label: 'Marketing', icon: <Megaphone size={14} />, color: 'text-pink-400' },
-  dev: { label: 'Developer', icon: <Code2 size={14} />, color: 'text-blue-400' },
-  sales: { label: 'Sales', icon: <Zap size={14} />, color: 'text-yellow-400' },
-  support: { label: 'Support', icon: <HeartHandshake size={14} />, color: 'text-green-400' },
-  content: { label: 'Content', icon: <FlaskConical size={14} />, color: 'text-orange-400' },
-  research: { label: 'Research', icon: <Search size={14} />, color: 'text-cyan-400' },
-  data: { label: 'Data', icon: <BarChart3 size={14} />, color: 'text-teal-400' },
-  hr: { label: 'HR', icon: <Users size={14} />, color: 'text-rose-400' },
+  all: { label: 'All Agents', icon: <Layout size={14} />, color: 'text-slate-500' },
+  orchestration: { label: 'Orchestration', icon: <Cpu size={14} />, color: 'text-violet-600' },
+  marketing: { label: 'Marketing', icon: <Megaphone size={14} />, color: 'text-pink-600' },
+  dev: { label: 'Developer', icon: <Code2 size={14} />, color: 'text-blue-600' },
+  sales: { label: 'Sales', icon: <Zap size={14} />, color: 'text-yellow-700' },
+  support: { label: 'Support', icon: <HeartHandshake size={14} />, color: 'text-green-600' },
+  content: { label: 'Content', icon: <FlaskConical size={14} />, color: 'text-orange-600' },
+  research: { label: 'Research', icon: <Search size={14} />, color: 'text-cyan-700' },
+  data: { label: 'Data', icon: <BarChart3 size={14} />, color: 'text-teal-600' },
+  hr: { label: 'HR', icon: <Users size={14} />, color: 'text-rose-600' },
 };
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -493,7 +493,7 @@ const CopyButton: React.FC<{ text: string; className?: string }> = ({ text, clas
   return (
     <button
       onClick={copy}
-      className={`flex items-center gap-1 text-xs text-slate-400 hover:text-white transition-colors ${className}`}
+      className={`flex items-center gap-1 text-xs text-slate-500 hover:text-slate-900 transition-colors ${className}`}
       title="Copy"
     >
       {copied ? <Check size={12} className="text-green-400" /> : <Copy size={12} />}
@@ -553,17 +553,17 @@ const DeployModal: React.FC<{ agent: AgentEntry; onClose: () => void }> = ({ age
 
         {/* Modal */}
         <motion.div
-          className="relative z-10 w-full max-w-2xl bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden shadow-2xl"
+          className="relative z-10 w-full max-w-2xl bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-2xl"
           initial={{ scale: 0.95, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.95, opacity: 0, y: 20 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
           {/* Header */}
-          <div className="flex items-start justify-between p-6 border-b border-slate-700">
+          <div className="flex items-start justify-between p-6 border-b border-slate-200">
             <div>
-              <h2 className="text-lg font-semibold text-white">{agent.display_name}</h2>
-              <p className="text-sm text-slate-400 mt-0.5">{agent.tagline}</p>
+              <h2 className="text-lg font-semibold text-slate-900">{agent.display_name}</h2>
+              <p className="text-sm text-slate-500 mt-0.5">{agent.tagline}</p>
             </div>
             <div className="flex items-center gap-3">
               {agent.hosted_price_usd_month === null ? (
@@ -575,14 +575,14 @@ const DeployModal: React.FC<{ agent: AgentEntry; onClose: () => void }> = ({ age
                   ${agent.hosted_price_usd_month}/mo hosted
                 </span>
               )}
-              <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-700 transition-colors">
+              <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition-colors">
                 <X size={16} />
               </button>
             </div>
           </div>
 
           {/* Tab bar */}
-          <div className="flex border-b border-slate-700 px-6">
+          <div className="flex border-b border-slate-200 px-6">
             {tabs.map(t => (
               <button
                 key={t.id}
@@ -590,7 +590,7 @@ const DeployModal: React.FC<{ agent: AgentEntry; onClose: () => void }> = ({ age
                 className={`flex items-center gap-1.5 px-3 py-3 text-sm border-b-2 transition-colors ${
                   tab === t.id
                     ? 'border-primary text-primary font-medium'
-                    : 'border-transparent text-slate-400 hover:text-slate-200'
+                    : 'border-transparent text-slate-500 hover:text-slate-900'
                 }`}
               >
                 {t.icon} {t.label}
@@ -614,12 +614,12 @@ const DeployModal: React.FC<{ agent: AgentEntry; onClose: () => void }> = ({ age
                 {/* Required env vars */}
                 {agent.env_vars_required.filter(v => v.required).length > 0 && (
                   <div className="mt-4">
-                    <p className="text-xs font-medium text-slate-400 mb-2">Required environment variables</p>
+                    <p className="text-xs font-medium text-slate-500 mb-2">Required environment variables</p>
                     <div className="space-y-2">
                       {agent.env_vars_required.filter(v => v.required).map(v => (
-                        <div key={v.key} className="flex items-center gap-3 bg-slate-800 rounded-lg px-3 py-2">
-                          <code className="text-xs text-yellow-300 font-mono">{v.key}</code>
-                          <span className="text-xs text-slate-400">{v.description}</span>
+                        <div key={v.key} className="flex items-center gap-3 bg-slate-100 rounded-lg px-3 py-2">
+                          <code className="text-xs text-yellow-700 font-mono">{v.key}</code>
+                          <span className="text-xs text-slate-500">{v.description}</span>
                         </div>
                       ))}
                     </div>
@@ -633,7 +633,7 @@ const DeployModal: React.FC<{ agent: AgentEntry; onClose: () => void }> = ({ age
                     <div className="space-y-1">
                       {agent.env_vars_required.filter(v => !v.required).map(v => (
                         <div key={v.key} className="flex items-center gap-3 px-3 py-1.5">
-                          <code className="text-xs text-slate-400 font-mono">{v.key}</code>
+                          <code className="text-xs text-slate-600 font-mono">{v.key}</code>
                           <span className="text-xs text-slate-500">{v.description}</span>
                         </div>
                       ))}
@@ -649,10 +649,10 @@ const DeployModal: React.FC<{ agent: AgentEntry; onClose: () => void }> = ({ age
                     <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-4">
                       <CloudUpload size={24} className="text-primary" />
                     </div>
-                    <h3 className="text-base font-semibold text-white mb-2">
+                    <h3 className="text-base font-semibold text-slate-900 mb-2">
                       Host {agent.display_name} on Viktron
                     </h3>
-                    <p className="text-sm text-slate-400 mb-6 max-w-sm mx-auto">
+                    <p className="text-sm text-slate-600 mb-6 max-w-sm mx-auto">
                       We provision, manage, and monitor the agent for you.
                       {agent.hosted_price_usd_month
                         ? ` $${agent.hosted_price_usd_month}/month — cancel anytime.`
@@ -674,8 +674,8 @@ const DeployModal: React.FC<{ agent: AgentEntry; onClose: () => void }> = ({ age
                             <ExternalLink size={13} /> {rentResult.endpoint}
                           </a>
                         )}
-                        <p className="text-xs text-slate-400">{rentResult.message}</p>
-                        <p className="text-xs text-slate-500">Instance: <code className="text-slate-300 font-mono">{rentResult.instance_id}</code></p>
+                        <p className="text-xs text-slate-500">{rentResult.message}</p>
+                        <p className="text-xs text-slate-400">Instance: <code className="text-slate-700 font-mono">{rentResult.instance_id}</code></p>
                       </div>
                     ) : (
                       <>
@@ -699,11 +699,11 @@ const DeployModal: React.FC<{ agent: AgentEntry; onClose: () => void }> = ({ age
                   </div>
                 ) : (
                   <div>
-                    <div className="w-14 h-14 rounded-2xl bg-slate-800 flex items-center justify-center mx-auto mb-4">
-                      <Lock size={22} className="text-slate-400" />
+                    <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-4">
+                      <Lock size={22} className="text-slate-500" />
                     </div>
-                    <h3 className="text-base font-semibold text-white mb-2">Sign in to deploy</h3>
-                    <p className="text-sm text-slate-400 mb-5">
+                    <h3 className="text-base font-semibold text-slate-900 mb-2">Sign in to deploy</h3>
+                    <p className="text-sm text-slate-600 mb-5">
                       Create a free Viktron account to deploy hosted agents.
                     </p>
                     <a
@@ -716,12 +716,12 @@ const DeployModal: React.FC<{ agent: AgentEntry; onClose: () => void }> = ({ age
                 )}
 
                 {/* Security callout */}
-                <div className="mt-6 p-4 bg-slate-800/50 rounded-xl border border-slate-700 text-left">
+                <div className="mt-6 p-4 bg-slate-50 rounded-xl border border-slate-200 text-left">
                   <div className="flex items-start gap-3">
-                    <Shield size={16} className="text-green-400 mt-0.5 shrink-0" />
+                    <Shield size={16} className="text-green-600 mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-xs font-medium text-slate-200">Privacy & Security</p>
-                      <p className="text-xs text-slate-400 mt-0.5">
+                      <p className="text-xs font-medium text-slate-900">Privacy & Security</p>
+                      <p className="text-xs text-slate-500 mt-0.5">
                         Each agent runs in an isolated container. Your API keys are stored encrypted
                         and never logged. Traffic runs over TLS 1.3. SOC 2 Type II in progress.
                       </p>
@@ -759,7 +759,7 @@ const AgentCard: React.FC<{ agent: AgentEntry; onDeploy: (agent: AgentEntry) => 
 
   return (
     <motion.div
-      className="group relative bg-slate-900 border border-slate-800 rounded-2xl p-5 hover:border-slate-600 transition-all duration-300 flex flex-col h-full min-h-[340px]"
+      className="group relative bg-white border border-slate-200 rounded-2xl p-5 hover:border-blue-300 hover:shadow-md transition-all duration-300 flex flex-col h-full min-h-[340px]"
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -2 }}
@@ -784,18 +784,18 @@ const AgentCard: React.FC<{ agent: AgentEntry; onDeploy: (agent: AgentEntry) => 
 
       {/* Title + category */}
       <div className="mb-3">
-        <h3 className="text-sm font-semibold text-white leading-tight">{agent.display_name}</h3>
+        <h3 className="text-sm font-semibold text-slate-900 leading-tight">{agent.display_name}</h3>
         <p className={`text-xs mt-0.5 ${catMeta.color}`}>{catMeta.label}</p>
       </div>
 
       {/* Tagline */}
-      <p className="text-xs text-slate-400 leading-relaxed mb-3 line-clamp-2 flex-1">
+      <p className="text-xs text-slate-500 leading-relaxed mb-3 line-clamp-2 flex-1">
         {agent.tagline}
       </p>
 
       {/* LLM badge */}
       <div className="flex items-center gap-2 mb-3">
-        <span className="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded-full text-[10px] text-slate-400 font-mono">
+        <span className="px-2 py-0.5 bg-slate-100 border border-slate-200 rounded-full text-[10px] text-slate-600 font-mono">
           {agent.llm_model}
         </span>
         <span className="text-[10px] text-slate-500">v{agent.version}</span>
@@ -804,7 +804,7 @@ const AgentCard: React.FC<{ agent: AgentEntry; onDeploy: (agent: AgentEntry) => 
       {/* Capabilities chips */}
       <div className="flex flex-wrap gap-1 mb-4">
         {agent.capabilities.slice(0, 3).map(cap => (
-          <span key={cap} className="px-1.5 py-0.5 bg-slate-800 rounded text-[10px] text-slate-400">
+          <span key={cap} className="px-1.5 py-0.5 bg-slate-100 rounded text-[10px] text-slate-600">
             {cap.replace(/_/g, ' ')}
           </span>
         ))}
@@ -828,7 +828,7 @@ const AgentCard: React.FC<{ agent: AgentEntry; onDeploy: (agent: AgentEntry) => 
             href={agent.source_repo}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 hover:text-slate-300 transition-colors ml-auto"
+            className="flex items-center gap-1 hover:text-slate-700 transition-colors ml-auto"
             onClick={e => e.stopPropagation()}
           >
             <ExternalLink size={10} /> Source
@@ -837,13 +837,13 @@ const AgentCard: React.FC<{ agent: AgentEntry; onDeploy: (agent: AgentEntry) => 
       </div>
 
       {/* Pricing + Deploy */}
-      <div className="flex items-center justify-between pt-3 border-t border-slate-800 mt-auto">
+      <div className="flex items-center justify-between pt-3 border-t border-slate-200 mt-auto">
         <div>
           {agent.hosted_price_usd_month === null ? (
             <span className="text-xs text-green-400 font-medium">Free</span>
           ) : (
-            <span className="text-xs text-slate-300">
-              <span className="text-white font-semibold">${agent.hosted_price_usd_month}</span>
+            <span className="text-xs text-slate-700">
+              <span className="text-slate-900 font-semibold">${agent.hosted_price_usd_month}</span>
               <span className="text-slate-500">/mo hosted</span>
             </span>
           )}
@@ -915,12 +915,13 @@ export const RentAgent: React.FC = () => {
         <DeployModal agent={deployAgent} onClose={() => setDeployAgent(null)} />
       )}
 
-      <div className="min-h-screen bg-slate-950">
+      <div className="min-h-screen bg-slate-50">
         {/* ── Hero ────────────────────────────────────────────────────────── */}
-        <div className="relative overflow-hidden border-b border-slate-800">
+        <div className="relative overflow-hidden border-b border-slate-200 bg-white">
           {/* Subtle gradient bg */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-violet-500/5 pointer-events-none" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-primary/8 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/80 via-white to-violet-50/50 pointer-events-none" />
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-100/40 blur-[120px] rounded-full pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-violet-100/30 blur-[100px] rounded-full pointer-events-none" />
 
           <div className="relative max-w-7xl mx-auto px-6 py-20 text-center">
             <motion.div
@@ -934,13 +935,13 @@ export const RentAgent: React.FC = () => {
                 app.rent.viktron.ai
               </div>
 
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight tracking-tight">
+              <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-4 leading-tight tracking-tight">
                 Rent a pre-built<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-violet-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-violet-600">
                   AI Agent
                 </span>
               </h1>
-              <p className="text-lg text-slate-400 mb-8 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto leading-relaxed">
                 Like a Docker image for AI. Pull an agent, configure your API keys,
                 and deploy anywhere — locally, on your cloud, or hosted by Viktron.
               </p>
@@ -948,23 +949,23 @@ export const RentAgent: React.FC = () => {
               {/* Quick stats */}
               <div className="flex items-center justify-center gap-8 text-sm text-slate-500 mb-10">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-white mb-0.5">{totalAgents}</div>
+                  <div className="text-2xl font-bold text-slate-900 mb-0.5">{totalAgents}</div>
                   <div>pre-built agents</div>
                 </div>
-                <div className="w-px h-8 bg-slate-700" />
+                <div className="w-px h-8 bg-slate-200" />
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-white mb-0.5">{formatCount(totalPulls)}</div>
+                  <div className="text-2xl font-bold text-slate-900 mb-0.5">{formatCount(totalPulls)}</div>
                   <div>total pulls</div>
                 </div>
-                <div className="w-px h-8 bg-slate-700" />
+                <div className="w-px h-8 bg-slate-200" />
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-white mb-0.5">{openSourceCount}</div>
+                  <div className="text-2xl font-bold text-slate-900 mb-0.5">{openSourceCount}</div>
                   <div>open source</div>
                 </div>
               </div>
 
               {/* How it works */}
-              <div className="inline-flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-xl px-5 py-3 text-sm text-slate-400">
+              <div className="inline-flex items-center gap-2 bg-white border border-slate-200 rounded-xl px-5 py-3 text-sm text-slate-600 shadow-sm">
                 <code className="text-green-400 font-mono text-xs">docker pull ghcr.io/viktron/agent-marketing</code>
                 <CopyButton text="docker pull ghcr.io/viktron/agent-marketing" />
               </div>
@@ -973,7 +974,7 @@ export const RentAgent: React.FC = () => {
         </div>
 
         {/* ── Filters & Search ─────────────────────────────────────────────── */}
-        <div className="sticky top-0 z-30 bg-slate-950/90 backdrop-blur-xl border-b border-slate-800">
+        <div className="sticky top-0 z-30 bg-white/90 backdrop-blur-xl border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-6 py-3 flex flex-wrap items-center gap-3">
             {/* Search */}
             <div className="relative flex-1 min-w-[200px] max-w-sm">
@@ -983,7 +984,7 @@ export const RentAgent: React.FC = () => {
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Search agents, tools, integrations..."
-                className="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-primary transition-colors"
+                className="w-full pl-9 pr-3 py-2 bg-white border border-slate-300 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 transition-colors"
               />
             </div>
 
@@ -998,8 +999,8 @@ export const RentAgent: React.FC = () => {
                     onClick={() => setCategory(cat)}
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                       category === cat
-                        ? 'bg-primary text-white shadow'
-                        : 'bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700'
+                        ? 'bg-blue-600 text-white shadow'
+                        : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                     }`}
                   >
                     {meta?.icon}
@@ -1015,7 +1016,7 @@ export const RentAgent: React.FC = () => {
               <button
                 onClick={() => setFeaturedOnly(v => !v)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs transition-all ${
-                  featuredOnly ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20' : 'bg-slate-800 text-slate-400 hover:text-white'
+                  featuredOnly ? 'bg-yellow-50 text-yellow-700 border border-yellow-300' : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
                 <Star size={11} /> Featured
@@ -1023,7 +1024,7 @@ export const RentAgent: React.FC = () => {
               <button
                 onClick={() => setOpenSourceOnly(v => !v)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs transition-all ${
-                  openSourceOnly ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-slate-800 text-slate-400 hover:text-white'
+                  openSourceOnly ? 'bg-green-50 text-green-700 border border-green-300' : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
                 <Code2 size={11} /> Open Source
@@ -1037,7 +1038,7 @@ export const RentAgent: React.FC = () => {
           {filtered.length === 0 ? (
             <div className="text-center py-20">
               <div className="text-4xl mb-4">🤖</div>
-              <p className="text-slate-400">No agents match your filters.</p>
+              <p className="text-slate-500">No agents match your filters.</p>
               <button
                 onClick={() => { setSearch(''); setCategory('all'); setFeaturedOnly(false); setOpenSourceOnly(false); }}
                 className="mt-3 text-primary text-sm hover:underline"
@@ -1068,35 +1069,35 @@ export const RentAgent: React.FC = () => {
 
         {/* ── Trust / Security Footer Banner ───────────────────────────────── */}
         <div className="max-w-7xl mx-auto px-6 pb-16">
-          <div className="rounded-2xl bg-slate-900 border border-slate-800 p-8">
+          <div className="rounded-2xl bg-white border border-slate-200 p-8 shadow-sm">
             <div className="grid md:grid-cols-3 gap-6">
               {[
                 {
-                  icon: <Shield size={20} className="text-green-400" />,
+                  icon: <Shield size={20} className="text-green-600" />,
                   title: 'Privacy First',
                   body: 'Each agent runs in an isolated Docker container. Your keys stay yours — stored encrypted, never logged.',
                 },
                 {
-                  icon: <Lock size={20} className="text-blue-400" />,
+                  icon: <Lock size={20} className="text-blue-600" />,
                   title: 'Security by Default',
                   body: 'Non-root containers, read-only filesystems, TLS 1.3, API key auth, and rate limiting out of the box.',
                 },
                 {
-                  icon: <Globe size={20} className="text-violet-400" />,
+                  icon: <Globe size={20} className="text-violet-600" />,
                   title: 'Deploy Anywhere',
                   body: 'Run on your laptop, self-host on any cloud, or let Viktron manage it. Standard Docker — no lock-in.',
                 },
               ].map(item => (
                 <div key={item.title} className="flex items-start gap-4">
-                  <div className="w-9 h-9 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center shrink-0">
+                  <div className="w-9 h-9 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
                     {item.icon}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-white mb-1">{item.title}</p>
-                    <p className="text-xs text-slate-400 leading-relaxed">{item.body}</p>
+                    <p className="text-sm font-semibold text-slate-900 mb-1">{item.title}</p>
+                    <p className="text-xs text-slate-500 leading-relaxed">{item.body}</p>
                   </div>
                 </div>
-              ))}
+              ))}}
             </div>
           </div>
         </div>

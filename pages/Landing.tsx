@@ -423,7 +423,7 @@ export const Landing = () => {
       />
 
       {/* ─── 1. Hero ─── */}
-      <section className="relative pt-32 pb-20 overflow-hidden bg-white">
+      <section className="relative pt-32 pb-40 overflow-hidden bg-white">
         {/* Background imagery + gradient blobs */}
         {/* Full-bleed abstract hero image — very low opacity for texture */}
         <div
@@ -496,6 +496,90 @@ export const Landing = () => {
                   Explore Platform
                 </Link>
               </div>
+
+              {/* ── Hero Visual ── */}
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="relative mx-auto max-w-5xl mt-16"
+              >
+                {/* Glow behind the panel */}
+                <div className="absolute -inset-6 bg-gradient-to-r from-blue-200/50 via-indigo-200/40 to-violet-200/50 blur-3xl rounded-3xl pointer-events-none" />
+
+                {/* Browser-chrome wrapper */}
+                <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-2xl shadow-slate-300/50">
+                  {/* Browser top bar */}
+                  <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 border-b border-slate-200">
+                    <div className="flex gap-1.5">
+                      <div className="w-3 h-3 rounded-full bg-red-400/80" />
+                      <div className="w-3 h-3 rounded-full bg-yellow-400/80" />
+                      <div className="w-3 h-3 rounded-full bg-green-400/80" />
+                    </div>
+                    <div className="flex-1 mx-4 bg-white rounded border border-slate-200 px-3 py-0.5 text-xs text-slate-400 text-center">
+                      app.viktron.ai — AgentIRL Console
+                    </div>
+                    <div className="flex items-center gap-1 text-[10px] text-green-600 font-mono">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> LIVE
+                    </div>
+                  </div>
+
+                  {/* Image compositon */}
+                  <div className="grid grid-cols-3 gap-0">
+                    <div className="col-span-2">
+                      <img
+                        src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=900"
+                        alt="AI Team collaboration"
+                        className="w-full h-80 object-cover"
+                      />
+                    </div>
+                    <div className="flex flex-col">
+                      <img
+                        src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=500"
+                        alt="Analytics dashboard"
+                        className="w-full h-40 object-cover border-b border-slate-200"
+                      />
+                      <img
+                        src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?auto=format&fit=crop&q=80&w=500"
+                        alt="AI interface"
+                        className="w-full h-40 object-cover"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Floating stat: left */}
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute -left-8 top-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-xl border border-slate-200 px-4 py-3 min-w-[130px]"
+                >
+                  <p className="text-[11px] text-slate-500 mb-0.5">Active Agents</p>
+                  <p className="text-2xl font-bold text-slate-900">2,400+</p>
+                  <p className="text-[11px] text-green-600 font-medium mt-0.5">↑ 23% this week</p>
+                </motion.div>
+
+                {/* Floating stat: right */}
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                  className="absolute -right-8 top-1/3 bg-white rounded-2xl shadow-xl border border-slate-200 px-4 py-3 min-w-[130px]"
+                >
+                  <p className="text-[11px] text-slate-500 mb-0.5">Avg Response</p>
+                  <p className="text-2xl font-bold text-slate-900">&lt;8s</p>
+                  <p className="text-[11px] text-blue-600 font-medium mt-0.5">99.9% uptime</p>
+                </motion.div>
+
+                {/* Floating badge: bottom-center */}
+                <motion.div
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                  className="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-white rounded-full shadow-lg border border-slate-200 px-5 py-2 flex items-center gap-2"
+                >
+                  <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                  <span className="text-xs font-semibold text-slate-700">4 agents running concurrently</span>
+                </motion.div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
