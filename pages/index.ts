@@ -1,6 +1,7 @@
 export { Landing } from './Landing';
 export { Services } from './Services';
 export { Agents } from './Agents';
+export { RentAgent } from './RentAgent';
 export { Marketing } from './Marketing';
 export { Demos, DemoWrapper } from './Demos';
 export { Contact } from './Contact';
