@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AuthProvider } from './context/AuthContext';
 import { CookieConsentProvider } from './context/CookieConsentContext';
@@ -120,22 +120,18 @@ const GoogleSignInWarmup: React.FC = () => {
   return null;
 };
 
-// Subdomain-based redirect: rent.viktron.ai → /rent
-const SubdomainRedirect: React.FC = () => {
-  const navigate = useNavigate();
-  React.useEffect(() => {
-    const host = window.location.hostname; // e.g. "rent.viktron.ai"
-    const subdomain = host.split('.')[0];   // "rent"
-    if (subdomain === 'rent' && window.location.pathname === '/') {
-      navigate('/rent', { replace: true });
-    }
-  }, [navigate]);
-  return null;
-};
+// Subdomain detection helper
+const getSubdomain = () =>
+  typeof window !== 'undefined' ? window.location.hostname.split('.')[0] : '';
 
 // Animated routes wrapper
 const AnimatedRoutes: React.FC = () => {
   const location = useLocation();
+
+  // On rent.viktron.ai serve the agent marketplace at root (no path redirect needed)
+  if (getSubdomain() === 'rent') {
+    return <RentAgent />;
+  }
 
   return (
     <AnimatePresence mode="wait">
@@ -231,7 +227,6 @@ function App() {
       <AuthProvider>
         <CookieConsentProvider>
           <ScrollToTop />
-          <SubdomainRedirect />
           <GoogleSignInWarmup />
           <div className="w-full min-h-screen bg-[#020617] text-slate-200">
             <Suspense fallback={<LoadingSpinner />}>

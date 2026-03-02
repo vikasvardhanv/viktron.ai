@@ -424,8 +424,55 @@ export const Landing = () => {
 
       {/* ─── 1. Hero ─── */}
       <section className="relative pt-32 pb-20 overflow-hidden bg-white">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100/40 blur-[130px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-100/30 blur-[120px] rounded-full pointer-events-none" />
+        {/* Background imagery + gradient blobs */}
+        {/* Full-bleed abstract hero image — very low opacity for texture */}
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-[0.035] pointer-events-none"
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000')" }}
+        />
+        {/* Gradient mesh */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Top-right blue glow */}
+          <div className="absolute -top-40 -right-40 w-[900px] h-[900px] bg-blue-200/50 blur-[160px] rounded-full" />
+          {/* Bottom-left indigo glow */}
+          <div className="absolute -bottom-20 -left-40 w-[700px] h-[700px] bg-indigo-200/40 blur-[140px] rounded-full" />
+          {/* Center violet accent */}
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-violet-100/30 blur-[120px] rounded-full" />
+          {/* Top-left teal micro-accent */}
+          <div className="absolute top-20 left-16 w-[300px] h-[300px] bg-cyan-100/40 blur-[100px] rounded-full" />
+        </div>
+        {/* Subtle dot-grid pattern overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.04]"
+          style={{
+            backgroundImage: 'radial-gradient(circle, #3b82f6 1px, transparent 1px)',
+            backgroundSize: '32px 32px',
+          }}
+        />
+        {/* Abstract floating shapes */}
+        <motion.div
+          animate={{ y: [0, -14, 0], rotate: [0, 6, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute top-28 right-[10%] w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-400/10 to-indigo-400/10 border border-blue-200/30 backdrop-blur-sm pointer-events-none"
+        />
+        <motion.div
+          animate={{ y: [0, 12, 0], rotate: [0, -8, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
+          className="absolute top-48 right-[18%] w-14 h-14 rounded-xl bg-gradient-to-br from-violet-400/10 to-purple-400/10 border border-violet-200/30 pointer-events-none"
+        />
+        <motion.div
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
+          className="absolute top-32 left-[8%] w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400/10 to-blue-400/10 border border-cyan-200/30 pointer-events-none"
+        />
+        <motion.div
+          animate={{ y: [0, 16, 0], rotate: [0, 10, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          className="absolute bottom-12 right-[22%] w-20 h-20 rounded-full bg-gradient-to-br from-indigo-400/10 to-blue-400/10 border border-indigo-200/20 pointer-events-none"
+        />
+        {/* Horizontal gradient line accent */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-300/50 to-transparent pointer-events-none" />
+
         <div className="container-custom relative z-10">
           <div className="text-center max-w-3xl mx-auto">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>

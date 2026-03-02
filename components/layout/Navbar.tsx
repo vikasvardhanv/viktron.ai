@@ -7,14 +7,16 @@ import { useAuth } from '../../context/AuthContext';
 import { ServicesPopup } from '../ServicesPopup';
 import { AboutPopup } from '../AboutPopup';
 
-const navItems: { name: string; path: string; isPopup?: 'services' | 'about' }[] = [
+const navItems: { name: string; path: string; isPopup?: 'services' | 'about'; external?: string }[] = [
   { name: 'Home', path: '/' },
   { name: 'Services', path: '/services', isPopup: 'services' },
-  { name: 'AI Agents', path: '/agents' },
+  { name: 'AI Agents', path: '/agents', external: 'https://rent.viktron.ai' },
   { name: 'Use Cases', path: '/use-cases' },
   { name: 'About', path: '/about', isPopup: 'about' },
   { name: 'Pricing', path: '/pricing' },
 ];
+
+const isRentSubdomain = typeof window !== 'undefined' && window.location.hostname.split('.')[0] === 'rent';
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -52,14 +54,17 @@ export const Navbar: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="text-blue-600">
-                <BrandIcon className="h-8 w-8" />
-              </div>
-              <span className="text-lg font-bold text-slate-900">
-                Viktron
-              </span>
-            </Link>
+            {isRentSubdomain ? (
+              <a href="https://viktron.ai" className="flex items-center gap-2 group">
+                <div className="text-blue-600"><BrandIcon className="h-8 w-8" /></div>
+                <span className="text-lg font-bold text-slate-900">Viktron</span>
+              </a>
+            ) : (
+              <Link to="/" className="flex items-center gap-2 group">
+                <div className="text-blue-600"><BrandIcon className="h-8 w-8" /></div>
+                <span className="text-lg font-bold text-slate-900">Viktron</span>
+              </Link>
+            )}
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-6">
@@ -98,6 +103,22 @@ export const Navbar: React.FC = () => {
                       <AboutPopup isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
                     )}
                   </div>
+                ) : item.name === 'Home' && isRentSubdomain ? (
+                  <a
+                    key="home-external"
+                    href="https://viktron.ai"
+                    className="text-sm font-medium transition-colors text-slate-600 hover:text-slate-900"
+                  >
+                    Home
+                  </a>
+                ) : item.external ? (
+                  <a
+                    key={item.path}
+                    href={item.external}
+                    className="text-sm font-medium transition-colors text-slate-600 hover:text-slate-900"
+                  >
+                    {item.name}
+                  </a>
                 ) : (
                   <Link
                     key={item.path}
