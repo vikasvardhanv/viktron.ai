@@ -10,7 +10,8 @@ import { AboutPopup } from '../AboutPopup';
 const navItems: { name: string; path: string; isPopup?: 'services' | 'about'; external?: string }[] = [
   { name: 'Home', path: '/' },
   { name: 'Services', path: '/services', isPopup: 'services' },
-  { name: 'AI Agents', path: '/agents', external: 'https://rent.viktron.ai' },
+  { name: 'AI Agents', path: '/agents' },
+  { name: 'Rent Agents', path: '/rent', external: 'https://rent.viktron.ai' },
   { name: 'Use Cases', path: '/use-cases' },
   { name: 'About', path: '/about', isPopup: 'about' },
   { name: 'Pricing', path: '/pricing' },
@@ -115,7 +116,7 @@ export const Navbar: React.FC = () => {
                   <a
                     key={item.path}
                     href={item.external}
-                    className="text-sm font-medium transition-colors text-slate-600 hover:text-slate-900"
+                    className="flex items-center gap-1.5 text-sm font-medium px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 transition-colors"
                   >
                     {item.name}
                   </a>
@@ -231,6 +232,13 @@ export const Navbar: React.FC = () => {
                       >
                         {item.name}
                       </Link>
+                    ) : item.external ? (
+                      <a
+                        href={item.external}
+                        className="block px-4 py-3 text-lg font-medium rounded-xl transition-colors text-blue-400 hover:text-blue-300 hover:bg-white/5 border border-blue-500/20"
+                      >
+                        {item.name}
+                      </a>
                     ) : (
                       <Link
                         to={item.path}
