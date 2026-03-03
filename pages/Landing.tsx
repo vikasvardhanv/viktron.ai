@@ -751,7 +751,7 @@ export const Landing = () => {
             >
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-mono text-emerald-600 mb-6">
                 <BarChart3 className="w-3 h-3" />
-                Coming Soon
+                Now Live · analytics.viktron.ai
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 tracking-tight">
                 Analytics for your<br />AI-powered business
@@ -775,9 +775,17 @@ export const Landing = () => {
                   </div>
                 ))}
               </div>
-              <div className="mt-8">
-                <Link to="/contact" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors">
-                  Join the Waitlist <ArrowRight className="w-4 h-4" />
+              <div className="mt-8 flex items-center gap-3">
+                <a
+                  href="https://analytics.viktron.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors"
+                >
+                  Explore Analytics <ArrowRight className="w-4 h-4" />
+                </a>
+                <Link to="/analytics" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-emerald-200 text-emerald-700 text-sm font-semibold hover:bg-emerald-50 transition-colors">
+                  Preview Demo
                 </Link>
               </div>
             </motion.div>

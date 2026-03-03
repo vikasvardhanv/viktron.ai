@@ -58,6 +58,7 @@ const AgentOrchestrationDemo = lazy(() => import('./pages/demos/AgentOrchestrati
 const CustomModelDemo = lazy(() => import('./pages/demos/CustomModelDemo').then(m => ({ default: m.CustomModelDemo })));
 
 const DemoVideo = lazy(() => import('./pages/DemoVideo').then(m => ({ default: m.DemoVideo })));
+const AnalyticsApp = lazy(() => import('./pages/analytics/AnalyticsApp').then(m => ({ default: m.AnalyticsApp })));
 
 // Legacy components - lazy loaded
 const MarketingHub = lazy(() => import('./components/MarketingHub').then(m => ({ default: m.MarketingHub })));
@@ -166,6 +167,11 @@ const AnimatedRoutes: React.FC = () => {
     return <RentAgent />;
   }
 
+  // On analytics.viktron.ai serve the analytics platform at root
+  if (getSubdomain() === 'analytics') {
+    return <AnalyticsApp />;
+  }
+
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
@@ -189,6 +195,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/my-platforms" element={<PageTransition><MyPlatforms /></PageTransition>} />
         <Route path="/leadbot" element={<PageTransition><LeadbotConsole /></PageTransition>} />
         <Route path="/rent" element={<PageTransition><RentAgent /></PageTransition>} />
+        <Route path="/analytics" element={<PageTransition><AnalyticsApp /></PageTransition>} />
         <Route path="/login" element={<PageTransition><AuthPage mode="login" /></PageTransition>} />
         <Route path="/signup" element={<PageTransition><AuthPage mode="signup" /></PageTransition>} />
 
