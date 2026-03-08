@@ -144,7 +144,9 @@ const toApiBase = (value?: string): string | null => {
 const API_BASES = [
   toApiBase(ENV.VITE_SAAS_API_BASE),
   toApiBase(ENV.VITE_AGENT_API_URL),
-  toApiBase(ENV.VITE_API_URL),
+  // Avoid routing SaaS connector calls to website host (VITE_API_URL).
+  // These endpoints live on the agent/backend API service.
+  (typeof window !== 'undefined' ? `https://api.${window.location.hostname.replace(/^www\./, '')}/api` : null),
   '/api',
 ].filter(Boolean) as string[];
 
