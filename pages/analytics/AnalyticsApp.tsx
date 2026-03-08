@@ -328,7 +328,7 @@ export const AnalyticsApp: React.FC = () => {
 
   const loadSources = async () => {
     try {
-      const res = await apiFetch('/saas/sources');
+      const res = await apiFetch('/saas/sources?workspace_id=viktron-team');
       const data = (await res.json()) as SourceListResponse;
       setSources(data.sources || []);
       setSourcesMessage(data.message || '');
