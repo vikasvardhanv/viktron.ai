@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircle2, Loader2, XCircle } from 'lucide-react';
 
+const ENV = (import.meta as any).env || {};
+
+const toApiBase = (value?: string): string | null => {
+  if (!value) return null;
+  const trimmed = String(value).trim().replace(/\/$/, '');
+  if (!trimmed) return null;
+  if (trimmed.endsWith('/api')) return trimmed;
+  return `${trimmed}/api`;
+};
+
 const API_BASES = [
-  (import.meta as any).env?.VITE_SAAS_API_BASE,
+  toApiBase(ENV.VITE_SAAS_API_BASE),
+  toApiBase(ENV.VITE_AGENT_API_URL),
+  toApiBase(ENV.VITE_API_URL),
   '/api',
-  'https://api.viktron.ai/api',
 ].filter(Boolean) as string[];
 
 const callCallback = async (code: string, state: string): Promise<any> => {
