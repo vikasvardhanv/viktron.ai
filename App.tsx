@@ -196,6 +196,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/leadbot" element={<PageTransition><LeadbotConsole /></PageTransition>} />
         <Route path="/rent" element={<PageTransition><RentAgent /></PageTransition>} />
         <Route path="/analytics" element={<PageTransition><AnalyticsApp /></PageTransition>} />
+        <Route path="/saas-analytics" element={<PageTransition><AnalyticsApp /></PageTransition>} />
         <Route path="/login" element={<PageTransition><AuthPage mode="login" /></PageTransition>} />
         <Route path="/signup" element={<PageTransition><AuthPage mode="signup" /></PageTransition>} />
 
