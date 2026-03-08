@@ -25,6 +25,7 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
+import { getAuthToken } from '../../context/AuthContext';
 
 type Trend = 'up' | 'down' | 'flat';
 
@@ -138,10 +139,18 @@ const API_BASES = [
 
 const apiFetch = async (path: string, init?: RequestInit): Promise<Response> => {
   let lastError: unknown = null;
+  const token = getAuthToken();
+  const mergedHeaders = {
+    ...(init?.headers || {}),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
   for (const base of API_BASES) {
     const url = `${base}${path}`;
     try {
-      const res = await fetch(url, init);
+      const res = await fetch(url, {
+        ...init,
+        headers: mergedHeaders,
+      });
       if (res.ok) return res;
       lastError = new Error(`Request failed with status ${res.status} for ${url}`);
     } catch (err) {
