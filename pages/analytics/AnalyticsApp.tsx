@@ -130,7 +130,26 @@ type SourceListResponse = {
   message: string;
 };
 
-const API_BASE = (import.meta as any).env?.VITE_SAAS_API_BASE || '/api';
+const API_BASES = [
+  (import.meta as any).env?.VITE_SAAS_API_BASE,
+  '/api',
+  'https://api.viktron.ai/api',
+].filter(Boolean) as string[];
+
+const apiFetch = async (path: string, init?: RequestInit): Promise<Response> => {
+  let lastError: unknown = null;
+  for (const base of API_BASES) {
+    const url = `${base}${path}`;
+    try {
+      const res = await fetch(url, init);
+      if (res.ok) return res;
+      lastError = new Error(`Request failed with status ${res.status} for ${url}`);
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  throw lastError || new Error('All API base URLs failed');
+};
 
 type View = 'overview' | 'product' | 'engagement' | 'sources' | 'reddit' | 'pricing';
 
@@ -292,10 +311,7 @@ export const AnalyticsApp: React.FC = () => {
   const loadOverview = async () => {
     setLoadingOverview(true);
     try {
-      const res = await fetch(`${API_BASE}/saas/overview`);
-      if (!res.ok) {
-        throw new Error('Failed to fetch overview');
-      }
+      const res = await apiFetch('/saas/overview');
       const data = await res.json();
       setOverview(data as OverviewPayload);
     } catch {
@@ -312,10 +328,7 @@ export const AnalyticsApp: React.FC = () => {
 
   const loadSources = async () => {
     try {
-      const res = await fetch(`${API_BASE}/saas/sources`);
-      if (!res.ok) {
-        throw new Error('Sources unavailable');
-      }
+      const res = await apiFetch('/saas/sources');
       const data = (await res.json()) as SourceListResponse;
       setSources(data.sources || []);
       setSourcesMessage(data.message || '');
@@ -351,16 +364,16 @@ export const AnalyticsApp: React.FC = () => {
     setSourcesMessage('');
     try {
       if (provider === 'slack') {
-        const oauthRes = await fetch(`${API_BASE}/saas/sources/slack/oauth/start?workspace_id=viktron-team`);
-        if (!oauthRes.ok) {
-          throw new Error('Slack OAuth start failed');
-        }
+        const oauthRes = await apiFetch('/saas/sources/slack/oauth/start?workspace_id=viktron-team');
         const oauth = await oauthRes.json();
         if (oauth.oauth_url) {
           window.open(oauth.oauth_url, '_blank', 'noopener,noreferrer');
+          setSourcesMessage('Slack OAuth opened. Approve workspace install in Slack, then click Refresh.');
+          return;
         }
+        throw new Error('Slack OAuth URL missing from backend response');
       }
-      const res = await fetch(`${API_BASE}/saas/sources/${provider}/connect`, {
+      const res = await apiFetch(`/saas/sources/${provider}/connect`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -375,8 +388,8 @@ export const AnalyticsApp: React.FC = () => {
       const data = await res.json();
       setSourcesMessage(`${provider} connected. Connection id: ${data.connection_id}`);
       await loadSources();
-    } catch {
-      setSourcesMessage(`Could not connect ${provider}.`);
+    } catch (err) {
+      setSourcesMessage(`Could not connect ${provider}. ${err instanceof Error ? err.message : ''}`.trim());
     } finally {
       setSourceLoading('');
     }
@@ -386,19 +399,16 @@ export const AnalyticsApp: React.FC = () => {
     setSourceLoading(`sync-${provider}`);
     setSourcesMessage('');
     try {
-      const res = await fetch(`${API_BASE}/saas/sources/${provider}/sync`, {
+      const res = await apiFetch(`/saas/sources/${provider}/sync`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ workspace_id: 'viktron-team', lookback_hours: 24 }),
       });
-      if (!res.ok) {
-        throw new Error('Sync failed');
-      }
       const data = await res.json();
       setSourcesMessage(`${provider} sync complete: ${data.events_ingested} events ingested.`);
       await loadSources();
-    } catch {
-      setSourcesMessage(`Could not sync ${provider}.`);
+    } catch (err) {
+      setSourcesMessage(`Could not sync ${provider}. ${err instanceof Error ? err.message : ''}`.trim());
     } finally {
       setSourceLoading('');
     }
@@ -408,16 +418,13 @@ export const AnalyticsApp: React.FC = () => {
     setSourceLoading(`disconnect-${provider}`);
     setSourcesMessage('');
     try {
-      const res = await fetch(`${API_BASE}/saas/sources/${provider}?workspace_id=viktron-team`, {
+      await apiFetch(`/saas/sources/${provider}?workspace_id=viktron-team`, {
         method: 'DELETE',
       });
-      if (!res.ok) {
-        throw new Error('Disconnect failed');
-      }
       setSourcesMessage(`${provider} disconnected.`);
       await loadSources();
-    } catch {
-      setSourcesMessage(`Could not disconnect ${provider}.`);
+    } catch (err) {
+      setSourcesMessage(`Could not disconnect ${provider}. ${err instanceof Error ? err.message : ''}`.trim());
     } finally {
       setSourceLoading('');
     }
@@ -427,7 +434,7 @@ export const AnalyticsApp: React.FC = () => {
     setCheckoutMessage('');
     setCheckoutLoadingPlan(planId);
     try {
-      const res = await fetch(`${API_BASE}/saas/checkout`, {
+      const res = await apiFetch('/saas/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -437,9 +444,6 @@ export const AnalyticsApp: React.FC = () => {
           addons: planId === 'scale' ? ['slack-alerts'] : [],
         }),
       });
-      if (!res.ok) {
-        throw new Error('Checkout request failed');
-      }
       const data = (await res.json()) as CheckoutResponse;
       setCheckoutMessage(`Session ${data.session_id} ready. Estimated charge: $${data.total}.`);
       window.open(data.checkout_url, '_blank', 'noopener,noreferrer');
@@ -454,7 +458,7 @@ export const AnalyticsApp: React.FC = () => {
     setRedditLoading(true);
     setRedditResult(null);
     try {
-      const res = await fetch(`${API_BASE}/saas/reddit-agent/query`, {
+      const res = await apiFetch('/saas/reddit-agent/query', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -463,9 +467,6 @@ export const AnalyticsApp: React.FC = () => {
           lookback_days: 30,
         }),
       });
-      if (!res.ok) {
-        throw new Error('Query failed');
-      }
       const data = (await res.json()) as RedditResponse;
       setRedditResult(data);
     } catch {
