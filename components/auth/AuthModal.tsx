@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+
+const toApiBase = (value?: string) => {
+  if (!value) return '/api';
+  const trimmed = String(value).trim().replace(/\/$/, '');
+  if (!trimmed) return '/api';
+  return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
+};
 import { Button } from '../ui/Button';
 import {
   X, Mail, Lock, User, Building2, Phone, ArrowRight, Eye, EyeOff,
@@ -156,7 +163,7 @@ export const AuthModal: React.FC = () => {
       ? (redirectParam || '/')
       : `${window.location.pathname}${window.location.search}`;
     const returnTo = encodeURIComponent(rawReturnTo);
-    const apiUrl = import.meta.env.VITE_API_URL || '/api';
+    const apiUrl = toApiBase(import.meta.env.VITE_API_URL);
     
     // Redirect to server endpoint which will redirect to Google
     window.location.href = `${apiUrl}/auth/google?returnTo=${returnTo}`;

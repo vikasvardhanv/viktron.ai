@@ -39,7 +39,14 @@ interface SignupData {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const API_URL = import.meta.env.VITE_API_URL || '/api';
+const toApiBase = (value?: string) => {
+  if (!value) return '/api';
+  const trimmed = String(value).trim().replace(/\/$/, '');
+  if (!trimmed) return '/api';
+  return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
+};
+
+const API_URL = toApiBase(import.meta.env.VITE_API_URL);
 const TOKEN_KEY = 'viktron_auth_token';
 const USER_KEY = 'viktron_user';
 
