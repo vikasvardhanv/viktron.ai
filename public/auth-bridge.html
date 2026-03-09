@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Viktron Session Bridge</title>
+  </head>
+  <body>
+    <script>
+      (function () {
+        var TOKEN_KEY = 'viktron_auth_token';
+        var USER_KEY = 'viktron_user';
+
+        var token = localStorage.getItem(TOKEN_KEY);
+        var userRaw = localStorage.getItem(USER_KEY);
+        var user = null;
+
+        try {
+          user = userRaw ? JSON.parse(userRaw) : null;
+        } catch (e) {
+          user = null;
+        }
+
+        if (window.opener) {
+          window.opener.postMessage(
+            {
+              type: 'VIKTRON_AUTH_BRIDGE_RESULT',
+              token: token,
+              user: user,
+            },
+            '*'
+          );
+        }
+
+        window.close();
+      })();
+    </script>
+  </body>
+</html>

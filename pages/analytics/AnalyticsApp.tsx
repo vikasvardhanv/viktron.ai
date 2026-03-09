@@ -157,6 +157,9 @@ const API_BASES = [
   toApiBase(ENV.VITE_AGENT_API_URL),
 ].filter(Boolean) as string[];
 
+const TOKEN_KEY = 'viktron_auth_token';
+const USER_KEY = 'viktron_user';
+
 const apiFetch = async (path: string, init?: RequestInit): Promise<Response> => {
   let lastError: unknown = null;
   const token = getAuthToken();
@@ -358,6 +361,7 @@ export const AnalyticsApp: React.FC = () => {
   const [sources, setSources] = useState<SourceConnector[]>([]);
   const [sourcesMessage, setSourcesMessage] = useState('');
   const [sourceLoading, setSourceLoading] = useState<string>('');
+  const [needsAuth, setNeedsAuth] = useState(false);
 
   const nav = useMemo(
     () => [
@@ -395,6 +399,7 @@ export const AnalyticsApp: React.FC = () => {
       if (res.status === 401) {
         setSources(fallbackSources);
         setSourcesMessage('Please log in first. Showing available connectors.');
+        setNeedsAuth(true);
         return;
       }
       if (!res.ok) {
@@ -405,10 +410,64 @@ export const AnalyticsApp: React.FC = () => {
       const nextSources = data.sources?.length ? data.sources : fallbackSources;
       setSources(nextSources);
       setSourcesMessage(data.message || (data.sources?.length ? '' : 'Showing available connectors.'));
+      setNeedsAuth(false);
     } catch {
       setSourcesMessage('Sources API unavailable. Backend contract is present and ready for OAuth wiring.');
       setSources(fallbackSources);
     }
+  };
+
+  const importSessionFromMainDomain = async () => {
+    setSourcesMessage('Checking active session on viktron.ai...');
+
+    await new Promise<void>((resolve) => {
+      const popup = window.open('https://viktron.ai/auth-bridge.html', 'viktron-auth-bridge', 'width=520,height=620');
+      if (!popup) {
+        setSourcesMessage('Popup blocked. Please allow popups and try again.');
+        resolve();
+        return;
+      }
+
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        window.removeEventListener('message', onMessage);
+        try {
+          popup.close();
+        } catch {
+          // ignore
+        }
+        resolve();
+      };
+
+      const timer = window.setTimeout(() => {
+        setSourcesMessage('Could not import session automatically. Please sign in on viktron.ai and try again.');
+        finish();
+      }, 15000);
+
+      const onMessage = (event: MessageEvent) => {
+        if (!['https://viktron.ai', 'https://www.viktron.ai'].includes(event.origin)) return;
+        const payload = event.data || {};
+        if (payload.type !== 'VIKTRON_AUTH_BRIDGE_RESULT') return;
+
+        window.clearTimeout(timer);
+
+        if (payload.token && payload.user) {
+          localStorage.setItem(TOKEN_KEY, payload.token);
+          localStorage.setItem(USER_KEY, JSON.stringify(payload.user));
+          setSourcesMessage('Session imported. Reloading connectors...');
+          setNeedsAuth(false);
+          void loadSources();
+        } else {
+          setSourcesMessage('No active viktron.ai session found. Please sign in there first.');
+        }
+
+        finish();
+      };
+
+      window.addEventListener('message', onMessage);
+    });
   };
 
   const connectSource = async (provider: string) => {
@@ -780,6 +839,24 @@ export const AnalyticsApp: React.FC = () => {
                   Slack workspace connection is handled through the same connector contract as PostHog, GA4, HubSpot, Stripe, Notion, Linear, GitHub, and Reddit.
                 </p>
                 <p className="text-xs text-cyan-300 mt-2">{sourcesMessage || 'Connect sources to unify analytics and engagement intelligence.'}</p>
+                {needsAuth && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <button
+                      onClick={() => void importSessionFromMainDomain()}
+                      className="rounded-lg bg-cyan-500 hover:bg-cyan-400 text-[#042432] text-[11px] font-semibold px-3 py-2"
+                    >
+                      Use my viktron.ai session
+                    </button>
+                    <a
+                      href="https://viktron.ai"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-lg border border-white/20 hover:bg-white/5 text-slate-100 text-[11px] font-semibold px-3 py-2"
+                    >
+                      Sign in on viktron.ai
+                    </a>
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
