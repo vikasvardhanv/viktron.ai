@@ -46,7 +46,25 @@ const toApiBase = (value?: string) => {
   return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
 };
 
-const API_URL = toApiBase(import.meta.env.VITE_API_URL);
+const getAuthApiBase = () => {
+  if (typeof window === 'undefined') {
+    return toApiBase(import.meta.env.VITE_API_URL);
+  }
+
+  const host = window.location.hostname.replace(/^www\./, '');
+  if (/localhost|127\.0\.0\.1/.test(host)) {
+    return toApiBase(import.meta.env.VITE_API_URL);
+  }
+
+  // Auth API is served by viktron.ai Node service.
+  if (host === 'viktron.ai' || host.endsWith('.viktron.ai')) {
+    return 'https://viktron.ai/api';
+  }
+
+  return toApiBase(import.meta.env.VITE_API_URL);
+};
+
+const API_URL = getAuthApiBase();
 const TOKEN_KEY = 'viktron_auth_token';
 const USER_KEY = 'viktron_user';
 
@@ -139,16 +157,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         body: JSON.stringify(signupData)
       });
 
-      const data = await response.json();
+      const text = await response.text();
+      let data: any = null;
+      try {
+        data = text ? JSON.parse(text) : null;
+      } catch {
+        data = null;
+      }
 
-      if (data.success) {
+      if (data?.success) {
         localStorage.setItem(TOKEN_KEY, data.data.token);
         localStorage.setItem(USER_KEY, JSON.stringify(data.data.user));
         setUser(data.data.user);
         setShowAuthModal(false);
         return { success: true, message: 'Account created successfully' };
       } else {
-        return { success: false, message: data.message || 'Signup failed' };
+        return {
+          success: false,
+          message: data?.message || `Signup failed (${response.status})`
+        };
       }
     } catch (error) {
       return { success: false, message: 'Network error. Please try again.' };

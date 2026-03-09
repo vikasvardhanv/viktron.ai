@@ -50,11 +50,20 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
   'https://viktron.ai',
   'https://www.viktron.ai',
+  'https://analytics.viktron.ai',
 ].filter(Boolean);
 
 app.use(cors({
   origin: isProduction
-    ? allowedOrigins
+    ? (origin, callback) => {
+        if (!origin) return callback(null, true);
+        const isExplicitAllowed = allowedOrigins.includes(origin);
+        const isViktronSubdomain = /^https:\/\/([a-z0-9-]+\.)?viktron\.ai$/i.test(origin);
+        if (isExplicitAllowed || isViktronSubdomain) {
+          return callback(null, true);
+        }
+        return callback(new Error('Not allowed by CORS'));
+      }
     : true, // Allow all in development
   credentials: true,
 }));
