@@ -32,9 +32,11 @@ async function initDatabase() {
   }
 
   // Parse DATABASE_URL to check if it requires SSL
-  const requiresSSL = process.env.DATABASE_URL?.includes('sslmode=require');
+  const requiresSSL =
+    process.env.DATABASE_URL?.includes('sslmode=require') ||
+    process.env.DATABASE_URL?.includes('ssl=require');
 
-  const pool = new Pool({
+  let pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: requiresSSL ? { rejectUnauthorized: false } : false,
   });
@@ -42,7 +44,23 @@ async function initDatabase() {
   try {
     // Test connection
     console.log('Connecting to database...');
-    const client = await pool.connect();
+    let client;
+    try {
+      client = await pool.connect();
+    } catch (error) {
+      const sslUnsupported = /does not support ssl connections/i.test(error.message || '');
+      if (!sslUnsupported || !requiresSSL) {
+        throw error;
+      }
+
+      console.log('Target database does not support SSL. Retrying without SSL...');
+      await pool.end();
+      pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: false,
+      });
+      client = await pool.connect();
+    }
     console.log('Connected successfully!\n');
 
     // Read SQL file

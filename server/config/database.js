@@ -19,6 +19,20 @@ if (rawDbUrl && rawDbUrl !== normalizedDbUrl) {
   });
 }
 
+if (normalizedDbUrl) {
+  try {
+    const parsed = new URL(normalizedDbUrl);
+    logger.info('Database target configured', {
+      host: parsed.hostname,
+      port: parsed.port || '5432',
+      database: parsed.pathname?.replace(/^\//, '') || 'postgres',
+      sslRequired: requiresSSL,
+    });
+  } catch {
+    logger.warn('Unable to parse DATABASE_URL for diagnostics');
+  }
+}
+
 const pool = new Pool({
   connectionString: normalizedDbUrl,
   ssl: requiresSSL ? { rejectUnauthorized: false } : false,

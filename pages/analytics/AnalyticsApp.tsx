@@ -395,6 +395,14 @@ export const AnalyticsApp: React.FC = () => {
     try {
       if (provider === 'slack') {
         const oauthRes = await apiFetch('/saas/sources/slack/oauth/start?workspace_id=viktron-team');
+        if (oauthRes.status === 401) {
+          setSourcesMessage('Please sign in on viktron.ai first, then retry Slack connect.');
+          return;
+        }
+        if (oauthRes.status === 403) {
+          setSourcesMessage('You do not have connector manage permission for this workspace.');
+          return;
+        }
         const oauth = await oauthRes.json();
         if (oauth.oauth_url) {
           window.open(oauth.oauth_url, '_blank', 'noopener,noreferrer');
