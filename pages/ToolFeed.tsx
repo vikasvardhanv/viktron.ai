@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ExternalLink, RefreshCw, Search } from 'lucide-react';
+import { getAuthToken, useAuth } from '../context/AuthContext';
 
 type ToolItem = {
   id: string;
@@ -85,6 +86,7 @@ const AdBlock: React.FC<{ title: string; adsReady: boolean }> = ({ title, adsRea
 };
 
 export const ToolFeed: React.FC = () => {
+  const { isAuthenticated, setShowAuthModal, setAuthModalMode } = useAuth();
   const [tools, setTools] = useState<ToolItem[]>([]);
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState('');
@@ -94,6 +96,9 @@ export const ToolFeed: React.FC = () => {
   const [hasMore, setHasMore] = useState(true);
   const [adsReady] = useState(true);
   const PAGE_SIZE = 100;
+  const FREE_CLICK_LIMIT = 3;
+  const FREE_CLICK_KEY = 'tools_free_click_count';
+  const PENDING_CLICK_KEY = 'tools_pending_click';
 
   const cleanToolName = (name: string, url: string | null) => {
     const cleaned = name.replace(/^[^A-Za-z0-9]+/, '').trim();
@@ -166,6 +171,121 @@ export const ToolFeed: React.FC = () => {
     void load(0, false);
   }, []);
 
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const pendingRaw = localStorage.getItem(PENDING_CLICK_KEY);
+    if (!pendingRaw) return;
+
+    try {
+      const pending = JSON.parse(pendingRaw) as { tool_id?: string; tool_name?: string; tool_url: string };
+      if (!pending?.tool_url) {
+        localStorage.removeItem(PENDING_CLICK_KEY);
+        return;
+      }
+
+      void trackToolClick({
+        tool_id: pending.tool_id || null,
+        tool_name: pending.tool_name || null,
+        tool_url: pending.tool_url,
+        source_path: '/tools',
+        is_authenticated: true,
+        gate_triggered: false,
+      });
+
+      localStorage.removeItem(PENDING_CLICK_KEY);
+      window.location.href = pending.tool_url;
+    } catch {
+      localStorage.removeItem(PENDING_CLICK_KEY);
+    }
+  }, [isAuthenticated]);
+
+  const getFreeClickCount = () => {
+    const value = Number(localStorage.getItem(FREE_CLICK_KEY) || '0');
+    if (Number.isNaN(value) || value < 0) return 0;
+    return value;
+  };
+
+  const setFreeClickCount = (next: number) => {
+    localStorage.setItem(FREE_CLICK_KEY, String(Math.max(0, next)));
+  };
+
+  const trackToolClick = async (payload: {
+    tool_id: string | null;
+    tool_name: string | null;
+    tool_url: string;
+    source_path: string;
+    is_authenticated: boolean;
+    gate_triggered: boolean;
+  }) => {
+    const token = getAuthToken();
+    try {
+      await apiFetch('/telegram-tools/click', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(payload),
+      });
+    } catch {
+      // Tracking should not block user navigation.
+    }
+  };
+
+  const handleToolClick = async (tool: ToolItem) => {
+    if (!tool.tool_url) return;
+
+    if (isAuthenticated) {
+      await trackToolClick({
+        tool_id: tool.id,
+        tool_name: cleanToolName(tool.tool_name, tool.tool_url),
+        tool_url: tool.tool_url,
+        source_path: '/tools',
+        is_authenticated: true,
+        gate_triggered: false,
+      });
+      window.location.href = tool.tool_url;
+      return;
+    }
+
+    const freeCount = getFreeClickCount();
+    if (freeCount < FREE_CLICK_LIMIT) {
+      setFreeClickCount(freeCount + 1);
+      await trackToolClick({
+        tool_id: tool.id,
+        tool_name: cleanToolName(tool.tool_name, tool.tool_url),
+        tool_url: tool.tool_url,
+        source_path: '/tools',
+        is_authenticated: false,
+        gate_triggered: false,
+      });
+      window.location.href = tool.tool_url;
+      return;
+    }
+
+    localStorage.setItem(
+      PENDING_CLICK_KEY,
+      JSON.stringify({
+        tool_id: tool.id,
+        tool_name: cleanToolName(tool.tool_name, tool.tool_url),
+        tool_url: tool.tool_url,
+      })
+    );
+
+    await trackToolClick({
+      tool_id: tool.id,
+      tool_name: cleanToolName(tool.tool_name, tool.tool_url),
+      tool_url: tool.tool_url,
+      source_path: '/tools',
+      is_authenticated: false,
+      gate_triggered: true,
+    });
+
+    setAuthModalMode('login');
+    setShowAuthModal(true);
+    setStatus('Please sign in to continue to this tool.');
+  };
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return tools;
@@ -211,14 +331,13 @@ export const ToolFeed: React.FC = () => {
                 <p className="text-sm text-slate-600 min-h-[72px] line-clamp-3">{cleanDescription(tool.description)}</p>
                 <div className="flex flex-wrap gap-2 pt-1">
                   {tool.tool_url && (
-                    <a
-                      href={tool.tool_url}
-                      target="_blank"
-                      rel="noreferrer"
+                    <button
+                      type="button"
+                      onClick={() => void handleToolClick(tool)}
                       className="text-xs rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 inline-flex items-center gap-1"
                     >
                       Visit Website <ExternalLink className="w-3 h-3" />
-                    </a>
+                    </button>
                   )}
                 </div>
               </article>
