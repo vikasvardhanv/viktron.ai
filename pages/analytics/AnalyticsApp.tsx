@@ -462,7 +462,23 @@ export const AnalyticsApp: React.FC = () => {
           setSourcesMessage('You do not have connector manage permission for this workspace.');
           return;
         }
+        if (!oauthRes.ok) {
+          const errText = await oauthRes.text();
+          let errMsg = `Slack OAuth start failed (${oauthRes.status})`;
+          try {
+            const parsed = errText ? JSON.parse(errText) : null;
+            errMsg = parsed?.message || parsed?.detail || errMsg;
+          } catch {
+            if (errText) errMsg = errText;
+          }
+          setSourcesMessage(errMsg);
+          return;
+        }
         const oauth = await oauthRes.json();
+        if (oauth?.success === false) {
+          setSourcesMessage(oauth.message || 'Slack OAuth is not configured yet on backend.');
+          return;
+        }
         if (oauth.oauth_url) {
           window.open(oauth.oauth_url, '_blank', 'noopener,noreferrer');
           setSourcesMessage('Slack OAuth opened. Approve workspace install in Slack, then click Refresh.');
