@@ -238,6 +238,39 @@ const fallbackOverview: OverviewPayload = {
   updated_at: new Date().toISOString(),
 };
 
+const fallbackSources: SourceConnector[] = [
+  {
+    provider: 'slack',
+    label: 'Slack',
+    category: 'communication',
+    auth_mode: 'oauth',
+    status: 'available',
+    supports: ['threads', 'mentions', 'channel_events', 'scheduled_reports'],
+    connected_workspace: null,
+    last_sync_at: null,
+  },
+  {
+    provider: 'posthog',
+    label: 'PostHog',
+    category: 'analytics',
+    auth_mode: 'api_key',
+    status: 'available',
+    supports: ['events', 'funnels', 'retention', 'feature_flags'],
+    connected_workspace: null,
+    last_sync_at: null,
+  },
+  {
+    provider: 'ga4',
+    label: 'Google Analytics 4',
+    category: 'analytics',
+    auth_mode: 'oauth',
+    status: 'available',
+    supports: ['sessions', 'acquisition', 'attribution'],
+    connected_workspace: null,
+    last_sync_at: null,
+  },
+];
+
 const format = (n: number): string => n.toLocaleString('en-US');
 
 const TrendChip: React.FC<{ delta: string; trend: Trend }> = ({ delta, trend }) => {
@@ -359,33 +392,22 @@ export const AnalyticsApp: React.FC = () => {
   const loadSources = async () => {
     try {
       const res = await apiFetch('/saas/sources?workspace_id=viktron-team');
+      if (res.status === 401) {
+        setSources(fallbackSources);
+        setSourcesMessage('Please log in first. Showing available connectors.');
+        return;
+      }
+      if (!res.ok) {
+        throw new Error(`Sources API failed (${res.status})`);
+      }
+
       const data = (await res.json()) as SourceListResponse;
-      setSources(data.sources || []);
-      setSourcesMessage(data.message || '');
+      const nextSources = data.sources?.length ? data.sources : fallbackSources;
+      setSources(nextSources);
+      setSourcesMessage(data.message || (data.sources?.length ? '' : 'Showing available connectors.'));
     } catch {
       setSourcesMessage('Sources API unavailable. Backend contract is present and ready for OAuth wiring.');
-      setSources([
-        {
-          provider: 'slack',
-          label: 'Slack',
-          category: 'communication',
-          auth_mode: 'oauth',
-          status: 'connected',
-          supports: ['threads', 'mentions', 'scheduled_reports'],
-          connected_workspace: 'viktron-team',
-          last_sync_at: new Date().toISOString(),
-        },
-        {
-          provider: 'posthog',
-          label: 'PostHog',
-          category: 'analytics',
-          auth_mode: 'api_key',
-          status: 'available',
-          supports: ['events', 'funnels', 'retention'],
-          connected_workspace: null,
-          last_sync_at: null,
-        },
-      ]);
+      setSources(fallbackSources);
     }
   };
 
