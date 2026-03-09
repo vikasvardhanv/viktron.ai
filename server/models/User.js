@@ -51,6 +51,60 @@ const buildInsertStatement = (columns, values) => {
   };
 };
 
+const getDefaultColumnValue = (column, ctx) => {
+  const defaults = {
+    id: crypto.randomUUID(),
+    role: 'user',
+    company: '',
+    phone: '',
+    email_verified: !!ctx.oauth,
+    full_name: ctx.nameValue || 'User',
+    name: ctx.nameValue || 'User',
+    auth_provider: ctx.provider || 'email',
+    auth_provider_id: ctx.providerId || `email:${ctx.email?.toLowerCase?.() || 'unknown'}`,
+    created_at: new Date(),
+    updated_at: new Date(),
+    last_login: new Date(),
+  };
+  return Object.prototype.hasOwnProperty.call(defaults, column) ? defaults[column] : null;
+};
+
+const executeUserInsertWithFallback = async (columns, values, ctx) => {
+  const workingColumns = [...columns];
+  const workingValues = [...values];
+
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    try {
+      const { sql, params } = buildInsertStatement(workingColumns, workingValues);
+      return await query(sql, params);
+    } catch (error) {
+      // Missing required column in strict schema: try adding safe default and retry.
+      if (error?.code === '23502' && error?.column && !workingColumns.includes(error.column)) {
+        const fallback = getDefaultColumnValue(error.column, ctx);
+        if (fallback !== null) {
+          workingColumns.push(error.column);
+          workingValues.push(fallback);
+          continue;
+        }
+      }
+
+      // Unknown column in evolving schema: remove and retry.
+      if (error?.code === '42703' && error?.column) {
+        const idx = workingColumns.indexOf(error.column);
+        if (idx >= 0) {
+          workingColumns.splice(idx, 1);
+          workingValues.splice(idx, 1);
+          continue;
+        }
+      }
+
+      throw error;
+    }
+  }
+
+  throw new Error('Unable to insert user after schema fallback attempts');
+};
+
 export const User = {
   // Create a new user with email/password
   async create({ email, password, fullName, company, phone }) {
@@ -60,26 +114,11 @@ export const User = {
 
     // Fallback to legacy query path when schema metadata is unavailable.
     if (!schema) {
-      let result;
-      try {
-        result = await query(
-          `INSERT INTO users (email, password_hash, full_name, company, phone, role)
-           VALUES ($1, $2, $3, $4, $5, 'user')
-           RETURNING *`,
-          [email.toLowerCase(), passwordHash, fullName, company || '', phone || '']
-        );
-      } catch (error) {
-        if (error?.code === '42703') {
-          result = await query(
-            `INSERT INTO users (email, password_hash, full_name)
-             VALUES ($1, $2, $3)
-             RETURNING *`,
-            [email.toLowerCase(), passwordHash, fullName]
-          );
-        } else {
-          throw error;
-        }
-      }
+      const result = await executeUserInsertWithFallback(
+        ['email', 'password_hash', 'full_name', 'company', 'phone', 'role'],
+        [email.toLowerCase(), passwordHash, fullName, company || '', phone || '', 'user'],
+        { email, nameValue: fullName, oauth: false }
+      );
       return normalizeUserRow(result.rows[0]);
     }
 
@@ -127,8 +166,11 @@ export const User = {
       insertValues.push(false);
     }
 
-    const { sql, params } = buildInsertStatement(insertColumns, insertValues);
-    const result = await query(sql, params);
+    const result = await executeUserInsertWithFallback(insertColumns, insertValues, {
+      email,
+      nameValue: fullName,
+      oauth: false,
+    });
     return normalizeUserRow(result.rows[0]);
   },
 
@@ -142,26 +184,11 @@ export const User = {
     const schema = await getUsersTableSchema();
 
     if (!schema) {
-      let result;
-      try {
-        result = await query(
-          `INSERT INTO users (email, password_hash, full_name, auth_provider, auth_provider_id, email_verified, role)
-           VALUES ($1, $2, $3, $4, $5, true, 'user')
-           RETURNING *`,
-          [email.toLowerCase(), passwordHash, nameValue, provider, providerId]
-        );
-      } catch (error) {
-        if (error?.code === '42703') {
-          result = await query(
-            `INSERT INTO users (email, password_hash, full_name)
-             VALUES ($1, $2, $3)
-             RETURNING *`,
-            [email.toLowerCase(), passwordHash, nameValue]
-          );
-        } else {
-          throw error;
-        }
-      }
+      const result = await executeUserInsertWithFallback(
+        ['email', 'password_hash', 'full_name', 'auth_provider', 'auth_provider_id', 'email_verified', 'role'],
+        [email.toLowerCase(), passwordHash, nameValue, provider, providerId, true, 'user'],
+        { email, nameValue, oauth: true, provider, providerId }
+      );
       return normalizeUserRow(result.rows[0]);
     }
 
@@ -209,8 +236,13 @@ export const User = {
       insertValues.push('user');
     }
 
-    const { sql, params } = buildInsertStatement(insertColumns, insertValues);
-    const result = await query(sql, params);
+    const result = await executeUserInsertWithFallback(insertColumns, insertValues, {
+      email,
+      nameValue,
+      oauth: true,
+      provider,
+      providerId,
+    });
     return normalizeUserRow(result.rows[0]);
   },
 
@@ -256,7 +288,12 @@ export const User = {
 
   // Update user profile
   async updateProfile(id, { fullName, company, phone }) {
-    const columns = await getUsersTableColumns();
+    const schema = await getUsersTableSchema();
+    if (!schema) {
+      const current = await this.findById(id);
+      return current;
+    }
+    const columns = new Set(schema.keys());
     const updates = [];
     const params = [id];
     let i = 2;

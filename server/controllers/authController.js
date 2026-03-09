@@ -281,6 +281,7 @@ export const signup = async (req, res) => {
     const schemaMissing = error.code === '42P01';
     const schemaMismatch = error.code === '42703';
     const duplicateEmail = error.code === '23505';
+    const notNullViolation = error.code === '23502';
     const dbUnavailable = ['ECONNREFUSED', 'ETIMEDOUT', '57P01', '53300'].includes(error.code);
 
     let message = 'An error occurred during signup';
@@ -292,6 +293,8 @@ export const signup = async (req, res) => {
       message = 'Signup is unavailable: users table is missing in database.';
     } else if (schemaMismatch) {
       message = 'Signup is unavailable: database schema is out of date.';
+    } else if (notNullViolation) {
+      message = `Signup is unavailable: required database field is missing (${error.column || 'unknown column'}).`;
     } else if (dbUnavailable) {
       message = 'Signup is temporarily unavailable: database connection failed.';
     }
