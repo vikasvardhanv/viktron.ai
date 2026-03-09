@@ -364,6 +364,29 @@ export const AnalyticsApp: React.FC = () => {
   const [needsAuth, setNeedsAuth] = useState(false);
   const [isImportingSession, setIsImportingSession] = useState(false);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const hash = window.location.hash.startsWith('#') ? window.location.hash.slice(1) : window.location.hash;
+    if (!hash) return;
+
+    const params = new URLSearchParams(hash);
+    const incomingToken = params.get('viktronToken');
+    const incomingUser = params.get('viktronUser');
+    if (!incomingToken || !incomingUser) return;
+
+    try {
+      const user = JSON.parse(decodeURIComponent(incomingUser));
+      localStorage.setItem(TOKEN_KEY, incomingToken);
+      localStorage.setItem(USER_KEY, JSON.stringify(user));
+      setNeedsAuth(false);
+      setSourcesMessage('Session linked from viktron.ai.');
+    } catch {
+      setSourcesMessage('Could not parse linked session. Please sign in again.');
+    } finally {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }, []);
+
   const nav = useMemo(
     () => [
       { id: 'overview' as const, label: 'SaaS Overview', icon: Radar },
@@ -420,65 +443,10 @@ export const AnalyticsApp: React.FC = () => {
 
   const importSessionFromMainDomain = async () => {
     setIsImportingSession(true);
-    setSourcesMessage('Checking active session on viktron.ai...');
-
-    await new Promise<void>((resolve) => {
-      const requestId = `bridge-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-      const targetOrigin = window.location.origin;
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = `https://viktron.ai/auth-bridge.html?targetOrigin=${encodeURIComponent(targetOrigin)}&requestId=${encodeURIComponent(requestId)}`;
-      document.body.appendChild(iframe);
-
-      let done = false;
-      const finish = () => {
-        if (done) return;
-        done = true;
-        window.removeEventListener('message', onMessage);
-        try {
-          iframe.remove();
-        } catch {
-          // ignore
-        }
-        setIsImportingSession(false);
-        resolve();
-      };
-
-      const timer = window.setTimeout(() => {
-        setSourcesMessage('Could not import session automatically. Please sign in on viktron.ai and try again.');
-        finish();
-      }, 15000);
-
-      const onMessage = (event: MessageEvent) => {
-        if (!['https://viktron.ai', 'https://www.viktron.ai'].includes(event.origin)) return;
-        const payload = event.data || {};
-        if (payload.type !== 'VIKTRON_AUTH_BRIDGE_RESULT') return;
-        if (payload.requestId !== requestId) return;
-
-        window.clearTimeout(timer);
-
-        if (payload.token && payload.user) {
-          localStorage.setItem(TOKEN_KEY, payload.token);
-          localStorage.setItem(USER_KEY, JSON.stringify(payload.user));
-          setSourcesMessage('Session imported. Reloading connectors...');
-          setNeedsAuth(false);
-          void loadSources();
-        } else {
-          setSourcesMessage('No active viktron.ai session found. Please sign in there first.');
-        }
-
-        finish();
-      };
-
-      window.addEventListener('message', onMessage);
-    });
+    setSourcesMessage('Redirecting to viktron.ai to link your session...');
+    const target = `${window.location.origin}${window.location.pathname}${window.location.search}`;
+    window.location.href = `https://viktron.ai/auth-bridge.html?target=${encodeURIComponent(target)}`;
   };
-
-  useEffect(() => {
-    if (needsAuth && !isImportingSession) {
-      void importSessionFromMainDomain();
-    }
-  }, [needsAuth]);
 
   const connectSource = async (provider: string) => {
     setSourceLoading(`connect-${provider}`);
@@ -856,7 +824,7 @@ export const AnalyticsApp: React.FC = () => {
                       disabled={isImportingSession}
                       className="rounded-lg bg-cyan-500 hover:bg-cyan-400 text-[#042432] text-[11px] font-semibold px-3 py-2"
                     >
-                      {isImportingSession ? 'Linking session...' : 'Use my viktron.ai session'}
+                      {isImportingSession ? 'Redirecting...' : 'Use my viktron.ai session'}
                     </button>
                     <a
                       href="https://viktron.ai"

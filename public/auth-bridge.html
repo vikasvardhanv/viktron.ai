@@ -12,6 +12,7 @@
         var USER_KEY = 'viktron_user';
 
         var params = new URLSearchParams(window.location.search);
+        var target = params.get('target') || null;
         var targetOrigin = params.get('targetOrigin') || '*';
         var requestId = params.get('requestId') || null;
 
@@ -31,6 +32,24 @@
           token: token,
           user: user,
         };
+
+        if (target) {
+          var safeTarget = target;
+          try {
+            var targetUrl = new URL(target);
+            if (targetUrl.protocol === 'https:' && /(^|\.)viktron\.ai$/i.test(targetUrl.hostname)) {
+              var hash = new URLSearchParams();
+              if (token) hash.set('viktronToken', token);
+              if (user) hash.set('viktronUser', encodeURIComponent(JSON.stringify(user)));
+              targetUrl.hash = hash.toString();
+              safeTarget = targetUrl.toString();
+            }
+          } catch (e) {
+            // ignore parse errors and fall through
+          }
+          window.location.replace(safeTarget);
+          return;
+        }
 
         if (window.parent && window.parent !== window) {
           window.parent.postMessage(payload, targetOrigin);
