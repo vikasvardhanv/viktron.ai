@@ -462,29 +462,57 @@ function formatCount(n: number): string {
   return String(n);
 }
 
+function getLocalImageTag(agent: AgentEntry): string {
+  return `viktron/${agent.slug}:local`;
+}
+
+function getRunImage(agent: AgentEntry): string {
+  if (agent.is_open_source) return getLocalImageTag(agent);
+  return `${agent.docker_image}:${agent.docker_tag}`;
+}
+
 function buildDockerPull(agent: AgentEntry): string {
-  return `docker pull ${agent.docker_image}:${agent.docker_tag}`;
+  const remote = `${agent.docker_image}:${agent.docker_tag}`;
+  if (agent.is_open_source && agent.source_repo) {
+    const localImage = getLocalImageTag(agent);
+    return [
+      '# Option A: pull from GHCR (requires package read token)',
+      'echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_USER" --password-stdin',
+      `docker pull ${remote}`,
+      '',
+      '# Option B: build locally from source (recommended for open-source)',
+      `git clone ${agent.source_repo}`,
+      `cd ${agent.slug}-agent || cd $(basename ${agent.source_repo} .git)`,
+      `docker build -t ${localImage} .`,
+    ].join('\n');
+  }
+  return [
+    'echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_USER" --password-stdin',
+    `docker pull ${remote}`,
+  ].join('\n');
 }
 
 function buildDockerRun(agent: AgentEntry): string {
   const required = agent.env_vars_required.filter(v => v.required);
   const envLines = required.map(v => `  -e ${v.key}="\${${v.key}}"`).join(' \\\n');
+  const image = getRunImage(agent);
   return [
     `docker run -d \\`,
     `  --name ${agent.slug}-agent \\`,
     `  -p 8080:8080 \\`,
     envLines ? envLines + ' \\' : null,
-    `  ${agent.docker_image}:${agent.docker_tag}`,
+    `  ${image}`,
   ].filter(Boolean).join('\n');
 }
 
 function buildCompose(agent: AgentEntry): string {
   const required = agent.env_vars_required.filter(v => v.required);
   const envBlock = required.map(v => `      - ${v.key}=\${${v.key}}`).join('\n');
+  const image = getRunImage(agent);
   return `version: "3.9"
 services:
   ${agent.slug}-agent:
-    image: ${agent.docker_image}:${agent.docker_tag}
+    image: ${image}
     ports:
       - "8080:8080"
     environment:
@@ -627,6 +655,14 @@ const DeployModal: React.FC<{ agent: AgentEntry; onClose: () => void }> = ({ age
                     <CopyButton text={codeMap[tab]} />
                   </div>
                 </div>
+
+                {agent.is_open_source && (
+                  <p className="mt-3 text-xs text-slate-500">
+                    Open-source tip: run the commands in <span className="font-medium">Pull Image</span> first.
+                    The <span className="font-medium">Run Locally</span> and <span className="font-medium">Docker Compose</span>
+                    commands use the local image tag <code className="font-mono">{getLocalImageTag(agent)}</code>.
+                  </p>
+                )}
 
                 {/* Required env vars */}
                 {agent.env_vars_required.filter(v => v.required).length > 0 && (
