@@ -11,6 +11,10 @@
         var TOKEN_KEY = 'viktron_auth_token';
         var USER_KEY = 'viktron_user';
 
+        var params = new URLSearchParams(window.location.search);
+        var targetOrigin = params.get('targetOrigin') || '*';
+        var requestId = params.get('requestId') || null;
+
         var token = localStorage.getItem(TOKEN_KEY);
         var userRaw = localStorage.getItem(USER_KEY);
         var user = null;
@@ -21,18 +25,22 @@
           user = null;
         }
 
-        if (window.opener) {
-          window.opener.postMessage(
-            {
-              type: 'VIKTRON_AUTH_BRIDGE_RESULT',
-              token: token,
-              user: user,
-            },
-            '*'
-          );
+        var payload = {
+          type: 'VIKTRON_AUTH_BRIDGE_RESULT',
+          requestId: requestId,
+          token: token,
+          user: user,
+        };
+
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage(payload, targetOrigin);
+          return;
         }
 
-        window.close();
+        if (window.opener) {
+          window.opener.postMessage(payload, targetOrigin);
+          window.close();
+        }
       })();
     </script>
   </body>

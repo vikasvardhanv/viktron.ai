@@ -362,6 +362,7 @@ export const AnalyticsApp: React.FC = () => {
   const [sourcesMessage, setSourcesMessage] = useState('');
   const [sourceLoading, setSourceLoading] = useState<string>('');
   const [needsAuth, setNeedsAuth] = useState(false);
+  const [isImportingSession, setIsImportingSession] = useState(false);
 
   const nav = useMemo(
     () => [
@@ -418,15 +419,16 @@ export const AnalyticsApp: React.FC = () => {
   };
 
   const importSessionFromMainDomain = async () => {
+    setIsImportingSession(true);
     setSourcesMessage('Checking active session on viktron.ai...');
 
     await new Promise<void>((resolve) => {
-      const popup = window.open('https://viktron.ai/auth-bridge.html', 'viktron-auth-bridge', 'width=520,height=620');
-      if (!popup) {
-        setSourcesMessage('Popup blocked. Please allow popups and try again.');
-        resolve();
-        return;
-      }
+      const requestId = `bridge-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      const targetOrigin = window.location.origin;
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = `https://viktron.ai/auth-bridge.html?targetOrigin=${encodeURIComponent(targetOrigin)}&requestId=${encodeURIComponent(requestId)}`;
+      document.body.appendChild(iframe);
 
       let done = false;
       const finish = () => {
@@ -434,10 +436,11 @@ export const AnalyticsApp: React.FC = () => {
         done = true;
         window.removeEventListener('message', onMessage);
         try {
-          popup.close();
+          iframe.remove();
         } catch {
           // ignore
         }
+        setIsImportingSession(false);
         resolve();
       };
 
@@ -450,6 +453,7 @@ export const AnalyticsApp: React.FC = () => {
         if (!['https://viktron.ai', 'https://www.viktron.ai'].includes(event.origin)) return;
         const payload = event.data || {};
         if (payload.type !== 'VIKTRON_AUTH_BRIDGE_RESULT') return;
+        if (payload.requestId !== requestId) return;
 
         window.clearTimeout(timer);
 
@@ -469,6 +473,12 @@ export const AnalyticsApp: React.FC = () => {
       window.addEventListener('message', onMessage);
     });
   };
+
+  useEffect(() => {
+    if (needsAuth && !isImportingSession) {
+      void importSessionFromMainDomain();
+    }
+  }, [needsAuth]);
 
   const connectSource = async (provider: string) => {
     setSourceLoading(`connect-${provider}`);
@@ -843,9 +853,10 @@ export const AnalyticsApp: React.FC = () => {
                   <div className="mt-3 flex flex-wrap gap-2">
                     <button
                       onClick={() => void importSessionFromMainDomain()}
+                      disabled={isImportingSession}
                       className="rounded-lg bg-cyan-500 hover:bg-cyan-400 text-[#042432] text-[11px] font-semibold px-3 py-2"
                     >
-                      Use my viktron.ai session
+                      {isImportingSession ? 'Linking session...' : 'Use my viktron.ai session'}
                     </button>
                     <a
                       href="https://viktron.ai"
