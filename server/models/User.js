@@ -2,13 +2,37 @@ import { query } from '../config/database.js';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 
-const getUsersTableColumns = async () => {
-  const result = await query(
-    `SELECT column_name
-     FROM information_schema.columns
-     WHERE table_schema = 'public' AND table_name = 'users'`
-  );
-  return new Set(result.rows.map((r) => r.column_name));
+const getUsersTableSchema = async () => {
+  try {
+    const result = await query(
+      `SELECT column_name, is_nullable, column_default
+       FROM information_schema.columns
+       WHERE table_schema = 'public' AND table_name = 'users'`
+    );
+
+    const schema = new Map();
+    for (const row of result.rows) {
+      schema.set(row.column_name, {
+        nullable: row.is_nullable === 'YES',
+        hasDefault: row.column_default !== null,
+      });
+    }
+    return schema;
+  } catch {
+    // Some managed DB roles restrict metadata visibility.
+    return null;
+  }
+};
+
+const hasColumn = (schema, name) => {
+  if (!schema) return false;
+  return schema.has(name);
+};
+
+const needsValue = (schema, name) => {
+  if (!schema || !schema.has(name)) return false;
+  const col = schema.get(name);
+  return !col.nullable && !col.hasDefault;
 };
 
 const normalizeUserRow = (row = {}) => ({
@@ -32,41 +56,75 @@ export const User = {
   async create({ email, password, fullName, company, phone }) {
     const passwordHash = await bcrypt.hash(password, 12);
 
-    const columns = await getUsersTableColumns();
+    const schema = await getUsersTableSchema();
+
+    // Fallback to legacy query path when schema metadata is unavailable.
+    if (!schema) {
+      let result;
+      try {
+        result = await query(
+          `INSERT INTO users (email, password_hash, full_name, company, phone, role)
+           VALUES ($1, $2, $3, $4, $5, 'user')
+           RETURNING *`,
+          [email.toLowerCase(), passwordHash, fullName, company || '', phone || '']
+        );
+      } catch (error) {
+        if (error?.code === '42703') {
+          result = await query(
+            `INSERT INTO users (email, password_hash, full_name)
+             VALUES ($1, $2, $3)
+             RETURNING *`,
+            [email.toLowerCase(), passwordHash, fullName]
+          );
+        } else {
+          throw error;
+        }
+      }
+      return normalizeUserRow(result.rows[0]);
+    }
+
     const insertColumns = [];
     const insertValues = [];
 
-    if (!columns.has('email')) {
+    if (!hasColumn(schema, 'email')) {
       throw new Error('users.email column is required for signup');
     }
     insertColumns.push('email');
     insertValues.push(email.toLowerCase());
 
-    if (columns.has('password_hash')) {
+    if (hasColumn(schema, 'password_hash')) {
       insertColumns.push('password_hash');
       insertValues.push(passwordHash);
-    } else if (columns.has('password')) {
+    } else if (hasColumn(schema, 'password')) {
       insertColumns.push('password');
       insertValues.push(passwordHash);
     } else {
       throw new Error('users.password_hash/password column is required for signup');
     }
 
-    if (columns.has('full_name')) {
+    if (hasColumn(schema, 'full_name')) {
       insertColumns.push('full_name');
       insertValues.push(fullName);
-    } else if (columns.has('name')) {
+    } else if (hasColumn(schema, 'name')) {
       insertColumns.push('name');
       insertValues.push(fullName);
     }
 
-    if (columns.has('company')) {
+    if (hasColumn(schema, 'company')) {
       insertColumns.push('company');
-      insertValues.push(company || null);
+      insertValues.push(company || (needsValue(schema, 'company') ? '' : null));
     }
-    if (columns.has('phone')) {
+    if (hasColumn(schema, 'phone')) {
       insertColumns.push('phone');
-      insertValues.push(phone || null);
+      insertValues.push(phone || (needsValue(schema, 'phone') ? '' : null));
+    }
+    if (hasColumn(schema, 'role')) {
+      insertColumns.push('role');
+      insertValues.push('user');
+    }
+    if (hasColumn(schema, 'email_verified')) {
+      insertColumns.push('email_verified');
+      insertValues.push(false);
     }
 
     const { sql, params } = buildInsertStatement(insertColumns, insertValues);
@@ -81,45 +139,74 @@ export const User = {
     const passwordHash = await bcrypt.hash(randomPassword, 12);
 
     const nameValue = fullName || email.split('@')[0];
-    const columns = await getUsersTableColumns();
+    const schema = await getUsersTableSchema();
+
+    if (!schema) {
+      let result;
+      try {
+        result = await query(
+          `INSERT INTO users (email, password_hash, full_name, auth_provider, auth_provider_id, email_verified, role)
+           VALUES ($1, $2, $3, $4, $5, true, 'user')
+           RETURNING *`,
+          [email.toLowerCase(), passwordHash, nameValue, provider, providerId]
+        );
+      } catch (error) {
+        if (error?.code === '42703') {
+          result = await query(
+            `INSERT INTO users (email, password_hash, full_name)
+             VALUES ($1, $2, $3)
+             RETURNING *`,
+            [email.toLowerCase(), passwordHash, nameValue]
+          );
+        } else {
+          throw error;
+        }
+      }
+      return normalizeUserRow(result.rows[0]);
+    }
+
     const insertColumns = [];
     const insertValues = [];
 
-    if (!columns.has('email')) {
+    if (!hasColumn(schema, 'email')) {
       throw new Error('users.email column is required for OAuth');
     }
     insertColumns.push('email');
     insertValues.push(email.toLowerCase());
 
-    if (columns.has('password_hash')) {
+    if (hasColumn(schema, 'password_hash')) {
       insertColumns.push('password_hash');
       insertValues.push(passwordHash);
-    } else if (columns.has('password')) {
+    } else if (hasColumn(schema, 'password')) {
       insertColumns.push('password');
       insertValues.push(passwordHash);
     } else {
       throw new Error('users.password_hash/password column is required for OAuth');
     }
 
-    if (columns.has('full_name')) {
+    if (hasColumn(schema, 'full_name')) {
       insertColumns.push('full_name');
       insertValues.push(nameValue);
-    } else if (columns.has('name')) {
+    } else if (hasColumn(schema, 'name')) {
       insertColumns.push('name');
       insertValues.push(nameValue);
     }
 
-    if (columns.has('auth_provider')) {
+    if (hasColumn(schema, 'auth_provider')) {
       insertColumns.push('auth_provider');
       insertValues.push(provider);
     }
-    if (columns.has('auth_provider_id')) {
+    if (hasColumn(schema, 'auth_provider_id')) {
       insertColumns.push('auth_provider_id');
       insertValues.push(providerId);
     }
-    if (columns.has('email_verified')) {
+    if (hasColumn(schema, 'email_verified')) {
       insertColumns.push('email_verified');
       insertValues.push(true);
+    }
+    if (hasColumn(schema, 'role')) {
+      insertColumns.push('role');
+      insertValues.push('user');
     }
 
     const { sql, params } = buildInsertStatement(insertColumns, insertValues);
