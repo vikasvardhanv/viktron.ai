@@ -64,14 +64,14 @@ const AdBlock: React.FC<{ title: string; adsReady: boolean }> = ({ title, adsRea
 
   if (!adsReady) {
     return (
-      <div className="rounded-xl border border-dashed border-slate-400/40 p-4 text-xs text-slate-300 bg-slate-900/30">
+      <div className="rounded-xl border border-dashed border-slate-300 p-4 text-xs text-slate-500 bg-slate-50">
         {title} ad slot (AdSense loading...)
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border border-slate-700 p-3 bg-slate-950/40">
+    <div className="rounded-xl border border-slate-200 p-3 bg-white">
       <ins
         className="adsbygoogle"
         style={{ display: 'block' }}
@@ -95,7 +95,22 @@ export const ToolFeed: React.FC = () => {
   const [adsReady] = useState(true);
   const PAGE_SIZE = 100;
 
-  const cleanToolName = (name: string) => name.replace(/^[^A-Za-z0-9]+/, '').trim() || 'AI Tool';
+  const cleanToolName = (name: string, url: string | null) => {
+    const cleaned = name.replace(/^[^A-Za-z0-9]+/, '').trim();
+    if (cleaned) return cleaned;
+
+    if (url) {
+      try {
+        const hostname = new URL(url).hostname.replace(/^www\./, '');
+        const root = hostname.split('.')[0] || hostname;
+        if (root) return root.charAt(0).toUpperCase() + root.slice(1);
+      } catch {
+        // ignore URL parse errors and use final fallback
+      }
+    }
+
+    return 'Website Tool';
+  };
 
   const cleanDescription = (description: string | null) => {
     if (!description) return 'No description available.';
@@ -192,7 +207,7 @@ export const ToolFeed: React.FC = () => {
           {filtered.map((tool, idx) => (
             <React.Fragment key={tool.id}>
               <article className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3 shadow-sm">
-                <h2 className="text-lg font-semibold leading-tight text-slate-900">{cleanToolName(tool.tool_name)}</h2>
+                <h2 className="text-lg font-semibold leading-tight text-slate-900">{cleanToolName(tool.tool_name, tool.tool_url)}</h2>
                 <p className="text-sm text-slate-600 min-h-[72px] line-clamp-3">{cleanDescription(tool.description)}</p>
                 <div className="flex flex-wrap gap-2 pt-1">
                   {tool.tool_url && (
@@ -207,11 +222,16 @@ export const ToolFeed: React.FC = () => {
                   )}
                 </div>
               </article>
+
+              {(idx + 1) % 6 === 0 && (
+                <article className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3 shadow-sm">
+                  <p className="text-xs uppercase tracking-wide text-slate-400">Sponsored</p>
+                  <AdBlock title="Inline sponsored" adsReady={adsReady} />
+                </article>
+              )}
             </React.Fragment>
           ))}
         </div>
-
-        <AdBlock title="Sponsored" adsReady={adsReady} />
 
         {hasMore && !query.trim() && (
           <div className="pt-4 flex justify-center">
