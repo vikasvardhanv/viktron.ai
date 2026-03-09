@@ -276,10 +276,29 @@ export const signup = async (req, res) => {
       detail: error.detail,
       stack: error.stack?.split('\n').slice(0, 3).join(' | '),
     });
+
     const configError = error.message?.includes('JWT_SECRET');
+    const schemaMissing = error.code === '42P01';
+    const schemaMismatch = error.code === '42703';
+    const duplicateEmail = error.code === '23505';
+    const dbUnavailable = ['ECONNREFUSED', 'ETIMEDOUT', '57P01', '53300'].includes(error.code);
+
+    let message = 'An error occurred during signup';
+    if (configError) {
+      message = 'Server auth configuration is incomplete (JWT).';
+    } else if (duplicateEmail) {
+      message = 'Email already registered';
+    } else if (schemaMissing) {
+      message = 'Signup is unavailable: users table is missing in database.';
+    } else if (schemaMismatch) {
+      message = 'Signup is unavailable: database schema is out of date.';
+    } else if (dbUnavailable) {
+      message = 'Signup is temporarily unavailable: database connection failed.';
+    }
+
     res.status(500).json({
       success: false,
-      message: configError ? 'Server auth configuration is incomplete (JWT).' : 'An error occurred during signup',
+      message,
       ...(process.env.NODE_ENV !== 'production' && { error: error.message })
     });
   }
@@ -307,7 +326,15 @@ export const login = async (req, res) => {
     }
 
     // Verify password
-    const isValidPassword = await User.verifyPassword(password, user.password_hash);
+    const passwordDigest = user.password_hash || user.password;
+    if (!passwordDigest) {
+      return res.status(500).json({
+        success: false,
+        message: 'User password is not configured correctly'
+      });
+    }
+
+    const isValidPassword = await User.verifyPassword(password, passwordDigest);
     if (!isValidPassword) {
       return res.status(401).json({
         success: false,

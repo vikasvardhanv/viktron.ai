@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ExternalLink, RefreshCw, Search } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { getAuthToken, useAuth } from '../context/AuthContext';
 
 type ToolItem = {
@@ -297,6 +298,16 @@ export const ToolFeed: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 px-4 sm:px-8 py-8">
       <div className="max-w-6xl mx-auto space-y-6">
+        <div className="rounded-2xl border border-slate-200 bg-white p-3 sm:p-4 shadow-sm flex items-center justify-between gap-3">
+          <Link to="/" className="flex items-center gap-2">
+            <img src="/visuals/viktronlogo.png" alt="Viktron" className="h-8 w-8 object-contain" />
+            <span className="font-semibold text-slate-900">Viktron.ai</span>
+          </Link>
+          <Link to="/" className="text-sm font-medium text-sky-700 hover:text-sky-600">
+            Back to Home
+          </Link>
+        </div>
+
         <header className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <h1 className="text-2xl font-bold text-slate-900">AI Tools in One Place</h1>
           <p className="text-sm text-slate-600 mt-1">Discover AI tools with clean descriptions and direct website links.</p>

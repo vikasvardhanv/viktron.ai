@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const toApiBase = (value?: string) => {
@@ -44,7 +44,6 @@ export const AuthModal: React.FC = () => {
     signup,
   } = useAuth();
   const location = useLocation();
-  const navigate = useNavigate();
 
   const [view, setView] = useState<AuthView>('options');
   const [isLoading, setIsLoading] = useState(false);
@@ -107,7 +106,7 @@ export const AuthModal: React.FC = () => {
       setPhone('');
       setAgreeToTerms(false);
     }
-  }, [showAuthModal, authModalMode]);
+  }, [showAuthModal]);
 
   // Keep modal mode aligned with auth route so /signup never shows login copy.
   useEffect(() => {
@@ -160,18 +159,6 @@ export const AuthModal: React.FC = () => {
     setTimeout(() => {
       setShowAuthModal(false);
     }, 500);
-  };
-
-  const getRedirectTarget = () => {
-    const params = new URLSearchParams(location.search);
-    const target = params.get('redirect');
-    if (!target || !target.startsWith('/') || target.startsWith('//')) {
-      return '/';
-    }
-    if (target === '/login' || target === '/signup') {
-      return '/';
-    }
-    return target;
   };
 
   // Google Sign-In - Server-side Authorization Code Flow
@@ -480,8 +467,6 @@ export const AuthModal: React.FC = () => {
                     onClick={() => {
                       setAuthModalMode('signup');
                       setView('email-signup');
-                      const redirect = encodeURIComponent(getRedirectTarget());
-                      navigate(`/signup?redirect=${redirect}`, { replace: true });
                     }}
                     className="text-blue-600 hover:text-blue-700 font-medium"
                   >
@@ -612,9 +597,7 @@ export const AuthModal: React.FC = () => {
                     type="button"
                     onClick={() => {
                       setAuthModalMode('login');
-                      setView('options');
-                      const redirect = encodeURIComponent(getRedirectTarget());
-                      navigate(`/login?redirect=${redirect}`, { replace: true });
+                      setView('email-login');
                     }}
                     className="text-blue-600 hover:text-blue-700 font-medium"
                   >
