@@ -11,12 +11,20 @@ const toApiBase = (value?: string): string | null => {
   return `${trimmed}/api`;
 };
 
+const getCanonicalAgentApiBase = (): string | null => {
+  if (typeof window === 'undefined') return null;
+  const host = window.location.hostname.replace(/^www\./, '');
+  if (/localhost|127\.0\.0\.1/.test(host)) return '/api';
+  if (host === 'viktron.ai' || host.endsWith('.viktron.ai')) {
+    return 'https://api.viktron.ai/api';
+  }
+  return `https://api.${host}/api`;
+};
+
 const API_BASES = [
+  getCanonicalAgentApiBase(),
   toApiBase(ENV.VITE_SAAS_API_BASE),
   toApiBase(ENV.VITE_AGENT_API_URL),
-  // Slack callback must hit agent/backend API, not website API host.
-  (typeof window !== 'undefined' ? `https://api.${window.location.hostname.replace(/^www\./, '')}/api` : null),
-  '/api',
 ].filter(Boolean) as string[];
 
 const callCallback = async (code: string, state: string): Promise<any> => {
@@ -27,6 +35,9 @@ const callCallback = async (code: string, state: string): Promise<any> => {
         `${base}/saas/sources/slack/oauth/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}`
       );
       if (res.ok) return res.json();
+      if (res.status === 401 || res.status === 403) {
+        throw new Error('Authentication required. Please log in and reconnect Slack.');
+      }
       lastError = new Error(`Callback failed at ${base} with ${res.status}`);
     } catch (err) {
       lastError = err;
