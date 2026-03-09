@@ -3,7 +3,8 @@ import logger from '../utils/logger.js';
 const { Pool } = pg;
 
 // Parse DATABASE_URL to check if it requires SSL
-const requiresSSL = process.env.DATABASE_URL?.includes('sslmode=require');
+const dbUrl = process.env.DATABASE_URL || '';
+const requiresSSL = dbUrl.includes('sslmode=require') || dbUrl.includes('ssl=require');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,

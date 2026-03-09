@@ -282,7 +282,8 @@ export const signup = async (req, res) => {
     const schemaMismatch = error.code === '42703';
     const duplicateEmail = error.code === '23505';
     const notNullViolation = error.code === '23502';
-    const dbUnavailable = ['ECONNREFUSED', 'ETIMEDOUT', '57P01', '53300'].includes(error.code);
+    const timeoutLike = /timeout|timed out|connection terminated/i.test(error.message || '');
+    const dbUnavailable = ['ECONNREFUSED', 'ETIMEDOUT', '57P01', '53300'].includes(error.code) || timeoutLike;
 
     let message = 'An error occurred during signup';
     if (configError) {
