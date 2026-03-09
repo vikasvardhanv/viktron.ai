@@ -95,6 +95,18 @@ export const ToolFeed: React.FC = () => {
   const [adsReady] = useState(true);
   const PAGE_SIZE = 100;
 
+  const cleanToolName = (name: string) => name.replace(/^[^A-Za-z0-9]+/, '').trim() || 'AI Tool';
+
+  const cleanDescription = (description: string | null) => {
+    if (!description) return 'No description available.';
+    return description
+      .replace(/@toolspire/gi, '')
+      .replace(/#latest/gi, '')
+      .replace(/#toolspire/gi, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+  };
+
   const load = async (nextOffset = 0, append = false) => {
     setStatus('Loading tools...');
     try {
@@ -148,85 +160,65 @@ export const ToolFeed: React.FC = () => {
   }, [query, tools]);
 
   return (
-    <div className="min-h-screen bg-[#0a1018] text-white px-4 sm:px-8 py-8">
+    <div className="min-h-screen bg-slate-50 text-slate-900 px-4 sm:px-8 py-8">
       <div className="max-w-6xl mx-auto space-y-6">
-        <header className="rounded-2xl border border-white/10 bg-[#101826] p-5">
-          <h1 className="text-2xl font-bold">Telegram AI Tool Feed</h1>
-          <p className="text-sm text-slate-300 mt-1">Auto-ingested from @toolspireai and aligned into clean tool cards.</p>
+        <header className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h1 className="text-2xl font-bold text-slate-900">AI Tools in One Place</h1>
+          <p className="text-sm text-slate-600 mt-1">Discover AI tools with clean descriptions and direct website links.</p>
 
           <div className="mt-4 flex flex-wrap gap-3 items-center">
-            <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-2 min-w-[240px]">
-              <Search className="w-4 h-4 text-slate-400" />
+            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 min-w-[240px]">
+              <Search className="w-4 h-4 text-slate-500" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search tools"
-                className="bg-transparent text-sm text-white outline-none w-full"
+                placeholder="Search AI tools"
+                className="bg-transparent text-sm text-slate-900 outline-none w-full"
               />
             </div>
             <button
               onClick={() => void sync()}
               disabled={syncing}
-              className="rounded-lg bg-cyan-500 hover:bg-cyan-400 disabled:opacity-70 text-[#032330] text-sm font-semibold px-4 py-2 inline-flex items-center gap-2"
+              className="rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-70 text-white text-sm font-semibold px-4 py-2 inline-flex items-center gap-2"
             >
               <RefreshCw className={`w-4 h-4 ${syncing ? 'animate-spin' : ''}`} />
-              Sync Telegram
+              Refresh Tools
             </button>
-            <span className="text-xs text-slate-400">{status}</span>
+            <span className="text-xs text-slate-500">{status}</span>
           </div>
         </header>
 
-        <AdBlock title="Top banner" adsReady={adsReady} />
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {filtered.map((tool, idx) => (
             <React.Fragment key={tool.id}>
-              <article className="rounded-2xl border border-white/10 bg-[#101826] p-5 space-y-3">
-                <div className="flex items-start justify-between gap-3">
-                  <h2 className="text-lg font-semibold leading-tight">{tool.tool_name}</h2>
-                  <span className="text-[11px] text-slate-400">#{tool.message_id}</span>
-                </div>
-                <p className="text-sm text-slate-300 min-h-[44px]">{tool.description || 'No description provided in source post.'}</p>
-                <div className="flex flex-wrap gap-2">
-                  {(tool.tags || []).map((tag) => (
-                    <span key={tag} className="text-[11px] px-2 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-200">
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
+              <article className="rounded-2xl border border-slate-200 bg-white p-5 space-y-3 shadow-sm">
+                <h2 className="text-lg font-semibold leading-tight text-slate-900">{cleanToolName(tool.tool_name)}</h2>
+                <p className="text-sm text-slate-600 min-h-[72px] line-clamp-3">{cleanDescription(tool.description)}</p>
                 <div className="flex flex-wrap gap-2 pt-1">
                   {tool.tool_url && (
                     <a
                       href={tool.tool_url}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-xs rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white px-3 py-1.5 inline-flex items-center gap-1"
+                      className="text-xs rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 inline-flex items-center gap-1"
                     >
-                      Open Tool <ExternalLink className="w-3 h-3" />
+                      Visit Website <ExternalLink className="w-3 h-3" />
                     </a>
                   )}
-                  <a
-                    href={tool.channel_post_url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-xs rounded-lg border border-white/20 hover:bg-white/10 px-3 py-1.5 inline-flex items-center gap-1"
-                  >
-                    Telegram Post <ExternalLink className="w-3 h-3" />
-                  </a>
                 </div>
               </article>
-
-              {idx === 3 && <AdBlock title="Inline feed" adsReady={adsReady} />}
             </React.Fragment>
           ))}
         </div>
+
+        <AdBlock title="Sponsored" adsReady={adsReady} />
 
         {hasMore && !query.trim() && (
           <div className="pt-4 flex justify-center">
             <button
               onClick={() => void loadMore()}
               disabled={loadingMore}
-              className="rounded-lg border border-white/20 hover:bg-white/10 disabled:opacity-70 text-sm font-semibold px-4 py-2 inline-flex items-center gap-2"
+              className="rounded-lg border border-slate-300 bg-white hover:bg-slate-100 disabled:opacity-70 text-sm font-semibold px-4 py-2 inline-flex items-center gap-2"
             >
               <RefreshCw className={`w-4 h-4 ${loadingMore ? 'animate-spin' : ''}`} />
               {loadingMore ? 'Loading more...' : 'Load More Tools'}
