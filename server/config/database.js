@@ -2,12 +2,25 @@ import pg from 'pg';
 import logger from '../utils/logger.js';
 const { Pool } = pg;
 
-// Parse DATABASE_URL to check if it requires SSL
-const dbUrl = process.env.DATABASE_URL || '';
-const requiresSSL = dbUrl.includes('sslmode=require') || dbUrl.includes('ssl=require');
+// Normalize DATABASE_URL for Node pg compatibility.
+const rawDbUrl = process.env.DATABASE_URL || '';
+const normalizedDbUrl = rawDbUrl
+  .replace(/^postgresql\+asyncpg:\/\//, 'postgresql://')
+  .replace(/^postgres\+asyncpg:\/\//, 'postgres://')
+  .replace('ssl=require', 'sslmode=require');
+
+const requiresSSL =
+  normalizedDbUrl.includes('sslmode=require') || normalizedDbUrl.includes('ssl=true');
+
+if (rawDbUrl && rawDbUrl !== normalizedDbUrl) {
+  logger.warn('DATABASE_URL normalized for Node pg compatibility', {
+    schemeAdjusted: rawDbUrl.startsWith('postgresql+asyncpg://') || rawDbUrl.startsWith('postgres+asyncpg://'),
+    sslParamAdjusted: rawDbUrl.includes('ssl=require'),
+  });
+}
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: normalizedDbUrl,
   ssl: requiresSSL ? { rejectUnauthorized: false } : false,
   // Connection pool settings
   max: 20,
