@@ -29,6 +29,7 @@ const Pricing = lazy(() => import('./pages/Pricing').then(m => ({ default: m.Pri
 const Blog = lazy(() => import('./pages/Blog').then(m => ({ default: m.Blog })));
 const RentAgent = lazy(() => import('./pages/RentAgent').then(m => ({ default: m.RentAgent })));
 const SlackOAuthCallback = lazy(() => import('./pages/SlackOAuthCallback').then(m => ({ default: m.SlackOAuthCallback })));
+const ToolFeed = lazy(() => import('./pages/ToolFeed').then(m => ({ default: m.ToolFeed })));
 
 // Legal pages - lazy loaded
 const PrivacyPolicy = lazy(() => import('./pages/legal/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
@@ -199,6 +200,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/analytics" element={<PageTransition><AnalyticsApp /></PageTransition>} />
         <Route path="/saas-analytics" element={<PageTransition><AnalyticsApp /></PageTransition>} />
         <Route path="/slack/oauth/callback" element={<PageTransition><SlackOAuthCallback /></PageTransition>} />
+        <Route path="/tools" element={<PageTransition><ToolFeed /></PageTransition>} />
         <Route path="/login" element={<PageTransition><AuthPage mode="login" /></PageTransition>} />
         <Route path="/signup" element={<PageTransition><AuthPage mode="signup" /></PageTransition>} />
 
