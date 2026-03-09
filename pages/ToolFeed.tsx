@@ -20,6 +20,8 @@ type ToolResponse = {
 };
 
 const ENV = (import.meta as any).env || {};
+const ADSENSE_CLIENT = 'ca-pub-6601354684559213';
+const ADSENSE_SCRIPT_ID = 'adsense-tools-only-script';
 const toApiBase = (value?: string) => {
   if (!value) return null;
   const trimmed = String(value).trim().replace(/\/$/, '');
@@ -48,23 +50,23 @@ const apiFetch = async (path: string, init?: RequestInit): Promise<Response> => 
   throw lastErr || new Error('Request failed');
 };
 
-const AdBlock: React.FC<{ title: string }> = ({ title }) => {
-  const client = ENV.VITE_ADSENSE_CLIENT_ID as string | undefined;
+const AdBlock: React.FC<{ title: string; adsReady: boolean }> = ({ title, adsReady }) => {
+  const client = ADSENSE_CLIENT;
 
   useEffect(() => {
-    if (!client) return;
+    if (!adsReady) return;
     try {
       (window as any).adsbygoogle = (window as any).adsbygoogle || [];
       (window as any).adsbygoogle.push({});
     } catch {
       // no-op
     }
-  }, [client]);
+  }, [adsReady]);
 
-  if (!client) {
+  if (!adsReady) {
     return (
       <div className="rounded-xl border border-dashed border-slate-400/40 p-4 text-xs text-slate-300 bg-slate-900/30">
-        {title} ad slot (set `VITE_ADSENSE_CLIENT_ID` to enable AdSense)
+        {title} ad slot (AdSense loading...)
       </div>
     );
   }
@@ -88,6 +90,7 @@ export const ToolFeed: React.FC = () => {
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState('');
   const [syncing, setSyncing] = useState(false);
+  const [adsReady, setAdsReady] = useState(false);
 
   const load = async () => {
     setStatus('Loading tools...');
@@ -118,6 +121,31 @@ export const ToolFeed: React.FC = () => {
 
   useEffect(() => {
     void load();
+  }, []);
+
+  useEffect(() => {
+    const src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;
+    const existing = document.getElementById(ADSENSE_SCRIPT_ID) as HTMLScriptElement | null;
+
+    if (existing) {
+      setAdsReady(true);
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.id = ADSENSE_SCRIPT_ID;
+    script.async = true;
+    script.crossOrigin = 'anonymous';
+    script.src = src;
+    script.onload = () => setAdsReady(true);
+    script.onerror = () => setAdsReady(false);
+    document.head.appendChild(script);
+
+    return () => {
+      // Keep AdSense strictly scoped to /tools page lifecycle.
+      script.remove();
+      setAdsReady(false);
+    };
   }, []);
 
   const filtered = useMemo(() => {
@@ -157,7 +185,7 @@ export const ToolFeed: React.FC = () => {
           </div>
         </header>
 
-        <AdBlock title="Top banner" />
+        <AdBlock title="Top banner" adsReady={adsReady} />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filtered.map((tool, idx) => (
@@ -197,7 +225,7 @@ export const ToolFeed: React.FC = () => {
                 </div>
               </article>
 
-              {idx === 3 && <AdBlock title="Inline feed" />}
+              {idx === 3 && <AdBlock title="Inline feed" adsReady={adsReady} />}
             </React.Fragment>
           ))}
         </div>
