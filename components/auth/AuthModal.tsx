@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const toApiBase = (value?: string) => {
@@ -43,6 +43,8 @@ export const AuthModal: React.FC = () => {
     login,
     signup,
   } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [view, setView] = useState<AuthView>('options');
   const [isLoading, setIsLoading] = useState(false);
@@ -107,6 +109,17 @@ export const AuthModal: React.FC = () => {
     }
   }, [showAuthModal, authModalMode]);
 
+  // Keep modal mode aligned with auth route so /signup never shows login copy.
+  useEffect(() => {
+    if (!showAuthModal) return;
+    if (location.pathname === '/signup' && authModalMode !== 'signup') {
+      setAuthModalMode('signup');
+    }
+    if (location.pathname === '/login' && authModalMode !== 'login') {
+      setAuthModalMode('login');
+    }
+  }, [showAuthModal, location.pathname, authModalMode, setAuthModalMode]);
+
   // Check for auth errors in URL (from OAuth redirect)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -147,6 +160,18 @@ export const AuthModal: React.FC = () => {
     setTimeout(() => {
       setShowAuthModal(false);
     }, 500);
+  };
+
+  const getRedirectTarget = () => {
+    const params = new URLSearchParams(location.search);
+    const target = params.get('redirect');
+    if (!target || !target.startsWith('/') || target.startsWith('//')) {
+      return '/';
+    }
+    if (target === '/login' || target === '/signup') {
+      return '/';
+    }
+    return target;
   };
 
   // Google Sign-In - Server-side Authorization Code Flow
@@ -454,7 +479,9 @@ export const AuthModal: React.FC = () => {
                     type="button"
                     onClick={() => {
                       setAuthModalMode('signup');
-                      setView('options');
+                      setView('email-signup');
+                      const redirect = encodeURIComponent(getRedirectTarget());
+                      navigate(`/signup?redirect=${redirect}`, { replace: true });
                     }}
                     className="text-blue-600 hover:text-blue-700 font-medium"
                   >
@@ -586,6 +613,8 @@ export const AuthModal: React.FC = () => {
                     onClick={() => {
                       setAuthModalMode('login');
                       setView('options');
+                      const redirect = encodeURIComponent(getRedirectTarget());
+                      navigate(`/login?redirect=${redirect}`, { replace: true });
                     }}
                     className="text-blue-600 hover:text-blue-700 font-medium"
                   >

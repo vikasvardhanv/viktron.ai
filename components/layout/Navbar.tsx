@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, User, LogOut } from 'lucide-react';
 import { BrandIcon } from '../../constants';
@@ -26,6 +26,7 @@ export const Navbar: React.FC = () => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { isAuthenticated, user, logout, setShowAuthModal, setAuthModalMode } = useAuth();
 
   useEffect(() => {
@@ -218,9 +219,22 @@ export const Navbar: React.FC = () => {
                   Sign In
                 </button>
               )}
-              <Link to="/contact" className="btn btn-primary text-sm">
-                Get Started
-              </Link>
+              {isAuthenticated ? (
+                <Link to="/contact" className="btn btn-primary text-sm">
+                  Get Started
+                </Link>
+              ) : (
+                <button
+                  onClick={() => {
+                    setAuthModalMode('signup');
+                    setShowAuthModal(true);
+                    navigate('/signup');
+                  }}
+                  className="btn btn-primary text-sm"
+                >
+                  Get Started
+                </button>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -325,13 +339,17 @@ export const Navbar: React.FC = () => {
                       >
                         Sign In
                       </button>
-                      <Link
-                        to="/contact"
-                        onClick={() => setIsMobileMenuOpen(false)}
+                      <button
+                        onClick={() => {
+                          setIsMobileMenuOpen(false);
+                          setAuthModalMode('signup');
+                          setShowAuthModal(true);
+                          navigate('/signup');
+                        }}
                         className="block w-full px-4 py-3 text-center text-lg font-semibold text-slate-950 bg-white rounded-xl"
                       >
                         Get Started
-                      </Link>
+                      </button>
                     </>
                   )}
                 </motion.div>
