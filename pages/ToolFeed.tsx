@@ -89,17 +89,34 @@ export const ToolFeed: React.FC = () => {
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState('');
   const [syncing, setSyncing] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
   const [adsReady] = useState(true);
+  const PAGE_SIZE = 100;
 
-  const load = async () => {
+  const load = async (nextOffset = 0, append = false) => {
     setStatus('Loading tools...');
     try {
-      const res = await apiFetch('/telegram-tools/latest?channel=toolspireai&limit=100');
+      const res = await apiFetch(`/telegram-tools/latest?channel=toolspireai&limit=${PAGE_SIZE}&offset=${nextOffset}`);
       const data = (await res.json()) as ToolResponse;
-      setTools(data.tools || []);
-      setStatus(`Loaded ${data.count} tools.`);
+      const batch = data.tools || [];
+      setTools((prev) => (append ? [...prev, ...batch] : batch));
+      setOffset(nextOffset + batch.length);
+      setHasMore(batch.length === PAGE_SIZE);
+      setStatus(`Loaded ${append ? nextOffset + batch.length : batch.length} tools.`);
     } catch (e) {
       setStatus(e instanceof Error ? e.message : 'Could not load tools');
+    }
+  };
+
+  const loadMore = async () => {
+    if (!hasMore || loadingMore) return;
+    setLoadingMore(true);
+    try {
+      await load(offset, true);
+    } finally {
+      setLoadingMore(false);
     }
   };
 
@@ -107,10 +124,10 @@ export const ToolFeed: React.FC = () => {
     setSyncing(true);
     setStatus('Syncing from Telegram...');
     try {
-      const res = await apiFetch('/telegram-tools/sync?channel=toolspireai&limit=120', { method: 'POST' });
+      const res = await apiFetch('/telegram-tools/sync?channel=toolspireai&limit=500&backfill_pages=20', { method: 'POST' });
       const data = await res.json();
       setStatus(`Synced. Inserted ${data.inserted}, updated ${data.updated}.`);
-      await load();
+      await load(0, false);
     } catch (e) {
       setStatus(e instanceof Error ? e.message : 'Sync failed');
     } finally {
@@ -119,7 +136,7 @@ export const ToolFeed: React.FC = () => {
   };
 
   useEffect(() => {
-    void load();
+    void load(0, false);
   }, []);
 
   const filtered = useMemo(() => {
@@ -203,6 +220,19 @@ export const ToolFeed: React.FC = () => {
             </React.Fragment>
           ))}
         </div>
+
+        {hasMore && !query.trim() && (
+          <div className="pt-4 flex justify-center">
+            <button
+              onClick={() => void loadMore()}
+              disabled={loadingMore}
+              className="rounded-lg border border-white/20 hover:bg-white/10 disabled:opacity-70 text-sm font-semibold px-4 py-2 inline-flex items-center gap-2"
+            >
+              <RefreshCw className={`w-4 h-4 ${loadingMore ? 'animate-spin' : ''}`} />
+              {loadingMore ? 'Loading more...' : 'Load More Tools'}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
