@@ -21,7 +21,6 @@ type ToolResponse = {
 
 const ENV = (import.meta as any).env || {};
 const ADSENSE_CLIENT = 'ca-pub-6601354684559213';
-const ADSENSE_SCRIPT_ID = 'adsense-tools-only-script';
 const toApiBase = (value?: string) => {
   if (!value) return null;
   const trimmed = String(value).trim().replace(/\/$/, '');
@@ -90,7 +89,7 @@ export const ToolFeed: React.FC = () => {
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState('');
   const [syncing, setSyncing] = useState(false);
-  const [adsReady, setAdsReady] = useState(false);
+  const [adsReady] = useState(true);
 
   const load = async () => {
     setStatus('Loading tools...');
@@ -121,31 +120,6 @@ export const ToolFeed: React.FC = () => {
 
   useEffect(() => {
     void load();
-  }, []);
-
-  useEffect(() => {
-    const src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;
-    const existing = document.getElementById(ADSENSE_SCRIPT_ID) as HTMLScriptElement | null;
-
-    if (existing) {
-      setAdsReady(true);
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.id = ADSENSE_SCRIPT_ID;
-    script.async = true;
-    script.crossOrigin = 'anonymous';
-    script.src = src;
-    script.onload = () => setAdsReady(true);
-    script.onerror = () => setAdsReady(false);
-    document.head.appendChild(script);
-
-    return () => {
-      // Keep AdSense strictly scoped to /tools page lifecycle.
-      script.remove();
-      setAdsReady(false);
-    };
   }, []);
 
   const filtered = useMemo(() => {
