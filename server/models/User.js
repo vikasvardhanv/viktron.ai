@@ -7,12 +7,27 @@ export const User = {
   async create({ email, password, fullName, company, phone }) {
     const passwordHash = await bcrypt.hash(password, 12);
 
-    const result = await query(
-      `INSERT INTO users (email, password_hash, full_name, company, phone)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING id, email, full_name, company, phone, role, created_at`,
-      [email.toLowerCase(), passwordHash, fullName, company, phone]
-    );
+    let result;
+    try {
+      result = await query(
+        `INSERT INTO users (email, password_hash, full_name, company, phone)
+         VALUES ($1, $2, $3, $4, $5)
+         RETURNING id, email, full_name, company, phone, role, created_at`,
+        [email.toLowerCase(), passwordHash, fullName, company, phone]
+      );
+    } catch (error) {
+      // Backward compatibility: some deployed databases may not have optional columns yet.
+      if (error?.code === '42703') {
+        result = await query(
+          `INSERT INTO users (email, password_hash, full_name)
+           VALUES ($1, $2, $3)
+           RETURNING id, email, full_name, NULL::text as company, NULL::text as phone, role, created_at`,
+          [email.toLowerCase(), passwordHash, fullName]
+        );
+      } else {
+        throw error;
+      }
+    }
 
     return result.rows[0];
   },
@@ -23,12 +38,26 @@ export const User = {
     const randomPassword = crypto.randomBytes(32).toString('hex');
     const passwordHash = await bcrypt.hash(randomPassword, 12);
 
-    const result = await query(
-      `INSERT INTO users (email, password_hash, full_name, auth_provider, auth_provider_id, email_verified)
-       VALUES ($1, $2, $3, $4, $5, true)
-       RETURNING id, email, full_name, company, phone, role, created_at`,
-      [email.toLowerCase(), passwordHash, fullName || email.split('@')[0], provider, providerId]
-    );
+    let result;
+    try {
+      result = await query(
+        `INSERT INTO users (email, password_hash, full_name, auth_provider, auth_provider_id, email_verified)
+         VALUES ($1, $2, $3, $4, $5, true)
+         RETURNING id, email, full_name, company, phone, role, created_at`,
+        [email.toLowerCase(), passwordHash, fullName || email.split('@')[0], provider, providerId]
+      );
+    } catch (error) {
+      if (error?.code === '42703') {
+        result = await query(
+          `INSERT INTO users (email, password_hash, full_name)
+           VALUES ($1, $2, $3)
+           RETURNING id, email, full_name, NULL::text as company, NULL::text as phone, role, created_at`,
+          [email.toLowerCase(), passwordHash, fullName || email.split('@')[0]]
+        );
+      } else {
+        throw error;
+      }
+    }
 
     return result.rows[0];
   },

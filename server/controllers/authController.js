@@ -6,6 +6,9 @@ import logger from '../utils/logger.js';
 
 // Generate JWT token
 const generateToken = (userId) => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET is not configured');
+  }
   return jwt.sign(
     { userId },
     process.env.JWT_SECRET,
@@ -273,9 +276,10 @@ export const signup = async (req, res) => {
       detail: error.detail,
       stack: error.stack?.split('\n').slice(0, 3).join(' | '),
     });
+    const configError = error.message?.includes('JWT_SECRET');
     res.status(500).json({
       success: false,
-      message: 'An error occurred during signup',
+      message: configError ? 'Server auth configuration is incomplete (JWT).' : 'An error occurred during signup',
       ...(process.env.NODE_ENV !== 'production' && { error: error.message })
     });
   }
