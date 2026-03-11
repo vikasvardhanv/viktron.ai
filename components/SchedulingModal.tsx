@@ -268,7 +268,7 @@ export const SchedulingModal: React.FC<SchedulingModalProps> = ({
             </button>
             <div className="flex items-center gap-3">
               <img 
-                src="/viktron-icon.svg" 
+                src="/visuals/viktronlogo.png" 
                 alt="Viktron.ai" 
                 className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl object-contain"
               />

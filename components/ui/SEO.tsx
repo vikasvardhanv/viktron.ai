@@ -21,7 +21,7 @@ interface SEOProps {
 }
 
 const BASE_URL = 'https://viktron.ai';
-const DEFAULT_IMAGE = `${BASE_URL}/og-image.png`;
+const DEFAULT_IMAGE = `${BASE_URL}/visuals/viktronlogo.png`;
 
 export const SEO: React.FC<SEOProps> = ({
   title = 'Viktron | AI Automation Agency & Agentic AI Solutions',
@@ -50,7 +50,7 @@ export const SEO: React.FC<SEOProps> = ({
     "url": BASE_URL,
     "logo": {
       "@type": "ImageObject",
-      "url": `${BASE_URL}/viktron-icon.svg`,
+      "url": `${BASE_URL}/visuals/viktronlogo.png`,
       "width": 512,
       "height": 512
     },
@@ -143,11 +143,6 @@ export const SEO: React.FC<SEOProps> = ({
       "https://www.youtube.com/@viktron",
       "https://x.com/viktronai"
     ],
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "127"
-    },
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "AI Automation Services",

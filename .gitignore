@@ -32,7 +32,6 @@ todo.md
 # n8n workflow JSONs contain API keys - keep local only for seeding
 n8n/
 DEPLOYMENT.md
-highshift-media.json
 /n8n    
 /build
 

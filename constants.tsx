@@ -103,37 +103,11 @@ export const BrandLogo = ({ className = "h-32 w-32" }: { className?: string }) =
 };
 
 export const BrandIcon = ({ className = "h-12 w-12" }: { className?: string }) => (
-  <svg
-    viewBox="0 0 512 512"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={`shrink-0 ${className}`}
-  >
-    <defs>
-      <linearGradient id="brandIconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#3B82F6" />
-        <stop offset="100%" stopColor="#8B5CF6" />
-      </linearGradient>
-    </defs>
-    
-    {/* V Shape */}
-    <path 
-      d="M110 80 L256 380 L402 80" 
-      stroke="url(#brandIconGradient)" 
-      strokeWidth="60" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-    />
-    
-    {/* Tech Nodes */}
-    <circle cx="256" cy="380" r="30" fill="white" />
-    <circle cx="256" cy="380" r="15" fill="#8B5CF6" />
-    <circle cx="110" cy="80" r="20" fill="#3B82F6" />
-    <circle cx="402" cy="80" r="20" fill="#8B5CF6" />
-    
-    {/* Functional Crossbar (The 'Bridge') */}
-    <path d="M190 240 L322 240" stroke="white" strokeWidth="20" strokeLinecap="round" strokeOpacity="0.5" />
-  </svg>
+  <img
+    src="/visuals/viktronlogo.png"
+    alt="Viktron logo"
+    className={`shrink-0 object-contain ${className}`}
+  />
 );
 
 // Service Icons

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Activity, Github, Twitter, Linkedin, MessageSquare } from 'lucide-react';
+import { Github, Twitter, Linkedin, MessageSquare } from 'lucide-react';
 
 const footerLinks = {
   platform: [
@@ -37,7 +37,7 @@ export const Footer = () => {
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-6 group">
               <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center border border-blue-100 group-hover:bg-blue-100 transition-colors">
-                <Activity className="w-4 h-4 text-blue-600" />
+                <img src="/visuals/viktronlogo.png" alt="Viktron logo" className="w-5 h-5 object-contain" />
               </div>
               <span className="font-bold text-lg tracking-tight text-slate-900 font-mono">Viktron</span>
             </Link>
