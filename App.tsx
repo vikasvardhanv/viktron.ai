@@ -31,6 +31,9 @@ const RentAgent = lazy(() => import('./pages/RentAgent').then(m => ({ default: m
 const SlackOAuthCallback = lazy(() => import('./pages/SlackOAuthCallback').then(m => ({ default: m.SlackOAuthCallback })));
 const ToolFeed = lazy(() => import('./pages/ToolFeed').then(m => ({ default: m.ToolFeed })));
 
+// Medhavn support page
+const MedhavnSupport = lazy(() => import('./pages/MedhavnSupport').then(m => ({ default: m.MedhavnSupport })));
+
 // Legal pages - lazy loaded
 const PrivacyPolicy = lazy(() => import('./pages/legal/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
 const TermsOfService = lazy(() => import('./pages/legal/TermsOfService').then(m => ({ default: m.TermsOfService })));
@@ -206,6 +209,9 @@ const AnimatedRoutes: React.FC = () => {
 
         {/* Demo video - cinematic screen recording page */}
         <Route path="/demo-video" element={<DemoVideo />} />
+
+        {/* Medhavn support */}
+        <Route path="/support" element={<PageTransition><MedhavnSupport /></PageTransition>} />
 
         {/* Legal pages */}
         <Route path="/privacy" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
