@@ -31,8 +31,15 @@ const RentAgent = lazy(() => import('./pages/RentAgent').then(m => ({ default: m
 const SlackOAuthCallback = lazy(() => import('./pages/SlackOAuthCallback').then(m => ({ default: m.SlackOAuthCallback })));
 const ToolFeed = lazy(() => import('./pages/ToolFeed').then(m => ({ default: m.ToolFeed })));
 
-// Medhavn support page
+// Dashboard surfaces
+const AgentMonitor = lazy(() => import('./pages/dashboard/AgentMonitor').then(m => ({ default: m.AgentMonitor })));
+const WorkflowBuilder = lazy(() => import('./pages/dashboard/WorkflowBuilder').then(m => ({ default: m.WorkflowBuilder })));
+const ChannelSetup = lazy(() => import('./pages/dashboard/ChannelSetup').then(m => ({ default: m.ChannelSetup })));
+
+// Medhavn pages
 const MedhavnSupport = lazy(() => import('./pages/MedhavnSupport').then(m => ({ default: m.MedhavnSupport })));
+const MedhavnPrivacyPolicy = lazy(() => import('./pages/medhavn/PrivacyPolicy').then(m => ({ default: m.MedhavnPrivacyPolicy })));
+const MedhavnPrivacyChoices = lazy(() => import('./pages/medhavn/PrivacyChoices').then(m => ({ default: m.MedhavnPrivacyChoices })));
 
 // Legal pages - lazy loaded
 const PrivacyPolicy = lazy(() => import('./pages/legal/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
@@ -177,6 +184,20 @@ const AnimatedRoutes: React.FC = () => {
     return <AnalyticsApp />;
   }
 
+  // On medhavn.viktron.ai serve Medhavn-specific routes
+  if (getSubdomain() === 'medhavn') {
+    return (
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/support" element={<PageTransition><MedhavnSupport /></PageTransition>} />
+          <Route path="/privacy" element={<PageTransition><MedhavnPrivacyPolicy /></PageTransition>} />
+          <Route path="/privacy-choices" element={<PageTransition><MedhavnPrivacyChoices /></PageTransition>} />
+          <Route path="*" element={<PageTransition><MedhavnSupport /></PageTransition>} />
+        </Routes>
+      </AnimatePresence>
+    );
+  }
+
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
@@ -204,14 +225,17 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/saas-analytics" element={<PageTransition><AnalyticsApp /></PageTransition>} />
         <Route path="/slack/oauth/callback" element={<PageTransition><SlackOAuthCallback /></PageTransition>} />
         <Route path="/tools" element={<PageTransition><ToolFeed /></PageTransition>} />
+
+        {/* Dashboard surfaces — protected */}
+        <Route path="/dashboard" element={<ProtectedRoute><AgentMonitor /></ProtectedRoute>} />
+        <Route path="/dashboard/workflow" element={<ProtectedRoute><WorkflowBuilder /></ProtectedRoute>} />
+        <Route path="/dashboard/channels" element={<ProtectedRoute><ChannelSetup /></ProtectedRoute>} />
+
         <Route path="/login" element={<PageTransition><AuthPage mode="login" /></PageTransition>} />
         <Route path="/signup" element={<PageTransition><AuthPage mode="signup" /></PageTransition>} />
 
         {/* Demo video - cinematic screen recording page */}
         <Route path="/demo-video" element={<DemoVideo />} />
-
-        {/* Medhavn support */}
-        <Route path="/support" element={<PageTransition><MedhavnSupport /></PageTransition>} />
 
         {/* Legal pages */}
         <Route path="/privacy" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
