@@ -204,78 +204,100 @@ interface ConstellationProps {
   statuses: Record<string, AgentStatus>;
 }
 
+// Trim line endpoints so they stop at circle edges (avoids Pac-Man look)
+function trimLine(ax: number, ay: number, ar: number, bx: number, by: number, br: number) {
+  const dx = bx - ax, dy = by - ay;
+  const len = Math.sqrt(dx * dx + dy * dy) || 1;
+  return {
+    x1: ax + (dx / len) * (ar + 1.5),
+    y1: ay + (dy / len) * (ar + 1.5),
+    x2: bx - (dx / len) * (br + 1.5),
+    y2: by - (dy / len) * (br + 1.5),
+  };
+}
+
 const Constellation: React.FC<ConstellationProps> = ({ agents, statuses }) => {
   return (
-    <svg viewBox="0 0 100 100" className="w-full h-full" style={{ overflow: 'visible' }}>
+    // viewBox padding so labels near edges aren't clipped
+    <svg viewBox="-12 -12 124 124" className="w-full h-full">
       <defs>
         {agents.map(a => (
-          <radialGradient key={a.id} id={`glow-${a.id}`} cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor={a.hex} stopOpacity="0.4" />
+          <radialGradient key={a.id} id={`gd-${a.id}`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor={a.hex} stopOpacity="0.45" />
             <stop offset="100%" stopColor={a.hex} stopOpacity="0" />
           </radialGradient>
         ))}
       </defs>
 
+      {/* Connections — drawn before nodes so nodes sit on top */}
       {agents.filter(a => a.id !== 'ceo').map(a => {
         const active = statuses[a.id] === 'active' || statuses[a.id] === 'provisioning';
-        const done = statuses[a.id] === 'done';
+        const done   = statuses[a.id] === 'done';
+        const pt = trimLine(CEO.cx, CEO.cy, 7, a.cx, a.cy, 5);
+        const pathD = `M ${pt.x1},${pt.y1} L ${pt.x2},${pt.y2}`;
+
         return (
-          <line
-            key={`line-${a.id}`}
-            x1={CEO.cx} y1={CEO.cy}
-            x2={a.cx} y2={a.cy}
-            stroke={active ? a.hex : done ? a.hex : '#334155'}
-            strokeWidth={active ? 0.6 : 0.3}
-            strokeOpacity={done ? 0.5 : active ? 0.9 : 0.25}
-            strokeDasharray={active ? '2 1' : 'none'}
-          >
+          <g key={`conn-${a.id}`}>
+            {/* Static base line */}
+            <line
+              x1={pt.x1} y1={pt.y1} x2={pt.x2} y2={pt.y2}
+              stroke={active || done ? a.hex : '#1e293b'}
+              strokeWidth={active ? 0.7 : done ? 0.5 : 0.3}
+              strokeOpacity={active ? 1 : done ? 0.55 : 0.35}
+            />
+            {/* Signal particle travelling from CEO → agent */}
             {active && (
-              <animate attributeName="stroke-dashoffset" from="0" to="-6" dur="0.4s" repeatCount="indefinite" />
+              <circle r="1.4" fill={a.hex} opacity="0.95">
+                <animateMotion dur="0.75s" repeatCount="indefinite" path={pathD} />
+              </circle>
             )}
-          </line>
+          </g>
         );
       })}
 
+      {/* Nodes */}
       {agents.map(a => {
         const status = statuses[a.id] ?? 'idle';
         const active = status === 'active' || status === 'provisioning';
-        const done = status === 'done';
+        const done   = status === 'done';
         const r = a.id === 'ceo' ? 7 : 5;
 
         return (
           <g key={a.id}>
+            {/* Glow halo */}
             {(active || done) && (
-              <circle
-                cx={a.cx} cy={a.cy}
-                r={r * 2.2}
-                fill={`url(#glow-${a.id})`}
-                opacity={active ? 1 : 0.4}
+              <circle cx={a.cx} cy={a.cy} r={r * 2.8}
+                fill={`url(#gd-${a.id})`} opacity={active ? 1 : 0.45}
               />
             )}
-
+            {/* Pulse ring */}
             {active && (
-              <circle cx={a.cx} cy={a.cy} r={r + 2} fill="none" stroke={a.hex} strokeWidth="0.5" opacity="0.6">
-                <animate attributeName="r" values={`${r + 1};${r + 3};${r + 1}`} dur="1.2s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.6;0.1;0.6" dur="1.2s" repeatCount="indefinite" />
+              <circle cx={a.cx} cy={a.cy} r={r + 1} fill="none"
+                stroke={a.hex} strokeWidth="0.6" opacity="0.7">
+                <animate attributeName="r"
+                  values={`${r + 1};${r + 4};${r + 1}`} dur="1.4s" repeatCount="indefinite" />
+                <animate attributeName="opacity"
+                  values="0.7;0;0.7" dur="1.4s" repeatCount="indefinite" />
               </circle>
             )}
-
+            {/* Circle body */}
             <circle
               cx={a.cx} cy={a.cy} r={r}
-              fill={done || active ? a.hex : '#1e293b'}
+              fill={active || done ? a.hex : '#0f172a'}
+              fillOpacity={active ? 0.22 : done ? 0.28 : 1}
               stroke={a.hex}
-              strokeWidth={active ? 1.2 : 0.6}
-              fillOpacity={done ? 0.3 : active ? 0.25 : 0.1}
-              strokeOpacity={done || active ? 1 : 0.35}
+              strokeWidth={active ? 1.4 : done ? 1 : 0.5}
+              strokeOpacity={active || done ? 1 : 0.3}
             />
-
+            {/* Done indicator — small solid dot in centre */}
+            {done && <circle cx={a.cx} cy={a.cy} r={1.8} fill={a.hex} />}
+            {/* Label below node */}
             <text
-              x={a.cx}
-              y={a.cy + r + 4}
+              x={a.cx} y={a.cy + r + 5.5}
               textAnchor="middle"
-              fontSize="4"
-              fill={active || done ? a.hex : '#94a3b8'}
-              fontFamily="monospace"
+              fontSize={a.id === 'ceo' ? 5.5 : 4.5}
+              fill={active || done ? a.hex : '#475569'}
+              fontFamily="ui-monospace, SFMono-Regular, monospace"
               fontWeight={active ? 'bold' : 'normal'}
             >
               {a.shortName}
@@ -384,7 +406,9 @@ export const InvestorDemo: React.FC = () => {
       if (script) {
         for (const line of script.lines) {
           await sleep(script.delay);
-          addLine(`${agent.name} → ${line}`, 'agent', agent.hex);
+          // Personalise scripted lines with company name where relevant
+          const personalised = line.replace(/\[company\]/gi, company);
+          addLine(`${agent.name} → ${personalised}`, 'agent', agent.hex);
         }
       }
       setStatus(agent.id, 'done');
@@ -397,6 +421,11 @@ export const InvestorDemo: React.FC = () => {
     setStatus('ceo', 'done');
     await sleep(300);
 
+    // Slack notification
+    await sleep(400);
+    addLine(`Slack #${company.toLowerCase().replace(/\s+/g, '-')}-agents  ✓  Team deployed. First deliverables from ${subAgents.length} agent${subAgents.length !== 1 ? 's' : ''} ready for review.`, 'success');
+
+    await sleep(200);
     addLine(`✓ All agents reported back. Team is live.`, 'success');
     setDeployState('done');
   };
