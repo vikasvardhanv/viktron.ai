@@ -5,7 +5,7 @@ import { Layout } from '../components/layout/Layout';
 import {
   Send, RotateCcw, ArrowRight, Loader2, CheckCircle2,
   Brain, Users, FileText, Headphones, Code2, ClipboardList, TestTube2,
-  Terminal as TerminalIcon, Share2,
+  Terminal as TerminalIcon, Share2, Activity, Zap, BarChart2,
 } from 'lucide-react';
 
 // ── Constants ────────────────────────────────────────────────────────────────
@@ -16,7 +16,7 @@ const DEMO_API = 'https://api.viktron.ai/api/demo/ceo-plan';
 
 type DeployState = 'idle' | 'deploying' | 'live' | 'done';
 type AgentStatus = 'idle' | 'provisioning' | 'active' | 'done';
-type TabId = 'terminal' | 'graph';
+type TabId = 'terminal' | 'graph' | 'dashboard';
 
 interface TerminalLine {
   id: string;
@@ -309,6 +309,139 @@ const Constellation: React.FC<ConstellationProps> = ({ agents, statuses }) => {
   );
 };
 
+// ── Live Dashboard ────────────────────────────────────────────────────────────
+
+const StatCard: React.FC<{
+  label: string; value: string; icon: React.ReactNode; color: string; live?: boolean;
+}> = ({ label, value, icon, color, live }) => (
+  <div className="bg-slate-900 rounded-xl p-3 border border-slate-800">
+    <div className="flex items-center gap-1.5 mb-1.5">
+      <span className={`${color} opacity-70`}>{icon}</span>
+      <span className="text-xs text-slate-500">{label}</span>
+      {live && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />}
+    </div>
+    <div className={`text-xl font-bold font-mono ${color}`}>{value}</div>
+  </div>
+);
+
+interface DashboardProps {
+  agents: AgentDef[];
+  statuses: Record<string, AgentStatus>;
+  lines: TerminalLine[];
+  deployState: DeployState;
+  deployedAt: number | null;
+}
+
+const AgentDashboard: React.FC<DashboardProps> = ({ agents, statuses, lines, deployState, deployedAt }) => {
+  const [, setTick] = useState(0);
+
+  // Tick every second to update uptime
+  useEffect(() => {
+    if (!deployedAt) return;
+    const t = setInterval(() => setTick(p => p + 1), 1000);
+    return () => clearInterval(t);
+  }, [deployedAt]);
+
+  const elapsed = deployedAt ? Math.floor((Date.now() - deployedAt) / 1000) : 0;
+  const uptime = elapsed < 60 ? `${elapsed}s` : `${Math.floor(elapsed / 60)}m ${elapsed % 60}s`;
+
+  const liveCount  = agents.filter(a => statuses[a.id] === 'done').length;
+  const totalTasks = agents.reduce((sum, a) => sum + (SCRIPTED[a.id]?.lines.length ?? (a.id === 'ceo' ? 2 : 0)), 0);
+
+  const lastAgentLine = (agent: AgentDef) => {
+    const prefix = `${agent.name} →`;
+    const matches = lines.filter(l => l.text.startsWith(prefix));
+    return matches[matches.length - 1]?.text.replace(prefix, '').trim() ?? null;
+  };
+
+  if (deployState === 'idle' || deployState === 'deploying') {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center gap-3 opacity-30">
+        <BarChart2 className="h-10 w-10 text-slate-500" />
+        <p className="text-slate-500 text-sm">Dashboard appears after deploy</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      {/* Stats row */}
+      <div className="grid grid-cols-3 gap-2">
+        <StatCard
+          label="Agents Live" value={`${liveCount}/${agents.length}`}
+          icon={<Users className="h-3.5 w-3.5" />} color="text-emerald-400"
+        />
+        <StatCard
+          label="Tasks Done" value={String(totalTasks)}
+          icon={<Zap className="h-3.5 w-3.5" />} color="text-blue-400"
+        />
+        <StatCard
+          label="Uptime" value={deployedAt ? uptime : '—'}
+          icon={<Activity className="h-3.5 w-3.5" />} color="text-violet-400" live={!!deployedAt}
+        />
+      </div>
+
+      {/* Agent cards */}
+      <div className="grid grid-cols-2 gap-2">
+        {agents.map((agent, i) => {
+          const status   = statuses[agent.id] ?? 'idle';
+          const last     = lastAgentLine(agent);
+          const taskCount = SCRIPTED[agent.id]?.lines.length ?? (agent.id === 'ceo' ? 2 : 0);
+
+          return (
+            <motion.div
+              key={agent.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+              className={`rounded-xl border p-3 transition-colors ${
+                status === 'active' ? `bg-slate-900 ${agent.borderColor}` :
+                status === 'done'   ? 'bg-slate-900 border-slate-700' :
+                                     'bg-slate-900/40 border-slate-800/50'
+              }`}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${agent.bgColor} ${agent.color}`}>
+                  {agent.icon}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className={`text-sm font-semibold leading-tight ${status === 'idle' ? 'text-slate-600' : 'text-slate-200'}`}>
+                    {agent.name}
+                  </div>
+                  <div className="text-xs text-slate-500">{agent.role}</div>
+                </div>
+                <StatusPill status={status} dotColor={agent.dotColor} />
+              </div>
+
+              {/* Status badge + task count */}
+              <div className="flex items-center justify-between mb-1.5">
+                <span
+                  className="text-xs px-1.5 py-0.5 rounded-md font-medium"
+                  style={
+                    status === 'done'   ? { background: '#052e16aa', color: '#4ade80' } :
+                    status === 'active' ? { background: `${agent.hex}18`, color: agent.hex } :
+                                         { background: '#1e293b', color: '#475569' }
+                  }
+                >
+                  {status === 'done' ? 'Live' : status === 'active' ? 'Working…' : 'Standby'}
+                </span>
+                {status !== 'idle' && (
+                  <span className="text-xs text-slate-600">{taskCount} task{taskCount !== 1 ? 's' : ''}</span>
+                )}
+              </div>
+
+              {/* Last completed task */}
+              {last && (
+                <p className="text-xs text-slate-500 leading-snug line-clamp-2">{last}</p>
+              )}
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 // ── Status pill ───────────────────────────────────────────────────────────────
 
 const StatusPill: React.FC<{ status: AgentStatus; dotColor: string }> = ({ status, dotColor }) => {
@@ -333,6 +466,7 @@ export const InvestorDemo: React.FC = () => {
   const [deployState, setDeployState] = useState<DeployState>('idle');
   const [agentStatuses, setAgentStatuses] = useState<Record<string, AgentStatus>>({});
   const [activeTab, setActiveTab] = useState<TabId>('terminal');
+  const [deployedAt, setDeployedAt] = useState<number | null>(null);
 
   const [lines, setLines] = useState<TerminalLine[]>([]);
   const termScrollRef = useRef<HTMLDivElement>(null);
@@ -343,6 +477,13 @@ export const InvestorDemo: React.FC = () => {
     const el = termScrollRef.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, [lines]);
+
+  // Auto-switch to dashboard 1.2s after deploy completes
+  useEffect(() => {
+    if (deployState !== 'done') return;
+    const t = setTimeout(() => setActiveTab('dashboard'), 1200);
+    return () => clearTimeout(t);
+  }, [deployState]);
 
   const setStatus = useCallback((id: string, s: AgentStatus) =>
     setAgentStatuses(prev => ({ ...prev, [id]: s })), []);
@@ -365,6 +506,7 @@ export const InvestorDemo: React.FC = () => {
     setDeployState('deploying');
     setLines([]);
     setAgentStatuses({});
+    setDeployedAt(null);
     setActiveTab('terminal');
 
     const company = companyName.trim();
@@ -427,6 +569,7 @@ export const InvestorDemo: React.FC = () => {
 
     await sleep(200);
     addLine(`✓ All agents reported back. Team is live.`, 'success');
+    setDeployedAt(Date.now());
     setDeployState('done');
   };
 
@@ -434,6 +577,8 @@ export const InvestorDemo: React.FC = () => {
     setDeployState('idle');
     setLines([]);
     setAgentStatuses({});
+    setDeployedAt(null);
+    setActiveTab('terminal');
     setCompanyName('');
     setIndustry('');
     setMessage('');
@@ -625,6 +770,20 @@ export const InvestorDemo: React.FC = () => {
                 <Share2 className="h-3.5 w-3.5" />
                 Agent Graph
               </button>
+              <button
+                onClick={() => setActiveTab('dashboard')}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                  activeTab === 'dashboard'
+                    ? 'bg-slate-900 text-slate-100'
+                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
+                }`}
+              >
+                <BarChart2 className="h-3.5 w-3.5" />
+                Dashboard
+                {deployState === 'done' && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                )}
+              </button>
               {(deployState === 'deploying' || deployState === 'live') && (
                 <span className="ml-auto text-xs text-emerald-500 font-medium animate-pulse">● Live</span>
               )}
@@ -692,6 +851,17 @@ export const InvestorDemo: React.FC = () => {
                     })}
                   </div>
                 </div>
+              )}
+
+              {/* Dashboard tab */}
+              {activeTab === 'dashboard' && (
+                <AgentDashboard
+                  agents={activeAgents}
+                  statuses={agentStatuses}
+                  lines={lines}
+                  deployState={deployState}
+                  deployedAt={deployedAt}
+                />
               )}
             </div>
           </div>
