@@ -313,12 +313,13 @@ export const InvestorDemo: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabId>('terminal');
 
   const [lines, setLines] = useState<TerminalLine[]>([]);
-  const termEndRef = useRef<HTMLDivElement>(null);
+  const termScrollRef = useRef<HTMLDivElement>(null);
 
   const activeAgents = [CEO, ...OPTIONAL_AGENTS.filter(a => selectedAgentIds.has(a.id))];
 
   useEffect(() => {
-    termEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const el = termScrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [lines]);
 
   const setStatus = useCallback((id: string, s: AgentStatus) =>
@@ -412,8 +413,8 @@ export const InvestorDemo: React.FC = () => {
 
   return (
     <Layout>
-      {/* Hero */}
-      <div className="bg-white border-b border-slate-100">
+      {/* Hero — pt-16 offsets the fixed 64px navbar */}
+      <div className="bg-white border-b border-slate-100 pt-16">
         <div className="max-w-6xl mx-auto px-4 py-8 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold mb-4">
             <span className="relative flex h-2 w-2">
@@ -603,12 +604,12 @@ export const InvestorDemo: React.FC = () => {
               )}
             </div>
 
-            {/* Panel */}
-            <div className="flex-1 min-h-[480px] rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 flex flex-col">
+            {/* Panel — fixed height so it never grows the page */}
+            <div className="rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 flex flex-col h-[calc(100vh-280px)] min-h-[480px]">
 
               {/* Terminal tab */}
               {activeTab === 'terminal' && (
-                <div className="flex-1 overflow-y-auto p-4 font-mono text-xs leading-relaxed">
+                <div ref={termScrollRef} className="flex-1 overflow-y-auto p-4 font-mono text-xs leading-relaxed">
                   {lines.length === 0 && (
                     <div className="flex flex-col items-center justify-center h-full text-center gap-2 opacity-30">
                       <TerminalIcon className="h-8 w-8 text-slate-500" />
@@ -639,7 +640,6 @@ export const InvestorDemo: React.FC = () => {
                       </motion.div>
                     ))}
                   </AnimatePresence>
-                  <div ref={termEndRef} />
                 </div>
               )}
 
