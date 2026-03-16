@@ -30,6 +30,8 @@ const Blog = lazy(() => import('./pages/Blog').then(m => ({ default: m.Blog })))
 const RentAgent = lazy(() => import('./pages/RentAgent').then(m => ({ default: m.RentAgent })));
 const SlackOAuthCallback = lazy(() => import('./pages/SlackOAuthCallback').then(m => ({ default: m.SlackOAuthCallback })));
 const ToolFeed = lazy(() => import('./pages/ToolFeed').then(m => ({ default: m.ToolFeed })));
+const PretrainedDirectory = lazy(() => import('./pages/PretrainedDirectory').then(m => ({ default: m.default })));
+const SpawnApproval = lazy(() => import('./pages/SpawnApproval').then(m => ({ default: m.default })));
 
 // Dashboard surfaces
 const AgentMonitor = lazy(() => import('./pages/dashboard/AgentMonitor').then(m => ({ default: m.AgentMonitor })));
@@ -70,6 +72,7 @@ const AgentOrchestrationDemo = lazy(() => import('./pages/demos/AgentOrchestrati
 const CustomModelDemo = lazy(() => import('./pages/demos/CustomModelDemo').then(m => ({ default: m.CustomModelDemo })));
 
 const DemoVideo = lazy(() => import('./pages/DemoVideo').then(m => ({ default: m.DemoVideo })));
+const InvestorDemo = lazy(() => import('./pages/InvestorDemo').then(m => ({ default: m.InvestorDemo })));
 const AnalyticsApp = lazy(() => import('./pages/analytics/AnalyticsApp').then(m => ({ default: m.AnalyticsApp })));
 
 // Legacy components - lazy loaded
@@ -225,6 +228,9 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/saas-analytics" element={<PageTransition><AnalyticsApp /></PageTransition>} />
         <Route path="/slack/oauth/callback" element={<PageTransition><SlackOAuthCallback /></PageTransition>} />
         <Route path="/tools" element={<PageTransition><ToolFeed /></PageTransition>} />
+        <Route path="/demo" element={<PageTransition><InvestorDemo /></PageTransition>} />
+        <Route path="/pretrained" element={<PageTransition><PretrainedDirectory /></PageTransition>} />
+        <Route path="/spawn-requests" element={<ProtectedRoute><SpawnApproval /></ProtectedRoute>} />
 
         {/* Dashboard surfaces — protected */}
         <Route path="/dashboard" element={<ProtectedRoute><AgentMonitor /></ProtectedRoute>} />
