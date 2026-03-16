@@ -1,3 +1,25 @@
+# InvestorDemo v2 — "Deploy Console" Implementation Plan
+
+> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+
+**Goal:** Redesign `/demo` into an interactive "Deploy Console" where a visitor fills in their company details, selects agents, fires a deployment, and watches a dark terminal + animated constellation graph come alive.
+
+**Architecture:** Single-file rewrite of `pages/InvestorDemo.tsx`. Left panel is a form; right panel has two tabs — Terminal (dark scrolling log) and Graph (SVG constellation). Real API call to `/api/demo/ceo-plan` for CEO response; all other output is scripted. No backend changes needed.
+
+**Tech Stack:** React 19, TypeScript, Framer Motion 12, Tailwind CSS 4, Lucide React — all already in `viktron.ai`.
+
+---
+
+## Task 1: Rewrite `pages/InvestorDemo.tsx`
+
+**Files:**
+- Modify: `viktron.ai/pages/InvestorDemo.tsx`
+
+### Step 1: Replace the entire file with the new component
+
+Write the following **complete** file. Do not merge with old code — full replacement.
+
+```tsx
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -31,12 +53,13 @@ interface AgentDef {
   name: string;
   shortName: string;
   role: string;
-  color: string;
-  hex: string;
+  color: string;         // tailwind text-*
+  hex: string;           // raw hex for SVG
   bgColor: string;
   borderColor: string;
   dotColor: string;
   icon: React.ReactNode;
+  // SVG constellation position (% of viewBox 0-100)
   cx: number;
   cy: number;
 }
@@ -137,6 +160,7 @@ const ALL_AGENTS: AgentDef[] = [
   },
 ];
 
+// CEO is always included; others are optional
 const OPTIONAL_AGENTS = ALL_AGENTS.filter(a => a.id !== 'ceo');
 const CEO = ALL_AGENTS.find(a => a.id === 'ceo')!;
 
@@ -159,7 +183,7 @@ const SCRIPTED: Record<string, { delay: number; lines: string[] }> = {
     lines: [
       'Drafting 3-email outreach sequence...',
       'Email 1 — Awareness: subject line drafted, 2-sentence hook written.',
-      "Email 2 — Value Prop: personalised to each target's pain point.",
+      'Email 2 — Value Prop: personalised to each target\'s pain point.',
       'Email 3 — Direct Ask: CEO-to-CEO tone, 15-minute call request. All 3 emails ready.',
     ],
   },
@@ -205,6 +229,9 @@ interface ConstellationProps {
 }
 
 const Constellation: React.FC<ConstellationProps> = ({ agents, statuses }) => {
+  const visibleIds = new Set(agents.map(a => a.id));
+  const ceoStatus = statuses['ceo'] ?? 'idle';
+
   return (
     <svg viewBox="0 0 100 100" className="w-full h-full" style={{ overflow: 'visible' }}>
       <defs>
@@ -216,6 +243,7 @@ const Constellation: React.FC<ConstellationProps> = ({ agents, statuses }) => {
         ))}
       </defs>
 
+      {/* Connections: CEO → each other agent */}
       {agents.filter(a => a.id !== 'ceo').map(a => {
         const active = statuses[a.id] === 'active' || statuses[a.id] === 'provisioning';
         const done = statuses[a.id] === 'done';
@@ -236,6 +264,7 @@ const Constellation: React.FC<ConstellationProps> = ({ agents, statuses }) => {
         );
       })}
 
+      {/* Agent nodes */}
       {agents.map(a => {
         const status = statuses[a.id] ?? 'idle';
         const active = status === 'active' || status === 'provisioning';
@@ -244,6 +273,7 @@ const Constellation: React.FC<ConstellationProps> = ({ agents, statuses }) => {
 
         return (
           <g key={a.id}>
+            {/* Glow halo */}
             {(active || done) && (
               <circle
                 cx={a.cx} cy={a.cy}
@@ -253,6 +283,7 @@ const Constellation: React.FC<ConstellationProps> = ({ agents, statuses }) => {
               />
             )}
 
+            {/* Outer ring (pulse when active) */}
             {active && (
               <circle cx={a.cx} cy={a.cy} r={r + 2} fill="none" stroke={a.hex} strokeWidth="0.5" opacity="0.6">
                 <animate attributeName="r" values={`${r + 1};${r + 3};${r + 1}`} dur="1.2s" repeatCount="indefinite" />
@@ -260,6 +291,7 @@ const Constellation: React.FC<ConstellationProps> = ({ agents, statuses }) => {
               </circle>
             )}
 
+            {/* Main circle */}
             <circle
               cx={a.cx} cy={a.cy} r={r}
               fill={done || active ? a.hex : '#1e293b'}
@@ -269,6 +301,7 @@ const Constellation: React.FC<ConstellationProps> = ({ agents, statuses }) => {
               strokeOpacity={done || active ? 1 : 0.35}
             />
 
+            {/* Label */}
             <text
               x={a.cx}
               y={a.cy + r + 4}
@@ -303,18 +336,22 @@ const StatusPill: React.FC<{ status: AgentStatus; dotColor: string }> = ({ statu
 // ── Main component ────────────────────────────────────────────────────────────
 
 export const InvestorDemo: React.FC = () => {
+  // Form state
   const [companyName, setCompanyName] = useState('');
   const [industry, setIndustry] = useState('');
   const [message, setMessage] = useState('');
   const [selectedAgentIds, setSelectedAgentIds] = useState<Set<string>>(new Set(['sales', 'content']));
 
+  // Deploy state
   const [deployState, setDeployState] = useState<DeployState>('idle');
   const [agentStatuses, setAgentStatuses] = useState<Record<string, AgentStatus>>({});
   const [activeTab, setActiveTab] = useState<TabId>('terminal');
 
+  // Terminal
   const [lines, setLines] = useState<TerminalLine[]>([]);
   const termEndRef = useRef<HTMLDivElement>(null);
 
+  // Always-visible agents = CEO + selected
   const activeAgents = [CEO, ...OPTIONAL_AGENTS.filter(a => selectedAgentIds.has(a.id))];
 
   useEffect(() => {
@@ -346,6 +383,7 @@ export const InvestorDemo: React.FC = () => {
 
     const company = companyName.trim();
     const ind = industry.trim() || 'General';
+    const goal = message.trim() || 'Launch our AI consulting service — draft an outreach campaign and identify our first 10 target customers.';
     const agentList = activeAgents.map(a => a.name).join(', ');
 
     addLine(`Connecting to Viktron API...`, 'info');
@@ -355,6 +393,7 @@ export const InvestorDemo: React.FC = () => {
     addLine(`Spinning up agents: ${agentList}`, 'info');
     await sleep(600);
 
+    // Mark all as provisioning
     activeAgents.forEach(a => setStatus(a.id, 'provisioning'));
     await sleep(700);
 
@@ -362,6 +401,7 @@ export const InvestorDemo: React.FC = () => {
     setStatus('ceo', 'active');
     await sleep(500);
 
+    // Real CEO call
     let ceoPlan = '';
     try {
       const res = await fetch(DEMO_API, { method: 'POST' });
@@ -376,6 +416,7 @@ export const InvestorDemo: React.FC = () => {
     setDeployState('live');
     await sleep(900);
 
+    // Scripted sub-agents
     const subAgents = activeAgents.filter(a => a.id !== 'ceo');
     for (const agent of subAgents) {
       setStatus(agent.id, 'active');
@@ -390,6 +431,7 @@ export const InvestorDemo: React.FC = () => {
       await sleep(400);
     }
 
+    // CEO summary
     setStatus('ceo', 'active');
     await sleep(600);
     addLine(`CEO Agent → ${CEO_SUMMARY}`, 'response', CEO.hex);
@@ -409,6 +451,8 @@ export const InvestorDemo: React.FC = () => {
     setMessage('');
     setSelectedAgentIds(new Set(['sales', 'content']));
   };
+
+  // ── Render ────────────────────────────────────────────────────────────────
 
   return (
     <Layout>
@@ -438,7 +482,7 @@ export const InvestorDemo: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
 
-          {/* Left: Form panel */}
+          {/* ── Left: Form panel ────────────────────────────────────────── */}
           <div className="lg:col-span-2 flex flex-col gap-4">
 
             {/* Company form */}
@@ -489,7 +533,7 @@ export const InvestorDemo: React.FC = () => {
                 <span className="text-xs text-slate-400">{selectedAgentIds.size + 1} selected</span>
               </div>
 
-              {/* CEO always on */}
+              {/* CEO — always on */}
               <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-blue-50 border border-blue-200 mb-2">
                 <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-blue-100 text-blue-600">
                   <Brain className="h-3.5 w-3.5" />
@@ -501,6 +545,7 @@ export const InvestorDemo: React.FC = () => {
                 <CheckCircle2 className="h-4 w-4 text-blue-500 flex-shrink-0" />
               </div>
 
+              {/* Optional agents */}
               <div className="flex flex-col gap-1.5">
                 {OPTIONAL_AGENTS.map(agent => {
                   const on = selectedAgentIds.has(agent.id);
@@ -510,7 +555,9 @@ export const InvestorDemo: React.FC = () => {
                       onClick={() => deployState === 'idle' && toggleAgent(agent.id)}
                       disabled={deployState !== 'idle'}
                       className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border text-left transition-all duration-150 disabled:cursor-not-allowed ${
-                        on ? 'bg-slate-50 border-slate-300' : 'bg-white border-slate-100 opacity-60'
+                        on
+                          ? 'bg-slate-50 border-slate-300'
+                          : 'bg-white border-slate-100 opacity-60'
                       }`}
                     >
                       <div className={`flex items-center justify-center w-7 h-7 rounded-lg ${agent.bgColor} ${agent.color}`}>
@@ -521,7 +568,7 @@ export const InvestorDemo: React.FC = () => {
                         <div className="text-xs text-slate-400">{agent.role}</div>
                       </div>
                       <div className={`w-4 h-4 rounded-full border-2 flex-shrink-0 transition-all ${
-                        on ? 'border-slate-400 bg-slate-600' : 'border-slate-300 bg-white'
+                        on ? `border-slate-400 bg-slate-600` : 'border-slate-300 bg-white'
                       }`} />
                     </button>
                   );
@@ -569,7 +616,7 @@ export const InvestorDemo: React.FC = () => {
             </div>
           </div>
 
-          {/* Right: Terminal + Graph */}
+          {/* ── Right: Terminal + Graph ──────────────────────────────────── */}
           <div className="lg:col-span-3 flex flex-col">
             {/* Tab header */}
             <div className="flex items-center gap-1 mb-3">
@@ -606,7 +653,7 @@ export const InvestorDemo: React.FC = () => {
             {/* Panel */}
             <div className="flex-1 min-h-[480px] rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 flex flex-col">
 
-              {/* Terminal tab */}
+              {/* ── Terminal tab ── */}
               {activeTab === 'terminal' && (
                 <div className="flex-1 overflow-y-auto p-4 font-mono text-xs leading-relaxed">
                   {lines.length === 0 && (
@@ -643,12 +690,14 @@ export const InvestorDemo: React.FC = () => {
                 </div>
               )}
 
-              {/* Graph tab */}
+              {/* ── Graph tab ── */}
               {activeTab === 'graph' && (
                 <div className="flex-1 flex flex-col">
                   <div className="flex-1 p-6">
                     <Constellation agents={activeAgents} statuses={agentStatuses} />
                   </div>
+
+                  {/* Agent status legend */}
                   <div className="border-t border-slate-800 px-4 py-3 flex flex-wrap gap-x-4 gap-y-1.5">
                     {activeAgents.map(agent => {
                       const status = agentStatuses[agent.id] ?? 'idle';
@@ -698,3 +747,56 @@ export const InvestorDemo: React.FC = () => {
 };
 
 export default InvestorDemo;
+```
+
+### Step 2: Verify the file saved
+
+Run: `wc -l viktron.ai/pages/InvestorDemo.tsx`
+Expected: ~430 lines
+
+### Step 3: Start dev server and open `/demo`
+
+```bash
+cd /Users/vikashvardhan/IdeaProjects/viktron.ai
+npm run dev
+```
+
+Open `http://localhost:4174/demo`
+
+**Checklist:**
+- [ ] Form renders (company name, industry, goal, agent checkboxes)
+- [ ] CEO Agent card shows "Always included" — cannot be deselected
+- [ ] Optional agents toggle on/off
+- [ ] "Deploy Agent Team" button is disabled until company name filled
+- [ ] Clicking Deploy → Terminal tab shows timestamped log lines
+- [ ] Graph tab → SVG constellation renders, nodes pulse when active
+- [ ] After completion → "Done CTA" banner appears with company name interpolated
+- [ ] "Reset demo" clears all state
+
+### Step 4: Fix any TypeScript errors
+
+```bash
+cd /Users/vikashvardhan/IdeaProjects/viktron.ai
+npx tsc --noEmit
+```
+
+Resolve any errors before proceeding.
+
+### Step 5: Commit
+
+```bash
+cd /Users/vikashvardhan/IdeaProjects/viktron.ai
+git add pages/InvestorDemo.tsx docs/plans/2026-03-16-investor-demo-v2.md
+git commit -m "feat: InvestorDemo v2 — deploy console with form, terminal, and agent graph"
+```
+
+---
+
+## Done
+
+The redesigned `/demo` page is a "Deploy Console" that:
+- Feels like a real product interface (not a slideshow)
+- Lets visitors personalise the demo with their own company name
+- Shows two live views: streaming terminal log + animated agent constellation
+- CEO step uses a real Anthropic API call with scripted fallback
+- CTA at the end interpolates the visitor's company name for personalisation
