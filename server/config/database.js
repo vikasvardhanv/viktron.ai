@@ -10,7 +10,29 @@ const normalizedDbUrl = rawDbUrl
   .replace('ssl=require', 'sslmode=require');
 
 const requiresSSL =
-  normalizedDbUrl.includes('sslmode=require') || normalizedDbUrl.includes('ssl=true');
+  normalizedDbUrl.includes('sslmode=require') ||
+  normalizedDbUrl.includes('sslmode=verify-full') ||
+  normalizedDbUrl.includes('sslmode=verify-ca') ||
+  normalizedDbUrl.includes('ssl=true') ||
+  normalizedDbUrl.includes('ssl=require');
+
+let poolConnectionString = normalizedDbUrl;
+if (normalizedDbUrl) {
+  try {
+    const parsed = new URL(normalizedDbUrl);
+    parsed.searchParams.delete('sslmode');
+    parsed.searchParams.delete('ssl');
+    parsed.searchParams.delete('sslcert');
+    parsed.searchParams.delete('sslkey');
+    parsed.searchParams.delete('sslrootcert');
+    poolConnectionString = parsed.toString();
+  } catch {
+    poolConnectionString = normalizedDbUrl
+      .replace(/([?&])sslmode=[^&]*/g, '$1')
+      .replace(/([?&])ssl=(require|true|false)[^&]*/g, '$1')
+      .replace(/[?&]$/, '');
+  }
+}
 
 if (rawDbUrl && rawDbUrl !== normalizedDbUrl) {
   logger.warn('DATABASE_URL normalized for Node pg compatibility', {
@@ -34,7 +56,7 @@ if (normalizedDbUrl) {
 }
 
 const pool = new Pool({
-  connectionString: normalizedDbUrl,
+  connectionString: poolConnectionString,
   ssl: requiresSSL ? { rejectUnauthorized: false } : false,
   // Connection pool settings
   max: 20,
