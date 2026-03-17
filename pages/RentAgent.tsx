@@ -494,20 +494,26 @@ function buildDockerPull(agent: AgentEntry): string {
 
 function buildDockerRun(agent: AgentEntry): string {
   const required = agent.env_vars_required.filter(v => v.required);
-  const envLines = required.map(v => `  -e ${v.key}="\${${v.key}}"`).join(' \\\n');
+  const envLines = [
+    `  -e AGENT_SLUG=${agent.slug}`,
+    ...required.map(v => `  -e ${v.key}="\${${v.key}}"`),
+  ].join(' \\\n');
   const image = getRunImage(agent);
   return [
     `docker run -d \\`,
     `  --name ${agent.slug}-agent \\`,
     `  -p 8080:8080 \\`,
-    envLines ? envLines + ' \\' : null,
+    `${envLines} \\`,
     `  ${image}`,
   ].filter(Boolean).join('\n');
 }
 
 function buildCompose(agent: AgentEntry): string {
   const required = agent.env_vars_required.filter(v => v.required);
-  const envBlock = required.map(v => `      - ${v.key}=\${${v.key}}`).join('\n');
+  const envBlock = [
+    `      - AGENT_SLUG=${agent.slug}`,
+    ...required.map(v => `      - ${v.key}=\${${v.key}}`),
+  ].join('\n');
   const image = getRunImage(agent);
   return `version: "3.9"
 services:
@@ -663,6 +669,11 @@ const DeployModal: React.FC<{ agent: AgentEntry; onClose: () => void }> = ({ age
                     commands use the local image tag <code className="font-mono">{getLocalImageTag(agent)}</code>.
                   </p>
                 )}
+
+                <p className="mt-3 text-xs text-slate-500">
+                  Runtime note: local containers require <code className="font-mono">AGENT_SLUG={agent.slug}</code>.
+                  Viktron injects that automatically for hosted deploys.
+                </p>
 
                 {/* Required env vars */}
                 {agent.env_vars_required.filter(v => v.required).length > 0 && (
