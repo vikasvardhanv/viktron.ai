@@ -68,14 +68,7 @@ const hasBookingIntent = (text: string) => {
 export const GlobalChatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSchedulingOpen, setIsSchedulingOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: "Hi! I'm the Viktron.ai AI Assistant. We build intelligent chatbots, voice agents, and AI automation for businesses. I can help explain our services, discuss your automation needs, or book a consultation. What brings you here today?",
-      sender: 'bot',
-      timestamp: new Date(),
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showBookingButton, setShowBookingButton] = useState(false);
@@ -128,13 +121,7 @@ export const GlobalChatbot: React.FC = () => {
 
       // Construct history for the new SDK
       // The new SDK expects 'user' and 'model' roles.
-      // Filter out the initial hardcoded bot message if it's the first one to ensure conversation starts with user
-      const historyMessages = messages.filter((m, index) => {
-          if (index === 0 && m.sender === 'bot') return false;
-          return true;
-      });
-
-      const contents = historyMessages.map(m => ({
+      const contents = messages.map(m => ({
         role: m.sender === 'user' ? 'user' : 'model',
         parts: [{ text: m.text }],
       }));

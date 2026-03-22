@@ -8,7 +8,7 @@ import {
 import { DashboardLayout } from './DashboardLayout';
 import { useAuth } from '../../context/AuthContext';
 import {
-  fetchUserTeams, fetchDashboardOverview, createDashboardWebSocket,
+  fetchUserTeams, fetchDashboardOverview, createDashboardWebSocket, sendTeamMessage, fetchAgentSkills,
   type AgentOverview, type DashboardOverview,
 } from '../../services/dashboardApi';
 
@@ -167,6 +167,10 @@ export const AgentMonitor: React.FC = () => {
   const [activity, setActivity] = useState(MOCK_OVERVIEW.activity);
   const [wsStatus, setWsStatus] = useState<'connecting' | 'connected' | 'error'>('connecting');
   const [runningAgents, setRunningAgents] = useState<Set<string>>(new Set(['2', '5']));
+  const [taskInput, setTaskInput] = useState('');
+  const [taskSubmitting, setTaskSubmitting] = useState(false);
+  const [taskResult, setTaskResult] = useState<{ taskId: string; response: string } | null>(null);
+  const [skillNames, setSkillNames] = useState<string[]>([]);
   const wsRef = useRef<WebSocket | null>(null);
 
   // Load team
@@ -192,6 +196,20 @@ export const AgentMonitor: React.FC = () => {
   }, [teamId]);
 
   useEffect(() => { loadOverview(); }, [loadOverview]);
+
+  useEffect(() => {
+    fetchAgentSkills()
+      .then((res) => {
+        const skills = Array.isArray(res.data?.skills) ? res.data.skills : [];
+        setSkillNames(
+          skills
+            .map((skill) => String((skill as Record<string, unknown>).name || ''))
+            .filter(Boolean)
+            .slice(0, 8),
+        );
+      })
+      .catch(() => setSkillNames([]));
+  }, []);
 
   // WebSocket
   useEffect(() => {
@@ -244,6 +262,31 @@ export const AgentMonitor: React.FC = () => {
     { label: 'Channels Active', value: Object.values(overview.channels).filter(s => s === 'active').length, icon: <Wifi size={20} />, color: C.cyan },
   ];
 
+  const handleSubmitTask = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!teamId || !taskInput.trim() || taskSubmitting) return;
+
+    setTaskSubmitting(true);
+    try {
+      const res = await sendTeamMessage(teamId, taskInput.trim(), 'web');
+      setTaskResult({
+        taskId: String(res.data?.task_id || ''),
+        response: String(res.data?.response || ''),
+      });
+      setActivity((prev) => [{
+        id: `${Date.now()}`,
+        timestamp: new Date().toISOString(),
+        agent: 'Founder',
+        agent_role: 'channel',
+        action: 'task.submitted',
+        summary: taskInput.trim(),
+      }, ...prev].slice(0, 30));
+      setTaskInput('');
+    } finally {
+      setTaskSubmitting(false);
+    }
+  };
+
   return (
     <DashboardLayout teamName={teamName}>
       <div className="flex h-full" style={{ background: C.bg }}>
@@ -280,6 +323,51 @@ export const AgentMonitor: React.FC = () => {
             {stats.map((s, i) => (
               <StatCard key={s.label} {...s} delay={i * 0.08} />
             ))}
+          </div>
+
+          <div className="rounded-xl border p-5 mb-6" style={{ background: C.card, borderColor: C.border }}>
+            <div className="flex items-center justify-between gap-4 mb-4">
+              <div>
+                <h2 className="text-sm font-medium text-white">Run A Backend Task</h2>
+                <p className="text-xs mt-1" style={{ color: C.muted }}>
+                  Submit a founder instruction through the frontend and capture the backend `task_id` plus response.
+                </p>
+              </div>
+              {skillNames.length > 0 && (
+                <div className="text-xs text-right" style={{ color: C.muted }}>
+                  Skills: {skillNames.join(', ')}
+                </div>
+              )}
+            </div>
+            <form onSubmit={handleSubmitTask} className="flex flex-col gap-3">
+              <textarea
+                value={taskInput}
+                onChange={(e) => setTaskInput(e.target.value)}
+                placeholder="Example: Research the top 5 AI coding assistants and summarize pricing, strengths, and risks."
+                className="min-h-[110px] rounded-lg border px-4 py-3 text-sm text-white outline-none resize-y"
+                style={{ background: C.bg, borderColor: C.border }}
+              />
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-xs" style={{ color: C.muted }}>
+                  Route: `/api/teams/:teamId/message`
+                </span>
+                <button
+                  type="submit"
+                  disabled={!teamId || !taskInput.trim() || taskSubmitting}
+                  className="px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-50"
+                  style={{ background: C.accent, color: '#fff' }}
+                >
+                  {taskSubmitting ? 'Submitting…' : 'Run Task'}
+                </button>
+              </div>
+            </form>
+            {taskResult && (
+              <div className="mt-4 rounded-lg border p-4" style={{ background: C.bg, borderColor: C.border }}>
+                <div className="text-xs mb-2" style={{ color: C.muted }}>Latest backend result</div>
+                <div className="text-xs mb-2 text-white">Task ID: {taskResult.taskId || 'missing'}</div>
+                <p className="text-sm whitespace-pre-wrap" style={{ color: '#d1d5db' }}>{taskResult.response || 'No response returned.'}</p>
+              </div>
+            )}
           </div>
 
           {/* Agent grid */}
