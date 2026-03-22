@@ -102,7 +102,7 @@ const AGENTS: AgentEntry[] = [
     description: 'The orchestrator agent. Breaks complex goals into task DAGs, delegates to specialist agents, monitors progress, and reports back to you.',
     category: 'orchestration',
     tags: ['orchestration', 'planning', 'delegation', 'dag-execution'],
-    docker_image: 'ghcr.io/viktron/agent-ceo',
+    docker_image: 'ghcr.io/vikasvardhanv/agent-ceo',
     docker_tag: 'latest',
     version: '2.1.0',
     llm_provider: 'openai', llm_model: 'gpt-4o',
@@ -123,7 +123,7 @@ const AGENTS: AgentEntry[] = [
     description: 'Full-stack AI marketing agent. Manages social posting, paid ads (Meta, Google, LinkedIn, TikTok), SEO, email campaigns, and GA4 reporting.',
     category: 'marketing',
     tags: ['social-media', 'seo', 'email-marketing', 'paid-ads', 'analytics'],
-    docker_image: 'ghcr.io/viktron/agent-marketing',
+    docker_image: 'ghcr.io/vikasvardhanv/agent-marketing',
     docker_tag: 'latest',
     version: '1.4.0',
     llm_provider: 'openai', llm_model: 'gpt-4o',
@@ -157,7 +157,7 @@ const AGENTS: AgentEntry[] = [
     description: 'Full-stack AI software engineer. Reads requirements, writes code, runs tests, debugs failures, creates PRs, and deploys. Multi-environment: local, Docker, Modal, SSH.',
     category: 'dev',
     tags: ['coding', 'testing', 'deployment', 'git', 'devops'],
-    docker_image: 'ghcr.io/viktron/agent-developer',
+    docker_image: 'ghcr.io/vikasvardhanv/agent-developer',
     docker_tag: 'latest',
     version: '2.0.1',
     llm_provider: 'openai', llm_model: 'gpt-4o',
@@ -183,7 +183,7 @@ const AGENTS: AgentEntry[] = [
     description: 'Powerful open-source agent with terminal, browser, vision, TTS, cron, file ops, and multi-environment execution (local, Docker, Modal, SSH, Singularity).',
     category: 'dev',
     tags: ['open-source', 'terminal', 'browser', 'vision', 'cron', 'multi-environment'],
-    docker_image: 'ghcr.io/viktron/agent-hermes',
+    docker_image: 'ghcr.io/vikasvardhanv/agent-hermes',
     docker_tag: 'latest',
     version: '0.9.0',
     llm_provider: 'openrouter', llm_model: 'mistralai/mistral-large',
@@ -210,7 +210,7 @@ const AGENTS: AgentEntry[] = [
     description: 'AI SDR that sources leads from Apollo.io, crafts personalized cold email sequences, manages LinkedIn outreach, syncs to HubSpot, and books meetings on autopilot.',
     category: 'sales',
     tags: ['lead-generation', 'cold-email', 'linkedin', 'crm', 'pipeline'],
-    docker_image: 'ghcr.io/viktron/agent-outreach',
+    docker_image: 'ghcr.io/vikasvardhanv/agent-outreach',
     docker_tag: 'latest',
     version: '1.5.0',
     llm_provider: 'openai', llm_model: 'gpt-4o',
@@ -238,7 +238,7 @@ const AGENTS: AgentEntry[] = [
     description: 'AI customer support specialist. Handles tickets and live chat with empathy, uses your knowledge base for accurate answers, escalates to humans via Slack.',
     category: 'support',
     tags: ['customer-support', 'live-chat', 'ticketing', 'knowledge-base'],
-    docker_image: 'ghcr.io/viktron/agent-support',
+    docker_image: 'ghcr.io/vikasvardhanv/agent-support',
     docker_tag: 'latest',
     version: '1.3.0',
     llm_provider: 'openai', llm_model: 'gpt-4o-mini',
@@ -264,7 +264,7 @@ const AGENTS: AgentEntry[] = [
     description: 'AI content strategist. Writes SEO-optimized blog posts, social copy, video scripts, and newsletters. Publishes directly to WordPress, Webflow, or Beehiiv.',
     category: 'content',
     tags: ['blogging', 'seo-content', 'video-scripts', 'newsletters'],
-    docker_image: 'ghcr.io/viktron/agent-content',
+    docker_image: 'ghcr.io/vikasvardhanv/agent-content',
     docker_tag: 'latest',
     version: '1.2.0',
     llm_provider: 'openai', llm_model: 'gpt-4o',
@@ -290,7 +290,7 @@ const AGENTS: AgentEntry[] = [
     description: 'AI research analyst with web search, browser automation, and structured data extraction. Produces cited reports on markets, competitors, and companies.',
     category: 'research',
     tags: ['market-research', 'competitive-intel', 'web-scraping', 'reports'],
-    docker_image: 'ghcr.io/viktron/agent-research',
+    docker_image: 'ghcr.io/vikasvardhanv/agent-research',
     docker_tag: 'latest',
     version: '1.0.0',
     llm_provider: 'openai', llm_model: 'gpt-4o',
@@ -315,7 +315,7 @@ const AGENTS: AgentEntry[] = [
     description: 'AI QA engineer that writes and runs test suites, generates test cases from requirements, executes regression runs, and files bug reports. Integrates with GitHub Actions.',
     category: 'dev',
     tags: ['testing', 'qa', 'automation', 'ci-cd', 'regression'],
-    docker_image: 'ghcr.io/viktron/agent-qa',
+    docker_image: 'ghcr.io/vikasvardhanv/agent-qa',
     docker_tag: 'latest',
     version: '1.2.0',
     llm_provider: 'openai', llm_model: 'gpt-4o',
@@ -339,7 +339,7 @@ const AGENTS: AgentEntry[] = [
     description: 'AI data analyst that connects to your databases, runs SQL queries, generates Python analysis, creates charts, and produces clear business insight reports.',
     category: 'data',
     tags: ['data-analysis', 'sql', 'python', 'dashboards', 'reporting'],
-    docker_image: 'ghcr.io/viktron/agent-data-analyst',
+    docker_image: 'ghcr.io/vikasvardhanv/agent-data-analyst',
     docker_tag: 'latest',
     version: '1.1.0',
     llm_provider: 'openai', llm_model: 'gpt-4o',
@@ -365,7 +365,7 @@ const AGENTS: AgentEntry[] = [
     description: 'Open-source social media automation agent. Schedules and posts to Twitter/X, LinkedIn, Instagram, TikTok. Engages with mentions, tracks growth metrics.',
     category: 'marketing',
     tags: ['social-media', 'twitter', 'linkedin', 'instagram', 'tiktok', 'open-source'],
-    docker_image: 'ghcr.io/viktron/agent-social-autopilot',
+    docker_image: 'ghcr.io/vikasvardhanv/agent-social-autopilot',
     docker_tag: 'latest',
     version: '1.0.0',
     llm_provider: 'openai', llm_model: 'gpt-4o-mini',
@@ -392,7 +392,7 @@ const AGENTS: AgentEntry[] = [
     description: 'AI e-commerce ops agent. Monitors Shopify inventory, adjusts pricing dynamically, creates discount campaigns, manages listings, and runs abandoned cart recovery flows.',
     category: 'sales',
     tags: ['shopify', 'ecommerce', 'inventory', 'pricing', 'abandoned-cart'],
-    docker_image: 'ghcr.io/viktron/agent-ecommerce',
+    docker_image: 'ghcr.io/vikasvardhanv/agent-ecommerce',
     docker_tag: 'latest',
     version: '1.0.0',
     llm_provider: 'openai', llm_model: 'gpt-4o',
@@ -419,7 +419,7 @@ const AGENTS: AgentEntry[] = [
     description: 'AI product manager that creates and manages project backlogs, breaks epics into user stories, assigns work to agents, tracks progress, and sends status updates.',
     category: 'orchestration',
     tags: ['project-management', 'sprint-planning', 'roadmap', 'tickets'],
-    docker_image: 'ghcr.io/viktron/agent-pm',
+    docker_image: 'ghcr.io/vikasvardhanv/agent-pm',
     docker_tag: 'latest',
     version: '1.1.0',
     llm_provider: 'openai', llm_model: 'gpt-4o',
@@ -453,6 +453,8 @@ const CATEGORY_META: Record<string, { label: string; icon: React.ReactNode; colo
   research: { label: 'Research', icon: <Search size={14} />, color: 'text-cyan-700' },
   data: { label: 'Data', icon: <BarChart3 size={14} />, color: 'text-teal-600' },
   hr: { label: 'HR', icon: <Users size={14} />, color: 'text-rose-600' },
+  healthcare: { label: 'Healthcare', icon: <HeartHandshake size={14} />, color: 'text-emerald-600' },
+  defense: { label: 'Defense', icon: <Shield size={14} />, color: 'text-slate-600' },
 };
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -991,7 +993,7 @@ export const RentAgent: React.FC = () => {
               {/* Eyebrow */}
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-xs text-primary font-medium mb-6">
                 <Globe size={12} />
-                app.rent.viktron.ai
+                rent.viktron.ai
               </div>
 
               <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-4 leading-tight tracking-tight">
@@ -1025,8 +1027,8 @@ export const RentAgent: React.FC = () => {
 
               {/* How it works */}
               <div className="inline-flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-xl px-5 py-3 text-sm shadow-sm">
-                <code className="text-green-400 font-mono text-xs">docker pull ghcr.io/viktron/agent-marketing</code>
-                <CopyButton text="docker pull ghcr.io/viktron/agent-marketing" />
+                <code className="text-green-400 font-mono text-xs">docker pull ghcr.io/vikasvardhanv/agent-marketing</code>
+                <CopyButton text="docker pull ghcr.io/vikasvardhanv/agent-marketing" />
               </div>
             </motion.div>
           </div>
@@ -1051,7 +1053,7 @@ export const RentAgent: React.FC = () => {
             <div className="flex items-center gap-1.5 flex-wrap">
               {categories.map(cat => {
                 const meta = CATEGORY_META[cat];
-                const count = cat === 'all' ? AGENTS.length : AGENTS.filter(a => a.category === cat).length;
+                const count = cat === 'all' ? agents.length : agents.filter(a => a.category === cat).length;
                 return (
                   <button
                     key={cat}
