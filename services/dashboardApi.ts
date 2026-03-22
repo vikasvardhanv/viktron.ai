@@ -13,6 +13,9 @@ agentApi.interceptors.request.use((config) => {
 });
 
 export const fetchUserTeams = () => agentApi.get('/api/teams');
+export const sendTeamMessage = (teamId: string, message: string, channel = 'web') =>
+  agentApi.post(`/api/teams/${teamId}/message`, { message, channel });
+export const fetchAgentSkills = () => agentApi.get('/api/skills');
 export const fetchDashboardOverview = (teamId: string) => agentApi.get(`/api/dashboard/overview?team_id=${teamId}`);
 export const fetchWorkflows = (teamId: string) => agentApi.get(`/api/workflows/?team_id=${teamId}`);
 export const createWorkflow = (teamId: string, data: Record<string, unknown>) => agentApi.post(`/api/workflows/?team_id=${teamId}`, data);

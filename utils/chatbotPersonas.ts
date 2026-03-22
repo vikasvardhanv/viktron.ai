@@ -40,7 +40,7 @@ export const getChatbotGreeting = (useCase: string, companyName?: string): strin
     
     'sales_assistant': `Hi! 💼 Great to connect with you. I'm here to help you explore ${company}'s solutions and find what works best for your needs. What are you looking to accomplish?`,
     
-    'custom': `Hello! ✨ Welcome to ${company}. I'm here to help you with any questions. How can I assist you today?`,
+    'custom': `Hi! I'm ${company}'s AI assistant. Tell me what you need, and I'll help with the next step.`,
   };
 
   return greetings[useCase] || greetings['custom'];
