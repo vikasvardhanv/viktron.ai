@@ -65,7 +65,7 @@ export const getDemoChatbotResponse = async (
  * const CustomerSupportDemo = () => {
  *   const [chatHistory, setChatHistory] = useState([]);
  *   const useCase = 'customer_support';
- *   const companyName = 'Acme Corp';
+ *   const companyName = 'Your Company';
  *   
  *   useEffect(() => {
  *     // Initialize with greeting
