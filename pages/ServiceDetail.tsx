@@ -7,7 +7,7 @@ import {
   ArrowRight, ArrowLeft, CheckCircle2, Zap, Clock, Shield,
   Bot, Phone, Megaphone, Workflow, BrainCircuit, Users,
   MessageSquare, BarChart3, Sparkles, Mic, Mail, Globe,
-  Database, Cpu, Target, Layers, Star, TrendingUp
+  Database, Cpu, Target, Layers, Star, TrendingUp, AlertCircle
 } from 'lucide-react';
 
 const iconMap: Record<string, any> = {
@@ -212,31 +212,47 @@ const SERVICES_DATA: Record<string, ServiceData> = {
   },
   'agent-orchestration': {
     name: 'Agent Orchestration (AgentIRL)',
-    tagline: 'The coordination layer that makes multi-agent systems reliable.',
-    description: 'AgentIRL is our proprietary infrastructure layer that sits between AI frameworks and your business. It handles agent coordination, shared state management, error recovery, and human-in-the-loop routing — turning experimental AI into production-grade workforce.',
+    tagline: 'Enterprise-grade integration and reliability layer for production AI agents.',
+    description: 'AgentIRL is the middleware platform sitting between your AI frameworks and business systems. It solves the industry\'s hardest agent problems: reliable integration with legacy systems, error-proof multi-step workflows, observability at scale, and security-first access control. Built to transform experimental AI into a trusted AI workforce.',
     heroImage: '/visuals/compliance-audit.jpg',
     features: [
-      { title: 'Multi-Agent Coordination', desc: 'Orchestrate CrewAI, LangGraph, and custom agents in one system.' },
-      { title: 'Shared State', desc: 'All agents share context — pricing changes propagate instantly.' },
-      { title: 'Error Recovery', desc: 'Automatic retries, circuit breakers, and fallback strategies.' },
-      { title: 'Observability', desc: 'Real-time dashboards showing every agent action and decision.' },
-      { title: 'Human-in-the-Loop', desc: 'Configurable approval gates for high-stakes agent actions.' },
-      { title: 'Cost Optimization', desc: 'Route tasks to the cheapest model that can handle them.' },
+      { title: 'Smart Tool Adapters', desc: 'Pre-built adapters for 100+ APIs, databases, and enterprise systems. Structured feedback & automatic pagination solve token cost issues.' },
+      { title: 'Framework-Agnostic', desc: 'LangChain, CrewAI, LangGraph, AutoGen, OpenAI Agents, Anthropic MCP — no vendor lock-in.' },
+      { title: 'Workflow Decomposition', desc: 'Automatically breaks complex tasks into bounded operations with pre/post-condition checks. Inserts human gates at error-risk thresholds.' },
+      { title: 'Unified Integration Layer', desc: 'Centralized authentication, role-based access control, and secure credential vaults for all connected systems.' },
+      { title: 'Advanced Observability', desc: 'Distributed tracing across prompts, tools, and retrievals. Semantic correctness evaluation and anomaly detection built-in.' },
+      { title: 'Adaptive Policy Engine', desc: 'Enforce data residency, privacy rules, rate limits, and escalation protocols. Full audit logs and replay capabilities.' },
+      { title: 'Error Auto-Recovery', desc: 'Circuit breakers, intelligent retries, and fallback chains maintain uptime through tool failures and provider outages.' },
+      { title: 'Cost Optimization', desc: 'Route tasks to the cheapest capable model. Context trimming and summarization reduce token costs by 60%.' },
+      { title: 'State Management', desc: 'All agents share unified context—config changes propagate instantly, no coordination overhead.' },
+      { title: 'Human-in-the-Loop', desc: 'Configurable approval gates for high-stakes actions. Escalation rules learned from your decision history.' },
     ],
     howItWorks: [
-      { step: '01', title: 'Define Your Agents', desc: 'Specify agent roles, capabilities, and guardrails.' },
-      { step: '02', title: 'Set Coordination Rules', desc: 'Define how agents communicate, delegate, and escalate.' },
-      { step: '03', title: 'Deploy to Production', desc: 'AgentIRL handles reliability, monitoring, and scaling.' },
-      { step: '04', title: 'Evolve Over Time', desc: 'Agents improve through ADAS (Automated Design of Agentic Systems).' },
+      { step: '01', title: 'Connect Your Systems', desc: 'Link your CRM, ERP, databases, APIs, and legacy systems through AgentIRL adapters. One-click OAuth for SaaS.' },
+      { step: '02', title: 'Define Agent Workflows', desc: 'Specify agent roles, tasks, and decision gates. AgentIRL automatically decomposes workflows and detects error propagation risks.' },
+      { step: '03', title: 'Set Governance Rules', desc: 'Configure access policies, approval workflows, escalation rules, and compliance requirements. Audit logging is always on.' },
+      { step: '04', title: 'Deploy & Monitor', desc: 'AgentIRL handles coordination, recovery, and scaling. Real-time dashboards show every agent decision and tool call.' },
+      { step: '05', title: 'Continuously Improve', desc: 'Agents learn from escalations and errors. ADAS (Automated Design of Agentic Systems) refines workflows over time.' },
     ],
     metrics: [
-      { value: '99.9%', label: 'Uptime SLA' },
+      { value: '99.99%', label: 'Uptime SLA' },
       { value: '5+', label: 'Frameworks Supported' },
-      { value: '< 500ms', label: 'Coordination Latency' },
-      { value: '85%', label: 'Error Auto-Recovery' },
+      { value: '< 150ms', label: 'Coordination Latency' },
+      { value: '92%', label: 'Error Auto-Recovery Rate' },
+      { value: '100+', label: 'Pre-Built Tool Adapters' },
+      { value: '60%', label: 'Token Cost Reduction' },
     ],
-    useCases: ['Enterprise AI teams', 'Multi-agent customer service', 'Automated business operations', 'AI-powered agencies', 'SaaS platforms with AI features', 'Research institutions'],
-    pricing: { label: 'Starting at $499/mo', note: 'Platform access + unlimited agent orchestration' },
+    useCases: [
+      'Enterprise AI teams deploying multiple agent frameworks',
+      'Multi-agent customer service (Sales + Support + Fulfillment)',
+      'Financial services (regulatory compliance + audit trails)',
+      'Healthcare systems (HIPAA-compliant data access)',
+      'Automated business operations (invoice processing, onboarding)',
+      'SaaS platforms embedding AI agents for customers',
+      'AI-powered agencies managing client workflows',
+      'Research institutions with complex data pipelines'
+    ],
+    pricing: { label: 'Starting at $499/mo', note: 'Includes platform access, 100k API calls, and team collaboration' },
     category: 'AgentIRL Platform',
     icon: 'BrainCircuit',
   },
@@ -459,46 +475,59 @@ export const ServiceDetail = () => {
               transition={{ delay: 0.2 }}
               className="lg:w-2/5 w-full"
             >
-              <div className="grid grid-cols-2 gap-4">
+              <div className={`grid gap-4 ${service.metrics.length > 4 ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-2'}`}>
                 {service.metrics.map((metric, idx) => (
-                  <div key={idx} className="bg-white border border-slate-200 rounded-2xl p-6 text-center hover:border-blue-200 hover:shadow-md transition-all">
-                    <div className="text-3xl font-bold text-slate-900 mb-1">{metric.value}</div>
-                    <div className="text-xs text-slate-500 uppercase tracking-wider font-mono">{metric.label}</div>
-                  </div>
+                  <motion.div 
+                    key={idx} 
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.3 + idx * 0.05 }}
+                    className="bg-gradient-to-br from-white to-slate-50 border border-slate-200 rounded-2xl p-6 text-center hover:border-blue-200 hover:shadow-xl hover:shadow-blue-200/20 transition-all group cursor-default"
+                  >
+                    <div className="text-3xl md:text-4xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">{metric.value}</div>
+                    <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">{metric.label}</div>
+                  </motion.div>
                 ))}
               </div>
 
               {/* Hero Image */}
-              <div className="mt-6 rounded-2xl overflow-hidden border border-slate-200 shadow-lg">
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="mt-8 rounded-2xl overflow-hidden border border-slate-200 shadow-lg hover:shadow-xl transition-shadow"
+              >
                 <img src={service.heroImage} alt={service.name} className="w-full h-48 object-cover" />
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* Features Grid */}
-      <section className="py-20 bg-slate-50 border-t border-slate-200">
+      <section className="py-24 bg-gradient-to-b from-slate-50 to-white border-t border-slate-200">
         <div className="container-custom">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">What's Included</h2>
-            <p className="text-slate-600 max-w-xl mx-auto">Everything you need to deploy and scale this service.</p>
+          <div className="text-center mb-20">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Capabilities Built In</h2>
+            <p className="text-slate-600 text-lg max-w-2xl mx-auto">
+              Everything you need for reliable, observable, secure AI agents at scale.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className={`grid gap-6 ${service.features.length > 6 ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
             {service.features.map((feature, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: idx * 0.08 }}
-                className="bg-white p-6 rounded-xl border border-slate-200 hover:border-blue-200 hover:shadow-md transition-all"
+                transition={{ delay: idx * 0.06 }}
+                className="group bg-white p-8 rounded-2xl border border-slate-200 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-200/20 transition-all duration-300"
               >
-                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-4">
-                  <CheckCircle2 className="w-5 h-5 text-blue-600" />
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center mb-4 group-hover:from-blue-100 group-hover:to-blue-200 transition-all">
+                  <CheckCircle2 className="w-6 h-6 text-blue-600" />
                 </div>
-                <h3 className="font-bold text-slate-900 mb-2">{feature.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{feature.desc}</p>
+                <h3 className="font-bold text-slate-900 mb-2 text-lg group-hover:text-blue-600 transition-colors">{feature.title}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed group-hover:text-slate-700 transition-colors">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -506,28 +535,37 @@ export const ServiceDetail = () => {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 bg-white border-t border-slate-200">
+      <section className="py-24 bg-white border-t border-slate-200">
         <div className="container-custom">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">How It Works</h2>
-            <p className="text-slate-600">Get started in 4 simple steps.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">How It Works</h2>
+            <p className="text-slate-600 text-lg">
+              {service.howItWorks.length === 5 ? 'Five steps to production-ready AI agents.' : 'Get started in simple steps.'}
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
-            <div className="hidden md:block absolute top-[40px] left-[12%] right-[12%] h-0.5 bg-gradient-to-r from-blue-200/0 via-blue-200 to-blue-200/0" />
+          <div className={`grid gap-8 relative ${service.howItWorks.length === 5 ? 'grid-cols-1 md:grid-cols-5' : 'grid-cols-1 md:grid-cols-4'}`}>
+            {service.howItWorks.length !== 5 && (
+              <div className="hidden md:block absolute top-[40px] left-[12%] right-[12%] h-0.5 bg-gradient-to-r from-blue-200/0 via-blue-200 to-blue-200/0" />
+            )}
             {service.howItWorks.map((step, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: idx * 0.15 }}
-                className="text-center relative"
+                transition={{ delay: idx * 0.12 }}
+                className="relative group"
               >
-                <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-6 text-2xl font-bold text-blue-600 border border-blue-100 shadow-sm relative z-10">
-                  {step.step}
+                <div className="text-center">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center mx-auto mb-6 text-2xl font-bold text-blue-600 border border-blue-200 shadow-sm relative z-10 group-hover:shadow-md group-hover:border-blue-300 transition-all">
+                    {step.step}
+                  </div>
+                  <h3 className="font-bold text-slate-900 mb-3 text-lg">{step.title}</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">{step.desc}</p>
                 </div>
-                <h3 className="font-bold text-slate-900 mb-2">{step.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{step.desc}</p>
+                {idx < service.howItWorks.length - 1 && (
+                  <div className="hidden md:block absolute top-[32px] -right-[16px] w-8 h-0.5 bg-gradient-to-r from-blue-200 to-blue-200/0" />
+                )}
               </motion.div>
             ))}
           </div>
@@ -572,6 +610,339 @@ export const ServiceDetail = () => {
           </div>
         </div>
       </section>
+
+      {/* Specialized sections for Agent Orchestration */}
+      {(serviceId === 'agent-orchestration' || service.name === 'Agent Orchestration (AgentIRL)') && (
+        <>
+          {/* The Reliability Problem */}
+          <section className="py-24 bg-white border-t border-slate-200">
+            <div className="container-custom">
+              <div className="max-w-4xl mx-auto">
+                <div className="mb-16">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-100 text-xs font-mono text-amber-700 mb-6">
+                    <AlertCircle className="w-3 h-3" /> The Industry Challenge
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight">
+                    Why Most Agent Systems Fail in Production
+                  </h2>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="bg-gradient-to-br from-red-50 to-red-50/30 border border-red-100 rounded-2xl p-8"
+                  >
+                    <div className="text-4xl font-bold text-red-600 mb-3">95%</div>
+                    <h3 className="font-bold text-slate-900 mb-3">Per-Step Reliability</h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      Even with 95% reliability per step, a 20-step workflow succeeds only 36% of the time. Context window costs scale quadratically—a 100-turn conversation costs $50–100 in tokens alone.
+                    </p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 }}
+                    className="bg-gradient-to-br from-blue-50 to-blue-50/30 border border-blue-100 rounded-2xl p-8"
+                  >
+                    <div className="text-4xl font-bold text-blue-600 mb-3">68%</div>
+                    <h3 className="font-bold text-slate-900 mb-3">Limited Autonomy</h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      68% of production agents run fewer than 10 steps before requiring human intervention. Integration complexity, error compounding, and tool design flaws limit what's possible.
+                    </p>
+                  </motion.div>
+                </div>
+
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8">
+                  <h3 className="font-bold text-slate-900 mb-4">AgentIRL solves this through:</h3>
+                  <ul className="space-y-3">
+                    {[
+                      'Workflow decomposition with automated error-risk analysis',
+                      'Smart tool adapters with structured feedback to reduce token costs by 60%',
+                      'Multi-framework support—no vendor lock-in when switching between CrewAI, LangChain, LangGraph',
+                      'Human-in-the-loop gates positioned at failure points to maintain reliability',
+                      'Distributed tracing and anomaly detection for instant root-cause analysis'
+                    ].map((item, idx) => (
+                      <li key={idx} className="flex gap-3 text-sm text-slate-700">
+                        <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0 mt-0.5" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Observability & Monitoring */}
+          <section className="py-24 bg-slate-50 border-t border-slate-200">
+            <div className="container-custom">
+              <div className="text-center mb-16">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-xs font-mono text-blue-600 mb-6">
+                  <BarChart3 className="w-3 h-3" /> Production Observability
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                  See everything. Understand what went wrong.
+                </h2>
+                <p className="text-slate-600 text-lg max-w-2xl mx-auto">
+                  Unlike generic observability tools, AgentIRL is purpose-built for agent reasoning. Trace prompt → tool call → response. Detect hallucinations. Evaluate semantic correctness.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                {[
+                  {
+                    title: 'Distributed Tracing',
+                    desc: 'Follow every request through prompts, model calls, tool invocations, and database queries. See latency breakdowns and failure points.',
+                    icon: Layers
+                  },
+                  {
+                    title: 'Semantic Evaluation',
+                    desc: 'AI-powered analysis detects hallucinations, factual errors, and compliance violations in real-time. Not just logs—understanding.',
+                    icon: BrainCircuit
+                  },
+                  {
+                    title: 'Anomaly Detection',
+                    desc: 'Behavioral baselines detect unusual patterns. When error rates spike or latency jumps, get alerts before users notice.',
+                    icon: TrendingUp
+                  }
+                ].map((item, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="bg-white p-8 rounded-2xl border border-slate-200 hover:border-blue-200 hover:shadow-lg transition-all"
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-4">
+                      <item.icon className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <h3 className="font-bold text-slate-900 mb-2">{item.title}</h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+                <h3 className="font-bold text-slate-900 mb-6">Key Metrics You Track</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  {[
+                    { label: 'Success Rate', value: 'Per task, per agent', icon: CheckCircle2 },
+                    { label: 'Token Efficiency', value: 'Cost per task', icon: Cpu },
+                    { label: 'Latency', value: 'P50, P95, P99', icon: Zap },
+                    { label: 'Escalation Rate', value: 'Tasks needing human approval', icon: AlertCircle }
+                  ].map((metric, idx) => (
+                    <div key={idx} className="text-center">
+                      <metric.icon className="w-5 h-5 text-blue-600 mx-auto mb-2" />
+                      <div className="text-xs text-slate-500 font-mono uppercase">{metric.label}</div>
+                      <div className="text-sm text-slate-700 font-semibold mt-1">{metric.value}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Framework Interoperability */}
+          <section className="py-24 bg-white border-t border-slate-200">
+            <div className="container-custom">
+              <div className="text-center mb-16">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-100 text-xs font-mono text-purple-600 mb-6">
+                  <Layers className="w-3 h-3" /> Framework Agnostic
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                  One platform. Your choice of frameworks.
+                </h2>
+                <p className="text-slate-600 text-lg max-w-2xl mx-auto">
+                  Don't be locked into one framework. AgentIRL abstracts away the differences—use LangChain today, switch to CrewAI tomorrow without rewriting integrations.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="bg-slate-50 border border-slate-200 rounded-2xl p-8"
+                >
+                  <h3 className="font-bold text-slate-900 mb-4">Supported Frameworks</h3>
+                  <div className="space-y-3 mb-6">
+                    {['LangChain', 'CrewAI', 'LangGraph', 'AutoGen', 'OpenAI Agents', 'Anthropic MCP', 'Semantic Kernel', 'Custom Frameworks'].map((fw, idx) => (
+                      <div key={idx} className="flex items-center gap-3 text-sm text-slate-700">
+                        <div className="w-2 h-2 rounded-full bg-blue-600" />
+                        {fw}
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-slate-500">More being added constantly. Custom framework support available.</p>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="bg-blue-50 border border-blue-200 rounded-2xl p-8"
+                >
+                  <h3 className="font-bold text-slate-900 mb-4">Unified SDK</h3>
+                  <p className="text-sm text-slate-700 mb-6">
+                    One SDK, all frameworks. The AgentIRL SDK normalizes differences in tool-calling APIs, memory management, and error handling. Switch frameworks without rewriting your integration code.
+                  </p>
+                  <div className="bg-white rounded-lg p-4 font-mono text-xs text-slate-700 overflow-x-auto">
+                    <code>{`const agent = new AgentIRL({\n  framework: 'CrewAI',\n  tools: [...],\n  apiKey: process.env.AGENTIRL_KEY\n})`}</code>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </section>
+
+          {/* Integration Ecosystem */}
+          <section className="py-24 bg-slate-50 border-t border-slate-200">
+            <div className="container-custom">
+              <div className="text-center mb-16">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-50 border border-green-100 text-xs font-mono text-green-600 mb-6">
+                  <Database className="w-3 h-3" /> 100+ Integrations
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                  Connect to any system. Instantly.
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
+                {[
+                  { category: 'CRM', examples: 'Salesforce, HubSpot, Pipedrive' },
+                  { category: 'ERP', examples: 'SAP, Oracle, NetSuite' },
+                  { category: 'Databases', examples: 'PostgreSQL, MongoDB, DynamoDB' },
+                  { category: 'APIs', examples: 'Stripe, Slack, Twilio, 100+' }
+                ].map((group, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.08 }}
+                    className="bg-white border border-slate-200 rounded-xl p-6 text-center hover:border-blue-200 hover:shadow-md transition-all"
+                  >
+                    <div className="font-bold text-slate-900 mb-2">{group.category}</div>
+                    <p className="text-xs text-slate-600">{group.examples}</p>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="bg-white border border-slate-200 rounded-2xl p-8">
+                <h3 className="font-bold text-slate-900 mb-6">Why AgentIRL Adapters Matter</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {[
+                    {
+                      title: 'Structured Feedback',
+                      desc: 'Tools return status codes, partial results, and hints—not raw errors. Agents can reason about partial success without consuming excessive tokens.',
+                      icon: MessageSquare
+                    },
+                    {
+                      title: 'Automatic Pagination',
+                      desc: 'Pull 10k records without hitting context limits. AgentIRL handles pagination, summarization, and lazy loading.',
+                      icon: Layers
+                    },
+                    {
+                      title: 'Retry Logic',
+                      desc: 'Built-in exponential backoff and circuit breakers. Tool failures don\'t cascade into broken workflows.',
+                      icon: Zap
+                    }
+                  ].map((item, idx) => (
+                    <div key={idx}>
+                      <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-3">
+                        <item.icon className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <h4 className="font-semibold text-slate-900 mb-2">{item.title}</h4>
+                      <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Security & Compliance */}
+          <section className="py-24 bg-white border-t border-slate-200">
+            <div className="container-custom">
+              <div className="text-center mb-16">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-100 text-xs font-mono text-red-600 mb-6">
+                  <Shield className="w-3 h-3" /> Enterprise Security
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+                  Agents you can trust with sensitive data.
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {[
+                  {
+                    title: 'Access Control',
+                    features: [
+                      'Role-based permissions per agent',
+                      'OAuth2 & SAML integration',
+                      'Secrets vaults for API keys',
+                      'Audit logs for every access'
+                    ]
+                  },
+                  {
+                    title: 'Data Protection',
+                    features: [
+                      'Field-level PII redaction',
+                      'Differential privacy options',
+                      'On-premises deployment',
+                      'Data residency compliance'
+                    ]
+                  },
+                  {
+                    title: 'Governance',
+                    features: [
+                      'Policy enforcement at tool level',
+                      'Approval workflows for sensitive actions',
+                      'Compliance rule templates',
+                      'Full audit trails & replay'
+                    ]
+                  },
+                  {
+                    title: 'Monitoring',
+                    features: [
+                      'Anomaly detection',
+                      'Real-time alerting',
+                      'Compliance reports',
+                      'Integration with SIEMs'
+                    ]
+                  }
+                ].map((group, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="bg-slate-50 border border-slate-200 rounded-2xl p-8"
+                  >
+                    <h3 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-green-600" />
+                      {group.title}
+                    </h3>
+                    <ul className="space-y-2">
+                      {group.features.map((feature, fidx) => (
+                        <li key={fidx} className="text-sm text-slate-700 flex items-center gap-2">
+                          <span className="w-1 h-1 rounded-full bg-blue-600" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </>
+      )}
 
       {/* CTA */}
       <section className="py-20 bg-slate-900 text-white text-center">
