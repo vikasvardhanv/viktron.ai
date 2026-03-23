@@ -478,20 +478,17 @@ function buildDockerPull(agent: AgentEntry): string {
   if (agent.is_open_source && agent.source_repo) {
     const localImage = getLocalImageTag(agent);
     return [
-      '# Option A: pull from GHCR (requires package read token)',
-      'echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_USER" --password-stdin',
+      '# Option A: pull from GHCR (public — no login required)',
       `docker pull ${remote}`,
       '',
-      '# Option B: build locally from source (recommended for open-source)',
+      '# Option B: build locally from source',
       `git clone ${agent.source_repo}`,
       `cd ${agent.slug}-agent || cd $(basename ${agent.source_repo} .git)`,
       `docker build -t ${localImage} .`,
     ].join('\n');
   }
-  return [
-    'echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GITHUB_USER" --password-stdin',
-    `docker pull ${remote}`,
-  ].join('\n');
+  // All Viktron agent images are public on ghcr.io — no auth needed
+  return `docker pull ${remote}`;
 }
 
 function buildDockerRun(agent: AgentEntry): string {
