@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Users, CheckSquare, MessageSquare, Wifi, Crown, Briefcase,
   Code2, TrendingUp, Headphones, PenTool, Clock, Zap, AlertCircle,
-  Activity, Bot, RefreshCw,
+  Activity, Bot, RefreshCw, BrainCircuit,
 } from 'lucide-react';
 import { DashboardLayout } from './DashboardLayout';
 import { useAuth } from '../../context/AuthContext';
@@ -51,6 +51,114 @@ const MOCK_OVERVIEW: DashboardOverview = {
     { id:'a4', timestamp: new Date(Date.now()-300000).toISOString(), agent:'PM Agent', agent_role:'pm', action:'report_generated', summary:'Weekly progress report compiled and sent' },
   ],
 };
+
+// ── AgentIRL Mock Data ────────────────────────────────────────────────────────
+interface Mission {
+  id: string;
+  title: string;
+  status: 'draft' | 'pending_gates' | 'pending_approval' | 'approved' | 'dispatched' | 'executing' | 'review' | 'complete' | 'failed' | 'blocked' | 'cancelled';
+  created_at: string;
+  updated_at: string;
+  assigned_agent_role?: string;
+  executive_summary: string;
+}
+
+interface StreamHealth {
+  stream_id: string;
+  mission_id: string;
+  last_heartbeat: string;
+  sequence_number: number;
+  total_chunks: number;
+  total_errors: number;
+  status: 'healthy' | 'degraded' | 'stale' | 'dead';
+  meta: Record<string, any>;
+}
+
+interface AgentError {
+  id: string;
+  timestamp: string;
+  mission_id?: string;
+  stream_id?: string;
+  category: 'network' | 'auth' | 'validation' | 'provider' | 'governance' | 'budget' | 'timeout' | 'agent' | 'system';
+  message: string;
+  recovery: 'retry' | 'fallback' | 'escalate' | 'abort' | 'quarantine';
+  resolved: boolean;
+}
+
+const MOCK_MISSIONS: Mission[] = [
+  {
+    id: 'm1',
+    title: 'Q4 Sales Pipeline Optimization',
+    status: 'executing',
+    created_at: new Date(Date.now() - 3600000).toISOString(),
+    updated_at: new Date(Date.now() - 600000).toISOString(),
+    assigned_agent_role: 'sales',
+    executive_summary: 'Analyzing sales data and optimizing lead scoring algorithm'
+  },
+  {
+    id: 'm2',
+    title: 'Content Calendar Planning',
+    status: 'pending_approval',
+    created_at: new Date(Date.now() - 7200000).toISOString(),
+    updated_at: new Date(Date.now() - 1800000).toISOString(),
+    assigned_agent_role: 'content',
+    executive_summary: 'Drafting social media content strategy for next quarter'
+  },
+  {
+    id: 'm3',
+    title: 'API Integration Testing',
+    status: 'complete',
+    created_at: new Date(Date.now() - 86400000).toISOString(),
+    updated_at: new Date(Date.now() - 3600000).toISOString(),
+    assigned_agent_role: 'developer',
+    executive_summary: 'Successfully integrated Stripe payment processing'
+  }
+];
+
+const MOCK_STREAMS: StreamHealth[] = [
+  {
+    stream_id: 's1',
+    mission_id: 'm1',
+    last_heartbeat: new Date().toISOString(),
+    sequence_number: 15,
+    total_chunks: 15,
+    total_errors: 0,
+    status: 'healthy',
+    meta: { source: 'sales_agent', agent_role: 'sales' }
+  },
+  {
+    stream_id: 's2',
+    mission_id: 'm2',
+    last_heartbeat: new Date(Date.now() - 45000).toISOString(),
+    sequence_number: 8,
+    total_chunks: 8,
+    total_errors: 1,
+    status: 'degraded',
+    meta: { source: 'content_agent', agent_role: 'content' }
+  }
+];
+
+const MOCK_ERRORS: AgentError[] = [
+  {
+    id: 'e1',
+    timestamp: new Date(Date.now() - 300000).toISOString(),
+    mission_id: 'm2',
+    stream_id: 's2',
+    category: 'provider',
+    message: 'OpenAI API rate limit exceeded',
+    recovery: 'retry',
+    resolved: false
+  },
+  {
+    id: 'e2',
+    timestamp: new Date(Date.now() - 900000).toISOString(),
+    mission_id: 'm1',
+    category: 'validation',
+    message: 'Invalid email format in lead data',
+    recovery: 'fallback',
+    resolved: true
+  }
+];
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
@@ -158,6 +266,198 @@ function timeAgo(ts: string) {
   return `${Math.round(diff / 3600)}h ago`;
 }
 
+// ── AgentIRL Components ────────────────────────────────────────────────────────
+
+interface MissionCardProps { mission: Mission; delay?: number; }
+const MissionCard: React.FC<MissionCardProps> = ({ mission, delay = 0 }) => {
+  const statusColors = {
+    draft: C.muted,
+    pending_gates: C.yellow,
+    pending_approval: C.orange,
+    approved: C.cyan,
+    dispatched: C.accent,
+    executing: C.purple,
+    review: C.yellow,
+    complete: C.green,
+    failed: C.red,
+    blocked: C.red,
+    cancelled: C.muted
+  };
+
+  const statusLabels = {
+    draft: 'Draft',
+    pending_gates: 'Gates',
+    pending_approval: 'Approval',
+    approved: 'Approved',
+    dispatched: 'Dispatched',
+    executing: 'Executing',
+    review: 'Review',
+    complete: 'Complete',
+    failed: 'Failed',
+    blocked: 'Blocked',
+    cancelled: 'Cancelled'
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay, ease: [0.4, 0, 0.2, 1] }}
+      className="rounded-xl p-5 border relative overflow-hidden"
+      style={{ background: C.card, borderColor: C.border }}
+    >
+      <div className="absolute inset-0 opacity-5 rounded-xl"
+        style={{ background: `radial-gradient(circle at top left, ${statusColors[mission.status]}, transparent 60%)` }} />
+
+      <div className="relative">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          <h3 className="text-sm font-semibold text-white truncate">{mission.title}</h3>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-medium flex-shrink-0"
+            style={{
+              background: `${statusColors[mission.status]}12`,
+              borderColor: `${statusColors[mission.status]}30`,
+              color: statusColors[mission.status]
+            }}>
+            {statusLabels[mission.status]}
+          </div>
+        </div>
+
+        <p className="text-xs mb-3 leading-relaxed" style={{ color: C.muted }}>
+          {mission.executive_summary || 'No summary available'}
+        </p>
+
+        <div className="flex items-center justify-between text-xs" style={{ color: C.muted }}>
+          <span>{mission.assigned_agent_role ? `Assigned to ${mission.assigned_agent_role}` : 'Unassigned'}</span>
+          <span>{timeAgo(mission.updated_at)}</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+interface StreamCardProps { stream: StreamHealth; delay?: number; }
+const StreamCard: React.FC<StreamCardProps> = ({ stream, delay = 0 }) => {
+  const statusColors = {
+    healthy: C.green,
+    degraded: C.yellow,
+    stale: C.orange,
+    dead: C.red
+  };
+
+  const statusLabels = {
+    healthy: 'Healthy',
+    degraded: 'Degraded',
+    stale: 'Stale',
+    dead: 'Dead'
+  };
+
+  const heartbeatDiff = (Date.now() - new Date(stream.last_heartbeat).getTime()) / 1000;
+  const isStale = heartbeatDiff > 30;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay, ease: [0.4, 0, 0.2, 1] }}
+      className="rounded-xl p-4 border relative overflow-hidden"
+      style={{ background: C.card, borderColor: C.border }}
+    >
+      <div className="absolute inset-0 opacity-5 rounded-xl"
+        style={{ background: `radial-gradient(circle at top left, ${statusColors[stream.status]}, transparent 60%)` }} />
+
+      <div className="relative">
+        <div className="flex items-center justify-between gap-3 mb-2">
+          <div className="flex items-center gap-2">
+            <motion.div className="w-2 h-2 rounded-full"
+              style={{ background: statusColors[stream.status] }}
+              animate={{ opacity: stream.status === 'healthy' ? [1, 0.3, 1] : 1 }}
+              transition={{ duration: 2, repeat: Infinity }} />
+            <span className="text-xs font-medium text-white">Stream {stream.stream_id.slice(-4)}</span>
+          </div>
+          <span className="text-xs px-2 py-0.5 rounded-full border"
+            style={{
+              background: `${statusColors[stream.status]}12`,
+              borderColor: `${statusColors[stream.status]}30`,
+              color: statusColors[stream.status]
+            }}>
+            {statusLabels[stream.status]}
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 text-xs mb-2">
+          <div style={{ color: C.muted }}>Mission: <span className="text-white">{stream.mission_id.slice(-4)}</span></div>
+          <div style={{ color: C.muted }}>Seq: <span className="text-white">{stream.sequence_number}</span></div>
+        </div>
+
+        <div className="flex items-center justify-between text-xs" style={{ color: C.muted }}>
+          <span>Errors: {stream.total_errors}</span>
+          <span className={isStale ? 'text-red-400' : ''}>
+            {isStale ? 'Stale' : timeAgo(stream.last_heartbeat)}
+          </span>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+interface ErrorCardProps { error: AgentError; delay?: number; }
+const ErrorCard: React.FC<ErrorCardProps> = ({ error, delay = 0 }) => {
+  const categoryColors = {
+    network: C.red,
+    auth: C.orange,
+    validation: C.yellow,
+    provider: C.purple,
+    governance: C.cyan,
+    budget: C.green,
+    timeout: C.red,
+    agent: C.accent,
+    system: C.muted
+  };
+
+  const recoveryLabels = {
+    retry: 'Retry',
+    fallback: 'Fallback',
+    escalate: 'Escalate',
+    abort: 'Abort',
+    quarantine: 'Quarantine'
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay, ease: [0.4, 0, 0.2, 1] }}
+      className="rounded-lg p-3 border"
+      style={{ background: C.bg, borderColor: C.border }}
+    >
+      <div className="flex items-start gap-3">
+        <div className="w-2 h-2 rounded-full mt-1.5 flex-shrink-0"
+          style={{ background: categoryColors[error.category] }} />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between gap-2 mb-1">
+            <span className="text-xs font-medium text-white capitalize">{error.category}</span>
+            <div className="flex items-center gap-1">
+              <span className="text-xs px-1.5 py-0.5 rounded border text-xs"
+                style={{
+                  background: `${categoryColors[error.category]}12`,
+                  borderColor: `${categoryColors[error.category]}30`,
+                  color: categoryColors[error.category]
+                }}>
+                {recoveryLabels[error.recovery]}
+              </span>
+              {error.resolved && (
+                <CheckCircle2 className="w-3 h-3 text-green-500" />
+              )}
+            </div>
+          </div>
+          <p className="text-xs leading-relaxed mb-1" style={{ color: C.muted }}>{error.message}</p>
+          <div className="flex items-center justify-between text-xs" style={{ color: C.muted }}>
+            <span>{error.mission_id ? `Mission ${error.mission_id.slice(-4)}` : 'System'}</span>
+            <span>{timeAgo(error.timestamp)}</span>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 // ── Main page ─────────────────────────────────────────────────────────────────
 export const AgentMonitor: React.FC = () => {
   const { user } = useAuth();
@@ -171,6 +471,10 @@ export const AgentMonitor: React.FC = () => {
   const [taskSubmitting, setTaskSubmitting] = useState(false);
   const [taskResult, setTaskResult] = useState<{ taskId: string; response: string } | null>(null);
   const [skillNames, setSkillNames] = useState<string[]>([]);
+  // AgentIRL state
+  const [missions, setMissions] = useState<Mission[]>(MOCK_MISSIONS);
+  const [streams, setStreams] = useState<StreamHealth[]>(MOCK_STREAMS);
+  const [errors, setErrors] = useState<AgentError[]>(MOCK_ERRORS);
   const wsRef = useRef<WebSocket | null>(null);
 
   // Load team
@@ -380,6 +684,45 @@ export const AgentMonitor: React.FC = () => {
                 delay={i * 0.06}
               />
             ))}
+          </div>
+
+          {/* AgentIRL Mission Lifecycle */}
+          <div className="mt-8">
+            <h2 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+              <BrainCircuit size={16} style={{ color: C.purple }} />
+              AgentIRL Missions
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {missions.map((mission, i) => (
+                <MissionCard key={mission.id} mission={mission} delay={i * 0.08} />
+              ))}
+            </div>
+          </div>
+
+          {/* AgentIRL Stream Health */}
+          <div className="mt-8">
+            <h2 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+              <Activity size={16} style={{ color: C.cyan }} />
+              Stream Health
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {streams.map((stream, i) => (
+                <StreamCard key={stream.stream_id} stream={stream} delay={i * 0.06} />
+              ))}
+            </div>
+          </div>
+
+          {/* AgentIRL Error Recovery */}
+          <div className="mt-8">
+            <h2 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+              <AlertCircle size={16} style={{ color: C.red }} />
+              Error Recovery
+            </h2>
+            <div className="space-y-2 max-h-64 overflow-y-auto">
+              {errors.map((error, i) => (
+                <ErrorCard key={error.id} error={error} delay={i * 0.04} />
+              ))}
+            </div>
           </div>
         </div>
 

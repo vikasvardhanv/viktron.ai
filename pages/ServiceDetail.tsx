@@ -955,6 +955,11 @@ export const ServiceDetail = () => {
             <Link to="/contact" className="btn bg-white text-slate-900 hover:bg-blue-50 px-8 py-3 rounded-xl text-lg font-semibold">
               Start Free Trial
             </Link>
+            {serviceId === 'agent-orchestration' && (
+              <Link to="/dashboard" className="btn bg-purple-600 text-white hover:bg-purple-700 px-8 py-3 rounded-xl text-lg font-semibold">
+                View AgentIRL Dashboard
+              </Link>
+            )}
             <Link to="/demos" className="btn border border-slate-700 text-white hover:bg-slate-800 px-8 py-3 rounded-xl text-lg">
               Watch Demo
             </Link>
