@@ -74,6 +74,15 @@ const AGENT_AVATAR: Record<string, { icon: React.ReactNode; bg: string; ring: st
 };
 const defaultAvatar = { icon: <Cpu size={20} />, bg: 'bg-slate-100', ring: 'border-slate-200 text-slate-500' };
 
+// ── Per-agent console UI labels ───────────────────────────────────────────────
+const CONSOLE_UI_LABELS: Record<string, string> = {
+  "patient-intake": "🧙 Step-by-step wizard",
+  "data-analyst":   "📊 Query dashboard",
+  "marketing":      "📣 Campaign builder",
+  "prior-auth":     "🧙 Guided workflow",
+  "research":       "🔍 Research monitor",
+};
+
 // ── Per-agent banner images ───────────────────────────────────────────────────
 const AGENT_IMAGES: Record<string, string> = {
   ceo:            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600&h=200',
@@ -863,6 +872,23 @@ const AgentCard: React.FC<{ agent: AgentEntry; onDeploy: (agent: AgentEntry) => 
         <p className="text-xs text-slate-500 leading-relaxed mb-3 line-clamp-2 flex-1">
           {agent.tagline}
         </p>
+
+        {CONSOLE_UI_LABELS[agent.slug] && (
+          <span style={{
+            display: "inline-block",
+            background: "#f0fdf4",
+            color: "#166534",
+            border: "1px solid #bbf7d0",
+            borderRadius: "6px",
+            padding: "2px 8px",
+            fontSize: "0.72rem",
+            fontWeight: 600,
+            marginTop: "4px",
+            marginBottom: "8px",
+          }}>
+            {CONSOLE_UI_LABELS[agent.slug]}
+          </span>
+        )}
 
         <div className="flex items-center gap-2 mb-3">
           <span className="px-2 py-0.5 bg-slate-100 border border-slate-200 rounded-full text-[10px] text-slate-600 font-mono">
