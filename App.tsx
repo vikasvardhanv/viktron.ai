@@ -32,6 +32,7 @@ const SlackOAuthCallback = lazy(() => import('./pages/SlackOAuthCallback').then(
 const ToolFeed = lazy(() => import('./pages/ToolFeed').then(m => ({ default: m.ToolFeed })));
 const PretrainedDirectory = lazy(() => import('./pages/PretrainedDirectory').then(m => ({ default: m.default })));
 const SpawnApproval = lazy(() => import('./pages/SpawnApproval').then(m => ({ default: m.default })));
+const CloudDashboard = lazy(() => import('./pages/cloud/index'));
 
 // Dashboard surfaces
 const AgentMonitor = lazy(() => import('./pages/dashboard/AgentMonitor').then(m => ({ default: m.AgentMonitor })));
@@ -224,6 +225,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/my-platforms" element={<PageTransition><MyPlatforms /></PageTransition>} />
         <Route path="/leadbot" element={<PageTransition><LeadbotConsole /></PageTransition>} />
         <Route path="/rent" element={<PageTransition><RentAgent /></PageTransition>} />
+        <Route path="/cloud" element={<PageTransition><CloudDashboard /></PageTransition>} />
         <Route path="/analytics" element={<PageTransition><AnalyticsApp /></PageTransition>} />
         <Route path="/saas-analytics" element={<PageTransition><AnalyticsApp /></PageTransition>} />
         <Route path="/slack/oauth/callback" element={<PageTransition><SlackOAuthCallback /></PageTransition>} />
