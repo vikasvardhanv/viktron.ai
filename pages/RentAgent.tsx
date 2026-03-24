@@ -7,7 +7,7 @@ import {
   ChevronRight, Copy, Check, ExternalLink, Globe,
   Lock, Cpu, Terminal, Layout, Users, ShoppingBag,
   X, ArrowRight, Package, CloudUpload, Play,
-  Crown, FileText, FlaskConical, ShieldCheck,
+  Crown, FileText, FlaskConical, ShieldCheck, ClipboardList,
 } from 'lucide-react';
 import { Layout as PageLayout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
@@ -54,6 +54,7 @@ interface AgentEntry {
   hosted_price_usd_month: number | null;
   pulls_count: number;
   stars_count: number;
+  container_port?: number;
 }
 
 // ── Agent avatar map — unique icon + gradient per slug ───────────────────────
@@ -71,6 +72,7 @@ const AGENT_AVATAR: Record<string, { icon: React.ReactNode; bg: string; ring: st
   'social-autopilot': { icon: <Globe size={20} />,    bg: 'bg-sky-100',    ring: 'border-sky-200 text-sky-700' },
   ecommerce:      { icon: <ShoppingBag size={20} />,   bg: 'bg-amber-100',  ring: 'border-amber-200 text-amber-600' },
   pm:             { icon: <Layout size={20} />,         bg: 'bg-rose-100',   ring: 'border-rose-200 text-rose-600' },
+  'form-filler':  { icon: <ClipboardList size={20} />, bg: 'bg-lime-100',   ring: 'border-lime-200 text-lime-700' },
 };
 const defaultAvatar = { icon: <Cpu size={20} />, bg: 'bg-slate-100', ring: 'border-slate-200 text-slate-500' };
 
@@ -447,6 +449,33 @@ const AGENTS: AgentEntry[] = [
     supports_local: true, supports_hosted: true, supports_cloud_deploy: true,
     hosted_price_usd_month: 49, pulls_count: 1560, stars_count: 132,
   },
+  {
+    slug: 'form-filler',
+    display_name: 'Form Filler Agent',
+    tagline: 'Fills any form autonomously — PDFs, web forms, and spreadsheets',
+    description: 'AI-powered form filling agent with browser automation. Discovers customer data from local files (CSV, JSON, Excel, VCF), maps fields intelligently, and fills PDF, Word, Excel, and web-based forms. Supports batch processing, login-gated forms, and screenshot verification.',
+    category: 'data',
+    tags: ['forms', 'browser-automation', 'pdf', 'playwright', 'data-entry'],
+    docker_image: 'ghcr.io/vikasvardhanv/agent-form-filler',
+    docker_tag: 'latest',
+    version: '1.0.0',
+    llm_provider: 'openai', llm_model: 'gpt-4o',
+    capabilities: ['pdf_form_filling', 'web_form_filling', 'data_discovery', 'batch_processing', 'browser_automation'],
+    integrations: [
+      { name: 'Playwright', logo: 'playwright', optional: false },
+      { name: 'OpenAI', logo: 'openai', optional: false },
+    ],
+    tools_enabled: ['browser', 'file_reader', 'pdf_writer'],
+    env_vars_required: [
+      { key: 'OPENAI_API_KEY', description: 'LLM access (GPT-4o)', required: true },
+      { key: 'ANTHROPIC_API_KEY', description: 'Alternative LLM (Claude)', required: false },
+      { key: 'GOOGLE_API_KEY', description: 'Alternative LLM (Gemini)', required: false },
+    ],
+    is_featured: true, is_open_source: false,
+    supports_local: true, supports_hosted: true, supports_cloud_deploy: true,
+    hosted_price_usd_month: 49, pulls_count: 0, stars_count: 0,
+    container_port: 8000,
+  },
 ];
 
 // ── Category config ───────────────────────────────────────────────────────────
@@ -502,6 +531,7 @@ function buildDockerPull(agent: AgentEntry): string {
 
 function buildDockerRun(agent: AgentEntry): string {
   const required = agent.env_vars_required.filter(v => v.required);
+  const containerPort = agent.container_port ?? 8080;
   const envLines = [
     `  -e AGENT_SLUG=${agent.slug}`,
     ...required.map(v => `  -e ${v.key}="\${${v.key}}"`),
@@ -510,7 +540,7 @@ function buildDockerRun(agent: AgentEntry): string {
   return [
     `docker run -d \\`,
     `  --name ${agent.slug}-agent \\`,
-    `  -p 8080:8080 \\`,
+    `  -p 8080:${containerPort} \\`,
     `${envLines} \\`,
     `  ${image}`,
   ].filter(Boolean).join('\n');
@@ -518,6 +548,7 @@ function buildDockerRun(agent: AgentEntry): string {
 
 function buildCompose(agent: AgentEntry): string {
   const required = agent.env_vars_required.filter(v => v.required);
+  const containerPort = agent.container_port ?? 8080;
   const envBlock = [
     `      - AGENT_SLUG=${agent.slug}`,
     ...required.map(v => `      - ${v.key}=\${${v.key}}`),
@@ -528,12 +559,12 @@ services:
   ${agent.slug}-agent:
     image: ${image}
     ports:
-      - "8080:8080"
+      - "8080:${containerPort}"
     environment:
 ${envBlock || '      # No required env vars'}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-sf", "http://localhost:8080/health"]
+      test: ["CMD", "curl", "-sf", "http://localhost:${containerPort}/health"]
       interval: 30s
       timeout: 10s
       retries: 3`;
