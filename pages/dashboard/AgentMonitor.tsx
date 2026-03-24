@@ -443,7 +443,7 @@ const ErrorCard: React.FC<ErrorCardProps> = ({ error, delay = 0 }) => {
                 {recoveryLabels[error.recovery]}
               </span>
               {error.resolved && (
-                <CheckCircle2 className="w-3 h-3 text-green-500" />
+                <CheckSquare className="w-3 h-3 text-green-500" />
               )}
             </div>
           </div>
