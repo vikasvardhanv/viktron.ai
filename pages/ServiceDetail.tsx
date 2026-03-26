@@ -420,6 +420,7 @@ const getServiceData = (slug: string): ServiceData => {
 export const ServiceDetail = () => {
   const { serviceId } = useParams<{ serviceId: string }>();
   const service = getServiceData(serviceId || '');
+  const isAgentIRL = serviceId === 'agent-orchestration' || service.name === 'Agent Orchestration (AgentIRL)';
 
   const IconComponent = iconMap[service.icon] || Zap;
 
@@ -427,82 +428,158 @@ export const ServiceDetail = () => {
     <Layout>
       <ServiceSEO serviceName={service.name} serviceDescription={service.description} />
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-50/50 rounded-full blur-[130px] pointer-events-none" />
-        <div className="container-custom relative z-10">
-          <Link to="/services" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-blue-600 mb-8 transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Back to Services
-          </Link>
+      {isAgentIRL ? (
+        <section className="pt-28 pb-14 bg-[#f7f8f5] relative overflow-hidden border-b border-slate-200">
+          <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_14%_12%,rgba(16,185,129,0.14),transparent_36%),radial-gradient(circle_at_88%_25%,rgba(6,182,212,0.14),transparent_34%)]" />
+          <div className="container-custom relative z-10">
+            <Link to="/services" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-emerald-700 mb-8 transition-colors">
+              <ArrowLeft className="w-4 h-4" /> Back to Services
+            </Link>
 
-          <div className="flex flex-col lg:flex-row gap-12 items-start">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="lg:w-3/5"
-            >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-xs font-mono text-blue-600 mb-6">
-                <IconComponent className="w-3 h-3" /> {service.category}
-              </div>
-
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight mb-6 leading-[1.1]">
-                {service.name}
-              </h1>
-              <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-2xl">
-                {service.tagline}
-              </p>
-              <p className="text-slate-500 mb-10 leading-relaxed max-w-2xl">
-                {service.description}
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Link to="/contact" className="btn btn-primary btn-lg rounded-xl h-14 px-8 text-lg shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2">
-                  Get Started <ArrowRight className="w-5 h-5" />
-                </Link>
-                <Link to="/demos" className="btn btn-secondary btn-lg rounded-xl h-14 px-8 text-lg flex items-center justify-center border-slate-200">
-                  See Demo
-                </Link>
-              </div>
-
-              <div className="text-sm text-slate-500">
-                <span className="font-semibold text-slate-700">{service.pricing.label}</span> — {service.pricing.note}
-              </div>
-            </motion.div>
-
-            {/* Metrics Panel */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="lg:w-2/5 w-full"
-            >
-              <div className={`grid gap-4 ${service.metrics.length > 4 ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-2'}`}>
-                {service.metrics.map((metric, idx) => (
-                  <motion.div 
-                    key={idx} 
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.3 + idx * 0.05 }}
-                    className="bg-gradient-to-br from-white to-slate-50 border border-slate-200 rounded-2xl p-6 text-center hover:border-blue-200 hover:shadow-xl hover:shadow-blue-200/20 transition-all group cursor-default"
-                  >
-                    <div className="text-3xl md:text-4xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">{metric.value}</div>
-                    <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">{metric.label}</div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Hero Image */}
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
+            <div className="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr] gap-10 items-center">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="mt-8 rounded-2xl overflow-hidden border border-slate-200 shadow-lg hover:shadow-xl transition-shadow"
               >
-                <img src={service.heroImage} alt={service.name} className="w-full h-48 object-cover" />
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] tracking-[0.12em] uppercase text-emerald-700 font-semibold mb-6">
+                  <IconComponent className="w-3 h-3" /> AgentIRL Platform
+                </div>
+
+                <h1 className="text-4xl md:text-6xl tracking-tighter leading-none font-semibold text-slate-950 mb-6">
+                  Production orchestration layer for real AI systems.
+                </h1>
+                <p className="text-base text-slate-600 leading-relaxed max-w-[65ch] mb-8">
+                  AgentIRL sits between models and business systems to make multi-agent workflows deterministic,
+                  observable, and policy-safe. It is designed for high uptime deployments, not demos.
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mb-8">
+                  {service.metrics.slice(0, 3).map((metric) => (
+                    <div key={metric.label} className="rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-[0_16px_35px_-26px_rgba(15,23,42,0.55)]">
+                      <p className="text-xl font-semibold tracking-tight text-slate-900">{metric.value}</p>
+                      <p className="text-[11px] uppercase tracking-[0.1em] text-slate-500">{metric.label}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                  <Link to="/contact" className="inline-flex items-center justify-center gap-2 rounded-xl h-12 px-6 text-base font-semibold bg-slate-900 text-white hover:bg-slate-800 active:scale-[0.98] transition-all">
+                    Start AgentIRL <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <Link to="/demos/agent-orchestration" className="inline-flex items-center justify-center gap-2 rounded-xl h-12 px-6 text-base border border-slate-300 bg-white text-slate-900 hover:bg-slate-50 active:scale-[0.98] transition-all">
+                    <Play className="w-4 h-4" /> Watch Orchestration Demo
+                  </Link>
+                </div>
+
+                <div className="text-sm text-slate-500">
+                  <span className="font-semibold text-slate-700">{service.pricing.label}</span> — {service.pricing.note}
+                </div>
               </motion.div>
-            </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.15 }}
+              >
+                <div className="rounded-[2rem] border border-white/20 bg-white/60 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_24px_45px_-26px_rgba(15,23,42,0.65)] backdrop-blur-md">
+                  <div className="overflow-hidden rounded-[1.4rem] border border-slate-200 bg-slate-950">
+                    <video
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      className="w-full aspect-[16/10] object-cover"
+                      src="/AI_Agents_Orchestrated_into_a_System.mp4"
+                    />
+                  </div>
+                </div>
+                <div className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3">
+                  <p className="text-[11px] uppercase tracking-[0.1em] text-emerald-700">Runtime Core</p>
+                  <p className="text-sm font-semibold text-emerald-900">Task DAG orchestration, policy engine, recovery loops</p>
+                </div>
+              </motion.div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : (
+        <section className="pt-32 pb-16 bg-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-50/50 rounded-full blur-[130px] pointer-events-none" />
+          <div className="container-custom relative z-10">
+            <Link to="/services" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-blue-600 mb-8 transition-colors">
+              <ArrowLeft className="w-4 h-4" /> Back to Services
+            </Link>
+
+            <div className="flex flex-col lg:flex-row gap-12 items-start">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="lg:w-3/5"
+              >
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-xs font-mono text-blue-600 mb-6">
+                  <IconComponent className="w-3 h-3" /> {service.category}
+                </div>
+
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 tracking-tight mb-6 leading-[1.1]">
+                  {service.name}
+                </h1>
+                <p className="text-xl text-slate-600 mb-8 leading-relaxed max-w-2xl">
+                  {service.tagline}
+                </p>
+                <p className="text-slate-500 mb-10 leading-relaxed max-w-2xl">
+                  {service.description}
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                  <Link to="/contact" className="btn btn-primary btn-lg rounded-xl h-14 px-8 text-lg shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2">
+                    Get Started <ArrowRight className="w-5 h-5" />
+                  </Link>
+                  <Link to="/demos" className="btn btn-secondary btn-lg rounded-xl h-14 px-8 text-lg flex items-center justify-center border-slate-200">
+                    See Demo
+                  </Link>
+                </div>
+
+                <div className="text-sm text-slate-500">
+                  <span className="font-semibold text-slate-700">{service.pricing.label}</span> — {service.pricing.note}
+                </div>
+              </motion.div>
+
+              {/* Metrics Panel */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="lg:w-2/5 w-full"
+              >
+                <div className={`grid gap-4 ${service.metrics.length > 4 ? 'grid-cols-2 md:grid-cols-3' : 'grid-cols-2'}`}>
+                  {service.metrics.map((metric, idx) => (
+                    <motion.div 
+                      key={idx} 
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.3 + idx * 0.05 }}
+                      className="bg-gradient-to-br from-white to-slate-50 border border-slate-200 rounded-2xl p-6 text-center hover:border-blue-200 hover:shadow-xl hover:shadow-blue-200/20 transition-all group cursor-default"
+                    >
+                      <div className="text-3xl md:text-4xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">{metric.value}</div>
+                      <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">{metric.label}</div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Hero Image */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="mt-8 rounded-2xl overflow-hidden border border-slate-200 shadow-lg hover:shadow-xl transition-shadow"
+                >
+                  <img src={service.heroImage} alt={service.name} className="w-full h-48 object-cover" />
+                </motion.div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Features Grid */}
       <section className="py-24 bg-gradient-to-b from-slate-50 to-white border-t border-slate-200">
@@ -751,7 +828,7 @@ export const ServiceDetail = () => {
           <section className="py-24 bg-white border-t border-slate-200">
             <div className="container-custom">
               <div className="text-center mb-16">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-100 text-xs font-mono text-purple-600 mb-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-100 text-xs font-mono text-cyan-700 mb-6">
                   <Layers className="w-3 h-3" /> Framework Agnostic
                 </div>
                 <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
@@ -956,7 +1033,7 @@ export const ServiceDetail = () => {
               Start Free Trial
             </Link>
             {serviceId === 'agent-orchestration' && (
-              <Link to="/dashboard" className="btn bg-purple-600 text-white hover:bg-purple-700 px-8 py-3 rounded-xl text-lg font-semibold">
+              <Link to="/dashboard" className="btn bg-emerald-600 text-white hover:bg-emerald-700 px-8 py-3 rounded-xl text-lg font-semibold">
                 View AgentIRL Dashboard
               </Link>
             )}
