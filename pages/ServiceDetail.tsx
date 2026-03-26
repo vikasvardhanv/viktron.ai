@@ -7,7 +7,7 @@ import {
   ArrowRight, ArrowLeft, CheckCircle2, Zap, Clock, Shield,
   Bot, Phone, Megaphone, Workflow, BrainCircuit, Users,
   MessageSquare, BarChart3, Sparkles, Mic, Mail, Globe,
-  Database, Cpu, Target, Layers, Star, TrendingUp, AlertCircle
+  Database, Cpu, Target, Layers, Star, TrendingUp, AlertCircle, Play
 } from 'lucide-react';
 
 const iconMap: Record<string, any> = {
