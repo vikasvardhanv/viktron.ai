@@ -14,6 +14,12 @@ import storeRoutes from './routes/store.js';
 import smsRoutes from './routes/sms.js';
 import demoLinkRoutes from './routes/demoLink.js';
 import schedulingRoutes from './routes/scheduling.js';
+import slackRoutes from './routes/slack.js';
+import agentRoutes from './routes/agent.js';
+import compatRoutes from './routes/compat.js';
+import { startScheduler } from './utils/schedulerService.js';
+import { syncLocalSkillsToStore } from './utils/skillLoader.js';
+import { ensureTaskQueueTables, logQueueMode } from './utils/taskQueue.js';
 import logger from './utils/logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -92,6 +98,9 @@ app.use('/api/store', storeRoutes);
 app.use('/api/scheduling', schedulingRoutes);
 app.use('/api/sms', smsRoutes);
 app.use('/api/demo-link', demoLinkRoutes);
+app.use('/api/channels/slack', slackRoutes);
+app.use('/api/agent', agentRoutes);
+app.use('/api', compatRoutes);
 
 // 404 handler for API routes
 app.use('/api/*', (req, res) => {
@@ -151,6 +160,7 @@ app.listen(PORT, () => {
     env: process.env.NODE_ENV || 'development',
     nodeVersion: process.version,
   });
+  startScheduler();
 
   // Log database connection status
   logger.startup('Database URL configured', {
@@ -158,5 +168,20 @@ app.listen(PORT, () => {
     dbHost: process.env.DATABASE_URL?.match(/@([^:]+):/)?.[1]?.substring(0, 10) + '...' || 'not set',
   });
 });
+
+void ensureTaskQueueTables()
+  .then(() => logQueueMode())
+  .catch((error) => {
+    logger.warn('Task queue initialization failed', {
+      message: error.message,
+    });
+  });
+
+void syncLocalSkillsToStore('default')
+  .catch((error) => {
+    logger.warn('Initial skill sync failed', {
+      message: error.message,
+    });
+  });
 
 export default app;

@@ -557,7 +557,7 @@ export const AuthModal: React.FC = () => {
                       value={company}
                       onChange={(e) => setCompany(e.target.value)}
                       className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
-                      placeholder="Acme Inc."
+                      placeholder="Your company"
                     />
                   </div>
                 </div>

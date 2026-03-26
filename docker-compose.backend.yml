@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  viktron-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      DATABASE_URL: ${DATABASE_URL}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      SLACK_BOT_TOKEN: ${SLACK_BOT_TOKEN}
+      SLACK_SIGNING_SECRET: ${SLACK_SIGNING_SECRET}
+      SLACK_BOT_USER_ID: ${SLACK_BOT_USER_ID}
+      SLACK_APP_NAME: ${SLACK_APP_NAME:-Viktron}
+      VIKTRON_INTERNAL_API_TOKEN: ${VIKTRON_INTERNAL_API_TOKEN}
+      VIKTRON_WORKSPACES_ROOT: /workspaces
+      VIKTRON_SKILLS_ROOT: /app/server/skills
+    volumes:
+      - viktron_workspaces:/workspaces
+    restart: unless-stopped
+
+  viktron-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      SLACK_BOT_TOKEN: ${SLACK_BOT_TOKEN}
+      SLACK_SIGNING_SECRET: ${SLACK_SIGNING_SECRET}
+      SLACK_BOT_USER_ID: ${SLACK_BOT_USER_ID}
+      SLACK_APP_NAME: ${SLACK_APP_NAME:-Viktron}
+      VIKTRON_INTERNAL_API_TOKEN: ${VIKTRON_INTERNAL_API_TOKEN}
+      VIKTRON_WORKSPACES_ROOT: /workspaces
+      VIKTRON_SKILLS_ROOT: /app/server/skills
+      WORKER_POLL_MS: 3000
+    volumes:
+      - viktron_workspaces:/workspaces
+    restart: unless-stopped
+
+volumes:
+  viktron_workspaces:

@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "vite",
     "dev:server": "node server/index.js",
-    "dev:all": "concurrently \"npm run dev\" \"npm run dev:server\"",
+    "dev:worker": "node server/worker.js",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:server\" \"npm run dev:worker\"",
     "build": "vite build",
     "preview": "vite preview",
     "build:analyze": "vite build --mode analyze",
@@ -19,7 +20,9 @@
     "store:import-json": "node server/scripts/import-workflow-json.js",
     "store:import-docs": "node server/scripts/import-workflow-docs.js",
     "store:import-docs-from-db": "node server/scripts/import-workflow-docs.js --from-db",
-    "start:server": "NODE_ENV=production node server/index.js"
+    "skills:import:viktor": "python3 server/scripts/import_viktor_skills.py",
+    "start:server": "NODE_ENV=production node server/index.js",
+    "start:worker": "NODE_ENV=production node server/worker.js"
   },
   "dependencies": {
     "@google/genai": "^1.27.0",

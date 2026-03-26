@@ -60,7 +60,14 @@ const CopyField: React.FC<{ value: string }> = ({ value }) => {
 };
 
 // ── Slack Wizard ──────────────────────────────────────────────────────────────
-const SLACK_WEBHOOK = 'https://api.viktron.ai/api/channels/slack/events';
+const resolveSlackWebhook = () => {
+  const configuredBase = (import.meta.env.VITE_AGENT_API_URL as string | undefined)?.trim().replace(/\/$/, '');
+  const originBase = typeof window !== 'undefined' ? window.location.origin.replace(/\/$/, '') : '';
+  const base = configuredBase || originBase;
+  return `${base}/api/channels/slack/events`;
+};
+
+const SLACK_WEBHOOK = resolveSlackWebhook();
 
 const SlackWizard: React.FC<{ teamId: string; initialInfo: ChannelInfo }> = ({ teamId, initialInfo }) => {
   const [info, setInfo] = useState(initialInfo);

@@ -10,7 +10,7 @@ export const TrustSection = () => {
                     <p className="text-sm font-mono text-slate-500 uppercase tracking-widest mb-8">Trusted by Engineering Teams at</p>
                     <div className="flex flex-wrap justify-center gap-12 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
                          {/* Placeholder Logos - using text for now as generic SVGs */}
-                         {['Acme Corp', 'GlobalBank', 'TechFlow', 'DataSystems', 'CloudScale'].map((logo) => (
+                         {['Northstar Health', 'GlobalBank', 'TechFlow', 'DataSystems', 'CloudScale'].map((logo) => (
                              <span key={logo} className="text-xl font-bold font-mono text-slate-400 hover:text-slate-800 transition-colors">{logo}</span>
                          ))}
                     </div>
