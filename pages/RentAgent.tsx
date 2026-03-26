@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 import { Layout as PageLayout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
+import { DocumentScanner } from '../components/DocumentScanner';
+import { FormFillerConsole } from '../components/FormFillerConsole';
 import { useAuth } from '../context/AuthContext';
 import { registryApi } from '../services/registryApi';
 
@@ -602,6 +604,7 @@ const DeployModal: React.FC<{ agent: AgentEntry; onClose: () => void }> = ({ age
   const [renting, setRenting] = useState(false);
   const [rentResult, setRentResult] = useState<{ instance_id: string; endpoint: string | null; message: string } | null>(null);
   const [rentError, setRentError] = useState<string | null>(null);
+  const [formFillerSession, setFormFillerSession] = useState<{ sessionId: string; fieldCount: number } | null>(null);
 
   const handleRent = async () => {
     setRenting(true);
@@ -833,6 +836,23 @@ const DeployModal: React.FC<{ agent: AgentEntry; onClose: () => void }> = ({ age
                 </div>
               </div>
             )}
+          {agent.slug === 'form-filler' && (
+            <div className="mt-6 space-y-4 px-6 pb-6">
+              <h3 className="text-sm font-semibold text-slate-300">Autonomous Form Filler</h3>
+              {!formFillerSession ? (
+                <DocumentScanner
+                  onProfileReady={(sessionId, fieldCount) =>
+                    setFormFillerSession({ sessionId, fieldCount })
+                  }
+                />
+              ) : (
+                <FormFillerConsole
+                  sessionId={formFillerSession.sessionId}
+                  agentBaseUrl={agent.container_port ? `http://localhost:${agent.container_port}` : 'http://localhost:8080'}
+                />
+              )}
+            </div>
+          )}
           </div>
         </motion.div>
       </motion.div>
