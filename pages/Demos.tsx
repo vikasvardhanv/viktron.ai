@@ -35,7 +35,7 @@ const capabilities = [
     icon: <Network className="h-6 w-6 text-indigo-600" />,
     title: 'Multi-Agent Orchestration',
     desc: 'Deploy and manage multiple agents with task delegation, conflict resolution, and parallel execution.',
-    link: '/services/agent-orchestration',
+    link: '/services/agentirl',
   },
   {
     icon: <Mic className="h-6 w-6 text-purple-600" />,

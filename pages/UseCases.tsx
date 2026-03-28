@@ -192,7 +192,7 @@ const USE_CASES = [
       { agent: 'Finance', color: '#10b981', msg: 'Monthly close: Categorized 1,247 transactions, flagged 12 anomalies, generated variance report.' },
       { agent: 'Platform', color: '#3b82f6', msg: 'Daily dashboard: 342 tasks completed, 4 human approvals pending, 99.97% uptime, $47.20 total AI cost.' },
     ],
-    link: '/services/agent-orchestration',
+    link: '/services/agentirl',
   },
 ];
 

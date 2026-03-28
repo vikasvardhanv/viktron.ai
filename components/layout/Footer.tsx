@@ -7,7 +7,7 @@ const footerLinks = {
   platform: [
     { name: 'AI Agent Teams', path: '/services/ai-sales-agent' },
     { name: 'Voice & Chat Agents', path: '/services/voice-ai-agent' },
-    { name: 'AgentIRL Platform', path: '/services/agent-orchestration' },
+    { name: 'AgentIRL Platform', path: '/services/agentirl' },
     { name: 'Analytics & Observability', path: '/services/data-analytics-ai' },
     { name: 'AI Audit & Consulting', path: '/services/ai-audit-consulting' },
   ],

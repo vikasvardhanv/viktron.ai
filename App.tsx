@@ -70,6 +70,7 @@ const WorkflowAutomationDemo = lazy(() => import('./pages/demos/WorkflowAutomati
 const DataAnalyticsDemo = lazy(() => import('./pages/demos/DataAnalyticsDemo').then(m => ({ default: m.DataAnalyticsDemo })));
 const ContentGeneratorDemo = lazy(() => import('./pages/demos/ContentGeneratorDemo').then(m => ({ default: m.ContentGeneratorDemo })));
 const AgentOrchestrationDemo = lazy(() => import('./pages/demos/AgentOrchestrationDemo').then(m => ({ default: m.AgentOrchestrationDemo })));
+const AgentIRL = lazy(() => import('./pages/AgentIRL').then(m => ({ default: m.AgentIRL })));
 const CustomModelDemo = lazy(() => import('./pages/demos/CustomModelDemo').then(m => ({ default: m.CustomModelDemo })));
 
 const DemoVideo = lazy(() => import('./pages/DemoVideo').then(m => ({ default: m.DemoVideo })));
@@ -208,6 +209,8 @@ const AnimatedRoutes: React.FC = () => {
         {/* Main pages */}
         <Route path="/" element={<PageTransition><Landing /></PageTransition>} />
         <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
+        <Route path="/services/agentirl" element={<PageTransition><AgentIRL /></PageTransition>} />
+        <Route path="/services/agent-orchestration" element={<Navigate to="/services/agentirl" replace />} />
         <Route path="/services/:serviceId" element={<PageTransition><ServiceDetail /></PageTransition>} />
         <Route path="/use-cases" element={<PageTransition><UseCases /></PageTransition>} />
         <Route path="/agents" element={<PageTransition><Agents /></PageTransition>} />

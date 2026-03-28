@@ -691,7 +691,7 @@ export const Landing = () => {
                 />
               </div>
 
-              <Link to="/services/agent-orchestration" className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700">
+              <Link to="/services/agentirl" className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700">
                 Explore AgentIRL <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>

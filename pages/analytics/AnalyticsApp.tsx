@@ -25,7 +25,7 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
-import { getAuthToken } from '../../context/AuthContext';
+import { getAuthToken, useAuth } from '../../context/AuthContext';
 
 type Trend = 'up' | 'down' | 'flat';
 
@@ -350,6 +350,9 @@ const PlanCard: React.FC<{
 );
 
 export const AnalyticsApp: React.FC = () => {
+  const { user } = useAuth();
+  const workspaceId = user?.id ? `ws-${user.id}` : null;
+
   const [view, setView] = useState<View>('overview');
   const [overview, setOverview] = useState<OverviewPayload>(fallbackOverview);
   const [loadingOverview, setLoadingOverview] = useState(true);
@@ -400,9 +403,10 @@ export const AnalyticsApp: React.FC = () => {
   );
 
   const loadOverview = async () => {
+    if (!workspaceId) return;
     setLoadingOverview(true);
     try {
-      const res = await apiFetch('/saas/overview');
+      const res = await apiFetch(`/saas/overview?workspace_id=${encodeURIComponent(workspaceId)}`);
       const data = await res.json();
       setOverview(data as OverviewPayload);
     } catch {
@@ -413,13 +417,15 @@ export const AnalyticsApp: React.FC = () => {
   };
 
   useEffect(() => {
+    if (!workspaceId) return;
     void loadOverview();
     void loadSources();
-  }, []);
+  }, [workspaceId]);
 
   const loadSources = async () => {
+    if (!workspaceId) return;
     try {
-      const res = await apiFetch('/saas/sources?workspace_id=viktron-team');
+      const res = await apiFetch(`/saas/sources?workspace_id=${encodeURIComponent(workspaceId)}`);
       if (res.status === 401) {
         setSources(fallbackSources);
         setSourcesMessage('Please log in first. Showing available connectors.');
@@ -449,11 +455,15 @@ export const AnalyticsApp: React.FC = () => {
   };
 
   const connectSource = async (provider: string) => {
+    if (!workspaceId) {
+      setSourcesMessage('Please sign in to connect data sources.');
+      return;
+    }
     setSourceLoading(`connect-${provider}`);
     setSourcesMessage('');
     try {
       if (provider === 'slack') {
-        const oauthRes = await apiFetch('/saas/sources/slack/oauth/start?workspace_id=viktron-team');
+        const oauthRes = await apiFetch(`/saas/sources/slack/oauth/start?workspace_id=${encodeURIComponent(workspaceId!)}`);
         if (oauthRes.status === 401) {
           setSourcesMessage('Please sign in on viktron.ai first, then retry Slack connect.');
           return;
@@ -490,7 +500,7 @@ export const AnalyticsApp: React.FC = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          workspace_id: 'viktron-team',
+          workspace_id: workspaceId,
           auth_mode: provider === 'posthog' || provider === 'stripe' ? 'api_key' : 'oauth',
           config: {},
         }),
@@ -520,7 +530,7 @@ export const AnalyticsApp: React.FC = () => {
       const res = await apiFetch(`/saas/sources/${provider}/sync`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ workspace_id: 'viktron-team', lookback_hours: 24 }),
+        body: JSON.stringify({ workspace_id: workspaceId, lookback_hours: 24 }),
       });
       const data = await res.json();
       setSourcesMessage(`${provider} sync complete: ${data.events_ingested} events ingested.`);
@@ -536,7 +546,7 @@ export const AnalyticsApp: React.FC = () => {
     setSourceLoading(`disconnect-${provider}`);
     setSourcesMessage('');
     try {
-      await apiFetch(`/saas/sources/${provider}?workspace_id=viktron-team`, {
+      await apiFetch(`/saas/sources/${provider}?workspace_id=${encodeURIComponent(workspaceId!)}`, {
         method: 'DELETE',
       });
       setSourcesMessage(`${provider} disconnected.`);
@@ -607,6 +617,23 @@ export const AnalyticsApp: React.FC = () => {
     }
   };
 
+  if (!workspaceId) {
+    return (
+      <div className="min-h-screen bg-[#081019] text-white flex items-center justify-center">
+        <div className="text-center max-w-sm px-6">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-400 to-emerald-500 flex items-center justify-center mx-auto mb-5">
+            <BarChart3 className="w-7 h-7 text-[#062330]" />
+          </div>
+          <h2 className="text-xl font-bold mb-2">Sign in to access Analytics</h2>
+          <p className="text-slate-400 text-sm mb-6">Your analytics workspace is tied to your account. Please sign in to view your data.</p>
+          <a href="/auth" className="inline-flex items-center justify-center gap-2 rounded-xl h-11 px-6 text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-white transition-colors">
+            Sign in
+          </a>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#081019] text-white">
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_10%,rgba(14,165,233,0.12),transparent_40%),radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.12),transparent_40%)]" />
@@ -656,8 +683,8 @@ export const AnalyticsApp: React.FC = () => {
             })}
           </div>
           <div className="mt-4 p-3 rounded-lg border border-cyan-500/20 bg-cyan-500/10 text-xs text-cyan-100">
-            <p className="font-semibold mb-1">SaaS Mode Enabled</p>
-            <p className="text-cyan-100/80">Multi-tenant billing, analytics, and Reddit signal intelligence are active.</p>
+            <p className="font-semibold mb-1">Your Workspace</p>
+            <p className="text-cyan-100/80 font-mono break-all">{workspaceId}</p>
           </div>
         </aside>
 

@@ -64,7 +64,7 @@ const HIGHLIGHT_SERVICES = [
     title: "AgentIRL Platform",
     desc: "The infrastructure layer that makes multi-agent systems production-ready. Orchestration, reliability, monitoring.",
     icon: Cpu,
-    link: '/services/agent-orchestration',
+    link: '/services/agentirl',
     features: [
       "Multi-Agent Orchestration",
       "Reliability Engineering",

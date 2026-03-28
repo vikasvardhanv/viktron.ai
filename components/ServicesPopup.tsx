@@ -70,7 +70,7 @@ const SERVICE_CATEGORIES = [
     description: 'The infrastructure layer that makes AI agents production-ready.',
     icon: Cpu,
     color: 'cyan',
-    link: '/services/agent-orchestration',
+    link: '/services/agentirl',
     services: [
       { name: 'Agent Orchestration', slug: 'agent-orchestration', icon: BrainCircuit, desc: 'Multi-agent coordination, task delegation, and swarm intelligence.' },
       { name: 'Reliability Engineering', slug: 'reliability-engineering', icon: Shield, desc: 'Error recovery, fallbacks, guardrails, and 99.9% uptime SLA.' },
