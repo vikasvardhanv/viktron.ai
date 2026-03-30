@@ -709,6 +709,23 @@ const DeployModal: React.FC<{ agent: AgentEntry; onClose: () => void }> = ({ age
                   </p>
                 )}
 
+                {agent.slug === 'form-filler' && (
+                  <div className="mt-3 p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                    <p className="text-sm font-medium text-slate-700 mb-1">Legacy Form Filler UI</p>
+                    <p className="text-xs text-slate-500 mb-2">
+                      Click to open the old standalone console (forced legacy UI for form-filler).
+                    </p>
+                    <a
+                      href="http://localhost:8080"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700"
+                    >
+                      Open old form-filler UI
+                    </a>
+                  </div>
+                )}
+
                 <p className="mt-3 text-xs text-slate-500">
                   Runtime note: local containers require <code className="font-mono">AGENT_SLUG={agent.slug}</code>.
                   Viktron injects that automatically for hosted deploys.
