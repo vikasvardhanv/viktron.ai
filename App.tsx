@@ -219,7 +219,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/case-studies" element={<PageTransition><CaseStudies /></PageTransition>} />
         <Route path="/about" element={<PageTransition><About /></PageTransition>} />
         <Route path="/pricing" element={<PageTransition><Pricing /></PageTransition>} />
-        <Route path="/demos" element={<PageTransition><Pricing /></PageTransition>} />
+        <Route path="/demos" element={<PageTransition><Demos /></PageTransition>} />
         <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         <Route path="/careers" element={<PageTransition><Careers /></PageTransition>} />

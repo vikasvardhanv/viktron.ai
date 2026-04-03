@@ -2,6 +2,8 @@ import { GoogleGenAI } from '@google/genai';
 import { addTaskRun, listSkills, listTools, searchMemories, upsertSkill } from './stateStore.js';
 import { syncLocalSkillsToStore } from './skillLoader.js';
 import { ensureWorkspace, getWorkspacePaths } from './workspaceManager.js';
+import { executeBrowserRuntimeTask, isBrowserRuntimeConfigured } from './browserRuntime.js';
+import { buildOrchestrationPlan, recordOrchestrationMemory } from './orchestrationEngine.js';
 import { runBashInWorkspace } from './workspaceExecutor.js';
 
 const LEAD_AGENT_BASE = 'https://techmehash--lead-agent-api.modal.run';
@@ -40,6 +42,12 @@ export const CAPABILITIES = [
     description: 'Scrape leads for a business query and location, then return structured results.',
   },
   {
+    id: 'form_filling',
+    title: 'Form filling',
+    status: 'available',
+    description: 'Discover, map, and submit web or PDF forms using browser automation and source data.',
+  },
+  {
     id: 'scheduling',
     title: 'Scheduling',
     status: 'available',
@@ -60,8 +68,8 @@ export const CAPABILITIES = [
   {
     id: 'browser_automation',
     title: 'Browser automation',
-    status: 'planned',
-    description: 'Automate browser workflows, form filling, scraping, and screenshots once the browser executor is connected.',
+    status: 'available',
+    description: 'Automate browser workflows, scraping, screenshots, and website interactions through Browser Use.',
   },
   {
     id: 'shell_workspace',
@@ -183,8 +191,108 @@ const inferCapability = (request, payload = {}) => {
   if (/automate|automation|recurring|daily|weekly|monthly/.test(lower)) return 'proactive_automation';
   if (/build app|dashboard app|internal tool|web app|calculator/.test(lower)) return 'app_building';
   if (/code|repo|repository|pull request|pr|branch|test suite|engineering/.test(lower)) return 'engineering';
-  if (/browser|form|screenshot|scrape website|navigate/.test(lower)) return 'browser_automation';
+  if (payload.form_fields || payload.source_data || /form|fill out|fill in|submit form|pdf form|web form/.test(lower)) return 'form_filling';
+  if (/browser|screenshot|scrape website|navigate|website|login|click through|website interaction|browse the web/.test(lower)) return 'browser_automation';
   return 'research_intelligence';
+};
+
+const buildBrowserResearchRequest = (request, payload = {}, thinkingSummary = '') => {
+  const lines = [
+    'Use a real browser to research the request on the public web.',
+    'Open the most relevant sources, gather current facts, and return concise findings with any URLs or evidence that matter.',
+  ];
+
+  if (request) {
+    lines.unshift(String(request).trim());
+  }
+
+  if (payload.allowed_domains && Array.isArray(payload.allowed_domains) && payload.allowed_domains.length > 0) {
+    lines.push(`Prefer these domains when they are relevant: ${payload.allowed_domains.join(', ')}`);
+  }
+
+  if (thinkingSummary) {
+    lines.push(`Planning summary:\n${thinkingSummary}`);
+  }
+
+  return lines.join('\n\n');
+};
+
+const executeBrowserAutomationTask = async ({ request, payload = {}, workspace }) => {
+  if (!isBrowserRuntimeConfigured()) {
+    return {
+      status: 'needs_configuration',
+      result: 'Browser Use is not configured. Set BROWSER_USE_API_KEY to enable browser automation and form filling.',
+    };
+  }
+
+  return executeBrowserRuntimeTask({
+    request,
+    payload: {
+      ...payload,
+      capability: payload.capability || 'browser_automation',
+    },
+    workspace,
+  });
+};
+
+const executeFormFillingTask = async ({ request, payload = {}, workspace }) => {
+  const formRequest = [
+    request,
+    payload.source_data ? `Source data:\n${JSON.stringify(payload.source_data, null, 2)}` : '',
+    payload.form_fields ? `Target fields:\n${JSON.stringify(payload.form_fields, null, 2)}` : '',
+    payload.expected_output ? `Expected output:\n${JSON.stringify(payload.expected_output, null, 2)}` : '',
+    'Complete the form carefully, verify the submission, and report the confirmation details plus any blockers.',
+  ]
+    .filter(Boolean)
+    .join('\n\n');
+
+  return executeBrowserAutomationTask({
+    request: formRequest,
+    payload: {
+      ...payload,
+      capability: 'form_filling',
+    },
+    workspace,
+  });
+};
+
+const executeWebFirstResearchTask = async ({ request, payload = {}, workspace, thinkingSummary = '' }) => {
+  if (!isBrowserRuntimeConfigured() || payload.web_first === false) {
+    return completeResearchTask(request, workspace, thinkingSummary);
+  }
+
+  const browserResult = await executeBrowserRuntimeTask({
+    request: buildBrowserResearchRequest(request, payload, thinkingSummary),
+    payload: {
+      ...payload,
+      capability: 'web_research',
+      keep_alive: payload.keep_alive ?? false,
+      enable_recording: payload.enable_recording ?? false,
+      persist_memory: payload.persist_memory ?? true,
+    },
+    workspace,
+  });
+
+  if (browserResult.status !== 'completed') {
+    const fallback = await completeResearchTask(request, workspace, thinkingSummary);
+    return {
+      ...fallback,
+      browser_fallback: browserResult.result,
+    };
+  }
+
+  const browserSummary = JSON.stringify(browserResult.result, null, 2);
+  const synthesized = await generateText({
+    system: `You are Viktron's execution engine. Use browser findings to answer the user's request with current, grounded information. Keep it concise and practical. If the browser output already answers the question, return that answer without adding fluff.`,
+    prompt: `${request}\n\nBrowser findings:\n${browserSummary}`,
+    temperature: 0.2,
+    maxOutputTokens: 900,
+  });
+
+  return {
+    status: synthesized ? 'completed' : browserResult.status,
+    result: synthesized || browserResult.result,
+  };
 };
 
 const completeResearchTask = async (request, workspace = 'default', thinkingSummary = '') => {
@@ -321,7 +429,13 @@ export const executeTask = async ({ request, payload = {} }) => {
   const workspace = payload.workspace || 'default';
   await ensureWorkspace(workspace);
   const workspacePaths = getWorkspacePaths(workspace);
-  const capability = payload.capability || inferCapability(request, payload);
+  const orchestration = await buildOrchestrationPlan({
+    request,
+    payload,
+    workspace,
+    browserConfigured: isBrowserRuntimeConfigured(),
+  });
+  const capability = payload.capability || orchestration.selected.capability || inferCapability(request, payload);
   const thinking = await thinkTask({ request, workspace });
   let outcome;
 
@@ -345,10 +459,21 @@ export const executeTask = async ({ request, payload = {} }) => {
       };
       break;
     case 'analytics_reporting':
+      outcome = {
+        capability,
+        ...(await executeWebFirstResearchTask({ request, payload, workspace, thinkingSummary: thinking.summary })),
+      };
+      break;
     case 'research_intelligence':
       outcome = {
         capability,
-        ...(await completeResearchTask(request, workspace, thinking.summary)),
+        ...(await executeWebFirstResearchTask({ request, payload, workspace, thinkingSummary: thinking.summary })),
+      };
+      break;
+    case 'form_filling':
+      outcome = {
+        capability,
+        ...(await executeFormFillingTask({ request, payload, workspace })),
       };
       break;
     case 'proactive_automation':
@@ -358,7 +483,7 @@ export const executeTask = async ({ request, payload = {} }) => {
     case 'browser_automation':
       outcome = {
         capability,
-        ...buildPlannedCapabilityResponse(capability, request),
+        ...(await executeBrowserAutomationTask({ request, payload, workspace })),
       };
       break;
     default:
@@ -368,6 +493,17 @@ export const executeTask = async ({ request, payload = {} }) => {
       };
       break;
   }
+
+  await recordOrchestrationMemory({
+    workspace,
+    request,
+    selected: {
+      ...orchestration.selected,
+      capability,
+    },
+    result: outcome.result,
+    status: outcome.status,
+  });
 
   await addTaskRun({
     workspace,
@@ -389,6 +525,12 @@ export const executeTask = async ({ request, payload = {} }) => {
     thinking: {
       skills_used: thinking.skills.map((skill) => skill.key),
       summary: thinking.summary,
+    },
+    orchestration: {
+      architecture: orchestration.architecture,
+      selected: orchestration.selected,
+      candidates: orchestration.candidates,
+      memory_hits: orchestration.memory_hits,
     },
   };
 };

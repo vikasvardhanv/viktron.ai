@@ -44,6 +44,7 @@ const buildInfrastructureOverview = async () => {
     connected_services: [
       'lead scraping modal service',
       'scheduling modal service',
+      'browser runtime automation',
       'Twilio SMS',
     ],
     memory_and_state: {
@@ -51,8 +52,8 @@ const buildInfrastructureOverview = async () => {
       next_step: 'database-backed retrieval, semantic indexing, and cross-workspace auth boundaries',
     },
     orchestration: {
-      current_state: 'capability-based task routing with scheduler-triggered recurring execution',
-      next_step: 'ephemeral per-task containers, browser executor, code executor, and tool auth vault',
+      current_state: 'LightAgent-style planner, memory, tool routing, and capability-based task execution',
+      next_step: 'ephemeral per-task containers, pluggable browser runtime, code executor, and tool auth vault',
     },
   },
 });

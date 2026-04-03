@@ -4,6 +4,7 @@
 
 - `viktron-api`: receives HTTP and Slack traffic, stores tasks, exposes status
 - `viktron-worker`: claims queued tasks and executes them
+- `lightagent-style orchestration`: planner, memory, tool routing, and branch selection live inside Viktron
 - Shared persistent volume at `/workspaces`
 - Shared Postgres queue via `agent_tasks`
 
@@ -63,7 +64,7 @@ Run these inside the normal worker pool.
 - repo mutation with secrets
 - browser automation against authenticated systems
 
-Run these in ephemeral job containers launched by a future executor adapter.
+Run shell and repo mutation jobs in ephemeral job containers. Browser automation now has a Browser Use adapter for web-first tasks; use isolated infrastructure for high-trust auth workflows.
 
 ## Why not one container per task?
 

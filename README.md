@@ -296,6 +296,34 @@ Twilio API → Your WhatsApp:
 
 ---
 
+## Adjacent Open-Source Options
+
+Two projects keep coming up when we talk about browser work and lightweight agent frameworks:
+
+| Project | What it is | Best use case | Fit with Viktron |
+|---------|------------|---------------|------------------|
+| [LightAgent](https://github.com/wanxingai/LightAgent) | Lightweight agentic framework with memory, tools, tree-of-thought, multi-agent collaboration, and MCP/SSE support | Building your own agent framework, self-learning assistants, or lightweight multi-agent orchestration | Good inspiration for agent internals, but it is not browser-first |
+| [Browser Use](https://github.com/browser-use/browser-use) | AI browser automation framework and cloud stack with sessions, proxies, stealth, and web-task execution | Login flows, scraping, form filling, browser automation, and website interaction | Better choice when the job is specifically “operate this website” |
+
+### Which One To Pick
+
+- Use **Browser Use** when the use case is browser-first: logins, scraping, form filling, website navigation, screenshots, or authenticated workflows.
+- Use **LightAgent** when the use case is framework-first: lightweight multi-agent orchestration, memory, tool routing, and autonomous task decomposition.
+- Use **Viktron** when you need the full business platform: channels, queueing, hosted operations, approvals, and production workflows around those agents.
+- If a task needs both, the usual pattern is **LightAgent for orchestration** plus **Browser Use for the browser step**, with Viktron acting as the outer business layer.
+
+### Viktron's Internal Architecture
+
+Viktron now implements the orchestration layer itself:
+
+- A planner chooses between browser-first, API-first, and workspace-first strategies.
+- Workspace memory stores task learnings so future runs can reuse them.
+- Tool routing stays local in the backend worker queue.
+- Browser automation is a pluggable runtime that Viktron can own and scale independently.
+- Browser Use and LightAgent are treated as reference architectures, not required hosted dependencies.
+
+---
+
 ## File Map
 
 ```
@@ -998,4 +1026,3 @@ The console IS the MVP of AgentIRL — when someone runs docker run agent-patien
 The console you build for patient-intake becomes the seed of the cloud monitoring platform. Same data, same design, just aggregated across all your customers' agents on the cloud version.
 
 Want me to start with the per-agent console design now — starting with patient-intake — keeping it scoped to what's buildable without EHR/Twilio dependencies?
-
