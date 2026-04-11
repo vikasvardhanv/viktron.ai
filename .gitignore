@@ -41,3 +41,9 @@ HYPEY_AI_INTEGRATION_GUIDE.md
 HYPEY_IMPLEMENTATION.md
 HYPEY_QUICKSTART.md
 megreged.md
+
+# Runtime state — generated locally, not source code
+server/data/agent-state.json
+
+# TypeScript build info
+tsconfig.tsbuildinfo

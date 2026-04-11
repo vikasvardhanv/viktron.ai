@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, GitBranch, Radio, LogOut, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, GitBranch, Radio, LogOut, ChevronRight, Plug } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const C = {
@@ -13,6 +13,7 @@ const navItems = [
   { to: '/dashboard', label: 'Agent Monitor', icon: LayoutDashboard, exact: true },
   { to: '/dashboard/workflow', label: 'Workflow Builder', icon: GitBranch, exact: false },
   { to: '/dashboard/channels', label: 'Channel Setup', icon: Radio, exact: false },
+  { to: '/dashboard/integrations', label: 'Integrations', icon: Plug, exact: false },
 ];
 
 interface Props { children: React.ReactNode; teamName?: string; }

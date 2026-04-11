@@ -38,6 +38,8 @@ const CloudDashboard = lazy(() => import('./pages/cloud/index'));
 const AgentMonitor = lazy(() => import('./pages/dashboard/AgentMonitor').then(m => ({ default: m.AgentMonitor })));
 const WorkflowBuilder = lazy(() => import('./pages/dashboard/WorkflowBuilder').then(m => ({ default: m.WorkflowBuilder })));
 const ChannelSetup = lazy(() => import('./pages/dashboard/ChannelSetup').then(m => ({ default: m.ChannelSetup })));
+const Integrations = lazy(() => import('./pages/dashboard/Integrations').then(m => ({ default: m.Integrations })));
+const IntegrationsCallback = lazy(() => import('./pages/dashboard/IntegrationsCallback').then(m => ({ default: m.default })));
 
 // Medhavn pages
 const MedhavnSupport = lazy(() => import('./pages/MedhavnSupport').then(m => ({ default: m.MedhavnSupport })));
@@ -241,6 +243,8 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/dashboard" element={<ProtectedRoute><AgentMonitor /></ProtectedRoute>} />
         <Route path="/dashboard/workflow" element={<ProtectedRoute><WorkflowBuilder /></ProtectedRoute>} />
         <Route path="/dashboard/channels" element={<ProtectedRoute><ChannelSetup /></ProtectedRoute>} />
+        <Route path="/dashboard/integrations" element={<ProtectedRoute><Integrations /></ProtectedRoute>} />
+        <Route path="/integrations/callback" element={<IntegrationsCallback />} />
 
         <Route path="/login" element={<PageTransition><AuthPage mode="login" /></PageTransition>} />
         <Route path="/signup" element={<PageTransition><AuthPage mode="signup" /></PageTransition>} />

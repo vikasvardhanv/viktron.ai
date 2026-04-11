@@ -39,6 +39,30 @@ export const fetchChannelConfig = (teamId: string) => agentApi.get(`/api/channel
 export const verifySlackToken = (data: Record<string, unknown>) => agentApi.post('/api/channels/config/slack/verify', data);
 export const verifyTeamsCredentials = (data: Record<string, unknown>) => agentApi.post('/api/channels/config/teams/verify', data);
 
+export interface IntegrationsApp {
+  name: string;
+  display_name: string;
+  categories: string[];
+  logo: string | null;
+}
+
+export interface ConnectedApp {
+  id: string;
+  app_name: string;
+  display_name: string;
+  status: string;
+  connected_at: string | null;
+}
+
+export const fetchAvailableIntegrations = () => agentApi.get<{ apps: IntegrationsApp[]; total: number }>('/api/integrations/apps');
+export const fetchConnectedIntegrations = () => agentApi.get<{ connected_apps: ConnectedApp[] }>('/api/integrations/connected');
+export const connectIntegration = (app: string, redirectUrl?: string) => 
+  agentApi.post<{ redirect_url: string; connection_id: string; app: string; status: string }>('/api/integrations/connect', { 
+    app, 
+    redirect_url: redirectUrl || window.location.origin + '/integrations/callback' 
+  });
+export const disconnectIntegration = (appName: string) => agentApi.delete(`/api/integrations/${appName}`);
+
 export const createDashboardWebSocket = (teamId: string): WebSocket => {
   const token = getAgentToken();
   const wsBase = AGENT_API.replace(/^https/, 'wss').replace(/^http/, 'ws');
