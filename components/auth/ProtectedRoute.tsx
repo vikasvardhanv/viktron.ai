@@ -25,12 +25,9 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   // Show loading state while checking auth
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="relative">
-          <div className="w-12 h-12 rounded-full border-2 border-white/10 border-t-sky-500 animate-spin" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-6 h-6 rounded-full bg-sky-500/20 animate-pulse" />
-          </div>
+          <div className="w-12 h-12 rounded-full border-2 border-slate-200 border-t-blue-500 animate-spin" />
         </div>
       </div>
     );
@@ -39,22 +36,22 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   // If not authenticated, show login prompt
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4 pt-20">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 pt-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-md text-center"
         >
           <GlassCard className="p-8">
-            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-sky-500/10 flex items-center justify-center">
-              <Lock className="h-8 w-8 text-sky-400" />
+            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-blue-50 flex items-center justify-center">
+              <Lock className="h-8 w-8 text-blue-500" />
             </div>
 
-            <h2 className="text-2xl font-bold text-white mb-3">
-              Sign in to Access Demos
+            <h2 className="text-2xl font-bold text-slate-900 mb-3">
+              Sign in to continue
             </h2>
-            <p className="text-white/60 mb-8">
-              Create a free account to try our AI demos and see how they can transform your business.
+            <p className="text-slate-500 mb-8">
+              Create a free VIKTRON account or sign in to access this page.
             </p>
 
             <div className="space-y-3">
@@ -77,8 +74,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
               </Button>
             </div>
 
-            <p className="text-xs text-white/40 mt-6">
-              Free account includes access to all demos. No credit card required.
+            <p className="text-xs text-slate-400 mt-6">
+              Free account — no credit card required.
             </p>
           </GlassCard>
         </motion.div>
