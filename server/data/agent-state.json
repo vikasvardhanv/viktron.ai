@@ -1,5 +1,52 @@
 {
-  "memories": [],
+  "memories": [
+    {
+      "id": "ef19c603-3823-497e-bbaf-5132857ce0aa",
+      "workspace": "default",
+      "source": "orchestration",
+      "content": "Request: Fill out this web form using the provided customer data\nSelected route: browser\nSelected capability: browser_automation\nStatus: needs_configuration\nResult: Browser Use is not configured. Set BROWSER_USE_API_KEY to enable browser automation and form filling.",
+      "tags": [
+        "orchestration",
+        "browser",
+        "browser_automation"
+      ],
+      "metadata": {
+        "selected": {
+          "id": "browser_first",
+          "route": "browser",
+          "capability": "browser_automation",
+          "score": 1,
+          "reason": "Use a browser runtime for website interaction, scraping, login flows, screenshots, or form filling."
+        },
+        "status": "needs_configuration"
+      },
+      "created_at": "2026-03-28T22:44:19.455Z",
+      "updated_at": "2026-03-28T22:44:19.455Z"
+    },
+    {
+      "id": "f0d42f52-fe1c-470d-8a6f-de54acad413e",
+      "workspace": "default",
+      "source": "orchestration",
+      "content": "Request: Fill out this web form using the provided customer data\nSelected route: browser\nSelected capability: browser_automation\nStatus: completed\nResult: {\"session_id\":\"sess_123\",\"status\":\"completed\",\"live_url\":\"https://example.test/live/123\",\"recording_url\":\"https://example.test/recording/123\",\"output\":{\"submitted\":true},\"messages\":[{\"role\":\"assistant\",\"content\":\"filled the form\"}]}",
+      "tags": [
+        "orchestration",
+        "browser",
+        "browser_automation"
+      ],
+      "metadata": {
+        "selected": {
+          "id": "browser_first",
+          "route": "browser",
+          "capability": "browser_automation",
+          "score": 2,
+          "reason": "Use a browser runtime for website interaction, scraping, login flows, screenshots, or form filling."
+        },
+        "status": "completed"
+      },
+      "created_at": "2026-03-28T22:44:26.206Z",
+      "updated_at": "2026-03-28T22:44:26.206Z"
+    }
+  ],
   "tools": [],
   "skills": [
     {
@@ -12,7 +59,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/browser/SKILL.md",
       "created_at": "2026-03-22T07:37:38.004Z",
-      "updated_at": "2026-03-23T02:09:36.394Z"
+      "updated_at": "2026-03-28T22:44:26.158Z"
     },
     {
       "id": "d62cb5ca-3008-4ff7-8a57-0c98febdc3f2",
@@ -24,7 +71,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/codebase_engineering/SKILL.md",
       "created_at": "2026-03-22T07:37:38.011Z",
-      "updated_at": "2026-03-23T02:09:36.396Z"
+      "updated_at": "2026-03-28T22:44:26.161Z"
     },
     {
       "id": "d1e108aa-c718-474d-8d3c-084be5c6cc65",
@@ -36,7 +83,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/company/SKILL.md",
       "created_at": "2026-03-22T07:37:38.012Z",
-      "updated_at": "2026-03-23T02:09:36.397Z"
+      "updated_at": "2026-03-28T22:44:26.163Z"
     },
     {
       "id": "2276480d-57bf-4508-880c-cfcd9685c2bc",
@@ -48,7 +95,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/docx_editing/SKILL.md",
       "created_at": "2026-03-22T07:37:38.012Z",
-      "updated_at": "2026-03-23T02:09:36.399Z"
+      "updated_at": "2026-03-28T22:44:26.164Z"
     },
     {
       "id": "58324f9a-08b1-457c-89f0-330db4529d40",
@@ -60,7 +107,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/excel_editing/SKILL.md",
       "created_at": "2026-03-22T07:37:38.013Z",
-      "updated_at": "2026-03-23T02:09:36.400Z"
+      "updated_at": "2026-03-28T22:44:26.165Z"
     },
     {
       "id": "e550b36d-0ad7-454d-984a-16a69b21feae",
@@ -72,7 +119,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/general_tools/SKILL.md",
       "created_at": "2026-03-22T07:37:38.014Z",
-      "updated_at": "2026-03-23T02:09:36.402Z"
+      "updated_at": "2026-03-28T22:44:26.167Z"
     },
     {
       "id": "efbe7a91-840d-4b81-950d-94f284694c25",
@@ -84,7 +131,7 @@
       "enabled": true,
       "source": "builtin",
       "created_at": "2026-03-22T07:37:38.014Z",
-      "updated_at": "2026-03-23T02:09:36.427Z"
+      "updated_at": "2026-03-28T22:44:26.195Z"
     },
     {
       "id": "b15a5157-f447-4a10-bcb2-dc2679744f75",
@@ -96,7 +143,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/integrations/SKILL.md",
       "created_at": "2026-03-22T07:37:38.015Z",
-      "updated_at": "2026-03-23T02:09:36.405Z"
+      "updated_at": "2026-03-28T22:44:26.170Z"
     },
     {
       "id": "b398f499-3a6e-4f65-9e8a-4ec172539c74",
@@ -108,7 +155,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/pdf_creation/SKILL.md",
       "created_at": "2026-03-22T07:37:38.015Z",
-      "updated_at": "2026-03-23T02:09:36.406Z"
+      "updated_at": "2026-03-28T22:44:26.172Z"
     },
     {
       "id": "691939e2-47b2-4677-aa0c-41cb4c2f421f",
@@ -120,7 +167,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/pdf_form_filling/SKILL.md",
       "created_at": "2026-03-22T07:37:38.016Z",
-      "updated_at": "2026-03-23T02:09:36.407Z"
+      "updated_at": "2026-03-28T22:44:26.174Z"
     },
     {
       "id": "735d33cf-3e4e-4d20-80ce-a8c98b430b97",
@@ -132,7 +179,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/pdf_signing/SKILL.md",
       "created_at": "2026-03-22T07:37:38.017Z",
-      "updated_at": "2026-03-23T02:09:36.408Z"
+      "updated_at": "2026-03-28T22:44:26.175Z"
     },
     {
       "id": "836aaef9-2065-4001-9754-74eaa1a8bd28",
@@ -144,7 +191,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/pptx_editing/SKILL.md",
       "created_at": "2026-03-22T07:37:38.017Z",
-      "updated_at": "2026-03-23T02:09:36.410Z"
+      "updated_at": "2026-03-28T22:44:26.176Z"
     },
     {
       "id": "d13b7bcb-2fe3-435f-af4d-d5fca91be229",
@@ -156,7 +203,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/remotion_video/SKILL.md",
       "created_at": "2026-03-22T07:37:38.018Z",
-      "updated_at": "2026-03-23T02:09:36.411Z"
+      "updated_at": "2026-03-28T22:44:26.178Z"
     },
     {
       "id": "01e6f7ee-a07b-47a5-9bc4-ff2c6f5f253a",
@@ -168,7 +215,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/scheduled_crons/SKILL.md",
       "created_at": "2026-03-22T07:37:38.018Z",
-      "updated_at": "2026-03-23T02:09:36.413Z"
+      "updated_at": "2026-03-28T22:44:26.179Z"
     },
     {
       "id": "8d99992c-c19d-4f04-a6a0-fb3bba319c1e",
@@ -180,7 +227,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/skill_creation/SKILL.md",
       "created_at": "2026-03-22T07:37:38.019Z",
-      "updated_at": "2026-03-23T02:09:36.414Z"
+      "updated_at": "2026-03-28T22:44:26.180Z"
     },
     {
       "id": "221bd3c7-dc89-4263-a1d3-fcc9db13eb26",
@@ -192,7 +239,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/slack_admin/SKILL.md",
       "created_at": "2026-03-22T07:37:38.020Z",
-      "updated_at": "2026-03-23T02:09:36.415Z"
+      "updated_at": "2026-03-28T22:44:26.182Z"
     },
     {
       "id": "6071046e-3240-45f4-97c5-d583b09b934f",
@@ -204,7 +251,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/team/SKILL.md",
       "created_at": "2026-03-22T07:37:38.021Z",
-      "updated_at": "2026-03-23T02:09:36.416Z"
+      "updated_at": "2026-03-28T22:44:26.184Z"
     },
     {
       "id": "62cdd109-a3c8-49dc-b9cf-ad902eb66b78",
@@ -216,7 +263,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/thread_orchestration/SKILL.md",
       "created_at": "2026-03-22T07:37:38.022Z",
-      "updated_at": "2026-03-23T02:09:36.417Z"
+      "updated_at": "2026-03-28T22:44:26.185Z"
     },
     {
       "id": "d5de6aea-3492-4ccc-8cfb-740bfa146f7c",
@@ -228,7 +275,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/viktor_account/SKILL.md",
       "created_at": "2026-03-22T07:37:38.022Z",
-      "updated_at": "2026-03-23T02:09:36.419Z"
+      "updated_at": "2026-03-28T22:44:26.186Z"
     },
     {
       "id": "d91c601f-a1db-48dc-8bad-fd105af8ba7c",
@@ -240,7 +287,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/viktor_capabilities_reference/SKILL.md",
       "created_at": "2026-03-22T07:37:38.025Z",
-      "updated_at": "2026-03-23T02:09:36.420Z"
+      "updated_at": "2026-03-28T22:44:26.187Z"
     },
     {
       "id": "e39d5f09-10cb-4286-8f3c-042809f80e4f",
@@ -252,7 +299,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/viktor_spaces_dev/SKILL.md",
       "created_at": "2026-03-22T07:37:38.026Z",
-      "updated_at": "2026-03-23T02:09:36.421Z"
+      "updated_at": "2026-03-28T22:44:26.189Z"
     },
     {
       "id": "f02b7dbd-18f7-406a-bf7e-ab8ffe12f3bd",
@@ -264,7 +311,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/viktor_use_cases_reference/SKILL.md",
       "created_at": "2026-03-22T07:37:38.027Z",
-      "updated_at": "2026-03-23T02:09:36.423Z"
+      "updated_at": "2026-03-28T22:44:26.190Z"
     },
     {
       "id": "c72a8fd3-57be-454c-bda9-c45169b64f01",
@@ -276,7 +323,7 @@
       "enabled": true,
       "source": "file:/Users/vikashvardhan/IdeaProjects/viktron.ai/server/skills/viktor/workflow_discovery/SKILL.md",
       "created_at": "2026-03-22T07:37:38.028Z",
-      "updated_at": "2026-03-23T02:09:36.425Z"
+      "updated_at": "2026-03-28T22:44:26.193Z"
     }
   ],
   "schedules": [],
@@ -290,6 +337,40 @@
       "status": "completed",
       "result": "Here are the top 3 AI coding assistants and their strengths:\n\n1.  **GitHub Copilot:**\n    *   **Strengths:** Deep integration with VS Code and other JetBrains IDEs, highly context-aware code suggestions based on surrounding code and comments, supports a wide range of languages, excellent for boilerplate generation and completing repetitive tasks. Benefits from extensive training on public code repositories.\n\n2.  **Amazon CodeWhisperer:**\n    *   **Strengths:** Strong focus on security vulnerability scanning during code generation, offers suggestions for AWS APIs and best practices, supports multiple languages (Java, Python, JavaScript, C#, TypeScript, Go, Rust, PHP, Ruby, Kotlin, C, C++, Shell Scripting, SQL, Scala, JSON, YAML, and HCL), and includes a built-in reference tracker to identify if generated code resembles open-source training data. Free for individual developers.\n\n3.  **Tabnine:**\n    *   **Strengths:** Offers both cloud-based and local (on-device) models for enhanced privacy and offline use, highly customizable with options for team-specific code completion, supports over 30 programming languages, and provides whole-line and full-function code completions. Known for its speed and ability to learn from a user's specific codebase.\n\n**Key Findings:**\n*   Copilot excels in general-purpose code generation and IDE integration.\n*   CodeWhisperer differentiates with security scanning and AWS-specific recommendations.\n*   Tabnine offers strong privacy features and customization for teams.\n\n**Recommended Next Action:**\nEvaluate specific team needs regarding IDE integration, security requirements, privacy concerns, and language support to select the most suitable assistant for a pilot program.",
       "created_at": "2026-03-23T02:09:42.011Z"
+    },
+    {
+      "id": "2bce19f0-89a5-414b-a61f-3a37cf67af4d",
+      "workspace": "default",
+      "schedule_id": null,
+      "request": "Fill out this web form using the provided customer data",
+      "capability": "browser_automation",
+      "status": "needs_configuration",
+      "result": "Browser Use is not configured. Set BROWSER_USE_API_KEY to enable browser automation and form filling.",
+      "created_at": "2026-03-28T22:44:19.456Z"
+    },
+    {
+      "id": "cdc7c800-e85c-47d0-835c-d57f892d9ca3",
+      "workspace": "default",
+      "schedule_id": null,
+      "request": "Fill out this web form using the provided customer data",
+      "capability": "browser_automation",
+      "status": "completed",
+      "result": {
+        "session_id": "sess_123",
+        "status": "completed",
+        "live_url": "https://example.test/live/123",
+        "recording_url": "https://example.test/recording/123",
+        "output": {
+          "submitted": true
+        },
+        "messages": [
+          {
+            "role": "assistant",
+            "content": "filled the form"
+          }
+        ]
+      },
+      "created_at": "2026-03-28T22:44:26.208Z"
     }
   ]
 }
