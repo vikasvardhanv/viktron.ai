@@ -31,25 +31,12 @@ const AGENT_CFG: Record<string, { color: string; Icon: React.ElementType; label:
   content:   { color: C.orange, Icon: PenTool,    label: 'Content' },
 };
 
-// ── Mock data for when API isn't available ────────────────────────────────────
-const MOCK_OVERVIEW: DashboardOverview = {
-  agents: [
-    { id:'1', role:'ceo', display_name:'CEO Agent', status:'active', current_task:null, current_task_id:null, memory_kb:14, metrics:{} },
-    { id:'2', role:'pm', display_name:'PM Agent', status:'active', current_task:'Drafting Q2 roadmap', current_task_id:'t2', memory_kb:8, metrics:{} },
-    { id:'3', role:'developer', display_name:'Developer Agent', status:'active', current_task:null, current_task_id:null, memory_kb:22, metrics:{} },
-    { id:'4', role:'qa', display_name:'QA Agent', status:'active', current_task:null, current_task_id:null, memory_kb:5, metrics:{} },
-    { id:'5', role:'sales', display_name:'Sales Agent', status:'active', current_task:'Processing new lead', current_task_id:'t5', memory_kb:11, metrics:{} },
-    { id:'6', role:'support', display_name:'Support Agent', status:'active', current_task:null, current_task_id:null, memory_kb:19, metrics:{} },
-    { id:'7', role:'content', display_name:'Content Agent', status:'active', current_task:null, current_task_id:null, memory_kb:7, metrics:{} },
-  ],
-  tasks: { pending: 3, running: 2, completed: 47, failed: 1 },
-  channels: { whatsapp: 'active', slack: 'not_configured', teams: 'active' },
-  activity: [
-    { id:'a1', timestamp: new Date().toISOString(), agent:'Sales Agent', agent_role:'sales', action:'lead_received', summary:'New lead from WhatsApp: "Interested in your pricing"' },
-    { id:'a2', timestamp: new Date(Date.now()-60000).toISOString(), agent:'CEO Agent', agent_role:'ceo', action:'task_assigned', summary:'Delegated lead qualification to Sales agent' },
-    { id:'a3', timestamp: new Date(Date.now()-180000).toISOString(), agent:'Content Agent', agent_role:'content', summary:'Generated 5 Instagram post drafts for review', action:'content_created' },
-    { id:'a4', timestamp: new Date(Date.now()-300000).toISOString(), agent:'PM Agent', agent_role:'pm', action:'report_generated', summary:'Weekly progress report compiled and sent' },
-  ],
+// ── Empty initial state — always load real data from API ──────────────────────
+const EMPTY_OVERVIEW: DashboardOverview = {
+  agents: [],
+  tasks: { pending: 0, running: 0, completed: 0, failed: 0 },
+  channels: { whatsapp: 'not_configured', slack: 'not_configured', teams: 'not_configured' },
+  activity: [],
 };
 
 // ── AgentIRL Mock Data ────────────────────────────────────────────────────────
@@ -463,18 +450,20 @@ export const AgentMonitor: React.FC = () => {
   const { user } = useAuth();
   const [teamId, setTeamId] = useState<string | null>(null);
   const [teamName, setTeamName] = useState('');
-  const [overview, setOverview] = useState<DashboardOverview>(MOCK_OVERVIEW);
-  const [activity, setActivity] = useState(MOCK_OVERVIEW.activity);
+  const [overview, setOverview] = useState<DashboardOverview>(EMPTY_OVERVIEW);
+  const [activity, setActivity] = useState<DashboardOverview['activity']>([]);
   const [wsStatus, setWsStatus] = useState<'connecting' | 'connected' | 'error'>('connecting');
-  const [runningAgents, setRunningAgents] = useState<Set<string>>(new Set(['2', '5']));
+  const [runningAgents, setRunningAgents] = useState<Set<string>>(new Set());
   const [taskInput, setTaskInput] = useState('');
   const [taskSubmitting, setTaskSubmitting] = useState(false);
   const [taskResult, setTaskResult] = useState<{ taskId: string; response: string } | null>(null);
   const [skillNames, setSkillNames] = useState<string[]>([]);
+  const [overviewLoading, setOverviewLoading] = useState(true);
+  const [overviewError, setOverviewError] = useState<string | null>(null);
   // AgentIRL state
-  const [missions, setMissions] = useState<Mission[]>(MOCK_MISSIONS);
-  const [streams, setStreams] = useState<StreamHealth[]>(MOCK_STREAMS);
-  const [errors, setErrors] = useState<AgentError[]>(MOCK_ERRORS);
+  const [missions, setMissions] = useState<Mission[]>([]);
+  const [streams, setStreams] = useState<StreamHealth[]>([]);
+  const [errors, setErrors] = useState<AgentError[]>([]);
   const wsRef = useRef<WebSocket | null>(null);
 
   // Load team
@@ -486,20 +475,30 @@ export const AgentMonitor: React.FC = () => {
     }).catch(() => {});
   }, [user]);
 
-  // Fetch overview
+  // Fetch real overview from backend
   const loadOverview = useCallback(async () => {
     if (!teamId) return;
     try {
+      setOverviewError(null);
       const res = await fetchDashboardOverview(teamId);
       const data = res.data as DashboardOverview;
       setOverview(data);
-      setActivity(data.activity);
+      setActivity(data.activity ?? []);
       const running = new Set(data.agents.filter(a => a.current_task).map(a => a.id));
       setRunningAgents(running);
-    } catch { /* use mock */ }
+    } catch (err: any) {
+      setOverviewError('Could not reach the server. Retrying...');
+    } finally {
+      setOverviewLoading(false);
+    }
   }, [teamId]);
 
-  useEffect(() => { loadOverview(); }, [loadOverview]);
+  // Initial load + poll every 15 seconds for live updates
+  useEffect(() => {
+    loadOverview();
+    const poll = setInterval(loadOverview, 15_000);
+    return () => clearInterval(poll);
+  }, [loadOverview]);
 
   useEffect(() => {
     fetchAgentSkills()
@@ -675,42 +674,69 @@ export const AgentMonitor: React.FC = () => {
           </div>
 
           {/* Agent grid */}
-          <h2 className="text-sm font-medium text-white mb-3">Agent Team</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {overview.agents.map((agent, i) => (
-              <AgentCard
-                key={agent.id} agent={agent}
-                isRunning={runningAgents.has(agent.id)}
-                delay={i * 0.06}
-              />
-            ))}
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-medium text-white">Agent Team</h2>
+            <button onClick={loadOverview} className="flex items-center gap-1 text-xs px-2 py-1 rounded-lg hover:bg-white/5 transition-colors" style={{ color: C.muted }}>
+              <RefreshCw size={12} />
+              Refresh
+            </button>
           </div>
+          {overviewLoading ? (
+            <div className="flex items-center justify-center py-16 gap-3" style={{ color: C.muted }}>
+              <RefreshCw size={16} className="animate-spin" />
+              <span className="text-sm">Loading your agents...</span>
+            </div>
+          ) : overviewError ? (
+            <div className="flex items-center justify-center py-12 gap-2 text-sm" style={{ color: C.red }}>
+              <AlertCircle size={16} />
+              {overviewError}
+            </div>
+          ) : overview.agents.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 gap-3 rounded-xl border border-dashed" style={{ borderColor: C.border, color: C.muted }}>
+              <Bot size={32} style={{ opacity: 0.4 }} />
+              <p className="text-sm">No agents yet — send a message via Slack to spin them up.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {overview.agents.map((agent, i) => (
+                <AgentCard
+                  key={agent.id} agent={agent}
+                  isRunning={runningAgents.has(agent.id)}
+                  delay={i * 0.06}
+                />
+              ))}
+            </div>
+          )}
 
           {/* AgentIRL Mission Lifecycle */}
-          <div className="mt-8">
-            <h2 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
-              <BrainCircuit size={16} style={{ color: C.purple }} />
-              AgentIRL Missions
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {missions.map((mission, i) => (
-                <MissionCard key={mission.id} mission={mission} delay={i * 0.08} />
-              ))}
+          {missions.length > 0 && (
+            <div className="mt-8">
+              <h2 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                <BrainCircuit size={16} style={{ color: C.purple }} />
+                AgentIRL Missions
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {missions.map((mission, i) => (
+                  <MissionCard key={mission.id} mission={mission} delay={i * 0.08} />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* AgentIRL Stream Health */}
-          <div className="mt-8">
-            <h2 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
-              <Activity size={16} style={{ color: C.cyan }} />
-              Stream Health
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              {streams.map((stream, i) => (
-                <StreamCard key={stream.stream_id} stream={stream} delay={i * 0.06} />
-              ))}
+          {streams.length > 0 && (
+            <div className="mt-8">
+              <h2 className="text-sm font-medium text-white mb-3 flex items-center gap-2">
+                <Activity size={16} style={{ color: C.cyan }} />
+                Stream Health
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                {streams.map((stream, i) => (
+                  <StreamCard key={stream.stream_id} stream={stream} delay={i * 0.06} />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* AgentIRL Error Recovery */}
           <div className="mt-8">
