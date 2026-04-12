@@ -24,6 +24,7 @@ export const Integrations: React.FC = () => {
   const [apps, setApps] = useState<IntegrationsApp[]>([]);
   const [connected, setConnected] = useState<Map<string, ConnectedApp>>(new Map());
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [connecting, setConnecting] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -69,12 +70,28 @@ export const Integrations: React.FC = () => {
         connMap.set(c.app_name.toLowerCase(), c);
       });
       setConnected(connMap);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to load integrations:', err);
+      setError(err?.response?.data?.detail || 'Failed to load integrations');
+      // Fallback to static list so UI still shows something
+      setApps(_STATIC_APPS);
     } finally {
       setLoading(false);
     }
   };
+
+  const _STATIC_APPS = [
+    { name: 'github', display_name: 'GitHub', categories: ['developer'], logo: null },
+    { name: 'gmail', display_name: 'Gmail', categories: ['email'], logo: null },
+    { name: 'googlesheets', display_name: 'Google Sheets', categories: ['productivity'], logo: null },
+    { name: 'slack', display_name: 'Slack', categories: ['communication'], logo: null },
+    { name: 'notion', display_name: 'Notion', categories: ['productivity'], logo: null },
+    { name: 'linear', display_name: 'Linear', categories: ['project-management'], logo: null },
+    { name: 'jira', display_name: 'Jira', categories: ['project-management'], logo: null },
+    { name: 'hubspot', display_name: 'HubSpot', categories: ['crm'], logo: null },
+    { name: 'salesforce', display_name: 'Salesforce', categories: ['crm'], logo: null },
+    { name: 'stripe', display_name: 'Stripe', categories: ['payments'], logo: null },
+  ];
 
   useEffect(() => {
     loadData();
@@ -157,6 +174,20 @@ export const Integrations: React.FC = () => {
         {loading ? (
           <div className="flex items-center justify-center py-20">
             <Loader2 className="w-8 h-8 text-[#0ea5e9] animate-spin" />
+          </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <p className="text-red-400 mb-4">{error}</p>
+            <button 
+              onClick={loadData}
+              className="px-4 py-2 rounded-lg bg-[#0ea5e9] text-white"
+            >
+              Retry
+            </button>
+          </div>
+        ) : apps.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-slate-400">No integrations found.</p>
           </div>
         ) : (
           <div className="space-y-8">
