@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Users, CheckSquare, MessageSquare, Wifi, Crown, Briefcase,
-  Code2, TrendingUp, Headphones, PenTool, Clock, Zap, AlertCircle,
-  Activity, Bot, RefreshCw, BrainCircuit,
+  Users, CheckSquare, Wifi, Crown, Briefcase,
+  Code2, TrendingUp, Headphones, PenTool, Zap, AlertCircle,
+  Activity, Bot, RefreshCw, BrainCircuit, DollarSign,
+  Heart, Clock, ChevronRight, X, Terminal, Loader2,
 } from 'lucide-react';
 import { DashboardLayout } from './DashboardLayout';
 import { useAuth } from '../../context/AuthContext';
 import {
   fetchUserTeams, fetchDashboardOverview, createDashboardWebSocket, sendTeamMessage, fetchAgentSkills,
-  type AgentOverview, type DashboardOverview,
+  fetchAgentTranscript,
+  type AgentOverview, type DashboardOverview, type AgentTranscript, type TranscriptTask,
 } from '../../services/dashboardApi';
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
@@ -176,82 +178,274 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, color, delay = 
   </motion.div>
 );
 
-interface AgentCardProps { agent: AgentOverview; isRunning: boolean; delay?: number; }
-const AgentCard: React.FC<AgentCardProps> = ({ agent, isRunning, delay = 0 }) => {
+function timeAgo(ts: string | null | undefined) {
+  if (!ts) return 'never';
+  const diff = (Date.now() - new Date(ts).getTime()) / 1000;
+  if (diff < 60) return `${Math.round(diff)}s ago`;
+  if (diff < 3600) return `${Math.round(diff / 60)}m ago`;
+  if (diff < 86400) return `${Math.round(diff / 3600)}h ago`;
+  return `${Math.round(diff / 86400)}d ago`;
+}
+
+function ageSince(ts: string | null | undefined) {
+  if (!ts) return '—';
+  const diff = (Date.now() - new Date(ts).getTime()) / 1000;
+  if (diff < 3600) return `${Math.round(diff / 60)}m`;
+  if (diff < 86400) return `${Math.round(diff / 3600)}h`;
+  return `${Math.round(diff / 86400)}d`;
+}
+
+interface AgentCardProps { agent: AgentOverview; isRunning: boolean; delay?: number; onViewTranscript: (agent: AgentOverview) => void; }
+const AgentCard: React.FC<AgentCardProps> = ({ agent, isRunning, delay = 0, onViewTranscript }) => {
   const cfg = AGENT_CFG[agent.role] ?? { color: C.accent, Icon: Bot, label: agent.role };
   const { Icon } = cfg;
 
-  const statusColor = agent.status === 'active' && isRunning ? C.accent
-    : agent.status === 'error' ? C.red : C.green;
-  const statusLabel = agent.status === 'error' ? 'Failed'
-    : isRunning ? 'Running' : 'Idle';
+  const statusColor = agent.status === 'error' ? C.red : isRunning ? C.accent : C.green;
+  const statusLabel = agent.status === 'error' ? 'Error' : isRunning ? 'Running' : 'Idle';
+
+  const budgetPct = agent.monthly_budget > 0
+    ? Math.min(100, (agent.current_spend / agent.monthly_budget) * 100) : 0;
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.35, delay, ease: [0.4, 0, 0.2, 1] }}
-      className="rounded-xl p-5 border relative overflow-hidden group"
+      className="rounded-xl p-5 border relative overflow-hidden cursor-pointer group"
       style={{ background: C.card, borderColor: isRunning ? `${cfg.color}40` : C.border }}
+      onClick={() => onViewTranscript(agent)}
     >
-      {/* Pulse ring for running agents */}
       {isRunning && (
-        <motion.div
-          className="absolute inset-0 rounded-xl"
-          animate={{ opacity: [0.05, 0.12, 0.05] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          style={{ border: `1px solid ${cfg.color}` }}
-        />
+        <motion.div className="absolute inset-0 rounded-xl pointer-events-none"
+          animate={{ opacity: [0.05, 0.12, 0.05] }} transition={{ duration: 2, repeat: Infinity }}
+          style={{ border: `1px solid ${cfg.color}` }} />
       )}
 
+      {/* Header */}
       <div className="flex items-start justify-between gap-3">
-        {/* Icon */}
         <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
           style={{ background: `${cfg.color}18`, color: cfg.color }}>
           <Icon size={18} />
         </div>
-
-        {/* Status badge */}
         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-medium"
           style={{ background: `${statusColor}12`, borderColor: `${statusColor}30`, color: statusColor }}>
-          {isRunning && (
-            <motion.div className="w-1.5 h-1.5 rounded-full" style={{ background: statusColor }}
-              animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />
-          )}
+          {isRunning && <motion.div className="w-1.5 h-1.5 rounded-full" style={{ background: statusColor }}
+            animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />}
           {statusLabel}
         </div>
       </div>
 
-      <div className="mt-4">
-        <h3 className="text-sm font-semibold text-white">{cfg.label} Agent</h3>
-        <p className="text-xs mt-1 truncate" style={{ color: C.muted }}>
+      <div className="mt-3">
+        <h3 className="text-sm font-semibold text-white">{agent.display_name}</h3>
+        <p className="text-xs mt-0.5 truncate" style={{ color: C.muted }}>
           {agent.current_task ?? 'Idle — awaiting tasks'}
         </p>
       </div>
 
-      {/* Memory bar */}
-      <div className="mt-4">
-        <div className="flex justify-between text-xs mb-1.5" style={{ color: C.muted }}>
-          <span>Memory</span><span>{agent.memory_kb} entries</span>
+      {/* Stats row */}
+      <div className="mt-3 grid grid-cols-3 gap-2">
+        {/* Memory */}
+        <div className="flex flex-col gap-0.5">
+          <span className="text-xs" style={{ color: C.muted }}>Memory</span>
+          <span className="text-xs font-medium text-white">{agent.memory_kb}</span>
+        </div>
+        {/* Age */}
+        <div className="flex flex-col gap-0.5">
+          <span className="text-xs flex items-center gap-1" style={{ color: C.muted }}><Clock size={10} />Age</span>
+          <span className="text-xs font-medium text-white">{ageSince(agent.created_at)}</span>
+        </div>
+        {/* Heartbeat */}
+        <div className="flex flex-col gap-0.5">
+          <span className="text-xs flex items-center gap-1" style={{ color: C.muted }}><Heart size={10} />Beat</span>
+          <span className="text-xs font-medium" style={{ color: agent.last_heartbeat ? C.green : C.muted }}>
+            {agent.last_heartbeat ? timeAgo(agent.last_heartbeat) : '—'}
+          </span>
+        </div>
+      </div>
+
+      {/* Cost bar */}
+      <div className="mt-3">
+        <div className="flex justify-between text-xs mb-1" style={{ color: C.muted }}>
+          <span className="flex items-center gap-1"><DollarSign size={10} />Spend</span>
+          <span style={{ color: agent.current_spend > 0 ? C.yellow : C.muted }}>
+            ${agent.current_spend.toFixed(4)}
+            {agent.monthly_budget > 0 && ` / $${agent.monthly_budget.toFixed(2)}`}
+          </span>
         </div>
         <div className="h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.06)' }}>
           <motion.div className="h-full rounded-full"
-            style={{ background: cfg.color, opacity: 0.7 }}
+            style={{ background: budgetPct > 80 ? C.red : C.yellow, opacity: 0.8 }}
             initial={{ width: 0 }}
-            animate={{ width: `${Math.min(100, (agent.memory_kb / 30) * 100)}%` }}
+            animate={{ width: `${budgetPct || (agent.current_spend > 0 ? 5 : 0)}%` }}
             transition={{ duration: 0.8, delay: delay + 0.2 }}
           />
         </div>
+      </div>
+
+      {/* Transcript hint */}
+      <div className="mt-3 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
+        <span className="text-xs flex items-center gap-1" style={{ color: C.muted }}>
+          <Terminal size={10} />{agent.total_tokens.toLocaleString()} tokens
+        </span>
+        <span className="text-xs flex items-center gap-1" style={{ color: cfg.color }}>
+          View transcript <ChevronRight size={10} />
+        </span>
       </div>
     </motion.div>
   );
 };
 
-function timeAgo(ts: string) {
-  const diff = (Date.now() - new Date(ts).getTime()) / 1000;
-  if (diff < 60) return `${Math.round(diff)}s ago`;
-  if (diff < 3600) return `${Math.round(diff / 60)}m ago`;
-  return `${Math.round(diff / 3600)}h ago`;
-}
+// ── Transcript Drawer ─────────────────────────────────────────────────────────
+const STATUS_COLORS: Record<string, string> = {
+  completed: '#22c55e', running: '#0ea5e9', failed: '#ef4444',
+  pending: '#f59e0b', needs_approval: '#a855f7',
+};
+
+const TranscriptDrawer: React.FC<{ agent: AgentOverview | null; onClose: () => void }> = ({ agent, onClose }) => {
+  const [transcript, setTranscript] = useState<AgentTranscript | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!agent) { setTranscript(null); return; }
+    setLoading(true);
+    fetchAgentTranscript(agent.id).then(r => setTranscript(r.data)).catch(() => {}).finally(() => setLoading(false));
+  }, [agent]);
+
+  if (!agent) return null;
+
+  const cfg = AGENT_CFG[agent.role] ?? { color: C.accent, Icon: Bot, label: agent.role };
+
+  return (
+    <AnimatePresence>
+      <motion.div className="fixed inset-0 z-50 flex justify-end"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+        {/* Backdrop */}
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
+
+        {/* Drawer */}
+        <motion.div className="relative w-full max-w-xl h-full flex flex-col overflow-hidden shadow-2xl"
+          style={{ background: C.bg, borderLeft: `1px solid ${C.border}` }}
+          initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
+          transition={{ type: 'spring', damping: 28, stiffness: 280 }}>
+
+          {/* Header */}
+          <div className="flex items-center justify-between px-5 py-4 border-b" style={{ borderColor: C.border }}>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center"
+                style={{ background: `${cfg.color}18`, color: cfg.color }}>
+                <cfg.Icon size={16} />
+              </div>
+              <div>
+                <h2 className="text-sm font-semibold text-white">{agent.display_name} — Transcript</h2>
+                <p className="text-xs" style={{ color: C.muted }}>
+                  {agent.total_tokens.toLocaleString()} tokens · ${agent.current_spend.toFixed(4)} spent · age {ageSince(agent.created_at)}
+                </p>
+              </div>
+            </div>
+            <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/5 transition-colors" style={{ color: C.muted }}>
+              <X size={16} />
+            </button>
+          </div>
+
+          {/* Body */}
+          <div className="flex-1 overflow-y-auto p-5 space-y-3">
+            {loading && (
+              <div className="flex items-center justify-center py-16 gap-2" style={{ color: C.muted }}>
+                <Loader2 size={16} className="animate-spin" />
+                <span className="text-sm">Loading transcript...</span>
+              </div>
+            )}
+            {!loading && (!transcript || transcript.tasks.length === 0) && (
+              <div className="flex flex-col items-center justify-center py-16 gap-2" style={{ color: C.muted }}>
+                <Terminal size={28} style={{ opacity: 0.3 }} />
+                <p className="text-sm">No tasks yet for this agent.</p>
+              </div>
+            )}
+            {!loading && transcript?.tasks.map((task) => (
+              <div key={task.id} className="rounded-xl border overflow-hidden"
+                style={{ borderColor: C.border, background: C.card }}>
+                {/* Task header */}
+                <button className="w-full flex items-start justify-between p-4 text-left hover:bg-white/3 transition-colors"
+                  onClick={() => setExpanded(expanded === task.id ? null : task.id)}>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs px-2 py-0.5 rounded-full font-medium"
+                        style={{ background: `${STATUS_COLORS[task.status] || C.muted}18`, color: STATUS_COLORS[task.status] || C.muted }}>
+                        {task.status}
+                      </span>
+                      <span className="text-xs" style={{ color: C.muted }}>{timeAgo(task.created_at)}</span>
+                      {task.duration_ms && <span className="text-xs" style={{ color: C.muted }}>{task.duration_ms}ms</span>}
+                    </div>
+                    <p className="text-sm text-white truncate">{task.description || task.type}</p>
+                  </div>
+                  <ChevronRight size={14} className={`flex-shrink-0 mt-1 transition-transform ${expanded === task.id ? 'rotate-90' : ''}`} style={{ color: C.muted }} />
+                </button>
+
+                {/* Expanded details */}
+                {expanded === task.id && (
+                  <div className="px-4 pb-4 space-y-3 border-t" style={{ borderColor: C.border }}>
+                    {/* Input */}
+                    {task.input && Object.keys(task.input).length > 0 && (
+                      <div className="mt-3">
+                        <p className="text-xs font-medium mb-1" style={{ color: C.muted }}>Input</p>
+                        <pre className="text-xs rounded-lg p-3 overflow-x-auto" style={{ background: 'rgba(255,255,255,0.04)', color: '#94a3b8' }}>
+                          {JSON.stringify(task.input, null, 2)}
+                        </pre>
+                      </div>
+                    )}
+                    {/* Output */}
+                    {task.output && (
+                      <div>
+                        <p className="text-xs font-medium mb-1" style={{ color: C.muted }}>Output</p>
+                        <pre className="text-xs rounded-lg p-3 overflow-x-auto" style={{ background: 'rgba(255,255,255,0.04)', color: '#94a3b8' }}>
+                          {JSON.stringify(task.output, null, 2)}
+                        </pre>
+                      </div>
+                    )}
+                    {/* Error */}
+                    {task.error && (
+                      <div className="rounded-lg p-3" style={{ background: `${C.red}12`, border: `1px solid ${C.red}30` }}>
+                        <p className="text-xs font-medium mb-1" style={{ color: C.red }}>Error</p>
+                        <p className="text-xs" style={{ color: C.red }}>{task.error}</p>
+                      </div>
+                    )}
+                    {/* Steps / traces */}
+                    {task.steps.length > 0 && (
+                      <div>
+                        <p className="text-xs font-medium mb-2" style={{ color: C.muted }}>Execution steps ({task.steps.length})</p>
+                        <div className="space-y-1.5">
+                          {task.steps.map((step, i) => (
+                            <div key={i} className="flex items-center justify-between rounded-lg px-3 py-2"
+                              style={{ background: 'rgba(255,255,255,0.04)' }}>
+                              <div className="flex items-center gap-2 min-w-0">
+                                <span className="text-xs px-1.5 py-0.5 rounded font-mono"
+                                  style={{ background: 'rgba(255,255,255,0.08)', color: C.accent }}>
+                                  {step.action_type}
+                                </span>
+                                {step.summary && <span className="text-xs truncate" style={{ color: C.muted }}>{step.summary}</span>}
+                              </div>
+                              <div className="flex items-center gap-3 flex-shrink-0 ml-2 text-xs" style={{ color: C.muted }}>
+                                {step.model && <span>{step.model}</span>}
+                                {(step.input_tokens || step.output_tokens) > 0 && (
+                                  <span>{(step.input_tokens + step.output_tokens).toLocaleString()} tok</span>
+                                )}
+                                {step.latency_ms && <span>{step.latency_ms}ms</span>}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
 
 // ── AgentIRL Components ────────────────────────────────────────────────────────
 
@@ -460,6 +654,7 @@ export const AgentMonitor: React.FC = () => {
   const [skillNames, setSkillNames] = useState<string[]>([]);
   const [overviewLoading, setOverviewLoading] = useState(true);
   const [overviewError, setOverviewError] = useState<string | null>(null);
+  const [transcriptAgent, setTranscriptAgent] = useState<AgentOverview | null>(null);
   // AgentIRL state
   const [missions, setMissions] = useState<Mission[]>([]);
   const [streams, setStreams] = useState<StreamHealth[]>([]);
@@ -563,6 +758,7 @@ export const AgentMonitor: React.FC = () => {
     { label: 'Running Tasks', value: overview.tasks.running, icon: <Zap size={20} />, color: C.purple },
     { label: 'Completed Today', value: overview.tasks.completed, icon: <CheckSquare size={20} />, color: C.green },
     { label: 'Channels Active', value: Object.values(overview.channels).filter(s => s === 'active').length, icon: <Wifi size={20} />, color: C.cyan },
+    { label: 'Total Spend', value: `$${(overview.spend?.total_usd ?? 0).toFixed(4)}`, icon: <DollarSign size={20} />, color: C.yellow },
   ];
 
   const handleSubmitTask = async (e: React.FormEvent) => {
@@ -703,6 +899,7 @@ export const AgentMonitor: React.FC = () => {
                   key={agent.id} agent={agent}
                   isRunning={runningAgents.has(agent.id)}
                   delay={i * 0.06}
+                  onViewTranscript={setTranscriptAgent}
                 />
               ))}
             </div>
@@ -801,5 +998,6 @@ export const AgentMonitor: React.FC = () => {
         </div>
       </div>
     </DashboardLayout>
+    <TranscriptDrawer agent={transcriptAgent} onClose={() => setTranscriptAgent(null)} />
   );
 };
