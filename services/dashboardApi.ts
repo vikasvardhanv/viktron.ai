@@ -73,6 +73,8 @@ export interface AgentOverview {
   id: string; role: string; display_name: string; status: string;
   current_task: string | null; current_task_id: string | null;
   memory_kb: number; metrics: Record<string, unknown>;
+  current_spend: number; monthly_budget: number; total_tokens: number;
+  last_heartbeat: string | null; last_active: string | null; created_at: string;
 }
 
 export interface DashboardOverview {
@@ -80,7 +82,26 @@ export interface DashboardOverview {
   tasks: { pending: number; running: number; completed: number; failed: number };
   channels: Record<string, string>;
   activity: Array<{ id: string; timestamp: string; agent: string; agent_role: string; action: string; summary: string }>;
+  spend?: { total_usd: number };
 }
+
+export interface TraceStep {
+  action_type: string; model: string | null;
+  input_tokens: number; output_tokens: number;
+  latency_ms: number | null; summary: string | null; started_at: string | null;
+}
+export interface TranscriptTask {
+  id: string; type: string; description: string | null; status: string;
+  input: Record<string, unknown>; output: Record<string, unknown> | null;
+  error: string | null; created_at: string; started_at: string | null;
+  completed_at: string | null; duration_ms: number | null; steps: TraceStep[];
+}
+export interface AgentTranscript {
+  agent_id: string; agent_name: string; role: string; tasks: TranscriptTask[];
+}
+
+export const fetchAgentTranscript = (agentId: string, limit = 20) =>
+  agentApi.get<AgentTranscript>(`/api/agents/${agentId}/transcript?limit=${limit}`);
 
 export interface WorkflowDef {
   id: string; team_id: string; name: string;
