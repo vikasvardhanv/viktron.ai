@@ -35,12 +35,10 @@ DEPLOYMENT.md
 /n8n    
 /build
 
-# Documentation and implementation guides (local reference only)
-FORGE_REBRAND_COMPLETE.md
-HYPEY_AI_INTEGRATION_GUIDE.md
-HYPEY_IMPLEMENTATION.md
-HYPEY_QUICKSTART.md
-megreged.md
+# Ignore all markdown files except README.md
+# (Documentation should not be versioned; use inline code comments instead)
+*.md
+!README.md
 
 # Runtime state — generated locally, not source code
 server/data/agent-state.json
