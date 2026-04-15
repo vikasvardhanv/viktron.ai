@@ -997,7 +997,7 @@ export const AgentMonitor: React.FC = () => {
           </div>
         </div>
       </div>
+      <TranscriptDrawer agent={transcriptAgent} onClose={() => setTranscriptAgent(null)} />
     </DashboardLayout>
-    <TranscriptDrawer agent={transcriptAgent} onClose={() => setTranscriptAgent(null)} />
   );
 };
