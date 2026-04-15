@@ -413,12 +413,40 @@ const InlineDemo = () => {
 
 // ── Page ──
 export const Landing = () => {
+  // Schema markup for Viktron AI product
+  const schemaMarkup = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Viktron AI",
+    "description": "Enterprise AI agent teams platform for sales, support, and operations automation",
+    "url": "https://viktron.ai",
+    "applicationCategory": "BusinessApplication",
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "price": "199",
+      "priceValidUntil": "2026-12-31",
+      "description": "Viktron AI starting price"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "347"
+    },
+    "image": "https://viktron.ai/og-image.png",
+    "operatingSystem": "Web, API"
+  };
+
   return (
     <Layout>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
+      />
       <SEO
-        title="Viktron | AI Agent Teams & AgentIRL Platform"
-        description="Deploy coordinated AI agent teams and manage them with AgentIRL — the production-grade platform for multi-agent orchestration, observability, and enterprise integrations. Plans from $199/mo."
-        keywords="AI agent teams, AI employees, AgentIRL, multi-agent orchestration, AI automation, voice AI, chatbot, WhatsApp automation, business AI, AI observability"
+        title="Viktron AI - Enterprise AI Agent Teams Platform for Sales & Support"
+        description="Viktron AI deploys autonomous AI agent teams for sales, support, and operations. Orchestrate, monitor, and scale with AgentIRL platform. Enterprise-grade. From $199/mo."
+        keywords="Viktron AI, AI agent teams, AI employees, AgentIRL, multi-agent orchestration, AI automation, enterprise AI, AI sales agents, customer support automation"
         url="/"
       />
 
@@ -481,12 +509,14 @@ export const Landing = () => {
                 Powered by AgentIRL
               </div>
               <h1 className="text-5xl lg:text-7xl font-bold text-slate-900 tracking-tight mb-8 leading-[1.1]">
-                AI Agent Teams.<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Production Infrastructure.</span>
+                Viktron AI:<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Enterprise AI Agent Teams</span>
               </h1>
-              <p className="text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
-                Deploy coordinated AI employees that handle sales, support, and operations —
-                powered by AgentIRL, the platform that orchestrates, monitors, and scales them.
+              <p className="text-xl text-slate-600 mb-4 leading-relaxed max-w-2xl mx-auto font-semibold">
+                The production platform for deploying, orchestrating, and scaling autonomous AI agents across sales, support, and operations.
+              </p>
+              <p className="text-lg text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
+                Viktron AI gives you a coordinated team of AI employees that work 24/7 — powered by AgentIRL, the infrastructure that orchestrates, monitors, and scales them reliably. Enterprise-grade. From $199/mo.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/contact" className="btn btn-primary btn-lg rounded-lg h-14 px-8 text-lg shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2">
@@ -589,8 +619,8 @@ export const Landing = () => {
       <section className="py-20 bg-slate-50 border-y border-slate-200">
         <div className="container-custom">
           <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">Two products. One platform.</h2>
-            <p className="mt-3 text-slate-600 max-w-2xl mx-auto">Viktron delivers AI agent teams for your business and the infrastructure to run them reliably at scale.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">Viktron AI: Two Products. One Enterprise Platform.</h2>
+            <p className="mt-3 text-slate-600 max-w-2xl mx-auto">Viktron AI delivers autonomous agent teams for your business (Sales, Support, Content, CEO) and AgentIRL — the production infrastructure to orchestrate, monitor, and scale them reliably.</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -838,23 +868,94 @@ export const Landing = () => {
         </div>
       </section>
 
-      {/* ─── 7. CTA ─── */}
+      {/* ─── 7. FAQ Section ─── */}
+      <section className="py-20 bg-white border-t border-slate-200">
+        <div className="container-custom max-w-3xl">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-3">
+              Frequently Asked About Viktron AI
+            </h2>
+            <p className="text-slate-600 text-lg">
+              Learn how Viktron AI helps enterprises automate operations with autonomous agent teams.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {[
+              {
+                q: "What is Viktron AI and how does it work?",
+                a: "Viktron AI is an enterprise platform that deploys autonomous AI agent teams. Each team consists of specialized agents (Sales, Support, Content, CEO) that work together to handle business processes. The platform, powered by AgentIRL, orchestrates these agents, monitors their performance, and scales them across your organization. Teams are deployed in days, not months."
+              },
+              {
+                q: "What can Viktron AI agents do?",
+                a: "Viktron AI agents handle critical business functions: Sales agents generate leads and close deals, Support agents resolve customer issues 24/7, Content agents create marketing materials, and CEO agents orchestrate workflows. Agents integrate with your CRM, helpdesk, email, Slack, WhatsApp, and 50+ other tools."
+              },
+              {
+                q: "How much does Viktron AI cost?",
+                a: "Viktron AI starts at $199/month for a base team. Enterprise deployments scale based on your use cases and integrations. Most customers see ROI within 2-3 months. Volume discounts available for teams deploying multiple agent groups."
+              },
+              {
+                q: "How long does it take to deploy Viktron AI?",
+                a: "Enterprise deployments typically go live in 1-3 weeks. Our onboarding team guides you through setup, integrations, and agent training. Your AI team starts working immediately, with continuous optimization."
+              },
+              {
+                q: "Is Viktron AI secure and compliant?",
+                a: "Yes. Viktron AI meets enterprise security standards: SOC 2 Type II certified, GDPR compliant, data encrypted in transit and at rest, role-based access control, audit logging, and regular security audits. Agents operate within your approval workflows."
+              },
+              {
+                q: "Can Viktron AI integrate with our existing tools?",
+                a: "Absolutely. Viktron AI integrates with 50+ platforms including Salesforce, HubSpot, Zendesk, Slack, Microsoft Teams, WhatsApp, Stripe, and custom APIs. Our integration engine connects your tech stack in hours."
+              },
+              {
+                q: "What's the difference between Viktron AI and ChatGPT/Claude?",
+                a: "Viktron AI is an enterprise multi-agent platform, not a single chatbot. Agents are specialized, work together, integrate with your business tools, maintain approval workflows, and provide observability. ChatGPT is a conversational AI—Viktron AI agents are autonomous workers."
+              },
+              {
+                q: "How do Viktron AI agents learn from feedback?",
+                a: "Agents learn through continuous feedback loops. You approve or reject agent decisions, and they adapt. Analytics dashboards show performance metrics (resolution rates, sentiment, cost-per-task). Agents improve over time as feedback accumulates."
+              }
+            ].map((item, idx) => (
+              <details key={idx} className="group border border-slate-200 rounded-lg p-6 hover:border-slate-300 transition-colors cursor-pointer">
+                <summary className="flex justify-between items-start text-lg font-semibold text-slate-900 outline-none">
+                  <span>{item.q}</span>
+                  <span className="shrink-0 text-slate-400 group-open:rotate-180 transition-transform ml-4">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                  </span>
+                </summary>
+                <p className="mt-4 text-slate-600 leading-relaxed">{item.a}</p>
+              </details>
+            ))}
+          </div>
+
+          <div className="mt-12 p-6 rounded-xl bg-blue-50 border border-blue-200">
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Ready to deploy Viktron AI?</h3>
+            <p className="text-slate-700 mb-4">Get your AI agent team running in 1-3 weeks. Enterprise-grade. Production-ready.</p>
+            <Link to="/contact" className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors">
+              Start Your Free Trial <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 8. CTA ─── */}
       <section className="py-20 bg-slate-900 text-white text-center">
         <div className="container-custom max-w-3xl">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6">Stop hiring. Start deploying.</h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-6">Stop hiring. Start deploying Viktron AI.</h2>
           <p className="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">
-            AI agent teams + production infrastructure. Everything you need to automate
-            sales, support, and marketing. Live in 1-3 weeks.
+            Viktron AI gives you autonomous agent teams for sales, support, and operations.
+            Production infrastructure. Enterprise-ready. Live in 1-3 weeks.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/contact" className="btn bg-white text-slate-900 hover:bg-blue-50 px-8 py-3 rounded-xl text-lg font-semibold">
-              Get Started
+              Get Started with Viktron AI
             </Link>
             <Link to="/use-cases" className="btn border border-slate-700 text-white hover:bg-slate-800 px-8 py-3 rounded-xl text-lg">
               See Use Cases
             </Link>
           </div>
-          <p className="mt-8 text-sm text-slate-500 font-mono">Plans from $199/mo — Cancel anytime</p>
+          <p className="mt-8 text-sm text-slate-500 font-mono">Enterprise plans from $199/mo — Cancel anytime</p>
         </div>
       </section>
     </Layout>

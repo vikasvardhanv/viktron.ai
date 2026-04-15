@@ -96,9 +96,9 @@ export const Agents: React.FC = () => {
   return (
     <Layout showBackground={false}>
       <SEO
-        title="Hire Your AI Workforce | Digital Employees | Viktron"
-        description="Deploy autonomous AI agents that work like employees. Reliable, secure, and integrated deeply into your enterprise stack."
-        keywords="AI employees, digital workforce, agent integration, enterprise AI"
+        title="Viktron AI Agents | Autonomous Digital Employees | Enterprise AI Workforce"
+        description="Deploy Viktron AI agents that work like employees across sales, support, content, and operations. Enterprise-grade, secure, integrated with your business tools."
+        keywords="Viktron AI agents, AI employees, digital workforce, autonomous agents, enterprise AI, AI workforce, intelligent automation"
         url="/agents"
       />
 
@@ -124,7 +124,7 @@ export const Agents: React.FC = () => {
                 <Sparkles className="h-4 w-4 text-blue-600" />
                 Digital Workforce
               </div>
-              <h1 className="mt-5 text-4xl sm:text-6xl font-semibold tracking-tight text-slate-900">Hire your AI Employees</h1>
+              <h1 className="mt-5 text-4xl sm:text-6xl font-semibold tracking-tight text-slate-900">Hire your Viktron AI Agents</h1>
               <p className="mt-3 max-w-3xl text-base sm:text-lg leading-relaxed text-slate-600">
                 A scalable, deterministic digital workforce integrated directly into your Slack, CRM, and ERP. 
                 Click an agent node to see how they can join your team.

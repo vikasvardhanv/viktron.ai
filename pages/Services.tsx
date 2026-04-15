@@ -92,9 +92,9 @@ export const Services = () => {
   return (
     <Layout>
       <SEO
-        title="AI Services | Agent Teams, Voice AI, Automation & Marketing"
-        description="Explore Viktron's AI services: coordinated agent teams, voice & chat agents, workflow automation, digital marketing AI, and the AgentIRL enterprise platform. Start from $199/mo."
-        keywords="AI services, AI agent teams, voice AI agent, workflow automation, digital marketing AI, AgentIRL platform, AI consulting, AI audit, chatbot, WhatsApp bot, SMS automation"
+        title="Viktron AI Services | Agent Teams, Voice AI, Workflow Automation & More"
+        description="Explore Viktron AI services: autonomous agent teams for sales & support, voice & chat agents, workflow automation, digital marketing AI, and AgentIRL platform. From $199/mo."
+        keywords="Viktron AI services, AI agent teams, voice AI agent, workflow automation, digital marketing AI, AgentIRL platform, AI consulting, autonomous agents, enterprise AI"
         url="/services"
       />
       {/* Hero */}
@@ -105,12 +105,11 @@ export const Services = () => {
             Our Services
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6 tracking-tight">
-            AI Solutions That <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">Grow Your Business</span>
+            Viktron AI Services:<br className="hidden md:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">Enterprise AI for Growth</span>
           </h1>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed mb-10">
-            From AI agent teams that handle sales and support, to voice agents, workflow automation,
-            and digital marketing — we build the AI systems that drive real revenue.
+            Viktron AI provides complete autonomous agent teams that handle sales, support, voice, workflow automation, and digital marketing — enterprise-grade infrastructure powering real revenue growth.
           </p>
           <button
             onClick={() => setShowAllServices(true)}
