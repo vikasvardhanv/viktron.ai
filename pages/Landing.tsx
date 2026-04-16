@@ -619,9 +619,9 @@ export const Landing = () => {
       </section>
 
       {/* ─── 2. Four Products ─── */}
-      <section className="py-24 bg-gradient-to-b from-white via-slate-50 to-white">
+      <section className="py-24 bg-white">
         <div className="container-custom">
-          <div className="text-center mb-14">
+          <div className="text-center mb-16">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -630,240 +630,100 @@ export const Landing = () => {
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 text-blue-600 text-xs font-semibold mb-6 backdrop-blur-sm">
                 <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                Four Core Products
+                Choose Your Path
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">Four Products. One Platform.</h2>
-              <p className="text-lg text-slate-600 max-w-2xl mx-auto">Deploy autonomous AI agents, power your infrastructure, understand your customers, and rent agents on demand.</p>
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">Four Ways to Get Started</h2>
+              <p className="text-lg text-slate-600 max-w-2xl mx-auto">Pick the approach that works best for your business.</p>
             </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            {/* Product 1: Agent */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Agent - Deploy */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0 * 0.12, duration: 0.5 }}
-              className="relative rounded-2xl border border-blue-200/50 hover:border-blue-300 overflow-hidden bg-white backdrop-blur-sm transition-all duration-500 group flex flex-col h-full hover:shadow-2xl hover:shadow-blue-500/10"
+              transition={{ delay: 0 * 0.1 }}
+              className="p-8 rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50/50 to-blue-50/20 hover:border-blue-300 hover:shadow-lg transition-all group"
             >
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
-                <img
-                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200"
-                  alt="Agent"
-                  className="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-all duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/80" />
+              <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-200 transition-all">
+                <Users className="w-6 h-6 text-blue-600" />
               </div>
-              <div className="p-8 flex flex-col flex-1">
-                <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
-                  <Users className="w-7 h-7 text-blue-600" />
-                </div>
-                <h3 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-3 group-hover:text-blue-700 transition-colors duration-300">Agent</h3>
-                <p className="text-slate-600 mb-6 leading-relaxed text-base flex-1">
-                  Deploy autonomous AI agents for Sales, Support, Content, and CEO-level orchestration. 24/7 operations with zero human overhead.
-                </p>
-                <ul className="space-y-3 mb-8">
-                  {[
-                    "Sales Agent — Qualify leads & close deals",
-                    "Support Agent — Auto-resolve customer tickets",
-                    "Content Agent — Marketing copy & posts",
-                    "CEO Agent — Orchestrate all agents"
-                  ].map((feature, i) => (
-                    <motion.li
-                      key={i}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      className="flex items-start gap-3"
-                    >
-                      <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-700 text-sm font-medium">{feature}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-                <button onClick={() => setShowAgentPath(true)} className="inline-flex items-center gap-2 text-base font-semibold text-blue-600 hover:text-blue-700 transition-all duration-300 mt-auto group/btn">
-                  Meet the agents
-                  <motion.span
-                    initial={{ x: 0 }}
-                    whileHover={{ x: 4 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <ArrowRight className="w-5 h-5" />
-                  </motion.span>
-                </button>
-              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">Agent</h3>
+              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Deploy AI Teams</p>
+              <p className="text-slate-600 mb-6 leading-relaxed">
+                Autonomous AI agents for sales, support, content, and operations. 24/7 without human overhead.
+              </p>
+              <button onClick={() => setShowAgentPath(true)} className="text-blue-600 hover:text-blue-700 font-semibold text-sm flex items-center gap-2 group/btn">
+                Get Started
+                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              </button>
             </motion.div>
 
-            {/* Product 2: AgentIRL */}
+            {/* AgentIRL - Infrastructure */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 1 * 0.12, duration: 0.5 }}
-              className="relative rounded-2xl border border-indigo-200/50 hover:border-indigo-300 overflow-hidden bg-white backdrop-blur-sm transition-all duration-500 group flex flex-col h-full hover:shadow-2xl hover:shadow-indigo-500/10"
+              transition={{ delay: 1 * 0.1 }}
+              className="p-8 rounded-2xl border border-indigo-200 bg-gradient-to-br from-indigo-50/50 to-indigo-50/20 hover:border-indigo-300 hover:shadow-lg transition-all group"
             >
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
-                <img
-                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200"
-                  alt="AgentIRL"
-                  className="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-all duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/80" />
+              <div className="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-indigo-200 transition-all">
+                <Cpu className="w-6 h-6 text-indigo-600" />
               </div>
-              <div className="p-8 flex flex-col flex-1">
-                <div className="w-14 h-14 rounded-xl bg-indigo-50 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
-                  <Cpu className="w-7 h-7 text-indigo-600" />
-                </div>
-                <h3 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-3 group-hover:text-indigo-700 transition-colors duration-300">AgentIRL</h3>
-                <p className="text-slate-600 mb-6 leading-relaxed text-base flex-1">
-                  Enterprise infrastructure for multi-agent orchestration. Deploy, monitor, and scale with 99.9% uptime and production-grade security.
-                </p>
-                <ul className="space-y-3 mb-8">
-                  {[
-                    "Multi-Agent Orchestration — Sync & coordinate",
-                    "Real-time Observability — Monitor all activity",
-                    "Enterprise Reliability — Auto-retry & fallbacks",
-                    "50+ Integrations — Connect your tech stack"
-                  ].map((feature, i) => (
-                    <motion.li
-                      key={i}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      className="flex items-start gap-3"
-                    >
-                      <CheckCircle2 className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-700 text-sm font-medium">{feature}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-                <Link to="/services/agentirl" className="inline-flex items-center gap-2 text-base font-semibold text-indigo-600 hover:text-indigo-700 transition-all duration-300 mt-auto group/btn">
-                  Explore AgentIRL
-                  <motion.span
-                    initial={{ x: 0 }}
-                    whileHover={{ x: 4 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <ArrowRight className="w-5 h-5" />
-                  </motion.span>
-                </Link>
-              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">AgentIRL</h3>
+              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Production Ready</p>
+              <p className="text-slate-600 mb-6 leading-relaxed">
+                Enterprise infrastructure for orchestration, monitoring, and scaling. 99.9% uptime guaranteed.
+              </p>
+              <Link to="/services/agentirl" className="text-indigo-600 hover:text-indigo-700 font-semibold text-sm flex items-center gap-2 group/btn">
+                Learn More
+                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              </Link>
             </motion.div>
 
-            {/* Product 3: Analytics + Consulting */}
+            {/* Analytics + Consulting */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 2 * 0.12, duration: 0.5 }}
-              className="relative rounded-2xl border border-emerald-200/50 hover:border-emerald-300 overflow-hidden bg-white backdrop-blur-sm transition-all duration-500 group flex flex-col h-full hover:shadow-2xl hover:shadow-emerald-500/10"
+              transition={{ delay: 2 * 0.1 }}
+              className="p-8 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50/50 to-emerald-50/20 hover:border-emerald-300 hover:shadow-lg transition-all group"
             >
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
-                <img
-                  src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1200"
-                  alt="Analytics + Consulting"
-                  className="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-all duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/80" />
+              <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-emerald-200 transition-all">
+                <BarChart3 className="w-6 h-6 text-emerald-600" />
               </div>
-              <div className="p-8 flex flex-col flex-1">
-                <div className="w-14 h-14 rounded-xl bg-emerald-50 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
-                  <BarChart3 className="w-7 h-7 text-emerald-600" />
-                </div>
-                <h3 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors duration-300">Analytics + Consulting</h3>
-                <p className="text-slate-600 mb-6 leading-relaxed text-base flex-1">
-                  Track visitors, conversations, and conversions. Expert consulting to optimize your AI-powered business for maximum ROI.
-                </p>
-                <ul className="space-y-3 mb-8">
-                  {[
-                    "Visitor Tracking — See all customer activity",
-                    "Conversion Funnels — Revenue flow optimization",
-                    "Agent Performance — Quality & sentiment metrics",
-                    "Expert Consulting — Custom ROI strategies"
-                  ].map((feature, i) => (
-                    <motion.li
-                      key={i}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      className="flex items-start gap-3"
-                    >
-                      <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-700 text-sm font-medium">{feature}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-                <a href="https://analytics.viktron.ai" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-base font-semibold text-emerald-600 hover:text-emerald-700 transition-all duration-300 mt-auto group/btn">
-                  Explore Analytics
-                  <motion.span
-                    initial={{ x: 0 }}
-                    whileHover={{ x: 4 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <ArrowRight className="w-5 h-5" />
-                  </motion.span>
-                </a>
-              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">Analytics + Consulting</h3>
+              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Insights & Optimization</p>
+              <p className="text-slate-600 mb-6 leading-relaxed">
+                Track visitors, conversations, and ROI. Expert consulting to optimize your AI business.
+              </p>
+              <a href="https://analytics.viktron.ai" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 font-semibold text-sm flex items-center gap-2 group/btn">
+                Explore Analytics
+                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              </a>
             </motion.div>
 
-            {/* Product 4: Rentals */}
+            {/* Rentals */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 3 * 0.12, duration: 0.5 }}
-              className="relative rounded-2xl border border-purple-200/50 hover:border-purple-300 overflow-hidden bg-white backdrop-blur-sm transition-all duration-500 group flex flex-col h-full hover:shadow-2xl hover:shadow-purple-500/10"
+              transition={{ delay: 3 * 0.1 }}
+              className="p-8 rounded-2xl border border-purple-200 bg-gradient-to-br from-purple-50/50 to-purple-50/20 hover:border-purple-300 hover:shadow-lg transition-all group"
             >
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
-                <img
-                  src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&q=80&w=1200"
-                  alt="Rentals"
-                  className="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-all duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/80" />
+              <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-purple-200 transition-all">
+                <Sparkles className="w-6 h-6 text-purple-600" />
               </div>
-              <div className="p-8 flex flex-col flex-1">
-                <div className="w-14 h-14 rounded-xl bg-purple-50 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
-                  <Sparkles className="w-7 h-7 text-purple-600" />
-                </div>
-                <h3 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-3 group-hover:text-purple-700 transition-colors duration-300">Rentals</h3>
-                <p className="text-slate-600 mb-6 leading-relaxed text-base flex-1">
-                  Rent pre-built AI agents by the hour or day. Start immediately without setup — perfect for trials, scaling, or seasonal needs.
-                </p>
-                <ul className="space-y-3 mb-8">
-                  {[
-                    "Hourly Pricing — Pay exactly what you use",
-                    "Pre-built Agents — Sales, Support, Content ready",
-                    "No Setup — Deploy in seconds",
-                    "Auto-scaling — Handle peak demand instantly"
-                  ].map((feature, i) => (
-                    <motion.li
-                      key={i}
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      className="flex items-start gap-3"
-                    >
-                      <CheckCircle2 className="w-5 h-5 text-purple-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-700 text-sm font-medium">{feature}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-                <Link to="/rent" className="inline-flex items-center gap-2 text-base font-semibold text-purple-600 hover:text-purple-700 transition-all duration-300 mt-auto group/btn">
-                  Browse Rentals
-                  <motion.span
-                    initial={{ x: 0 }}
-                    whileHover={{ x: 4 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <ArrowRight className="w-5 h-5" />
-                  </motion.span>
-                </Link>
-              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">Rentals</h3>
+              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">No Commitment</p>
+              <p className="text-slate-600 mb-6 leading-relaxed">
+                Rent pre-built agents by the hour. Perfect for trials, testing, or scaling without long-term commitment.
+              </p>
+              <Link to="/rent" className="text-purple-600 hover:text-purple-700 font-semibold text-sm flex items-center gap-2 group/btn">
+                Browse Rentals
+                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+              </Link>
             </motion.div>
           </div>
         </div>
