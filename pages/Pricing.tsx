@@ -97,7 +97,30 @@ export const Pricing: React.FC = () => {
 
       {/* Hero */}
       <section className="pt-32 pb-16 px-4 bg-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-50/50 rounded-full blur-[130px] pointer-events-none" />
+        {/* Background imagery + gradient blobs — matching Landing page */}
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-[0.035] pointer-events-none"
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000')" }}
+        />
+        {/* Gradient mesh */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Top-right blue glow */}
+          <div className="absolute -top-40 -right-40 w-[900px] h-[900px] bg-blue-200/50 blur-[160px] rounded-full" />
+          {/* Bottom-left indigo glow */}
+          <div className="absolute -bottom-20 -left-40 w-[700px] h-[700px] bg-indigo-200/40 blur-[140px] rounded-full" />
+          {/* Center violet accent */}
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-violet-100/30 blur-[120px] rounded-full" />
+          {/* Top-left teal micro-accent */}
+          <div className="absolute top-20 left-16 w-[300px] h-[300px] bg-cyan-100/40 blur-[100px] rounded-full" />
+        </div>
+        {/* Subtle dot-grid pattern overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.04]"
+          style={{
+            backgroundImage: 'radial-gradient(circle, #3b82f6 1px, transparent 1px)',
+            backgroundSize: '32px 32px',
+          }}
+        />
         <div className="container-custom relative z-10 text-center">
           <AnimatedSection>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-xs font-mono text-blue-600 mb-6">
