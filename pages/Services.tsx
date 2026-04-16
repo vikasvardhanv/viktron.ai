@@ -12,7 +12,7 @@ const HIGHLIGHT_SERVICES = [
     title: "Agent",
     desc: "Deploy autonomous AI agents for Sales, Support, Content, and CEO-level orchestration. 24/7 operations with zero human overhead.",
     icon: Users,
-    link: '/agents',
+    link: '/onboarding',
     color: 'blue',
     bgImage: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200',
     features: [

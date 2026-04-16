@@ -619,235 +619,356 @@ export const Landing = () => {
       </section>
 
       {/* ─── 2. Four Products ─── */}
-      <section className="py-20 bg-slate-50 border-y border-slate-200">
+      <section className="py-24 bg-gradient-to-b from-white via-slate-50 to-white">
         <div className="container-custom">
           <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">Viktron AI: Four Products. One Platform.</h2>
-            <p className="mt-3 text-slate-600 max-w-2xl mx-auto">Deploy autonomous AI agents, power your infrastructure, understand your customers, and rent agents on demand.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Product 1: Agent */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="rounded-2xl border border-slate-200 bg-white p-8 hover:shadow-xl transition-shadow flex flex-col"
+              transition={{ duration: 0.5 }}
             >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center">
-                  <Users className="w-6 h-6 text-blue-600" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900">Agent</h3>
-                  <p className="text-xs font-mono text-blue-600 uppercase tracking-wider">AI Agent Teams</p>
-                </div>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 text-blue-600 text-xs font-semibold mb-6 backdrop-blur-sm">
+                <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                Four Core Products
               </div>
-              <p className="text-slate-600 mb-6 leading-relaxed flex-1">
-                Deploy autonomous AI agents for Sales, Support, Content, and CEO-level orchestration. 24/7 operations with zero human overhead.
-              </p>
-              <div className="grid grid-cols-2 gap-2 mb-6">
-                {[
-                  { label: 'Sales Agent', desc: 'Leads & deals' },
-                  { label: 'Support Agent', desc: 'Resolve tickets' },
-                  { label: 'Content Agent', desc: 'Marketing copy' },
-                  { label: 'CEO Agent', desc: 'Orchestrate' },
-                ].map((a, i) => (
-                  <div key={i} className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
-                    <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
-                    <div>
-                      <p className="text-xs font-semibold text-slate-900">{a.label}</p>
-                      <p className="text-[10px] text-slate-500">{a.desc}</p>
-                    </div>
-                  </div>
-                ))}
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">Four Products. One Platform.</h2>
+              <p className="text-lg text-slate-600 max-w-2xl mx-auto">Deploy autonomous AI agents, power your infrastructure, understand your customers, and rent agents on demand.</p>
+            </motion.div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            {/* Product 1: Agent */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0 * 0.12, duration: 0.5 }}
+              className="relative rounded-2xl border border-blue-200/50 hover:border-blue-300 overflow-hidden bg-white backdrop-blur-sm transition-all duration-500 group flex flex-col h-full hover:shadow-2xl hover:shadow-blue-500/10"
+            >
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
+                <img
+                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200"
+                  alt="Agent"
+                  className="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-all duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/80" />
               </div>
-              <button onClick={() => setShowAgentPath(true)} className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 mt-auto cursor-pointer">
-                Meet the agents <ArrowRight className="w-4 h-4" />
-              </button>
+              <div className="p-8 flex flex-col flex-1">
+                <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
+                  <Users className="w-7 h-7 text-blue-600" />
+                </div>
+                <h3 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-3 group-hover:text-blue-700 transition-colors duration-300">Agent</h3>
+                <p className="text-slate-600 mb-6 leading-relaxed text-base flex-1">
+                  Deploy autonomous AI agents for Sales, Support, Content, and CEO-level orchestration. 24/7 operations with zero human overhead.
+                </p>
+                <ul className="space-y-3 mb-8">
+                  {[
+                    "Sales Agent — Qualify leads & close deals",
+                    "Support Agent — Auto-resolve customer tickets",
+                    "Content Agent — Marketing copy & posts",
+                    "CEO Agent — Orchestrate all agents"
+                  ].map((feature, i) => (
+                    <motion.li
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="flex items-start gap-3"
+                    >
+                      <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-700 text-sm font-medium">{feature}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+                <button onClick={() => setShowAgentPath(true)} className="inline-flex items-center gap-2 text-base font-semibold text-blue-600 hover:text-blue-700 transition-all duration-300 mt-auto group/btn">
+                  Meet the agents
+                  <motion.span
+                    initial={{ x: 0 }}
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.span>
+                </button>
+              </div>
             </motion.div>
 
             {/* Product 2: AgentIRL */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.05 }}
-              className="rounded-2xl border border-slate-200 bg-white p-8 hover:shadow-xl transition-shadow flex flex-col"
+              transition={{ delay: 1 * 0.12, duration: 0.5 }}
+              className="relative rounded-2xl border border-indigo-200/50 hover:border-indigo-300 overflow-hidden bg-white backdrop-blur-sm transition-all duration-500 group flex flex-col h-full hover:shadow-2xl hover:shadow-indigo-500/10"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center">
-                  <Cpu className="w-6 h-6 text-indigo-600" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900">AgentIRL</h3>
-                  <p className="text-xs font-mono text-indigo-600 uppercase tracking-wider">Infrastructure</p>
-                </div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
+                <img
+                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200"
+                  alt="AgentIRL"
+                  className="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-all duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/80" />
               </div>
-              <p className="text-slate-600 mb-6 leading-relaxed flex-1">
-                Enterprise-grade infrastructure for multi-agent orchestration. Deploy, monitor, and scale with 99.9% uptime and enterprise security.
-              </p>
-              <div className="grid grid-cols-2 gap-2 mb-6">
-                {[
-                  { label: 'Orchestration', desc: 'Multi-agent sync' },
-                  { label: 'Observability', desc: 'Real-time logs' },
-                  { label: 'Reliability', desc: 'Auto-retry' },
-                  { label: 'Integrations', desc: '50+ tools' },
-                ].map((a, i) => (
-                  <div key={i} className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
-                    <CheckCircle2 className="w-4 h-4 text-indigo-500 shrink-0" />
-                    <div>
-                      <p className="text-xs font-semibold text-slate-900">{a.label}</p>
-                      <p className="text-[10px] text-slate-500">{a.desc}</p>
-                    </div>
-                  </div>
-                ))}
+              <div className="p-8 flex flex-col flex-1">
+                <div className="w-14 h-14 rounded-xl bg-indigo-50 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
+                  <Cpu className="w-7 h-7 text-indigo-600" />
+                </div>
+                <h3 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-3 group-hover:text-indigo-700 transition-colors duration-300">AgentIRL</h3>
+                <p className="text-slate-600 mb-6 leading-relaxed text-base flex-1">
+                  Enterprise infrastructure for multi-agent orchestration. Deploy, monitor, and scale with 99.9% uptime and production-grade security.
+                </p>
+                <ul className="space-y-3 mb-8">
+                  {[
+                    "Multi-Agent Orchestration — Sync & coordinate",
+                    "Real-time Observability — Monitor all activity",
+                    "Enterprise Reliability — Auto-retry & fallbacks",
+                    "50+ Integrations — Connect your tech stack"
+                  ].map((feature, i) => (
+                    <motion.li
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="flex items-start gap-3"
+                    >
+                      <CheckCircle2 className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-700 text-sm font-medium">{feature}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+                <Link to="/services/agentirl" className="inline-flex items-center gap-2 text-base font-semibold text-indigo-600 hover:text-indigo-700 transition-all duration-300 mt-auto group/btn">
+                  Explore AgentIRL
+                  <motion.span
+                    initial={{ x: 0 }}
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.span>
+                </Link>
               </div>
-              <Link to="/services/agentirl" className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700 mt-auto">
-                Explore AgentIRL <ArrowRight className="w-4 h-4" />
-              </Link>
             </motion.div>
 
             {/* Product 3: Analytics + Consulting */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="rounded-2xl border border-slate-200 bg-white p-8 hover:shadow-xl transition-shadow flex flex-col"
+              transition={{ delay: 2 * 0.12, duration: 0.5 }}
+              className="relative rounded-2xl border border-emerald-200/50 hover:border-emerald-300 overflow-hidden bg-white backdrop-blur-sm transition-all duration-500 group flex flex-col h-full hover:shadow-2xl hover:shadow-emerald-500/10"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center">
-                  <BarChart3 className="w-6 h-6 text-emerald-600" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900">Analytics</h3>
-                  <p className="text-xs font-mono text-emerald-600 uppercase tracking-wider">+ Consulting</p>
-                </div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
+                <img
+                  src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1200"
+                  alt="Analytics + Consulting"
+                  className="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-all duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/80" />
               </div>
-              <p className="text-slate-600 mb-6 leading-relaxed flex-1">
-                Track visitors, conversations, and conversions. Expert consulting to optimize your AI-powered business for maximum revenue.
-              </p>
-              <div className="grid grid-cols-2 gap-2 mb-6">
-                {[
-                  { label: 'Visitor Tracking', desc: 'See all activity' },
-                  { label: 'Conversion Funnels', desc: 'Revenue flows' },
-                  { label: 'Agent Performance', desc: 'Quality metrics' },
-                  { label: 'Expert Consulting', desc: 'ROI optimization' },
-                ].map((a, i) => (
-                  <div key={i} className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                    <div>
-                      <p className="text-xs font-semibold text-slate-900">{a.label}</p>
-                      <p className="text-[10px] text-slate-500">{a.desc}</p>
-                    </div>
-                  </div>
-                ))}
+              <div className="p-8 flex flex-col flex-1">
+                <div className="w-14 h-14 rounded-xl bg-emerald-50 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
+                  <BarChart3 className="w-7 h-7 text-emerald-600" />
+                </div>
+                <h3 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-3 group-hover:text-emerald-700 transition-colors duration-300">Analytics + Consulting</h3>
+                <p className="text-slate-600 mb-6 leading-relaxed text-base flex-1">
+                  Track visitors, conversations, and conversions. Expert consulting to optimize your AI-powered business for maximum ROI.
+                </p>
+                <ul className="space-y-3 mb-8">
+                  {[
+                    "Visitor Tracking — See all customer activity",
+                    "Conversion Funnels — Revenue flow optimization",
+                    "Agent Performance — Quality & sentiment metrics",
+                    "Expert Consulting — Custom ROI strategies"
+                  ].map((feature, i) => (
+                    <motion.li
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="flex items-start gap-3"
+                    >
+                      <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-700 text-sm font-medium">{feature}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+                <a href="https://analytics.viktron.ai" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-base font-semibold text-emerald-600 hover:text-emerald-700 transition-all duration-300 mt-auto group/btn">
+                  Explore Analytics
+                  <motion.span
+                    initial={{ x: 0 }}
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.span>
+                </a>
               </div>
-              <a href="https://analytics.viktron.ai" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 hover:text-emerald-700 mt-auto">
-                Explore Analytics <ArrowRight className="w-4 h-4" />
-              </a>
             </motion.div>
 
             {/* Product 4: Rentals */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.15 }}
-              className="rounded-2xl border border-slate-200 bg-white p-8 hover:shadow-xl transition-shadow flex flex-col"
+              transition={{ delay: 3 * 0.12, duration: 0.5 }}
+              className="relative rounded-2xl border border-purple-200/50 hover:border-purple-300 overflow-hidden bg-white backdrop-blur-sm transition-all duration-500 group flex flex-col h-full hover:shadow-2xl hover:shadow-purple-500/10"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-purple-600" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900">Rentals</h3>
-                  <p className="text-xs font-mono text-purple-600 uppercase tracking-wider">Agent Marketplace</p>
-                </div>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
+                <img
+                  src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&q=80&w=1200"
+                  alt="Rentals"
+                  className="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-all duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/80" />
               </div>
-              <p className="text-slate-600 mb-6 leading-relaxed flex-1">
-                Rent pre-built AI agents by the hour or day. Start immediately without setup — perfect for trials, scaling, or seasonal needs.
-              </p>
-              <div className="grid grid-cols-2 gap-2 mb-6">
-                {[
-                  { label: 'Hourly Pricing', desc: 'Pay as you go' },
-                  { label: 'Pre-built Agents', desc: 'Ready to work' },
-                  { label: 'No Setup', desc: 'Instant deploy' },
-                  { label: 'Auto-scaling', desc: 'Peak handling' },
-                ].map((a, i) => (
-                  <div key={i} className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
-                    <CheckCircle2 className="w-4 h-4 text-purple-500 shrink-0" />
-                    <div>
-                      <p className="text-xs font-semibold text-slate-900">{a.label}</p>
-                      <p className="text-[10px] text-slate-500">{a.desc}</p>
-                    </div>
-                  </div>
-                ))}
+              <div className="p-8 flex flex-col flex-1">
+                <div className="w-14 h-14 rounded-xl bg-purple-50 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
+                  <Sparkles className="w-7 h-7 text-purple-600" />
+                </div>
+                <h3 className="text-2xl lg:text-3xl font-bold text-slate-900 mb-3 group-hover:text-purple-700 transition-colors duration-300">Rentals</h3>
+                <p className="text-slate-600 mb-6 leading-relaxed text-base flex-1">
+                  Rent pre-built AI agents by the hour or day. Start immediately without setup — perfect for trials, scaling, or seasonal needs.
+                </p>
+                <ul className="space-y-3 mb-8">
+                  {[
+                    "Hourly Pricing — Pay exactly what you use",
+                    "Pre-built Agents — Sales, Support, Content ready",
+                    "No Setup — Deploy in seconds",
+                    "Auto-scaling — Handle peak demand instantly"
+                  ].map((feature, i) => (
+                    <motion.li
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="flex items-start gap-3"
+                    >
+                      <CheckCircle2 className="w-5 h-5 text-purple-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-700 text-sm font-medium">{feature}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+                <Link to="/rent" className="inline-flex items-center gap-2 text-base font-semibold text-purple-600 hover:text-purple-700 transition-all duration-300 mt-auto group/btn">
+                  Browse Rentals
+                  <motion.span
+                    initial={{ x: 0 }}
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.span>
+                </Link>
               </div>
-              <Link to="/rent" className="inline-flex items-center gap-2 text-sm font-semibold text-purple-600 hover:text-purple-700 mt-auto">
-                Browse Rentals <ArrowRight className="w-4 h-4" />
-              </Link>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* ─── 3. Live Demo — Terminal ─── */}
-      <section className="py-20 bg-white">
-        <div className="container-custom max-w-4xl">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3 tracking-tight">
+      <section className="relative py-24 bg-gradient-to-b from-slate-50 to-white overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-40 -left-40 w-80 h-80 bg-blue-100/20 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-indigo-100/20 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container-custom max-w-4xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-600 text-xs font-semibold mb-6">
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              Real-time Agent Orchestration
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
               See It In Action
             </h2>
-            <p className="text-slate-600 max-w-xl mx-auto">
-              One instruction. Four AI agents spin up and start working — in real time.
+            <p className="text-lg text-slate-600 max-w-xl mx-auto">
+              One instruction. Four AI agents spin up and start working — in real time. Watch autonomous orchestration in under 8 seconds.
             </p>
-          </div>
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="relative"
           >
+            {/* Glow effect behind demo */}
+            <div className="absolute -inset-6 bg-gradient-to-r from-blue-200/30 via-indigo-200/20 to-purple-200/30 blur-3xl rounded-3xl pointer-events-none" />
             <InlineDemo />
           </motion.div>
         </div>
       </section>
 
       {/* ─── 4. Metrics Strip ─── */}
-      <section className="py-12 bg-slate-50 border-y border-slate-200">
-        <div className="container-custom">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <section className="py-16 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white relative overflow-hidden">
+        {/* Subtle gradient overlay */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: 'radial-gradient(circle at 20% 50%, #3b82f6 0%, transparent 50%)',
+          pointerEvents: 'none'
+        }} />
+        <div className="absolute inset-0 opacity-[0.02]" style={{
+          backgroundImage: 'radial-gradient(circle at 80% 80%, #8b5cf6 0%, transparent 50%)',
+          pointerEvents: 'none'
+        }} />
+
+        <div className="container-custom relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { value: '< 8s', label: 'Avg Response' },
-              { value: '99.9%', label: 'Uptime SLA' },
-              { value: '24/7', label: 'Always On' },
-              { value: '$199', label: 'From/mo' },
+              { value: '< 8s', label: 'Avg Response', icon: '⚡' },
+              { value: '99.9%', label: 'Uptime SLA', icon: '🛡️' },
+              { value: '24/7', label: 'Always On', icon: '🌍' },
+              { value: '$199', label: 'From/month', icon: '💰' },
             ].map((stat, idx) => (
-              <div key={idx}>
-                <div className="text-2xl md:text-3xl font-bold text-slate-900">{stat.value}</div>
-                <div className="text-xs text-slate-500 mt-1">{stat.label}</div>
-              </div>
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="group"
+              >
+                <div className="text-4xl mb-2 group-hover:scale-110 transition-transform">{stat.icon}</div>
+                <div className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">{stat.value}</div>
+                <div className="text-xs text-white/60 mt-2 uppercase tracking-wider font-semibold">{stat.label}</div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* ─── 6. Analytics & Observability Teaser ─── */}
-      <section className="py-20 bg-slate-50 border-y border-slate-200">
-        <div className="container-custom">
+      <section className="py-24 bg-gradient-to-b from-white via-emerald-50 to-white relative overflow-hidden">
+        {/* Animated background blobs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-100/30 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-teal-100/20 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container-custom relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-mono text-emerald-600 mb-6">
-                <BarChart3 className="w-3 h-3" />
-                Now Live · analytics.viktron.ai
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-600 mb-6">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                Analytics · Real-time Insights
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 tracking-tight">
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
                 Analytics for your<br />AI-powered business
               </h2>
               <p className="text-slate-600 text-lg leading-relaxed mb-6">
@@ -1004,22 +1125,55 @@ export const Landing = () => {
       </section>
 
       {/* ─── 8. CTA ─── */}
-      <section className="py-20 bg-slate-900 text-white text-center">
-        <div className="container-custom max-w-3xl">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6">Stop hiring. Start deploying Viktron AI.</h2>
-          <p className="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">
-            Viktron AI gives you autonomous agent teams for sales, support, and operations.
-            Production infrastructure. Enterprise-ready. Live in 1-3 weeks.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/contact" className="btn bg-white text-slate-900 hover:bg-blue-50 px-8 py-3 rounded-xl text-lg font-semibold">
-              Get Started with Viktron AI
-            </Link>
-            <Link to="/use-cases" className="btn border border-slate-700 text-white hover:bg-slate-800 px-8 py-3 rounded-xl text-lg">
-              See Use Cases
-            </Link>
-          </div>
-          <p className="mt-8 text-sm text-slate-500 font-mono">Enterprise plans from $199/mo — Cancel anytime</p>
+      <section className="relative py-32 overflow-hidden text-white">
+        {/* Gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900" />
+
+        {/* Animated background elements */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -top-40 -left-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container-custom max-w-3xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center"
+          >
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight leading-tight">
+              Stop hiring.<br className="hidden md:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-indigo-400">Start deploying Viktron AI.</span>
+            </h2>
+            <p className="text-xl text-slate-300 mb-12 max-w-2xl mx-auto leading-relaxed">
+              Autonomous agent teams for sales, support, and operations.
+              Enterprise-ready. Production infrastructure. <br /> Live in 1-3 weeks.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Link to="/contact" className="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-slate-900 text-lg font-bold hover:bg-blue-50 transition-colors shadow-xl shadow-blue-500/25">
+                  Get Started with Viktron AI
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Link>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Link to="/use-cases" className="inline-flex items-center justify-center px-8 py-4 rounded-xl border-2 border-white text-white text-lg font-bold hover:bg-white/10 transition-colors">
+                  See Use Cases
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Link>
+              </motion.div>
+            </div>
+            <p className="text-sm text-slate-400 font-mono">Enterprise plans from $199/mo — Cancel anytime, no lock-in</p>
+          </motion.div>
         </div>
       </section>
 

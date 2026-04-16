@@ -10,7 +10,6 @@ import { CookieBanner, CookiePreferences } from './components/CookieConsent';
 // Lazy load all pages for faster initial load
 const Landing = lazy(() => import('./pages/Landing').then(m => ({ default: m.Landing })));
 const Services = lazy(() => import('./pages/Services').then(m => ({ default: m.Services })));
-const Agents = lazy(() => import('./pages/Agents').then(m => ({ default: m.Agents })));
 const DemoForm = lazy(() => import('./pages/DemoForm').then(m => ({ default: m.DemoForm })));
 const Marketing = lazy(() => import('./pages/Marketing').then(m => ({ default: m.Marketing })));
 const Demos = lazy(() => import('./pages/Demos').then(m => ({ default: m.Demos })));
@@ -218,8 +217,6 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/services/agent-orchestration" element={<Navigate to="/services/agentirl" replace />} />
         <Route path="/services/:serviceId" element={<PageTransition><ServiceDetail /></PageTransition>} />
         <Route path="/use-cases" element={<PageTransition><UseCases /></PageTransition>} />
-        <Route path="/agents" element={<PageTransition><Agents /></PageTransition>} />
-        <Route path="/agents/:agentId" element={<PageTransition><Agents /></PageTransition>} />
         <Route path="/marketing" element={<PageTransition><Marketing /></PageTransition>} />
         <Route path="/case-studies" element={<PageTransition><CaseStudies /></PageTransition>} />
         <Route path="/about" element={<PageTransition><About /></PageTransition>} />

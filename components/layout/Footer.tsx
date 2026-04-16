@@ -5,16 +5,14 @@ import { Github, Twitter, Linkedin, MessageSquare } from 'lucide-react';
 
 const footerLinks = {
   platform: [
-    { name: 'AI Agent Teams', path: '/services/ai-sales-agent' },
-    { name: 'Voice & Chat Agents', path: '/services/voice-ai-agent' },
-    { name: 'AgentIRL Platform', path: '/services/agentirl' },
-    { name: 'Analytics & Observability', path: '/services/data-analytics-ai' },
-    { name: 'AI Audit & Consulting', path: '/services/ai-audit-consulting' },
+    { name: 'Agent', path: '/onboarding' },
+    { name: 'AgentIRL', path: '/services/agentirl' },
+    { name: 'Analytics + Consulting', path: 'https://analytics.viktron.ai', external: true },
+    { name: 'Rentals', path: '/rent' },
   ],
   resources: [
     { name: 'All Services', path: '/services' },
     { name: 'Use Cases', path: '/use-cases' },
-    { name: 'AI Agents', path: '/agents' },
     { name: 'Pricing', path: '/pricing' },
     { name: 'Blog', path: '/blog' },
   ],
@@ -65,9 +63,15 @@ export const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.platform.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.path} className="text-slate-600 hover:text-blue-600 transition-colors text-sm">
-                    {link.name}
-                  </Link>
+                  {link.external ? (
+                    <a href={link.path} target="_blank" rel="noopener noreferrer" className="text-slate-600 hover:text-blue-600 transition-colors text-sm">
+                      {link.name}
+                    </a>
+                  ) : (
+                    <Link to={link.path} className="text-slate-600 hover:text-blue-600 transition-colors text-sm">
+                      {link.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
