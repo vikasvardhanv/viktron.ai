@@ -78,12 +78,17 @@ export const Services = () => {
         url="/services"
       />
       {/* Hero */}
-      <section className="relative pt-40 pb-32 bg-white overflow-hidden">
+      <section className="relative pt-40 pb-32 bg-gradient-to-br from-white via-blue-50/30 to-slate-50 overflow-hidden">
         {/* Animated background gradients */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100/30 rounded-full blur-[120px] animate-pulse" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-100/20 rounded-full blur-[100px]" />
-          <div className="absolute top-1/2 left-1/2 w-[300px] h-[300px] bg-cyan-100/20 rounded-full blur-[100px]" />
+          <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-blue-200/20 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute -bottom-20 -left-40 w-[500px] h-[500px] bg-indigo-200/15 rounded-full blur-3xl" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-cyan-100/10 rounded-full blur-3xl" />
+          {/* Grid pattern overlay */}
+          <div className="absolute inset-0 opacity-[0.02]" style={{
+            backgroundImage: 'radial-gradient(circle at 1px 1px, #000 1px, transparent 1px)',
+            backgroundSize: '50px 50px'
+          }} />
         </div>
 
         {/* Content */}
@@ -115,7 +120,12 @@ export const Services = () => {
       </section>
 
       {/* Main Services Grid */}
-      <section className="py-24 bg-gradient-to-b from-white via-slate-50 to-white">
+      <section className="py-24 bg-gradient-to-b from-white via-slate-50/50 to-white relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-emerald-100/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-1/4 w-[300px] h-[300px] bg-blue-100/10 rounded-full blur-3xl" />
+        </div>
         <div className="container-custom">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-3">Core Services</h2>
@@ -228,7 +238,12 @@ export const Services = () => {
       </section>
 
       {/* Rentals Section */}
-      <section className="py-24 bg-gradient-to-b from-white to-slate-50">
+      <section className="py-24 bg-gradient-to-br from-white via-purple-50/30 to-slate-50 relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-purple-200/15 rounded-full blur-3xl" />
+          <div className="absolute -bottom-32 -right-32 w-[400px] h-[400px] bg-indigo-100/10 rounded-full blur-3xl" />
+        </div>
         <div className="container-custom">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-3">Agent Rentals</h2>

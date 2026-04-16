@@ -619,8 +619,13 @@ export const Landing = () => {
       </section>
 
       {/* ─── 2. Four Products ─── */}
-      <section className="py-24 bg-white">
-        <div className="container-custom">
+      <section className="py-24 bg-gradient-to-b from-white via-blue-50/20 to-white relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-blue-100/15 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-[400px] h-[400px] bg-indigo-100/10 rounded-full blur-3xl" />
+        </div>
+        <div className="container-custom relative z-10">
           <div className="text-center mb-16">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -730,7 +735,7 @@ export const Landing = () => {
       </section>
 
       {/* ─── 3. Live Demo — Terminal ─── */}
-      <section className="relative py-24 bg-gradient-to-b from-slate-50 to-white overflow-hidden">
+      <section className="relative py-24 bg-gradient-to-b from-slate-50 via-white to-blue-50/20 overflow-hidden">
         {/* Animated background elements */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-40 -left-40 w-80 h-80 bg-blue-100/20 rounded-full blur-3xl" />
@@ -809,7 +814,7 @@ export const Landing = () => {
       </section>
 
       {/* ─── 6. Analytics & Observability Teaser ─── */}
-      <section className="py-24 bg-gradient-to-b from-white via-emerald-50 to-white relative overflow-hidden">
+      <section className="py-24 bg-gradient-to-b from-white via-emerald-50/30 to-white relative overflow-hidden">
         {/* Animated background blobs */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-100/30 rounded-full blur-3xl" />
