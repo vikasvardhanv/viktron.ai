@@ -77,91 +77,140 @@ export const Services = () => {
         url="/services"
       />
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-50/50 rounded-full blur-[130px] pointer-events-none" />
-        <div className="container-custom relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-mono mb-6">
-            Viktron AI Products
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6 tracking-tight">
-            Four Products.<br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">One AI Platform.</span>
-          </h1>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed mb-10">
-            Deploy AI Agent Teams, power your infrastructure with AgentIRL, understand your customers with Analytics + Consulting, or rent agents on-demand. Enterprise-grade. Production-ready.
-          </p>
+      <section className="relative pt-40 pb-32 bg-white overflow-hidden">
+        {/* Animated background gradients */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100/30 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-100/20 rounded-full blur-[100px]" />
+          <div className="absolute top-1/2 left-1/2 w-[300px] h-[300px] bg-cyan-100/20 rounded-full blur-[100px]" />
+        </div>
+
+        {/* Content */}
+        <div className="container-custom relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-4xl mx-auto"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 text-blue-600 text-xs font-semibold mb-8 backdrop-blur-sm hover:shadow-lg transition-shadow duration-300">
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              Viktron AI Products
+            </div>
+
+            <h1 className="text-5xl md:text-7xl font-bold text-slate-900 mb-6 tracking-tight leading-tight">
+              Four Products.<br className="hidden md:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 animate-gradient">One AI Platform.</span>
+            </h1>
+
+            <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed mb-2 font-medium">
+              Everything you need to deploy, scale, and optimize autonomous AI agents.
+            </p>
+            <p className="text-base text-slate-500 max-w-2xl mx-auto leading-relaxed mb-12">
+              From autonomous agent teams to production infrastructure, analytics, and on-demand rentals—enterprise-grade solutions built for growth.
+            </p>
+          </motion.div>
         </div>
       </section>
 
       {/* Services Grid */}
-      <section className="py-20 bg-white border-t border-slate-200">
+      <section className="py-24 bg-gradient-to-b from-white via-slate-50 to-white">
         <div className="container-custom">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             {HIGHLIGHT_SERVICES.map((service, idx) => {
-              const colorMap: { [key: string]: { bg: string; bgHover: string; text: string; textHover: string; icon: string; iconCheck: string } } = {
-                blue: { bg: 'bg-blue-50', bgHover: 'hover:border-blue-200', text: 'text-blue-600', textHover: 'group-hover:text-blue-600', icon: 'text-blue-600', iconCheck: 'text-blue-500' },
-                indigo: { bg: 'bg-indigo-50', bgHover: 'hover:border-indigo-200', text: 'text-indigo-600', textHover: 'group-hover:text-indigo-600', icon: 'text-indigo-600', iconCheck: 'text-indigo-500' },
-                emerald: { bg: 'bg-emerald-50', bgHover: 'hover:border-emerald-200', text: 'text-emerald-600', textHover: 'group-hover:text-emerald-600', icon: 'text-emerald-600', iconCheck: 'text-emerald-500' },
-                purple: { bg: 'bg-purple-50', bgHover: 'hover:border-purple-200', text: 'text-purple-600', textHover: 'group-hover:text-purple-600', icon: 'text-purple-600', iconCheck: 'text-purple-500' },
+              const colorMap: { [key: string]: { bg: string; border: string; text: string; textHover: string; icon: string; iconCheck: string; shadow: string } } = {
+                blue: { bg: 'bg-blue-50', border: 'border-blue-200/50 hover:border-blue-300', text: 'text-blue-600', textHover: 'group-hover:text-blue-700', icon: 'text-blue-600', iconCheck: 'text-blue-500', shadow: 'group-hover:shadow-blue-500/10' },
+                indigo: { bg: 'bg-indigo-50', border: 'border-indigo-200/50 hover:border-indigo-300', text: 'text-indigo-600', textHover: 'group-hover:text-indigo-700', icon: 'text-indigo-600', iconCheck: 'text-indigo-500', shadow: 'group-hover:shadow-indigo-500/10' },
+                emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200/50 hover:border-emerald-300', text: 'text-emerald-600', textHover: 'group-hover:text-emerald-700', icon: 'text-emerald-600', iconCheck: 'text-emerald-500', shadow: 'group-hover:shadow-emerald-500/10' },
+                purple: { bg: 'bg-purple-50', border: 'border-purple-200/50 hover:border-purple-300', text: 'text-purple-600', textHover: 'group-hover:text-purple-700', icon: 'text-purple-600', iconCheck: 'text-purple-500', shadow: 'group-hover:shadow-purple-500/10' },
               };
               const colors = colorMap[service.color] || colorMap.blue;
 
               return (
                 <motion.div
                   key={idx}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="rounded-2xl border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col bg-white"
+                  transition={{ delay: idx * 0.12, duration: 0.5 }}
+                  className={`relative rounded-2xl border ${colors.border} overflow-hidden bg-white backdrop-blur-sm transition-all duration-500 group flex flex-col h-full hover:shadow-2xl ${colors.shadow}`}
                 >
+                  {/* Accent line at top */}
+                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-current to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ color: service.color === 'blue' ? '#2563eb' : service.color === 'indigo' ? '#4f46e5' : service.color === 'emerald' ? '#059669' : '#a855f7' }} />
+
                   {/* Background Image */}
-                  <div className="relative h-48 overflow-hidden bg-slate-200">
+                  <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
                     <img
                       src={service.bgImage}
                       alt={service.title}
-                      className="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-300"
+                      className="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-all duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/80" />
                   </div>
 
                   {/* Content */}
                   <div className="p-8 flex flex-col flex-1">
-                    <div className={`w-12 h-12 rounded-xl ${colors.bg} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                      <service.icon className={`w-6 h-6 ${colors.icon}`} />
+                    {/* Icon */}
+                    <div className={`w-14 h-14 rounded-xl ${colors.bg} flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300`}>
+                      <service.icon className={`w-7 h-7 ${colors.icon}`} />
                     </div>
 
-                    <h3 className={`text-2xl font-bold text-slate-900 mb-2 ${colors.textHover} transition-colors`}>
+                    {/* Title */}
+                    <h3 className={`text-2xl lg:text-3xl font-bold text-slate-900 mb-3 ${colors.textHover} transition-colors duration-300`}>
                       {service.title}
                     </h3>
-                    <p className="text-slate-600 mb-6 leading-relaxed text-sm flex-1">
+
+                    {/* Description */}
+                    <p className="text-slate-600 mb-7 leading-relaxed text-base flex-1">
                       {service.desc}
                     </p>
 
-                    <ul className="space-y-2 mb-6">
+                    {/* Features */}
+                    <ul className="space-y-3 mb-8">
                       {service.features.map((feature, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm text-slate-600">
-                          <CheckCircle2 className={`w-4 h-4 ${colors.iconCheck} shrink-0`} />
-                          {feature}
-                        </li>
+                        <motion.li
+                          key={i}
+                          initial={{ opacity: 0, x: -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.05 }}
+                          className="flex items-start gap-3"
+                        >
+                          <CheckCircle2 className={`w-5 h-5 ${colors.iconCheck} shrink-0 mt-0.5`} />
+                          <span className="text-slate-700 text-sm font-medium">{feature}</span>
+                        </motion.li>
                       ))}
                     </ul>
 
+                    {/* CTA Button */}
                     {service.external ? (
                       <a
                         href={service.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`flex items-center gap-2 text-sm font-medium ${colors.text} hover:opacity-75 transition-colors mt-auto`}
+                        className={`inline-flex items-center gap-2 text-base font-semibold ${colors.text} hover:gap-3 transition-all duration-300 mt-auto group/btn`}
                       >
-                        Explore <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        Explore
+                        <motion.span
+                          initial={{ x: 0 }}
+                          whileHover={{ x: 4 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <ArrowRight className="w-5 h-5" />
+                        </motion.span>
                       </a>
                     ) : (
                       <Link
                         to={service.link}
-                        className={`flex items-center gap-2 text-sm font-medium ${colors.text} hover:opacity-75 transition-colors mt-auto`}
+                        className={`inline-flex items-center gap-2 text-base font-semibold ${colors.text} hover:gap-3 transition-all duration-300 mt-auto group/btn`}
                       >
-                        Learn more <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        Learn more
+                        <motion.span
+                          initial={{ x: 0 }}
+                          whileHover={{ x: 4 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <ArrowRight className="w-5 h-5" />
+                        </motion.span>
                       </Link>
                     )}
                   </div>
