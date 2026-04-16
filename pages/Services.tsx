@@ -6,95 +6,73 @@ import {
   Bot, Database, ShieldCheck, Terminal,
   Workflow, Microscope, ArrowRight, CheckCircle2,
   Target, MessageSquare, BrainCircuit, Sparkles, Phone,
-  Mic, Mail, Globe, BarChart3, Layers, Users, Cpu, Shield
+  Mic, Mail, Globe, BarChart3, Layers, Users, Cpu, Shield, Activity
 } from 'lucide-react';
-import { ServicesPopup, SERVICE_CATEGORIES } from '../components/ServicesPopup';
 import { SEO } from '../components/ui/SEO';
 
 const HIGHLIGHT_SERVICES = [
   {
-    title: "AI Agent Teams",
-    desc: "Hire a coordinated AI workforce — Sales, Support, Content, and CEO agents that communicate, delegate, and execute together.",
+    title: "Agent",
+    desc: "Deploy autonomous AI agents for Sales, Support, Content, and CEO-level orchestration. 24/7 operations with zero human overhead.",
     icon: Users,
-    link: '/services/ai-sales-agent',
+    link: '/agents',
+    color: 'blue',
     features: [
-      "Sales Agent — Qualify leads & close",
-      "Support Agent — Auto-resolve tickets",
-      "Content Agent — Social & email copy",
-      "CEO Agent — Coordinates everything"
+      "Sales Agent — Qualify leads & close deals",
+      "Support Agent — Auto-resolve customer tickets",
+      "Content Agent — Marketing copy & posts",
+      "CEO Agent — Orchestrate all agents"
     ]
   },
   {
-    title: "Voice & Chat Agents",
-    desc: "AI-powered phone agents, WhatsApp bots, website chatbots, and SMS automation — on every channel your customers use.",
-    icon: Phone,
-    link: '/services/voice-ai-agent',
-    features: [
-      "Voice AI — Human-like phone calls",
-      "WhatsApp Automation",
-      "Website Chatbot",
-      "SMS Follow-ups"
-    ]
-  },
-  {
-    title: "Workflow Automation",
-    desc: "AI-powered automation that reasons about edge cases instead of breaking. Connects to 100+ enterprise tools.",
-    icon: Workflow,
-    link: '/services/workflow-automation',
-    features: [
-      "AI Decision Points",
-      "ERP/CRM Integration",
-      "Approval Workflows",
-      "Error Recovery"
-    ]
-  },
-  {
-    title: "Digital Marketing AI",
-    desc: "SEO content, social media campaigns, email sequences, and lead generation — all powered by AI and trained on your brand.",
-    icon: Globe,
-    link: '/services/seo-content-ai',
-    features: [
-      "SEO & Content Generation",
-      "Social Media Automation",
-      "Email Campaigns",
-      "Lead Generation"
-    ]
-  },
-  {
-    title: "AgentIRL Platform",
-    desc: "The infrastructure layer that makes multi-agent systems production-ready. Orchestration, reliability, monitoring.",
+    title: "AgentIRL",
+    desc: "Enterprise infrastructure for multi-agent orchestration. Deploy, monitor, and scale with 99.9% uptime and production-grade security.",
     icon: Cpu,
     link: '/services/agentirl',
+    color: 'indigo',
     features: [
-      "Multi-Agent Orchestration",
-      "Reliability Engineering",
-      "Enterprise Integration",
-      "99.9% Uptime SLA"
+      "Multi-Agent Orchestration — Sync & coordinate",
+      "Real-time Observability — Monitor all activity",
+      "Enterprise Reliability — Auto-retry & fallbacks",
+      "50+ Integrations — Connect your tech stack"
     ]
   },
   {
-    title: "AI Audit & Consulting",
-    desc: "Assess your AI readiness, identify high-impact automation opportunities, and build a custom implementation roadmap.",
-    icon: Microscope,
-    link: '/services/ai-audit-consulting',
+    title: "Analytics + Consulting",
+    desc: "Track visitors, conversations, and conversions. Expert consulting to optimize your AI-powered business for maximum ROI.",
+    icon: BarChart3,
+    link: 'https://analytics.viktron.ai',
+    color: 'emerald',
+    external: true,
     features: [
-      "ROI Analysis",
-      "Technical Feasibility",
-      "Vendor Selection",
-      "Implementation Roadmap"
+      "Visitor Tracking — See all customer activity",
+      "Conversion Funnels — Revenue flow optimization",
+      "Agent Performance — Quality & sentiment metrics",
+      "Expert Consulting — Custom ROI strategies"
+    ]
+  },
+  {
+    title: "Rentals",
+    desc: "Rent pre-built AI agents by the hour or day. Start immediately without setup — perfect for trials, scaling, or seasonal needs.",
+    icon: Sparkles,
+    link: '/rent',
+    color: 'purple',
+    features: [
+      "Hourly Pricing — Pay exactly what you use",
+      "Pre-built Agents — Sales, Support, Content ready",
+      "No Setup — Deploy in seconds",
+      "Auto-scaling — Handle peak demand instantly"
     ]
   }
 ];
 
 export const Services = () => {
-  const [showAllServices, setShowAllServices] = useState(false);
-
   return (
     <Layout>
       <SEO
-        title="Viktron AI Services | Agent Teams & Automation"
-        description="Explore Viktron AI services: autonomous agent teams for sales & support, voice & chat agents, workflow automation, digital marketing AI, and AgentIRL platform. From $199/mo."
-        keywords="Viktron AI services, AI agent teams, voice AI agent, workflow automation, digital marketing AI, AgentIRL platform, AI consulting, autonomous agents, enterprise AI"
+        title="Viktron AI Products | Agent, AgentIRL, Analytics, Rentals"
+        description="Discover Viktron AI's 4 core products: Agent (autonomous AI teams), AgentIRL (production infrastructure), Analytics + Consulting (insights & optimization), and Rentals (hourly agent marketplace). Enterprise-ready. From $199/mo."
+        keywords="Viktron AI products, AI agent teams, AgentIRL platform, analytics for AI, agent rentals, autonomous agents, enterprise AI platform, multi-agent orchestration"
         url="/services"
       />
       {/* Hero */}
@@ -102,65 +80,80 @@ export const Services = () => {
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-50/50 rounded-full blur-[130px] pointer-events-none" />
         <div className="container-custom relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-mono mb-6">
-            Our Services
+            Viktron AI Products
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6 tracking-tight">
-            Viktron AI Services:<br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">Enterprise AI for Growth</span>
+            Four Products.<br className="hidden md:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">One AI Platform.</span>
           </h1>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed mb-10">
-            Viktron AI provides complete autonomous agent teams that handle sales, support, voice, workflow automation, and digital marketing — enterprise-grade infrastructure powering real revenue growth.
+            Deploy AI Agent Teams, power your infrastructure with AgentIRL, understand your customers with Analytics + Consulting, or rent agents on-demand. Enterprise-grade. Production-ready.
           </p>
-          <button
-            onClick={() => setShowAllServices(true)}
-            className="btn btn-primary rounded-xl px-8 py-3 text-lg shadow-lg shadow-blue-500/20 inline-flex items-center gap-2"
-          >
-            Explore All Services <ArrowRight className="w-5 h-5" />
-          </button>
         </div>
       </section>
 
       {/* Services Grid */}
       <section className="py-20 bg-slate-50 border-t border-slate-200">
         <div className="container-custom">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {HIGHLIGHT_SERVICES.map((service, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="bg-white p-8 rounded-2xl border border-slate-200 hover:border-blue-200 hover:shadow-lg transition-all duration-300 group flex flex-col"
-              >
-                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <service.icon className="w-6 h-6 text-blue-600" />
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {HIGHLIGHT_SERVICES.map((service, idx) => {
+              const colorMap: { [key: string]: { bg: string; bgHover: string; text: string; textHover: string; icon: string; iconCheck: string } } = {
+                blue: { bg: 'bg-blue-50', bgHover: 'hover:border-blue-200', text: 'text-blue-600', textHover: 'group-hover:text-blue-600', icon: 'text-blue-600', iconCheck: 'text-blue-500' },
+                indigo: { bg: 'bg-indigo-50', bgHover: 'hover:border-indigo-200', text: 'text-indigo-600', textHover: 'group-hover:text-indigo-600', icon: 'text-indigo-600', iconCheck: 'text-indigo-500' },
+                emerald: { bg: 'bg-emerald-50', bgHover: 'hover:border-emerald-200', text: 'text-emerald-600', textHover: 'group-hover:text-emerald-600', icon: 'text-emerald-600', iconCheck: 'text-emerald-500' },
+                purple: { bg: 'bg-purple-50', bgHover: 'hover:border-purple-200', text: 'text-purple-600', textHover: 'group-hover:text-purple-600', icon: 'text-purple-600', iconCheck: 'text-purple-500' },
+              };
+              const colors = colorMap[service.color] || colorMap.blue;
 
-                <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
-                  {service.title}
-                </h3>
-                <p className="text-slate-600 mb-6 leading-relaxed text-sm flex-1">
-                  {service.desc}
-                </p>
-
-                <ul className="space-y-2 mb-6">
-                  {service.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm text-slate-600">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  to={service.link}
-                  className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors mt-auto"
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className={`bg-white p-8 rounded-2xl border border-slate-200 ${colors.bgHover} hover:shadow-lg transition-all duration-300 group flex flex-col`}
                 >
-                  Learn more <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </motion.div>
-            ))}
+                  <div className={`w-12 h-12 rounded-xl ${colors.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                    <service.icon className={`w-6 h-6 ${colors.icon}`} />
+                  </div>
+
+                  <h3 className={`text-xl font-bold text-slate-900 mb-3 ${colors.textHover} transition-colors`}>
+                    {service.title}
+                  </h3>
+                  <p className="text-slate-600 mb-6 leading-relaxed text-sm flex-1">
+                    {service.desc}
+                  </p>
+
+                  <ul className="space-y-2 mb-6">
+                    {service.features.map((feature, i) => (
+                      <li key={i} className="flex items-center gap-2 text-sm text-slate-600">
+                        <CheckCircle2 className={`w-4 h-4 ${colors.iconCheck} shrink-0`} />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {service.external ? (
+                    <a
+                      href={service.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center gap-2 text-sm font-medium ${colors.text} hover:opacity-75 transition-colors mt-auto`}
+                    >
+                      Explore <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  ) : (
+                    <Link
+                      to={service.link}
+                      className={`flex items-center gap-2 text-sm font-medium ${colors.text} hover:opacity-75 transition-colors mt-auto`}
+                    >
+                      Learn more <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -169,8 +162,8 @@ export const Services = () => {
       <section className="py-20 bg-white border-t border-slate-200">
         <div className="container-custom">
           <div className="text-center mb-14">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">How It Works</h2>
-            <p className="text-slate-600 max-w-xl mx-auto">From onboarding to results in days, not months.</p>
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">Deploy in Days, Not Months</h2>
+            <p className="text-slate-600 max-w-xl mx-auto">From initial consultation to live agents. Our streamlined deployment process gets you running in 1-3 weeks.</p>
           </div>
           <div className="flex flex-col md:flex-row items-start gap-8 md:gap-0">
             {[
@@ -201,8 +194,8 @@ export const Services = () => {
       <section className="py-24 bg-white border-t border-slate-200">
         <div className="container-custom">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Pricing That Scales With You</h2>
-            <p className="text-slate-600 max-w-xl mx-auto">Start small, grow big. No long-term contracts.</p>
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">Agent Plans for Every Business</h2>
+            <p className="text-slate-600 max-w-xl mx-auto">Start with a single agent or deploy a full team. Scale up as you grow. No long-term contracts.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -261,8 +254,6 @@ export const Services = () => {
         </div>
       </section>
 
-      {/* All Services Popup */}
-      <ServicesPopup isOpen={showAllServices} onClose={() => setShowAllServices(false)} />
     </Layout>
   );
 };

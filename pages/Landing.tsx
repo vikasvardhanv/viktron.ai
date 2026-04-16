@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
+import { AgentPathSelection } from '../components/AgentPathSelection';
 
 // ── Demo Scenarios ──
 type DemoScenario = {
@@ -413,6 +414,8 @@ const InlineDemo = () => {
 
 // ── Page ──
 export const Landing = () => {
+  const [showAgentPath, setShowAgentPath] = useState(false);
+
   // Schema markup for Viktron AI product
   const schemaMarkup = {
     "@context": "https://schema.org",
@@ -615,44 +618,43 @@ export const Landing = () => {
         </div>
       </section>
 
-      {/* ─── 2. Two Pillars ─── */}
+      {/* ─── 2. Four Products ─── */}
       <section className="py-20 bg-slate-50 border-y border-slate-200">
         <div className="container-custom">
           <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">Viktron AI: Two Products. One Enterprise Platform.</h2>
-            <p className="mt-3 text-slate-600 max-w-2xl mx-auto">Viktron AI delivers autonomous agent teams for your business (Sales, Support, Content, CEO) and AgentIRL — the production infrastructure to orchestrate, monitor, and scale them reliably.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">Viktron AI: Four Products. One Platform.</h2>
+            <p className="mt-3 text-slate-600 max-w-2xl mx-auto">Deploy autonomous AI agents, power your infrastructure, understand your customers, and rent agents on demand.</p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Pillar 1: AI Agent Teams */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Product 1: Agent */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="rounded-2xl border border-slate-200 bg-white p-8 hover:shadow-xl transition-shadow"
+              className="rounded-2xl border border-slate-200 bg-white p-8 hover:shadow-xl transition-shadow flex flex-col"
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center">
                   <Users className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-slate-900">AI Agent Teams</h3>
-                  <p className="text-xs font-mono text-blue-600 uppercase tracking-wider">Your Digital Workforce</p>
+                  <h3 className="text-xl font-bold text-slate-900">Agent</h3>
+                  <p className="text-xs font-mono text-blue-600 uppercase tracking-wider">AI Agent Teams</p>
                 </div>
               </div>
-              <p className="text-slate-600 mb-6 leading-relaxed">
-                Hire a coordinated team of AI employees — Sales, Support, Content, and a CEO agent
-                that delegates, executes, and reports. 24/7. From $199/mo.
+              <p className="text-slate-600 mb-6 leading-relaxed flex-1">
+                Deploy autonomous AI agents for Sales, Support, Content, and CEO-level orchestration. 24/7 operations with zero human overhead.
               </p>
-              <div className="grid grid-cols-2 gap-3 mb-6">
+              <div className="grid grid-cols-2 gap-2 mb-6">
                 {[
-                  { icon: Target, label: 'Sales Agent', desc: 'Leads & bookings' },
-                  { icon: MessageSquare, label: 'Support Agent', desc: 'Customer queries' },
-                  { icon: Sparkles, label: 'Content Agent', desc: 'Marketing copy' },
-                  { icon: BrainCircuit, label: 'CEO Agent', desc: 'Orchestration' },
+                  { label: 'Sales Agent', desc: 'Leads & deals' },
+                  { label: 'Support Agent', desc: 'Resolve tickets' },
+                  { label: 'Content Agent', desc: 'Marketing copy' },
+                  { label: 'CEO Agent', desc: 'Orchestrate' },
                 ].map((a, i) => (
-                  <div key={i} className="flex items-center gap-2.5 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5">
-                    <a.icon className="w-4 h-4 text-blue-500 shrink-0" />
+                  <div key={i} className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
+                    <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
                     <div>
                       <p className="text-xs font-semibold text-slate-900">{a.label}</p>
                       <p className="text-[10px] text-slate-500">{a.desc}</p>
@@ -660,50 +662,40 @@ export const Landing = () => {
                   </div>
                 ))}
               </div>
-              {/* Agent Teams Visual */}
-              <div className="mb-6 rounded-xl border border-slate-100 bg-slate-50 p-1 overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1000"
-                  alt="AI Agent Teams Collaboration"
-                  className="w-full h-48 object-cover rounded-lg opacity-90 hover:opacity-100 transition-opacity"
-                />
-              </div>
-
-              <Link to="/agents" className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700">
+              <button onClick={() => setShowAgentPath(true)} className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 mt-auto cursor-pointer">
                 Meet the agents <ArrowRight className="w-4 h-4" />
-              </Link>
+              </button>
             </motion.div>
 
-            {/* Pillar 2: AgentIRL Platform */}
+            {/* Product 2: AgentIRL */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="rounded-2xl border border-slate-200 bg-white p-8 hover:shadow-xl transition-shadow"
+              transition={{ delay: 0.05 }}
+              className="rounded-2xl border border-slate-200 bg-white p-8 hover:shadow-xl transition-shadow flex flex-col"
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center">
                   <Cpu className="w-6 h-6 text-indigo-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-slate-900">AgentIRL Platform</h3>
-                  <p className="text-xs font-mono text-indigo-600 uppercase tracking-wider">Production Infrastructure</p>
+                  <h3 className="text-xl font-bold text-slate-900">AgentIRL</h3>
+                  <p className="text-xs font-mono text-indigo-600 uppercase tracking-wider">Infrastructure</p>
                 </div>
               </div>
-              <p className="text-slate-600 mb-6 leading-relaxed">
-                The control plane for autonomous agents. Deploy, orchestrate, and monitor
-                multi-agent systems with enterprise-grade reliability, observability, and security.
+              <p className="text-slate-600 mb-6 leading-relaxed flex-1">
+                Enterprise-grade infrastructure for multi-agent orchestration. Deploy, monitor, and scale with 99.9% uptime and enterprise security.
               </p>
-              <div className="grid grid-cols-2 gap-3 mb-6">
+              <div className="grid grid-cols-2 gap-2 mb-6">
                 {[
-                  { icon: Layers, label: 'Orchestration', desc: 'Multi-agent coordination' },
-                  { icon: Activity, label: 'Observability', desc: 'Real-time monitoring' },
-                  { icon: Shield, label: 'Reliability', desc: 'Auto-retry & fallbacks' },
-                  { icon: Globe, label: 'Integrations', desc: '50+ enterprise tools' },
+                  { label: 'Orchestration', desc: 'Multi-agent sync' },
+                  { label: 'Observability', desc: 'Real-time logs' },
+                  { label: 'Reliability', desc: 'Auto-retry' },
+                  { label: 'Integrations', desc: '50+ tools' },
                 ].map((a, i) => (
-                  <div key={i} className="flex items-center gap-2.5 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5">
-                    <a.icon className="w-4 h-4 text-indigo-500 shrink-0" />
+                  <div key={i} className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
+                    <CheckCircle2 className="w-4 h-4 text-indigo-500 shrink-0" />
                     <div>
                       <p className="text-xs font-semibold text-slate-900">{a.label}</p>
                       <p className="text-[10px] text-slate-500">{a.desc}</p>
@@ -711,18 +703,90 @@ export const Landing = () => {
                   </div>
                 ))}
               </div>
-
-              {/* Backend Visual */}
-              <div className="mb-6 rounded-xl border border-slate-100 bg-slate-50 p-1 overflow-hidden">
-                <img 
-                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000" 
-                  alt="AgentIRL Platform Dashboard" 
-                  className="w-full h-48 object-cover rounded-lg opacity-90 hover:opacity-100 transition-opacity"
-                />
-              </div>
-
-              <Link to="/services/agentirl" className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700">
+              <Link to="/services/agentirl" className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700 mt-auto">
                 Explore AgentIRL <ArrowRight className="w-4 h-4" />
+              </Link>
+            </motion.div>
+
+            {/* Product 3: Analytics + Consulting */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="rounded-2xl border border-slate-200 bg-white p-8 hover:shadow-xl transition-shadow flex flex-col"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center">
+                  <BarChart3 className="w-6 h-6 text-emerald-600" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900">Analytics</h3>
+                  <p className="text-xs font-mono text-emerald-600 uppercase tracking-wider">+ Consulting</p>
+                </div>
+              </div>
+              <p className="text-slate-600 mb-6 leading-relaxed flex-1">
+                Track visitors, conversations, and conversions. Expert consulting to optimize your AI-powered business for maximum revenue.
+              </p>
+              <div className="grid grid-cols-2 gap-2 mb-6">
+                {[
+                  { label: 'Visitor Tracking', desc: 'See all activity' },
+                  { label: 'Conversion Funnels', desc: 'Revenue flows' },
+                  { label: 'Agent Performance', desc: 'Quality metrics' },
+                  { label: 'Expert Consulting', desc: 'ROI optimization' },
+                ].map((a, i) => (
+                  <div key={i} className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <div>
+                      <p className="text-xs font-semibold text-slate-900">{a.label}</p>
+                      <p className="text-[10px] text-slate-500">{a.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <a href="https://analytics.viktron.ai" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 hover:text-emerald-700 mt-auto">
+                Explore Analytics <ArrowRight className="w-4 h-4" />
+              </a>
+            </motion.div>
+
+            {/* Product 4: Rentals */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.15 }}
+              className="rounded-2xl border border-slate-200 bg-white p-8 hover:shadow-xl transition-shadow flex flex-col"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center">
+                  <Sparkles className="w-6 h-6 text-purple-600" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900">Rentals</h3>
+                  <p className="text-xs font-mono text-purple-600 uppercase tracking-wider">Agent Marketplace</p>
+                </div>
+              </div>
+              <p className="text-slate-600 mb-6 leading-relaxed flex-1">
+                Rent pre-built AI agents by the hour or day. Start immediately without setup — perfect for trials, scaling, or seasonal needs.
+              </p>
+              <div className="grid grid-cols-2 gap-2 mb-6">
+                {[
+                  { label: 'Hourly Pricing', desc: 'Pay as you go' },
+                  { label: 'Pre-built Agents', desc: 'Ready to work' },
+                  { label: 'No Setup', desc: 'Instant deploy' },
+                  { label: 'Auto-scaling', desc: 'Peak handling' },
+                ].map((a, i) => (
+                  <div key={i} className="flex items-center gap-2 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
+                    <CheckCircle2 className="w-4 h-4 text-purple-500 shrink-0" />
+                    <div>
+                      <p className="text-xs font-semibold text-slate-900">{a.label}</p>
+                      <p className="text-[10px] text-slate-500">{a.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <Link to="/rent" className="inline-flex items-center gap-2 text-sm font-semibold text-purple-600 hover:text-purple-700 mt-auto">
+                Browse Rentals <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
           </div>
@@ -958,6 +1022,9 @@ export const Landing = () => {
           <p className="mt-8 text-sm text-slate-500 font-mono">Enterprise plans from $199/mo — Cancel anytime</p>
         </div>
       </section>
+
+      {/* Agent Path Selection Modal */}
+      <AgentPathSelection isOpen={showAgentPath} onClose={() => setShowAgentPath(false)} />
     </Layout>
   );
 };
