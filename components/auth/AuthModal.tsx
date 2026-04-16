@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const toApiBase = (value?: string) => {
@@ -44,6 +44,7 @@ export const AuthModal: React.FC = () => {
     signup,
   } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [view, setView] = useState<AuthView>('options');
   const [isLoading, setIsLoading] = useState(false);
@@ -155,9 +156,13 @@ export const AuthModal: React.FC = () => {
     };
   }, [showAuthModal, setShowAuthModal]);
 
-  const handleSuccess = () => {
+  const handleSuccess = (isSignup: boolean = false) => {
     setTimeout(() => {
       setShowAuthModal(false);
+      // After signup, redirect to onboarding
+      if (isSignup) {
+        navigate('/onboarding?redirect=/dashboard');
+      }
     }, 500);
   };
 
@@ -215,7 +220,7 @@ export const AuthModal: React.FC = () => {
         const result = await login(email, password);
         if (result.success) {
           setSuccess('Login successful!');
-          handleSuccess();
+          handleSuccess(false);
         } else {
           setError(result.message);
         }
@@ -240,7 +245,7 @@ export const AuthModal: React.FC = () => {
         const result = await signup({ email, password, fullName, company, phone });
         if (result.success) {
           setSuccess('Account created successfully!');
-          handleSuccess();
+          handleSuccess(true);
         } else {
           setError(result.message);
         }

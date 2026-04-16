@@ -41,6 +41,9 @@ const ChannelSetup = lazy(() => import('./pages/dashboard/ChannelSetup').then(m 
 const Integrations = lazy(() => import('./pages/dashboard/Integrations').then(m => ({ default: m.Integrations })));
 const IntegrationsCallback = lazy(() => import('./pages/dashboard/IntegrationsCallback').then(m => ({ default: m.default })));
 
+// Onboarding
+const Onboarding = lazy(() => import('./pages/Onboarding').then(m => ({ default: m.Onboarding })));
+
 // Medhavn pages
 const MedhavnSupport = lazy(() => import('./pages/MedhavnSupport').then(m => ({ default: m.MedhavnSupport })));
 const MedhavnPrivacyPolicy = lazy(() => import('./pages/medhavn/PrivacyPolicy').then(m => ({ default: m.MedhavnPrivacyPolicy })));
@@ -238,6 +241,9 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/demo" element={<PageTransition><InvestorDemo /></PageTransition>} />
         <Route path="/pretrained" element={<PageTransition><PretrainedDirectory /></PageTransition>} />
         <Route path="/spawn-requests" element={<ProtectedRoute><SpawnApproval /></ProtectedRoute>} />
+
+        {/* Onboarding — protected, appears after signup */}
+        <Route path="/onboarding" element={<PageTransition><ProtectedRoute><Onboarding /></ProtectedRoute></PageTransition>} />
 
         {/* Dashboard surfaces — protected */}
         <Route path="/dashboard" element={<ProtectedRoute><AgentMonitor /></ProtectedRoute>} />
