@@ -618,6 +618,181 @@ export const Landing = () => {
         </div>
       </section>
 
+      {/* ─── 1.5. Value Propositions ─── */}
+      <section className="py-24 bg-slate-900 text-white relative overflow-hidden">
+        {/* Background elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container-custom relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Value Prop 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0 }}
+              className="group"
+            >
+              <div className="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center mb-6 group-hover:bg-blue-500/30 transition-colors">
+                <Target className="w-7 h-7 text-blue-400" />
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Actually Gets Results</h3>
+              <p className="text-slate-300 leading-relaxed">
+                Your AI agents don't brainstorm. They execute. Close deals, resolve tickets, create content—real work that drives revenue, not theory.
+              </p>
+            </motion.div>
+
+            {/* Value Prop 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="group"
+            >
+              <div className="w-14 h-14 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-6 group-hover:bg-indigo-500/30 transition-colors">
+                <Layers className="w-7 h-7 text-indigo-400" />
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Unified Command Center</h3>
+              <p className="text-slate-300 leading-relaxed">
+                Stripe, Slack, HubSpot, Salesforce, your CRM—agents orchestrate them all. No tab-switching. No manual exports. One AI, all your tools.
+              </p>
+            </motion.div>
+
+            {/* Value Prop 3 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="group"
+            >
+              <div className="w-14 h-14 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-6 group-hover:bg-cyan-500/30 transition-colors">
+                <BrainCircuit className="w-7 h-7 text-cyan-400" />
+              </div>
+              <h3 className="text-2xl font-bold mb-3">Gets Smarter Every Day</h3>
+              <p className="text-slate-300 leading-relaxed">
+                Agents learn from every interaction. They remember what worked, what didn't, and how your team prefers things done.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 1.6. Testimonials ─── */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">Loved by teams building the future</h2>
+            <p className="text-lg text-slate-600">Real companies, real results</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                quote: "Viktron AI reduced our support response time by 80%. We went from 4-hour SLAs to instant resolutions.",
+                author: "Sarah Chen",
+                role: "VP Support, TechCorp",
+                color: "blue",
+                className: "border-blue-200 bg-gradient-to-br from-blue-50/50 to-white"
+              },
+              {
+                quote: "Within 2 weeks, our AI sales team generated $240K in pipeline. It's like hiring 5 world-class salespeople overnight.",
+                author: "Marcus Rodriguez",
+                role: "Founder, Growth Labs",
+                color: "indigo",
+                className: "border-indigo-200 bg-gradient-to-br from-indigo-50/50 to-white"
+              },
+              {
+                quote: "The analytics integration is incredible. We finally understand what our customers actually do.",
+                author: "Lisa Wong",
+                role: "CEO, DataFlow Inc",
+                color: "emerald",
+                className: "border-emerald-200 bg-gradient-to-br from-emerald-50/50 to-white"
+              }
+            ].map((testimonial, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className={`p-8 rounded-2xl border-2 ${testimonial.className}`}
+              >
+                <div className="flex items-start gap-3 mb-6">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className="text-yellow-400">★</span>
+                  ))}
+                </div>
+                <p className="text-slate-700 text-lg font-medium mb-6 leading-relaxed italic">
+                  "{testimonial.quote}"
+                </p>
+                <div>
+                  <p className="font-bold text-slate-900">{testimonial.author}</p>
+                  <p className="text-sm text-slate-600">{testimonial.role}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 1.7. Team & Credibility ─── */}
+      <section className="py-24 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl font-bold text-slate-900 tracking-tight mb-4">Built by engineers from</h2>
+          </motion.div>
+
+          <div className="flex flex-wrap justify-center items-center gap-12 mb-16">
+            {[
+              { name: "Google", logo: "🔍" },
+              { name: "Meta AI", logo: "f" },
+              { name: "Amazon", logo: "🟠" },
+              { name: "Tesla", logo: "⚡" },
+              { name: "OpenAI", logo: "◉" },
+            ].map((company, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="text-center"
+              >
+                <div className="text-4xl mb-3 opacity-70">{company.logo}</div>
+                <p className="text-slate-600 font-medium">{company.name}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-blue-50 border border-blue-200 rounded-2xl p-8 text-center"
+          >
+            <p className="text-slate-700 text-lg leading-relaxed max-w-2xl mx-auto">
+              Built by the team behind AgentIRL, trusted by enterprises handling $100M+ in annual transactions.
+              <span className="block text-sm text-slate-600 mt-3">SOC 2 Type II Certified • GDPR Compliant • 99.9% Uptime SLA</span>
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ─── 2. Four Products ─── */}
       <section className="py-24 bg-gradient-to-b from-white via-blue-50/20 to-white relative overflow-hidden">
         {/* Background decoration */}
