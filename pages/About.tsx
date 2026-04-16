@@ -19,7 +19,7 @@ export const About = () => {
         url="/about"
       />
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-white relative overflow-hidden">
+      <section className="pt-32 pb-20 relative overflow-hidden">
         {/* Background imagery + gradient blobs — matching Landing page */}
         <div
           className="absolute inset-0 bg-cover bg-center opacity-[0.035] pointer-events-none"
@@ -129,7 +129,7 @@ export const About = () => {
       </section>
 
       {/* What is AgentIRL */}
-      <section className="py-24 bg-white">
+      <section className="py-24">
         <div className="container-custom">
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-100 text-cyan-700 text-xs font-mono mb-6">
@@ -170,7 +170,7 @@ export const About = () => {
       </section>
 
       {/* How We Scale */}
-      <section className="py-24 bg-white">
+      <section className="py-24">
         <div className="container-custom">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">How We Scale</h2>
@@ -262,7 +262,7 @@ export const About = () => {
       </section>
 
       {/* Trust Badges */}
-      <section className="py-12 bg-white border-b border-slate-200">
+      <section className="py-12 border-b border-slate-200">
         <div className="container-custom">
           <div className="flex flex-wrap items-center justify-center gap-8">
             {[

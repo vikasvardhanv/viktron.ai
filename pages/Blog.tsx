@@ -68,7 +68,7 @@ export const Blog: React.FC = () => {
       />
 
       {/* Hero */}
-      <section className="pt-32 pb-12 px-4 bg-white relative overflow-hidden">
+      <section className="pt-32 pb-12 px-4 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-50/50 rounded-full blur-[130px] pointer-events-none" />
         <div className="container-custom relative z-10">
           <AnimatedSection>
@@ -87,7 +87,7 @@ export const Blog: React.FC = () => {
       </section>
 
       {/* Articles Grid */}
-      <section className="pb-20 px-4 bg-white">
+      <section className="pb-20 px-4">
         <div className="container-custom">
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {ARTICLES.map((article, idx) => (

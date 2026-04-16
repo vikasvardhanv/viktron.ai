@@ -169,7 +169,7 @@ export const Contact: React.FC = () => {
       />
 
       {/* Hero */}
-      <section className="pt-32 pb-12 px-4 bg-white relative overflow-hidden">
+      <section className="pt-32 pb-12 px-4 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-50/50 rounded-full blur-[130px] pointer-events-none" />
         <div className="container-custom relative z-10">
           <AnimatedSection>
@@ -196,7 +196,7 @@ export const Contact: React.FC = () => {
       </section>
 
       {/* Contact Methods */}
-      <section className="pb-12 px-4 bg-white">
+      <section className="pb-12 px-4">
         <div className="container-custom">
           <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {contactMethods.map((method) => (
@@ -215,7 +215,7 @@ export const Contact: React.FC = () => {
       </section>
 
       {/* Form + Sidebar */}
-      <section className="pb-16 px-4 bg-white">
+      <section className="pb-16 px-4">
         <div className="container-custom">
           <div className="grid gap-6 lg:grid-cols-[1.12fr_0.88fr]">
             <AnimatedSection>

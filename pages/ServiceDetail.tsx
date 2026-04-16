@@ -503,7 +503,7 @@ export const ServiceDetail = () => {
           </div>
         </section>
       ) : (
-        <section className="pt-32 pb-16 bg-white relative overflow-hidden">
+        <section className="pt-32 pb-16 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-50/50 rounded-full blur-[130px] pointer-events-none" />
           <div className="container-custom relative z-10">
             <Link to="/services" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-blue-600 mb-8 transition-colors">
@@ -692,7 +692,7 @@ export const ServiceDetail = () => {
       {(serviceId === 'agent-orchestration' || service.name === 'Agent Orchestration (AgentIRL)') && (
         <>
           {/* The Reliability Problem */}
-          <section className="py-24 bg-white border-t border-slate-200">
+          <section className="py-24">
             <div className="container-custom">
               <div className="max-w-4xl mx-auto">
                 <div className="mb-16">
@@ -825,7 +825,7 @@ export const ServiceDetail = () => {
           </section>
 
           {/* Framework Interoperability */}
-          <section className="py-24 bg-white border-t border-slate-200">
+          <section className="py-24">
             <div className="container-custom">
               <div className="text-center mb-16">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-100 text-xs font-mono text-cyan-700 mb-6">
@@ -943,7 +943,7 @@ export const ServiceDetail = () => {
           </section>
 
           {/* Security & Compliance */}
-          <section className="py-24 bg-white border-t border-slate-200">
+          <section className="py-24">
             <div className="container-custom">
               <div className="text-center mb-16">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-100 text-xs font-mono text-red-600 mb-6">

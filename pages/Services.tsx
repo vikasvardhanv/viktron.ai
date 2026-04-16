@@ -78,7 +78,7 @@ export const Services = () => {
         url="/services"
       />
       {/* Hero */}
-      <section className="relative pt-40 pb-32 bg-white overflow-hidden">
+      <section className="relative pt-40 pb-32 overflow-hidden">
         {/* Background imagery + gradient blobs — matching Landing page */}
         <div
           className="absolute inset-0 bg-cover bg-center opacity-[0.035] pointer-events-none"

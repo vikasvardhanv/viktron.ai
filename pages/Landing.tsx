@@ -454,7 +454,7 @@ export const Landing = () => {
       />
 
       {/* ─── 1. Hero ─── */}
-      <section className="relative pt-32 pb-40 overflow-hidden bg-white">
+      <section className="relative pt-32 pb-40 overflow-hidden">
         {/* Background imagery + gradient blobs */}
         {/* Full-bleed abstract hero image — very low opacity for texture */}
         <div
@@ -682,98 +682,7 @@ export const Landing = () => {
         </div>
       </section>
 
-      {/* ─── 1.6. Testimonials ─── */}
-      <section className="py-24 bg-white relative overflow-hidden">
-        <div className="container-custom">
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                quote: "Viktron AI reduced our support response time by 80%. We went from 4-hour SLAs to instant resolutions.",
-                author: "Sarah Chen",
-                role: "VP Support, TechCorp",
-                color: "blue",
-                className: "border-blue-200 bg-gradient-to-br from-blue-50/50 to-white"
-              },
-              {
-                quote: "Within 2 weeks, our AI sales team generated $240K in pipeline. It's like hiring 5 world-class salespeople overnight.",
-                author: "Marcus Rodriguez",
-                role: "Founder, Growth Labs",
-                color: "indigo",
-                className: "border-indigo-200 bg-gradient-to-br from-indigo-50/50 to-white"
-              },
-              {
-                quote: "The analytics integration is incredible. We finally understand what our customers actually do.",
-                author: "Lisa Wong",
-                role: "CEO, DataFlow Inc",
-                color: "emerald",
-                className: "border-emerald-200 bg-gradient-to-br from-emerald-50/50 to-white"
-              }
-            ].map((testimonial, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className={`p-8 rounded-2xl border-2 ${testimonial.className}`}
-              >
-                <div className="flex items-start gap-3 mb-6">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-yellow-400">★</span>
-                  ))}
-                </div>
-                <p className="text-slate-700 text-lg font-medium mb-6 leading-relaxed italic">
-                  "{testimonial.quote}"
-                </p>
-                <div>
-                  <p className="font-bold text-slate-900">{testimonial.author}</p>
-                  <p className="text-sm text-slate-600">{testimonial.role}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── 1.7. Team & Credibility ─── */}
-      <section className="py-24 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
-        <div className="container-custom">
-          <div className="flex flex-wrap justify-center items-center gap-12 mb-16">
-            {[
-              { name: "Google", logo: "🔍" },
-              { name: "Meta AI", logo: "f" },
-              { name: "Amazon", logo: "🟠" },
-              { name: "Tesla", logo: "⚡" },
-              { name: "OpenAI", logo: "◉" },
-            ].map((company, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="text-center"
-              >
-                <div className="text-4xl mb-3 opacity-70">{company.logo}</div>
-                <p className="text-slate-600 font-medium">{company.name}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-blue-50 border border-blue-200 rounded-2xl p-8 text-center"
-          >
-            <p className="text-slate-700 text-lg leading-relaxed max-w-2xl mx-auto">
-              Built by the team behind AgentIRL, trusted by enterprises handling $100M+ in annual transactions.
-              <span className="block text-sm text-slate-600 mt-3">SOC 2 Type II Certified • GDPR Compliant • 99.9% Uptime SLA</span>
-            </p>
-          </motion.div>
-        </div>
-      </section>
 
       {/* ─── 2. Four Products ─── */}
       <section className="py-24 bg-gradient-to-b from-white via-blue-50/20 to-white relative overflow-hidden">
@@ -1076,7 +985,7 @@ export const Landing = () => {
       </section>
 
       {/* ─── 7. FAQ Section ─── */}
-      <section className="py-20 bg-white border-t border-slate-200">
+      <section className="py-20 border-t border-slate-200">
         <div className="container-custom max-w-3xl">
           <div className="text-center mb-14">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-3">

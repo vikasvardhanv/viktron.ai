@@ -248,7 +248,7 @@ export const AgentIRL: React.FC = () => {
       </section>
 
       {/* 3 ── PROBLEM */}
-      <section className="bg-white py-24">
+      <section className="py-24">
         <div className="mx-auto max-w-7xl px-6">
           <motion.div
             variants={stagger}
@@ -415,7 +415,7 @@ export const AgentIRL: React.FC = () => {
       </section>
 
       {/* 5 ── CAPABILITIES GRID */}
-      <section className="bg-white py-24">
+      <section className="py-24">
         <div className="mx-auto max-w-7xl px-6">
           <motion.div
             variants={stagger}
@@ -498,7 +498,7 @@ export const AgentIRL: React.FC = () => {
       </section>
 
       {/* 7 ── USE CASES */}
-      <section className="bg-white py-24">
+      <section className="py-24">
         <div className="mx-auto max-w-7xl px-6">
           <motion.div
             variants={stagger}

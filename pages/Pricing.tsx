@@ -96,7 +96,7 @@ export const Pricing: React.FC = () => {
       />
 
       {/* Hero */}
-      <section className="pt-32 pb-16 px-4 bg-white relative overflow-hidden">
+      <section className="pt-32 pb-16 px-4 relative overflow-hidden">
         {/* Background imagery + gradient blobs — matching Landing page */}
         <div
           className="absolute inset-0 bg-cover bg-center opacity-[0.035] pointer-events-none"
@@ -138,7 +138,7 @@ export const Pricing: React.FC = () => {
       </section>
 
       {/* Pricing Cards */}
-      <section className="pb-20 px-4 bg-white">
+      <section className="pb-20 px-4">
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {TIERS.map((tier, idx) => (
@@ -228,7 +228,7 @@ export const Pricing: React.FC = () => {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-20 px-4">
         <div className="container-custom max-w-3xl">
           <AnimatedSection>
             <h2 className="text-3xl font-bold text-slate-900 text-center mb-12">Frequently Asked Questions</h2>

@@ -7,7 +7,7 @@ export const CaseStudies = () => {
   return (
     <Layout>
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-white relative overflow-hidden">
+      <section className="pt-32 pb-20 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-50/50 rounded-full blur-3xl opacity-50 pointer-events-none" />
         <div className="container-custom relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-mono mb-6">
@@ -122,7 +122,7 @@ export const CaseStudies = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-24 bg-white border-t border-slate-200">
+      <section className="py-24 border-t border-slate-200">
         <div className="container-custom text-center">
           <h2 className="text-3xl font-bold text-slate-900 mb-6">Ready to write your success story?</h2>
           <div className="flex justify-center gap-4">

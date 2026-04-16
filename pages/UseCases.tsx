@@ -224,7 +224,7 @@ export const UseCases = () => {
       />
 
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-white relative overflow-hidden">
+      <section className="pt-32 pb-16 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-50/50 rounded-full blur-[130px] pointer-events-none" />
         <div className="container-custom relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
