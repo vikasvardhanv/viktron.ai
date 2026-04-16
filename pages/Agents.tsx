@@ -96,8 +96,8 @@ export const Agents: React.FC = () => {
   return (
     <Layout showBackground={false}>
       <SEO
-        title="Viktron AI Agents | Autonomous Digital Employees | Enterprise AI Workforce"
-        description="Deploy Viktron AI agents that work like employees across sales, support, content, and operations. Enterprise-grade, secure, integrated with your business tools."
+        title="Viktron AI Agents | Enterprise Digital Workforce"
+        description="Deploy AI agents that work like employees across sales, support, content, and operations. Enterprise-grade, secure, integrated with your business tools."
         keywords="Viktron AI agents, AI employees, digital workforce, autonomous agents, enterprise AI, AI workforce, intelligent automation"
         url="/agents"
       />

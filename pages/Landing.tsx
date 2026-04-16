@@ -444,7 +444,7 @@ export const Landing = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
       />
       <SEO
-        title="Viktron AI - Enterprise AI Agent Teams Platform for Sales & Support"
+        title="Viktron AI | Enterprise Agent Teams Platform"
         description="Viktron AI deploys autonomous AI agent teams for sales, support, and operations. Orchestrate, monitor, and scale with AgentIRL platform. Enterprise-grade. From $199/mo."
         keywords="Viktron AI, AI agent teams, AI employees, AgentIRL, multi-agent orchestration, AI automation, enterprise AI, AI sales agents, customer support automation"
         url="/"

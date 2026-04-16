@@ -92,7 +92,7 @@ export const Services = () => {
   return (
     <Layout>
       <SEO
-        title="Viktron AI Services | Agent Teams, Voice AI, Workflow Automation & More"
+        title="Viktron AI Services | Agent Teams & Automation"
         description="Explore Viktron AI services: autonomous agent teams for sales & support, voice & chat agents, workflow automation, digital marketing AI, and AgentIRL platform. From $199/mo."
         keywords="Viktron AI services, AI agent teams, voice AI agent, workflow automation, digital marketing AI, AgentIRL platform, AI consulting, autonomous agents, enterprise AI"
         url="/services"
