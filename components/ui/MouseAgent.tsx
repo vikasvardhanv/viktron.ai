@@ -37,8 +37,6 @@ export const MouseAgent: React.FC = () => {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (!isVisible) setIsVisible(true);
-
       const newX = e.clientX;
       const newY = e.clientY;
       
@@ -49,6 +47,8 @@ export const MouseAgent: React.FC = () => {
 
       mouseX.set(newX - 24);
       mouseY.set(newY - 24);
+
+      setIsVisible(true);
 
       const now = Date.now();
       const speed = Math.sqrt(vx * vx + vy * vy);
@@ -96,7 +96,7 @@ export const MouseAgent: React.FC = () => {
       document.body.removeEventListener('mouseenter', handleMouseEnter);
       document.body.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, [isVisible, mouseX, mouseY]);
+  }, []);
 
   if (!isVisible) return null;
 
