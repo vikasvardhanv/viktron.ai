@@ -5,7 +5,7 @@
 nixPkgs = ["nodejs_20"]
 
 [phases.install]
-cmds = ["npm install"]
+cmds = ["npm ci --legacy-peer-deps"]
 
 [phases.build]
 cmds = ["npm run build"]
@@ -15,3 +15,4 @@ cmd = "npm run start:server"
 
 [variables]
 NODE_ENV = "production"
+NODE_OPTIONS = "--max-old-space-size=4096"
