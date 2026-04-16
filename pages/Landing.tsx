@@ -685,15 +685,6 @@ export const Landing = () => {
       {/* ─── 1.6. Testimonials ─── */}
       <section className="py-24 bg-white relative overflow-hidden">
         <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">Loved by teams building the future</h2>
-            <p className="text-lg text-slate-600">Real companies, real results</p>
-          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -748,15 +739,6 @@ export const Landing = () => {
       {/* ─── 1.7. Team & Credibility ─── */}
       <section className="py-24 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
         <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight mb-4">Built by engineers from</h2>
-          </motion.div>
-
           <div className="flex flex-wrap justify-center items-center gap-12 mb-16">
             {[
               { name: "Google", logo: "🔍" },
