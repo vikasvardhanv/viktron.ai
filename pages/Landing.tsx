@@ -511,7 +511,7 @@ export const Landing = () => {
                 <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
                 Powered by AgentIRL
               </div>
-              <h1 className="text-5xl lg:text-7xl font-bold text-slate-900 tracking-tight mb-8 leading-[1.1]">
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-slate-900 tracking-tight mb-6 md:mb-8 leading-[1.1]">
                 Viktron AI:<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Enterprise AI Agent Teams</span>
               </h1>

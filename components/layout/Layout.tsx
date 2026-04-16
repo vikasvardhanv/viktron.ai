@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 
@@ -19,17 +19,28 @@ export const Layout: React.FC<LayoutProps> = ({
   showFooter = true,
   showBackground = true
 }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <div className="relative min-h-screen overflow-x-clip bg-transparent text-[#13213a]">
       {showBackground && (
-        <div className="page-noise pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className={`page-noise pointer-events-none absolute inset-0 -z-10 overflow-hidden ${isMobile ? 'hidden' : ''}`}>
           <video
             className="absolute inset-0 h-full w-full object-cover opacity-[0.28] blur-[1px] saturate-[1.2]"
             autoPlay
             loop
             muted
             playsInline
-            preload="metadata"
+            preload="none"
             poster="/visuals/site-backdrop.svg"
             aria-hidden="true"
           >
@@ -41,7 +52,7 @@ export const Layout: React.FC<LayoutProps> = ({
             loop
             muted
             playsInline
-            preload="metadata"
+            preload="none"
             poster="/visuals/site-backdrop-detail.svg"
             aria-hidden="true"
           >
@@ -49,7 +60,7 @@ export const Layout: React.FC<LayoutProps> = ({
           </video>
           <div className="absolute inset-0 bg-white/74" />
           <div className="absolute inset-x-0 top-0 h-80 bg-gradient-to-b from-[#dce7fa]/78 via-[#edf3fb]/50 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#edf3fa]/82 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#edf3fb]/82 to-transparent" />
           <div className="absolute -top-28 right-[-8rem] h-80 w-80 rounded-full bg-[#89b3ff]/24 blur-3xl" />
           <div className="absolute top-28 left-[-7rem] h-64 w-64 rounded-full bg-[#89e1c7]/24 blur-3xl" />
           <div
@@ -64,10 +75,13 @@ export const Layout: React.FC<LayoutProps> = ({
         </div>
       )}
 
+      {/* Mobile-friendly static background alternative */}
+      {showBackground && isMobile && (
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-[#edf3fb] via-white to-[#edf3fb]" />
+      )}
+
       {/* Navigation */}
       <Navbar />
-
-      {/* Main content with semantic HTML for SEO */}
       <main className="relative z-10" role="main">
         {children}
       </main>
