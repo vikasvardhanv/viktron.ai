@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight, Zap, ShoppingCart, Users, BookOpen } from 'lucide-react';
+import { X, ArrowRight, Zap, MessageSquare, Users, Layers } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface AgentPathSelectionProps {
@@ -19,11 +19,11 @@ export const AgentPathSelection: React.FC<AgentPathSelectionProps> = ({ isOpen, 
       color: 'blue'
     },
     {
-      icon: ShoppingCart,
-      title: 'Rentals',
-      description: 'Rent pre-built AI agents by the hour. Perfect for trials, testing, or scaling without long-term commitment.',
-      action: 'Browse Rentals',
-      link: '/rent',
+      icon: MessageSquare,
+      title: 'Slack or Teams or WhatsApp',
+      description: 'Deploy AI agents directly to your favorite messaging platform. Connect your team communication channels and automate workflows instantly.',
+      action: 'Connect Messaging',
+      link: '/onboarding',
       color: 'purple'
     },
     {
@@ -35,11 +35,11 @@ export const AgentPathSelection: React.FC<AgentPathSelectionProps> = ({ isOpen, 
       color: 'indigo'
     },
     {
-      icon: BookOpen,
-      title: 'Learn More',
-      description: 'Explore documentation, case studies, and demos to understand how Viktron AI can solve your challenges.',
-      action: 'View Resources',
-      link: '/use-cases',
+      icon: Layers,
+      title: 'Pre-built Agent Templates',
+      description: 'Choose from ready-made agent templates for Sales, Support, Content, and more. Deploy in minutes without building from scratch.',
+      action: 'Browse Templates',
+      link: '/rent',
       color: 'emerald'
     }
   ];
