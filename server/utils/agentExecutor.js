@@ -5,12 +5,22 @@ import { ensureWorkspace, getWorkspacePaths } from './workspaceManager.js';
 import { executeBrowserRuntimeTask, isBrowserRuntimeConfigured } from './browserRuntime.js';
 import { buildOrchestrationPlan, recordOrchestrationMemory } from './orchestrationEngine.js';
 import { runBashInWorkspace } from './workspaceExecutor.js';
+import { reflectOnOutcome, shouldReflect } from './agentReflector.js';
+import { decomposeRequest, aggregateResults } from './ceoAgent.js';
+import { enqueueTask, getChildTasks, getChildrenStatus } from './taskQueue.js';
+import { learnFromOutcome, evolveSkill, recordOutcomeAnalysis } from './skillEvolution.js';
 
 const LEAD_AGENT_BASE = 'https://techmehash--lead-agent-api.modal.run';
 const SCHEDULING_ENDPOINT = 'https://techmehash--scheduling-messaging-agent-schedule-appointment.modal.run';
 const AVAILABILITY_ENDPOINT = 'https://techmehash--scheduling-messaging-agent-check-availability.modal.run';
 
 export const CAPABILITIES = [
+  {
+    id: 'ceo_orchestrate',
+    title: 'CEO Orchestration',
+    status: 'available',
+    description: 'Intelligently decompose complex requests into parallel sub-tasks, coordinate execution, and synthesize results.',
+  },
   {
     id: 'analytics_reporting',
     title: 'Analytics & reporting',
@@ -440,6 +450,77 @@ export const executeTask = async ({ request, payload = {} }) => {
   let outcome;
 
   switch (capability) {
+    case 'ceo_orchestrate': {
+      // Phase 2: CEO Agent Orchestration
+      const currentSkills = await listSkills(workspace);
+      const decomposition = await decomposeRequest({
+        request,
+        workspace,
+        skills: currentSkills,
+      });
+
+      // Enqueue child tasks
+      const childTaskIds = [];
+      for (const subtask of decomposition.subtasks) {
+        const childTask = await enqueueTask({
+          workspace,
+          source: 'ceo',
+          request: subtask.request,
+          payload: { ...payload, agent_type: subtask.agent_type },
+          parentTaskId: payload._currentTaskId || null, // Will be set by caller
+          depth: (payload.depth || 0) + 1,
+          agentType: subtask.agent_type,
+        });
+        childTaskIds.push({ taskId: childTask.id, agent_type: subtask.agent_type });
+      }
+
+      // Wait for all children to complete (with timeout)
+      const MAX_WAIT_MS = 5 * 60 * 1000; // 5 minutes max wait
+      const START_TIME = Date.now();
+      let allDone = false;
+      let childResults = [];
+
+      while (!allDone && Date.now() - START_TIME < MAX_WAIT_MS) {
+        const status = await getChildrenStatus(payload._currentTaskId);
+
+        if (status.total > 0 && status.completed + status.failed === status.total) {
+          allDone = true;
+          childResults = await getChildTasks(payload._currentTaskId);
+          break;
+        }
+
+        if (status.failed > 0) {
+          // Early exit if children failed
+          break;
+        }
+
+        // Wait a bit before checking again
+        await new Promise((r) => setTimeout(r, 2000));
+      }
+
+      // Aggregate results
+      const aggregation = await aggregateResults({
+        originalRequest: request,
+        results: childResults.map((ct) => ({
+          agent_type: ct.agent_type,
+          result: ct.result,
+        })),
+        synthesisPrompt: decomposition.synthesis_prompt,
+      });
+
+      outcome = {
+        capability: 'ceo_orchestrate',
+        status: 'completed',
+        result: {
+          summary: aggregation.summary,
+          child_tasks: childTaskIds.length,
+          decomposition_complexity: decomposition.complexity,
+          synthesis_confidence: aggregation.confidence,
+        },
+      };
+      break;
+    }
+
     case 'shell_workspace':
       outcome = {
         capability,
@@ -513,6 +594,80 @@ export const executeTask = async ({ request, payload = {} }) => {
     result: outcome.result,
   });
 
+  // ==========================================
+  // Phase 1: Autonomous Reflection & Follow-up
+  // ==========================================
+  let reflection = null;
+  let followupTaskId = null;
+
+  if (shouldReflect({ capability, depth: payload.depth || 0 })) {
+    reflection = await reflectOnOutcome({
+      request,
+      result: outcome.result,
+      capability,
+      status: outcome.status,
+      workspace,
+    });
+
+    // If reflection suggests follow-up and we haven't exceeded depth limit
+    if (
+      reflection &&
+      !reflection.complete &&
+      reflection.followup_request &&
+      (payload.depth || 0) < 3
+    ) {
+      // For now, just record the follow-up suggestion
+      // The CEO agent in Phase 2 will handle automatic follow-up spawning
+      // In Phase 1, this is captured for observability
+    }
+  }
+
+  // ==========================================
+  // Phase 3: Self-Learning from Outcomes
+  // ==========================================
+  let learningOutcome = null;
+  try {
+    // Analyze task outcome to extract learning patterns
+    learningOutcome = await learnFromOutcome({
+      capability,
+      request,
+      result: outcome.result,
+      status: outcome.status,
+      workspace,
+    });
+
+    // If learning suggests skill improvement, evolve it
+    if (learningOutcome && learningOutcome.should_update && learningOutcome.updated_content) {
+      await evolveSkill({
+        workspace,
+        key: capability,
+        updatedContent: learningOutcome.updated_content,
+        pattern: learningOutcome.pattern,
+        metadata: {
+          taskId: payload.taskId,
+          request: request.substring(0, 200),
+          previousStatus: outcome.status,
+        },
+      });
+    }
+
+    // Record the learning event for future analysis
+    await recordOutcomeAnalysis({
+      workspace,
+      taskId: payload.taskId || 'unknown',
+      capability,
+      request: request.substring(0, 200),
+      status: outcome.status,
+      learningPattern: learningOutcome?.pattern || 'unknown',
+      confidence: learningOutcome?.confidence || 0,
+    }).catch(() => {
+      // Silently fail if recording analysis fails
+    });
+  } catch (learningError) {
+    // Log but don't fail task execution due to learning errors
+    console.error('[ExecuteTask] skill evolution error:', learningError.message);
+  }
+
   return {
     ...outcome,
     workspace: {
@@ -532,6 +687,13 @@ export const executeTask = async ({ request, payload = {} }) => {
       candidates: orchestration.candidates,
       memory_hits: orchestration.memory_hits,
     },
+    reflection: reflection || null,
+    learning: learningOutcome ? {
+      pattern: learningOutcome.pattern,
+      should_update: learningOutcome.should_update,
+      confidence: learningOutcome.confidence,
+      improvement_suggestion: learningOutcome.improvement_suggestion,
+    } : null,
   };
 };
 

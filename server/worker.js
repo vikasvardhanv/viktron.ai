@@ -2,10 +2,24 @@ import 'dotenv/config';
 import { executeTask } from './utils/agentExecutor.js';
 import logger from './utils/logger.js';
 import { getSlackConfig, postSlackMessage } from './utils/slackClient.js';
-import { appendTaskEvent, claimNextTask, completeTask, ensureTaskQueueTables, failTask, heartbeatTask, logQueueMode } from './utils/taskQueue.js';
+import {
+  appendTaskEvent,
+  claimNextTask,
+  claimRetryableTasks,
+  completeTask,
+  ensureTaskQueueTables,
+  failTask,
+  heartbeatTask,
+  incrementChildrenDone,
+  logQueueMode,
+  reclaimStaleTasks,
+  requeueForRetry,
+} from './utils/taskQueue.js';
 
 const WORKER_ID = process.env.WORKER_ID || `worker-${process.pid}`;
 const POLL_MS = Number(process.env.WORKER_POLL_MS || 3000);
+const STALE_THRESHOLD_MS = Number(process.env.WORKER_STALE_THRESHOLD_MS || 45000);
+const STALE_RECOVERY_INTERVAL = Number(process.env.WORKER_STALE_RECOVERY_INTERVAL || 30);
 
 const formatTaskResult = (execution) => {
   if (typeof execution.result === 'string') return execution.result;
@@ -32,13 +46,22 @@ const notifySlackIfNeeded = async (task, execution, failed = false) => {
 };
 
 const runOnce = async () => {
-  const task = await claimNextTask(WORKER_ID);
+  // Try to claim a normal task first
+  let task = await claimNextTask(WORKER_ID);
+
+  // If no normal task, try retryable tasks
+  if (!task) {
+    task = await claimRetryableTasks(WORKER_ID);
+  }
+
   if (!task) return false;
 
   logger.info('[Worker] claimed task', {
     workerId: WORKER_ID,
     taskId: task.id,
     source: task.source,
+    parentTaskId: task.parent_task_id || null,
+    retryCount: task.retry_count || 0,
   });
 
   const heartbeat = setInterval(() => {
@@ -61,24 +84,65 @@ const runOnce = async () => {
       result: execution,
     });
 
+    // If this is a child task, notify parent
+    if (task.parent_task_id) {
+      await incrementChildrenDone(task.parent_task_id);
+    }
+
     await notifySlackIfNeeded(task, execution, false);
   } catch (error) {
     logger.error('[Worker] task failed', {
       workerId: WORKER_ID,
       taskId: task.id,
       message: error.message,
+      retryCount: task.retry_count || 0,
+      maxRetries: task.max_retries || 2,
     });
-    await failTask({
-      taskId: task.id,
-      capability: task.payload?.capability || null,
-      error: { message: error.message },
-    });
-    await notifySlackIfNeeded(task, { message: error.message }, true);
+
+    // Check if this should be retried
+    if (task.retry_count < task.max_retries) {
+      await requeueForRetry({
+        taskId: task.id,
+        error: { message: error.message, stack: error.stack },
+      });
+      logger.info('[Worker] task requeued for retry', {
+        taskId: task.id,
+        nextAttempt: task.retry_count + 1,
+      });
+    } else {
+      await failTask({
+        taskId: task.id,
+        capability: task.payload?.capability || null,
+        error: { message: error.message },
+      });
+      await notifySlackIfNeeded(task, { message: error.message }, true);
+    }
   } finally {
     clearInterval(heartbeat);
   }
 
   return true;
+};
+
+/**
+ * Periodically recover stale tasks (worker crash recovery)
+ * Runs every STALE_RECOVERY_INTERVAL poll cycles
+ */
+let pollCount = 0;
+const recoverStaleTasks = async () => {
+  try {
+    const recovered = await reclaimStaleTasks(WORKER_ID, STALE_THRESHOLD_MS);
+    if (recovered.length > 0) {
+      logger.info('[Worker] recovered stale tasks', {
+        count: recovered.length,
+        taskIds: recovered.map(t => t.id),
+      });
+    }
+  } catch (error) {
+    logger.error('[Worker] stale task recovery failed', {
+      message: error.message,
+    });
+  }
 };
 
 const main = async () => {
@@ -87,9 +151,16 @@ const main = async () => {
   logger.startup('Worker started', {
     workerId: WORKER_ID,
     pollMs: POLL_MS,
+    staleThresholdMs: STALE_THRESHOLD_MS,
   });
 
   while (true) {
+    // Periodically recover stale tasks
+    if (pollCount % STALE_RECOVERY_INTERVAL === 0) {
+      await recoverStaleTasks();
+    }
+    pollCount++;
+
     const didWork = await runOnce();
     if (!didWork) {
       await new Promise((resolve) => setTimeout(resolve, POLL_MS));

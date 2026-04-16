@@ -191,10 +191,92 @@ CREATE TRIGGER update_store_workflows_updated_at
     EXECUTE FUNCTION update_updated_at_column();
 
 -- ==========================================
+-- AGENT TASK QUEUE (for autonomous multi-agent orchestration)
+-- ==========================================
+CREATE TABLE IF NOT EXISTS agent_tasks (
+    id TEXT PRIMARY KEY,
+    workspace TEXT NOT NULL DEFAULT 'default',
+    source TEXT NOT NULL DEFAULT 'api',
+    request TEXT NOT NULL,
+    payload JSONB NOT NULL DEFAULT '{}',
+    reply_target JSONB,
+    status TEXT NOT NULL DEFAULT 'queued',
+    capability TEXT,
+    worker_id TEXT,
+    result JSONB,
+    error JSONB,
+    parent_task_id TEXT REFERENCES agent_tasks(id) ON DELETE CASCADE,
+    depth INTEGER DEFAULT 0,
+    agent_type TEXT DEFAULT 'general',
+    retry_count INTEGER DEFAULT 0,
+    max_retries INTEGER DEFAULT 2,
+    next_retry_at TIMESTAMP WITH TIME ZONE,
+    children_total INTEGER DEFAULT 0,
+    children_done INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    started_at TIMESTAMP WITH TIME ZONE,
+    completed_at TIMESTAMP WITH TIME ZONE
+);
+
+CREATE TABLE IF NOT EXISTS agent_task_events (
+    id TEXT PRIMARY KEY,
+    task_id TEXT NOT NULL REFERENCES agent_tasks(id) ON DELETE CASCADE,
+    type TEXT NOT NULL,
+    message TEXT NOT NULL,
+    data JSONB,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Indexes for task queries
+CREATE INDEX IF NOT EXISTS idx_agent_tasks_status_created ON agent_tasks(status, created_at);
+CREATE INDEX IF NOT EXISTS idx_agent_tasks_workspace_status ON agent_tasks(workspace, status);
+CREATE INDEX IF NOT EXISTS idx_agent_tasks_parent_id ON agent_tasks(parent_task_id);
+CREATE INDEX IF NOT EXISTS idx_agent_tasks_next_retry ON agent_tasks(next_retry_at) WHERE status = 'queued' AND retry_count > 0;
+CREATE INDEX IF NOT EXISTS idx_agent_task_events_task_created ON agent_task_events(task_id, created_at);
+
+-- ==========================================
+-- AGENT SKILLS (versioned, evolved over time)
+-- ==========================================
+CREATE TABLE IF NOT EXISTS agent_skills (
+    id TEXT PRIMARY KEY,
+    workspace TEXT NOT NULL DEFAULT 'default',
+    key TEXT NOT NULL,
+    name TEXT,
+    description TEXT,
+    content TEXT,
+    enabled BOOLEAN DEFAULT TRUE,
+    source TEXT DEFAULT 'api',
+    version INTEGER DEFAULT 1,
+    previous_content TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(workspace, key)
+);
+
+CREATE INDEX IF NOT EXISTS idx_agent_skills_workspace_key ON agent_skills(workspace, key);
+CREATE INDEX IF NOT EXISTS idx_agent_skills_enabled ON agent_skills(enabled);
+
+-- ==========================================
+-- AGENT MEMORIES (semantic, tagged for learning)
+-- ==========================================
+CREATE TABLE IF NOT EXISTS agent_memories (
+    id TEXT PRIMARY KEY,
+    workspace TEXT NOT NULL DEFAULT 'default',
+    source TEXT DEFAULT 'agent',
+    content TEXT NOT NULL,
+    tags TEXT[] DEFAULT '{}',
+    metadata JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_agent_memories_workspace_tags ON agent_memories(workspace, tags);
+
+-- ==========================================
 -- SUCCESS MESSAGE
 -- ==========================================
 DO $$
 BEGIN
     RAISE NOTICE 'Database initialization complete!';
-    RAISE NOTICE 'Tables created: users, demo_access_log, sessions, leads, store_workflows';
+    RAISE NOTICE 'Tables created: users, demo_access_log, sessions, leads, store_workflows, agent_tasks, agent_task_events, agent_skills, agent_memories';
 END $$;

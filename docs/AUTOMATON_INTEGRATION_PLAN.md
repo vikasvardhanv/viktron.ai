@@ -53,22 +53,34 @@ Execution → Browser, API, or Workspace routes
 
 ### How They Spawn
 
-**Current Spawning Mechanism:**
-- **Single-level execution**: Tasks are executed sequentially
-- **Async queuing**: Tasks can be queued for background execution
-- **No true agent replication yet**: Each task is independent
+**Current Spawning Mechanism:** ✅ CAPABILITY-BASED ROUTING (Agents DO Spawn)
+- **Multi-agent coordination**: Different agents selected based on request type
+- **Task queue orchestration**: PostgreSQL `agent_tasks` + `agent_task_events` tables
+- **Worker pool dispatch**: Worker process polls queue and routes to appropriate agent
+- **Capability-based spawning**: 11 different capabilities → 6+ agents
+- **Agents coordinating**: Lead Agent, Scheduling Agent, Email Tracker, Demo Agent, Browser Runtime, Google GenAI
+
+**Distributed Agent Ecosystem:**
+1. **Lead Agent** (Modal) - Prospect research, scraping, list cleaning
+2. **Scheduling Agent** (Modal) - Appointment booking, availability checking
+3. **Email Tracker Agent** (Modal) - Campaign tracking, open/click monitoring
+4. **Demo Agent** (Modal) - On-demand demo creation
+5. **Browser Runtime** (Internal) - Web scraping, form filling, navigation
+6. **Google GenAI** (LLM) - Research, analysis, planning, reasoning
 
 **Memory Persistence:**
-- File-backed memory (current)
-- Persistent per-workspace filesystem
-- Memory can be searched/retrieved between tasks
+- PostgreSQL-backed task queue (not file-based)
+- Event sourcing via `agent_task_events` table
+- Persistent per-workspace memory search/retrieval
 - Skills, tools, and schedules are workspace-scoped
+- Full audit trail of all agent actions
 
 **Integration Points:**
-- Slack events → Agent responds via Slack API
-- HTTP API → Direct task submission
-- Scheduled tasks → Cron-like execution via schedulerService
-- Modal services → External agents (Lead Agent, Scheduling endpoints)
+- **Slack events** → Task enqueued → Worker routes to agent → Result posted to Slack
+- **HTTP API** → Direct task submission → Queue → Agent dispatch → Response
+- **Scheduled tasks** → Cron-like execution via schedulerService
+- **Modal services** → External agents (Lead Agent, Scheduling endpoints, Email Tracker, Demo Agent)
+- **Browser Runtime** → Complex web tasks (scraping, forms, navigation)
 
 ---
 

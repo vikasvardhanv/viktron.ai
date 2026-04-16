@@ -3,7 +3,7 @@ import { executeTask, getCapabilities } from '../utils/agentExecutor.js';
 import { syncLocalSkillsToStore } from '../utils/skillLoader.js';
 import { triggerSchedulerTick } from '../utils/schedulerService.js';
 import { addMemory, createSchedule, listMemories, listSchedules, listSkills, listTaskRuns, listTools, searchMemories, upsertSkill, upsertTool } from '../utils/stateStore.js';
-import { enqueueTask, getTask, hasDatabaseQueue, listTaskEvents, listTasks } from '../utils/taskQueue.js';
+import { enqueueTask, getTask, hasDatabaseQueue, listTaskEvents, listTasks, listDeadLetterTasks, manuallyRetryTask, getTaskMetrics } from '../utils/taskQueue.js';
 import { ensureWorkspace, getWorkspacePaths } from '../utils/workspaceManager.js';
 import logger from '../utils/logger.js';
 
@@ -419,6 +419,44 @@ router.post('/execute', async (req, res) => {
       error: error.message || 'Task execution failed',
     });
   }
+});
+
+// ==========================================
+// Phase 4: Dead Letter Queue & Metrics
+// ==========================================
+
+router.get('/metrics', async (req, res) => {
+  if (!hasDatabaseQueue()) {
+    return res.status(503).json({ success: false, error: 'Task queue requires DATABASE_URL' });
+  }
+
+  const workspace = String(req.query.workspace || 'default');
+  const metrics = await getTaskMetrics(workspace);
+  res.json({ success: true, workspace, metrics });
+});
+
+router.get('/dead-letter', async (req, res) => {
+  if (!hasDatabaseQueue()) {
+    return res.status(503).json({ success: false, error: 'Task queue requires DATABASE_URL' });
+  }
+
+  const workspace = String(req.query.workspace || 'default');
+  const limit = Number(req.query.limit || 50);
+  const tasks = await listDeadLetterTasks(workspace, limit);
+  res.json({ success: true, workspace, tasks });
+});
+
+router.post('/tasks/:id/retry', async (req, res) => {
+  if (!hasDatabaseQueue()) {
+    return res.status(503).json({ success: false, error: 'Task queue requires DATABASE_URL' });
+  }
+
+  const task = await manuallyRetryTask(req.params.id);
+  if (!task) {
+    return res.status(404).json({ success: false, error: 'Task not found' });
+  }
+
+  return res.json({ success: true, task, message: 'Task queued for retry' });
 });
 
 export default router;

@@ -1,68 +1,80 @@
 # Viktron Agent Architecture: Current vs. Enhanced
 
-## Current Architecture (Viktron Today)
+## Current Architecture (Viktron Today) ✅ CORRECTED
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    USER INTERFACES                       │
-│  Slack | HTTP API | Scheduled Tasks | Browser Automation │
-└────────────────┬────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────┐
+│                    USER INTERFACES                             │
+│   Slack | HTTP API | Scheduled Tasks | Browser Automation     │
+└────────────────┬──────────────────────────────────────────────┘
                  │
                  ▼
-        ┌────────────────┐
-        │  Task Request  │
-        │ (plain English)│
-        └────────┬───────┘
+        ┌─────────────────────────┐
+        │   Request Analysis      │
+        │  • inferCapability()    │
+        │  • buildOrchestrationPlan()
+        │  • thinkTask() (Google GenAI)
+        └────────┬────────────────┘
                  │
                  ▼
-     ┌───────────────────────┐
-     │  LightAgent Planner   │  ← Detects intent
-     │  • Intent detection   │
-     │  • Decomposition      │
-     │  • Route selection    │
-     └───────────┬───────────┘
-                 │
-        ┌────────┴────────┐
-        ▼                 ▼
-   ┌─────────────┐   ┌──────────────┐
-   │   Memory    │   │ Tool Registry│
-   │ (Search)   │   │ (Capabilities│
-   └─────────────┘   │              │
-        │            └──────────────┘
-        │                 │
-        └────────┬────────┘
-                 ▼
-     ┌───────────────────────┐
-     │  Route Selection      │
-     │  • Browser-first      │
-     │  • API-first          │
-     │  • Workspace-first    │
-     └───────────┬───────────┘
-                 │
-    ┌────────────┼────────────┐
-    ▼            ▼            ▼
-┌────────┐  ┌──────────┐  ┌─────────────┐
-│Browser │  │ Modal    │  │   Linux     │
-│Runtime │  │Services  │  │  Workspace  │
-│        │  │(Lead,    │  │(Code,Bash)  │
-│        │  │Schedule) │  │             │
-└────────┘  └──────────┘  └─────────────┘
-    │            │              │
-    └────────────┼──────────────┘
+     ┌─────────────────────────────────┐
+     │   Task Queue (PostgreSQL)       │
+     │  • agent_tasks (enqueue)        │
+     │  • agent_task_events (audit)    │
+     │  • Event sourcing enabled       │
+     └────────┬────────────────────────┘
                  │
                  ▼
-        ┌────────────────┐
-        │  Task Result   │
-        │  (Return to    │
-        │   user)        │
-        └────────────────┘
+     ┌─────────────────────────────────┐
+     │   Worker Process (Polling)      │
+     │  • claimNextTask()              │
+     │  • executeTask()                │
+     │  • Capability dispatch          │
+     └────────┬────────────────────────┘
+                 │
+    ┌────────────┴────────────────────────────────┐
+    │                                              │
+    │   Capability-Based Agent Selection          │
+    │   (This is where agents SPAWN)              │
+    │                                              │
+    ▼         ▼        ▼        ▼         ▼       ▼
+┌─────┐ ┌─────────┐ ┌────┐ ┌────────┐ ┌───┐ ┌──────┐
+│Lead │ │Scheduling│Demo │ │Browser │ │   │ │Google│
+│Agent│ │Agent     │Agent│ │Runtime │ │...│ │GenAI │
+│     │ │          │     │ │        │ │   │ │      │
+│Modal│ │Modal     │Modal│ │Internal│ │   │ │LLM   │
+└─────┘ └─────────┘ └────┘ └────────┘ └───┘ └──────┘
 
-KEY: Single Linear Execution
-- One task processed per request
-- No spawn/replication
-- Static skills
-- Memory retrieval only
-- No autonomous loops
+Additional Agents via Modal:
+  • Email Tracker Agent (campaign monitoring)
+  • Future: Custom agents (CrewAI, LangGraph, CAMEL)
+
+    │         │        │        │         │      │
+    └─────────┴────────┴────────┴─────────┴──────┘
+                     │
+                     ▼
+        ┌──────────────────────────┐
+        │   Result Recording       │
+        │  • updateTaskStatus()    │
+        │  • appendTaskEvent()     │
+        │  • Record to agent_tasks │
+        └──────────────────────────┘
+                     │
+                     ▼
+        ┌──────────────────────────┐
+        │  Multi-Channel Response  │
+        │  • Slack thread reply    │
+        │  • HTTP response         │
+        │  • Email notification    │
+        └──────────────────────────┘
+
+KEY: Distributed Multi-Agent Orchestration
+✅ Multiple agents executing in parallel
+✅ Capability-based routing (agent spawning)
+✅ Task queue coordination
+✅ Event sourcing for reliability
+✅ Async/background execution
+✅ Slack/HTTP/Email integration
 ```
 
 ---

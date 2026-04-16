@@ -2,7 +2,8 @@ import crypto from 'crypto';
 import express from 'express';
 import { GoogleGenAI } from '@google/genai';
 import { getCapabilities } from '../utils/agentExecutor.js';
-import { enqueueTask, hasDatabaseQueue } from '../utils/taskQueue.js';
+import { enqueueTask, hasDatabaseQueue, listSkills } from '../utils/taskQueue.js';
+import { shouldOrchestrate } from '../utils/ceoAgent.js';
 import { getSlackConfig, normalizeSlackMessageText, postSlackMessage } from '../utils/slackClient.js';
 import logger from '../utils/logger.js';
 
@@ -220,12 +221,19 @@ router.post('/events', async (req, res) => {
       ].join('\n');
     } else {
       if (hasDatabaseQueue()) {
+        // Check if request needs CEO orchestration (complex multi-step task)
+        const needsOrchestration = await shouldOrchestrate(cleanedText);
+
+        // Get available skills for task planning
+        const skills = await listSkills('default').catch(() => []);
+
         const task = await enqueueTask({
           workspace: 'default',
           source: 'slack',
           request: cleanedText,
           payload: {
             channel_type: event.channel_type,
+            skills: skills.map(s => ({ name: s.key, description: s.description })),
           },
           replyTarget: {
             type: 'slack',
@@ -233,9 +241,13 @@ router.post('/events', async (req, res) => {
             thread_ts: event.thread_ts || event.ts,
             user: event.user,
           },
+          agentType: needsOrchestration ? 'ceo' : 'general',
+          ...(needsOrchestration && { capability: 'ceo_orchestrate' }),
         });
 
-        replyText = `Working on it. I queued that task and will post the result here when it completes.\n\nTask ID: ${task.id}`;
+        replyText = needsOrchestration
+          ? `🚀 Starting orchestration. Decomposing into specialized tasks and executing in parallel...\n\nTask ID: ${task.id}`
+          : `Working on it. I queued that task and will post the result here when it completes.\n\nTask ID: ${task.id}`;
       } else {
         replyText = await generateAssistantReply({ text: cleanedText, appName });
       }

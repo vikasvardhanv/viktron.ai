@@ -45,6 +45,26 @@
       },
       "created_at": "2026-03-28T22:44:26.206Z",
       "updated_at": "2026-03-28T22:44:26.206Z"
+    },
+    {
+      "id": "3c360830-aa81-4485-8f3f-67828baeedf8",
+      "workspace": "test",
+      "source": "outcome_analysis",
+      "content": "Task test-task-123 (research_intelligence): completed - Pattern: successful_research_pattern",
+      "tags": [
+        "outcome",
+        "research_intelligence",
+        "completed",
+        "successful_research_pattern"
+      ],
+      "metadata": {
+        "taskId": "test-task-123",
+        "capability": "research_intelligence",
+        "confidence": 0.85,
+        "timestamp": "2026-04-16T08:52:37.731Z"
+      },
+      "created_at": "2026-04-16T08:52:37.733Z",
+      "updated_at": "2026-04-16T08:52:37.733Z"
     }
   ],
   "tools": [],
