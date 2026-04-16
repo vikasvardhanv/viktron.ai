@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
+import { MouseAgent } from '../ui/MouseAgent';
 
 // Lazy load heavy components for better initial load
 const GlobalChatbot = lazy(() => import('../GlobalChatbot').then(m => ({ default: m.GlobalChatbot })));
@@ -63,6 +64,9 @@ export const Layout: React.FC<LayoutProps> = ({
           />
         </div>
       )}
+
+      {/* Mouse Agent */}
+      <MouseAgent />
 
       {/* Navigation */}
       <Navbar />
