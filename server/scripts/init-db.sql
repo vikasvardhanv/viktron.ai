@@ -273,6 +273,51 @@ CREATE TABLE IF NOT EXISTS agent_memories (
 CREATE INDEX IF NOT EXISTS idx_agent_memories_workspace_tags ON agent_memories(workspace, tags);
 
 -- ==========================================
+-- COST METERING (LLM call tracking & attribution)
+-- ==========================================
+-- Add cost tracking columns to agent_tasks
+ALTER TABLE agent_tasks ADD COLUMN IF NOT EXISTS trust_level TEXT DEFAULT 'supervised';
+ALTER TABLE agent_tasks ADD COLUMN IF NOT EXISTS total_tokens_input INTEGER DEFAULT 0;
+ALTER TABLE agent_tasks ADD COLUMN IF NOT EXISTS total_tokens_output INTEGER DEFAULT 0;
+ALTER TABLE agent_tasks ADD COLUMN IF NOT EXISTS total_cost_usd NUMERIC(12,6) DEFAULT 0;
+ALTER TABLE agent_tasks ADD COLUMN IF NOT EXISTS llm_calls INTEGER DEFAULT 0;
+
+-- One row per LLM API call (Gemini, etc.)
+CREATE TABLE IF NOT EXISTS agent_cost_events (
+    id TEXT PRIMARY KEY,
+    task_id TEXT NOT NULL REFERENCES agent_tasks(id) ON DELETE CASCADE,
+    workspace TEXT NOT NULL,
+    agent_type TEXT,
+    model TEXT NOT NULL,
+    tokens_input INTEGER DEFAULT 0,
+    tokens_output INTEGER DEFAULT 0,
+    cost_usd NUMERIC(12,6) DEFAULT 0,
+    latency_ms INTEGER,
+    call_purpose TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_cost_events_task ON agent_cost_events(task_id);
+CREATE INDEX IF NOT EXISTS idx_cost_events_workspace_created ON agent_cost_events(workspace, created_at);
+
+-- ==========================================
+-- PROGRESSIVE TRUST SYSTEM (agent autonomy)
+-- ==========================================
+-- Tracks success/failure history per agent type per workspace
+CREATE TABLE IF NOT EXISTS agent_trust_scores (
+    id TEXT PRIMARY KEY,
+    workspace TEXT NOT NULL,
+    agent_type TEXT NOT NULL,
+    success_count INTEGER DEFAULT 0,
+    failure_count INTEGER DEFAULT 0,
+    trust_level TEXT DEFAULT 'supervised',
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(workspace, agent_type)
+);
+
+CREATE INDEX IF NOT EXISTS idx_trust_scores_workspace_agent ON agent_trust_scores(workspace, agent_type);
+
+-- ==========================================
 -- SUCCESS MESSAGE
 -- ==========================================
 DO $$

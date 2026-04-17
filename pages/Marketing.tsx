@@ -174,22 +174,130 @@ export const Marketing: React.FC = () => {
         </div>
       </section>
 
+      <section className="pb-14 px-4">
+        <div className="container-custom">
+          <AnimatedSection>
+            <div className="bg-white rounded-2xl border border-slate-200 p-7">
+              <h2 className="text-2xl font-semibold text-slate-900 mb-6">How Growth Ops Works with Viktron</h2>
+              <div className="grid gap-8 md:grid-cols-3">
+                {[
+                  {
+                    step: "1",
+                    title: "Research & Planning",
+                    desc: "AI agents analyze your market, competitors, and audience to identify growth levers. They compile trends, content gaps, and campaign ideas into actionable briefs."
+                  },
+                  {
+                    step: "2",
+                    title: "Content & Campaign Ops",
+                    desc: "Content Strategists generate on-brand copy, Social Managers schedule posts across platforms, and Email Specialists orchestrate nurture sequences — all without manual work."
+                  },
+                  {
+                    step: "3",
+                    title: "Measure & Optimize",
+                    desc: "Revenue Analysts continuously monitor performance, track attribution, and reallocate budget to high-ROI channels. Weekly dashboards show what's working and why."
+                  }
+                ].map((item) => (
+                  <div key={item.step} className="text-center">
+                    <div className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-blue-600 text-white font-bold text-lg mb-4">{item.step}</div>
+                    <h3 className="font-semibold text-slate-900 mb-2">{item.title}</h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      <section className="pb-14 px-4">
+        <div className="container-custom">
+          <AnimatedSection>
+            <div className="bg-slate-50 rounded-2xl border border-slate-200 p-8">
+              <h2 className="text-2xl font-semibold text-slate-900 mb-6">Real Results: How Customers Use Growth Ops</h2>
+              <div className="space-y-6">
+                {[
+                  {
+                    company: "B2B SaaS (Series A)",
+                    challenge: "Content team of 2 couldn't keep up with blog, social, and email demands",
+                    result: "Deployed Content Strategist + Social Manager agents. Content cycle dropped 63%, team now ships 4x more campaigns while founder focuses on strategy."
+                  },
+                  {
+                    company: "E-commerce Brand",
+                    challenge: "Manual email campaigns took 40 hours/week to plan, write, and track",
+                    result: "Lifecycle Specialist agent now orchestrates 12 automated sequences. Avg email revenue increased 28%, team redirected to creative strategy."
+                  },
+                  {
+                    company: "Marketing Agency (12-person)",
+                    challenge: "Client reporting took 15 hours/week across team; hard to show real ROI",
+                    result: "Revenue Analyst agent generates weekly dashboards automatically. Clients see clear attribution. Agency now handles 35% more clients without hiring."
+                  }
+                ].map((item, idx) => (
+                  <div key={idx} className="border-l-4 border-blue-600 pl-6 py-4">
+                    <h3 className="font-semibold text-slate-900 text-sm uppercase tracking-wide text-blue-600 mb-1">{item.company}</h3>
+                    <p className="text-slate-700 mb-2"><span className="font-semibold">Challenge:</span> {item.challenge}</p>
+                    <p className="text-slate-700"><span className="font-semibold">Result:</span> {item.result}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      <section className="pb-14 px-4">
+        <div className="container-custom max-w-3xl">
+          <AnimatedSection>
+            <h2 className="text-2xl font-semibold text-slate-900 mb-8 text-center">FAQ: Growth Ops & AI Agents</h2>
+            <div className="space-y-4">
+              {[
+                {
+                  q: "Can AI-generated content really work for our brand?",
+                  a: "Yes — if you train it on your voice. Viktron's Content Strategist learns from your best content, brand guidelines, and tone samples. The agent generates variations that sound like you, not generic AI."
+                },
+                {
+                  q: "How much does growth ops cost vs. hiring a growth team?",
+                  a: "A 3-person growth team costs $250-400K/year in salary + benefits. Viktron Growth Ops platform costs $4,000-8,000/month and delivers 80% of the output with 90% cost savings."
+                },
+                {
+                  q: "What integrations do you support?",
+                  a: "We integrate with Salesforce, HubSpot, Slack, Notion, Stripe, Google Analytics, Airtable, Zapier, and 50+ other tools. If your tool has an API, we can connect it."
+                },
+                {
+                  q: "Do you handle compliance for regulated industries?",
+                  a: "For healthcare and finance, we support HIPAA and FINRA-compliant deployments with encrypted data, audit logs, and restricted access. Contact us for industry-specific setup."
+                }
+              ].map((item, idx) => (
+                <details key={idx} className="group cursor-pointer">
+                  <summary className="flex items-center justify-between font-semibold text-slate-900 py-3 px-4 bg-white rounded-lg border border-slate-200 hover:bg-blue-50 transition-colors">
+                    {item.q}
+                    <ArrowRight className="w-4 h-4 transform group-open:rotate-90 transition-transform" />
+                  </summary>
+                  <div className="px-4 py-3 text-slate-600 text-sm bg-white border-x border-b border-slate-200 rounded-b-lg">
+                    {item.a}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
       <section className="pb-20 px-4">
         <div className="container-custom">
           <AnimatedSection>
             <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7">
-              <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+              <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
                 <div>
-                  <h2 className="text-3xl font-semibold tracking-tight text-slate-900">Ready for production-grade growth ops?</h2>
-                  <p className="mt-3 text-slate-600 leading-relaxed">
-                    We set up your growth stack with reliability controls, integration stability, and weekly ROI optimization.
+                  <h2 className="text-3xl font-semibold tracking-tight text-slate-900 mb-4">Ready for production-grade growth ops?</h2>
+                  <p className="text-lg text-slate-600 leading-relaxed mb-6">
+                    We set up your growth stack with reliability controls, integration stability, and weekly ROI optimization. Your team gets 80% of the output of a growth team for 10% of the cost.
                   </p>
                   <div className="mt-6 flex flex-wrap gap-3">
                     <Link to="/demo-form">
                       <Button icon={<Zap className="h-4 w-4" />}>Start with a Strategy Call</Button>
                     </Link>
                     <Link to="/services">
-                      <Button variant="secondary">Explore Services</Button>
+                      <Button variant="secondary">See All Services</Button>
                     </Link>
                   </div>
                 </div>
@@ -200,8 +308,8 @@ export const Marketing: React.FC = () => {
                     { label: 'Manual ops load', value: '-20h/wk' },
                   ].map((stat) => (
                     <div key={stat.label} className="rounded-2xl border border-slate-200 bg-white p-3">
-                      <p className="text-xl font-semibold text-slate-900">{stat.value}</p>
-                      <p className="mt-1 text-xs text-slate-500">{stat.label}</p>
+                      <p className="text-lg font-semibold text-slate-900">{stat.value}</p>
+                      <p className="mt-1 text-xs text-slate-500 whitespace-nowrap">{stat.label}</p>
                     </div>
                   ))}
                 </div>
