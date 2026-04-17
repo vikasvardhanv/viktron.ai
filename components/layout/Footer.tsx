@@ -119,7 +119,7 @@ export const Footer = () => {
 
         <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-slate-500 text-sm">
-            © {new Date().getFullYear()} Viktron Inc. All rights reserved.
+            © {new Date().getFullYear()} Viktron Inc. All rights reserved. | <a href="https://seojuice.com" target="_blank" rel="noopener noreferrer" className="hover:text-slate-700 transition-colors">Powered by SEOJuice</a>
           </p>
           <div className="flex items-center gap-2 text-sm text-slate-500">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
