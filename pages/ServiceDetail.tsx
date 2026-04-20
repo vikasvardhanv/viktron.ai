@@ -426,7 +426,7 @@ export const ServiceDetail = () => {
 
   return (
     <Layout>
-      <ServiceSEO serviceName={service.name} serviceDescription={service.description} />
+      <ServiceSEO serviceName={service.name} serviceDescription={service.description} serviceId={serviceId} />
       {/* Hero */}
       {isAgentIRL ? (
         <section className="pt-28 pb-14 bg-[#f7f8f5] relative overflow-hidden border-b border-slate-200">
@@ -933,7 +933,7 @@ export const ServiceDetail = () => {
                       <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-3">
                         <item.icon className="w-5 h-5 text-blue-600" />
                       </div>
-                      <h4 className="font-semibold text-slate-900 mb-2">{item.title}</h4>
+                      <h3 className="font-semibold text-slate-900 mb-2">{item.title}</h3>
                       <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
                     </div>
                   ))}

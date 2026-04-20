@@ -1,0 +1,39 @@
+# Viktron.ai — Enterprise AI Agent Teams Platform
+
+> Viktron AI deploys autonomous AI agent teams for sales, support, and operations. Powered by AgentIRL, our orchestration platform enables enterprises to run coordinated AI employees 24/7. Enterprise-grade. From $199/mo.
+
+## What We Do
+
+Viktron.ai is a leading AI automation agency specializing in custom AI agents, chatbots, voice automation, and intelligent business process automation. We serve 500+ businesses across multiple industries.
+
+**Core products:**
+- AI Agent Teams (Sales, Support, Content, Operations agents working together)
+- AgentIRL Platform (multi-agent orchestration, monitoring, policy enforcement)
+- Analytics Suite (AI performance analytics and insights)
+- Agent Rentals (on-demand AI agents for specific tasks)
+
+## Key Pages
+
+- [Homepage](https://viktron.ai/): Overview of the platform and enterprise AI agent teams
+- [Services](https://viktron.ai/services): Full service catalog — AI Agents, AgentIRL, Analytics, Rentals
+- [Agents](https://viktron.ai/agents): Industry-specific AI agents (restaurant, clinic, salon, legal, e-commerce, etc.)
+- [Pricing](https://viktron.ai/pricing): Plans starting at $199/mo
+- [Case Studies](https://viktron.ai/case-studies): Real customer results — 99.9% reliability, 92% cost reduction
+- [Contact](https://viktron.ai/contact): Book a demo or reach us at info@viktron.ai
+- [Demos](https://viktron.ai/demos): Live capabilities overview
+
+## Pricing (Machine-Readable)
+
+See [/pricing.md](https://viktron.ai/pricing.md) for structured pricing data.
+
+## Company
+
+- **Founded:** 2023
+- **Location:** Chicago, IL, USA
+- **Email:** info@viktron.ai
+- **Phone:** +1 (844) 660-8065
+- **Industries served:** Restaurant, Healthcare, Salon, Automotive, Construction, Real Estate, Legal, E-commerce, Education, Recruitment
+
+## AI Crawlers
+
+All major AI search crawlers are explicitly allowed in robots.txt including GPTBot, ClaudeBot, PerplexityBot, Google-Extended, and Bingbot.

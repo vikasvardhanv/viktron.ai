@@ -100,6 +100,16 @@ export const Agents: React.FC = () => {
         description="Deploy AI agents that work like employees across sales, support, content, and operations. Enterprise-grade, secure, integrated with your business tools."
         keywords="Viktron AI agents, AI employees, digital workforce, autonomous agents, enterprise AI, AI workforce, intelligent automation"
         url="/agents"
+        canonicalUrl="https://viktron.ai/agents"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            { "@type": "Question", "name": "What are Viktron AI agents?", "acceptedAnswer": { "@type": "Answer", "text": "Viktron AI agents are autonomous digital employees that handle sales outreach, customer support, content creation, and business operations. They work 24/7, coordinate through the AgentIRL platform, and integrate with Slack, CRM, and ERP systems." } },
+            { "@type": "Question", "name": "How do Viktron AI agents work?", "acceptedAnswer": { "@type": "Answer", "text": "Each agent is specialized for a role (Sales, Support, Analytics, Operations). A CEO Agent coordinates them, delegates tasks, and monitors performance. They communicate with each other and your team via Slack and email, making autonomous decisions within defined policies." } },
+            { "@type": "Question", "name": "Which industries can use Viktron AI agents?", "acceptedAnswer": { "@type": "Answer", "text": "Viktron AI agents serve restaurants, healthcare clinics, salons, automotive dealerships, construction, real estate, legal firms, e-commerce, education, and recruitment — with industry-specific training and compliance built in." } }
+          ]
+        }}
       />
 
       <div className="relative overflow-hidden bg-white">
@@ -124,7 +134,7 @@ export const Agents: React.FC = () => {
                 <Sparkles className="h-4 w-4 text-blue-600" />
                 Digital Workforce
               </div>
-              <h1 className="mt-5 text-4xl sm:text-6xl font-semibold tracking-tight text-slate-900">Hire your Viktron AI Agents</h1>
+              <h1 className="mt-5 text-4xl sm:text-6xl font-semibold tracking-tight text-slate-900">Viktron AI Agents: Your Enterprise Digital Workforce</h1>
               <p className="mt-3 max-w-3xl text-base sm:text-lg leading-relaxed text-slate-600">
                 A scalable, deterministic digital workforce integrated directly into your Slack, CRM, and ERP. 
                 Click an agent node to see how they can join your team.

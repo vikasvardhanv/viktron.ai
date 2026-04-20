@@ -221,6 +221,7 @@ export const UseCases = () => {
         description="See how enterprises, startups, and small businesses use Viktron AI agent teams. Real use cases with live demos showing exactly what agents do in healthcare, restaurants, e-commerce, real estate, law, and construction."
         keywords="AI use cases, AI for enterprise, AI for startups, AI for small business, AI agents healthcare, AI restaurant, AI e-commerce, AI real estate, AI construction, AI law firm"
         url="/use-cases"
+        canonicalUrl="https://viktron.ai/use-cases"
       />
 
       {/* Hero */}
@@ -288,7 +289,7 @@ export const UseCases = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-3 mb-1">
-                          <h3 className="text-lg font-bold text-slate-900">{uc.title}</h3>
+                          <h2 className="text-lg font-bold text-slate-900">{uc.title}</h2>
                           <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">{uc.segment}</span>
                         </div>
                         <p className="text-sm text-slate-600">{uc.desc}</p>
@@ -362,7 +363,7 @@ export const UseCases = () => {
                             <div className="lg:col-span-2 space-y-5">
                               {/* Results (mobile too) */}
                               <div className="bg-slate-50 rounded-xl p-5 border border-slate-200">
-                                <h4 className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-3">Results</h4>
+                                <h3 className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-3">Results</h3>
                                 <div className="space-y-3">
                                   {uc.results.map((r, i) => (
                                     <div key={i} className="flex items-center gap-3">
@@ -375,7 +376,7 @@ export const UseCases = () => {
 
                               {/* Agents deployed */}
                               <div>
-                                <h4 className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-2">Agents Deployed</h4>
+                                <h3 className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-2">Agents Deployed</h3>
                                 <div className="flex flex-wrap gap-1.5">
                                   {uc.agents.map((a, i) => (
                                     <span key={i} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-medium border border-blue-100">

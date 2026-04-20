@@ -64,6 +64,7 @@ export const PrivacyPolicy: React.FC = () => {
         title="Privacy Policy | Viktron"
         description="How Viktron collects, uses, and protects personal information."
         url="/privacy"
+        canonicalUrl="https://viktron.ai/privacy"
       />
 
       <section className="pt-32 pb-14 px-4">

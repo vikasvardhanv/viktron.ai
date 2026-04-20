@@ -12,6 +12,16 @@ export const CaseStudies = () => {
         description="See how Fortune 500 companies and tech leaders use Viktron's AI agents to achieve 99.9% reliability, reduce costs by 92%, and scale operations. Real customer results inside."
         keywords="AI agent case studies, enterprise automation, customer success stories, AI reliability, business automation ROI"
         url="/case-studies"
+        canonicalUrl="https://viktron.ai/case-studies"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            { "@type": "Question", "name": "How long does it take to deploy Viktron agents?", "acceptedAnswer": { "@type": "Answer", "text": "Most enterprises go from pilot to production in 8-12 weeks. We've deployed in as little as 4 weeks for cloud-native teams." } },
+            { "@type": "Question", "name": "What ROI can we expect in year one?", "acceptedAnswer": { "@type": "Answer", "text": "Customers see 2.5-3.5x returns in the first 12 months, with average payback within 6-9 months. ROI comes from labor savings, faster processing, and revenue uplift." } },
+            { "@type": "Question", "name": "Can Viktron agents work with our existing systems?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Viktron integrates with 100+ enterprise systems including Salesforce, ServiceNow, Workday, SAP, and custom APIs." } }
+          ]
+        }}
       />
 
       {/* Hero */}
@@ -25,7 +35,7 @@ export const CaseStudies = () => {
             How Enterprises Scale with Viktron's AI Agents
           </h1>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed mb-4">
-            From Fortune 500 financial institutions to rapid-growth tech companies, discover how leading organizations achieve 99.9% reliability, reduce operational costs by up to 92%, and scale their teams without adding headcount using Viktron's enterprise AI agent platform.
+            From Fortune 500 financial institutions to rapid-growth tech companies, discover how leading organizations achieve <strong>99.9% reliability</strong>, reduce operational costs by <strong>up to 92%</strong>, and scale their teams without adding headcount using Viktron's enterprise AI agent platform.
           </p>
           <div className="flex justify-center gap-6 text-sm text-slate-700 max-w-2xl mx-auto">
             <div className="flex items-center gap-2"><TrendingUp className="w-4 h-4 text-blue-600" /> 3,000+ workflows deployed</div>
@@ -40,17 +50,17 @@ export const CaseStudies = () => {
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
-              <h3 className="text-3xl font-bold text-blue-600 mb-2">92%</h3>
+              <p className="text-3xl font-bold text-blue-600 mb-2">92%</p>
               <p className="text-slate-600">Average reduction in processing time across deployments</p>
               <p className="text-sm text-slate-500 mt-2">From manual workflows to AI-powered automation</p>
             </div>
             <div className="text-center">
-              <h3 className="text-3xl font-bold text-blue-600 mb-2">3.2x</h3>
+              <p className="text-3xl font-bold text-blue-600 mb-2">3.2x</p>
               <p className="text-slate-600">Average productivity increase in first 90 days</p>
               <p className="text-sm text-slate-500 mt-2">Measured across finance, support, and sales teams</p>
             </div>
             <div className="text-center">
-              <h3 className="text-3xl font-bold text-blue-600 mb-2">$850K</h3>
+              <p className="text-3xl font-bold text-blue-600 mb-2">$850K</p>
               <p className="text-slate-600">Average annual savings per deployment</p>
               <p className="text-sm text-slate-500 mt-2">Based on 2024 customer ROI analysis</p>
             </div>
@@ -166,7 +176,7 @@ export const CaseStudies = () => {
 
                   {study.details && (
                     <div className="mb-8 bg-slate-50 rounded-lg p-6 border border-slate-100">
-                      <h4 className="font-semibold text-slate-900 text-sm mb-4 uppercase tracking-wide">Implementation Details</h4>
+                      <h3 className="font-semibold text-slate-900 text-sm mb-4 uppercase tracking-wide">Implementation Details</h3>
                       <ul className="space-y-3">
                         {study.details.map((detail, i) => (
                           <li key={i} className="flex gap-3 text-sm text-slate-700">

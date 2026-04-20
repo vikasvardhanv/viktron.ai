@@ -11,6 +11,7 @@ const footerLinks = {
     { name: 'Rentals', path: '/rent' },
   ],
   resources: [
+    { name: 'Enterprise', path: '/enterprise' },
     { name: 'All Services', path: '/services' },
     { name: 'Use Cases', path: '/use-cases' },
     { name: 'Pricing', path: '/pricing' },

@@ -93,6 +93,7 @@ export const Pricing: React.FC = () => {
         description="Transparent pricing for AI agent teams. Start at $199/mo for a single agent, scale to full enterprise teams with AgentIRL."
         keywords="AI agent pricing, AI team cost, Viktron pricing, AI automation pricing"
         url="/pricing"
+        canonicalUrl="https://viktron.ai/pricing"
       />
 
       {/* Hero */}
@@ -159,7 +160,7 @@ export const Pricing: React.FC = () => {
                     {tier.badge}
                   </div>
                 )}
-                <h3 className="text-xl font-bold text-slate-900">{tier.name}</h3>
+                <h2 className="text-xl font-bold text-slate-900">{tier.name}</h2>
                 <p className="text-sm text-slate-500 mt-1">{tier.desc}</p>
                 <div className="mt-6 mb-6">
                   <span className="text-4xl font-bold text-slate-900">{tier.price}</span>

@@ -166,6 +166,7 @@ export const Contact: React.FC = () => {
         title="Contact Viktron | Deploy Your AI Team"
         description="Talk to Viktron about deploying AI agent teams, voice AI, workflow automation, and the AgentIRL platform for your business."
         url="/contact"
+        canonicalUrl="https://viktron.ai/contact"
       />
 
       {/* Hero */}

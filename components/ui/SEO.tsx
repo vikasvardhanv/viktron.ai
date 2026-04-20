@@ -242,6 +242,8 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <link rel="canonical" href={finalCanonical} />
+      <link rel="alternate" hrefLang="en" href={finalCanonical} />
+      <link rel="alternate" hrefLang="x-default" href={finalCanonical} />
       
       {/* Robots */}
       <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
@@ -300,15 +302,17 @@ export const SEO: React.FC<SEOProps> = ({
 };
 
 // Export specialized SEO components for common pages
-export const ServiceSEO: React.FC<{ serviceName: string; serviceDescription: string }> = ({ 
-  serviceName, 
-  serviceDescription 
+export const ServiceSEO: React.FC<{ serviceName: string; serviceDescription: string; serviceId?: string }> = ({
+  serviceName,
+  serviceDescription,
+  serviceId,
 }) => (
   <SEO
     title={`${serviceName} | AI Services | Viktron`}
     description={serviceDescription}
     keywords={`${serviceName}, AI Services, Business Automation, Viktron`}
-    url={`/services`}
+    url={`/services/${serviceId || ''}`}
+    canonicalUrl={serviceId ? `https://viktron.ai/services/${serviceId}` : 'https://viktron.ai/services'}
     schema={{
       "@context": "https://schema.org",
       "@type": "Service",

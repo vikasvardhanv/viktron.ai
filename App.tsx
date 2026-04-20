@@ -27,6 +27,7 @@ const LeadbotConsole = lazy(() => import('./pages/LeadbotConsole').then(m => ({ 
 const Pricing = lazy(() => import('./pages/Pricing').then(m => ({ default: m.Pricing })));
 const Blog = lazy(() => import('./pages/Blog').then(m => ({ default: m.Blog })));
 const RentAgent = lazy(() => import('./pages/RentAgent').then(m => ({ default: m.RentAgent })));
+const Enterprise = lazy(() => import('./pages/Enterprise').then(m => ({ default: m.Enterprise })));
 const SlackOAuthCallback = lazy(() => import('./pages/SlackOAuthCallback').then(m => ({ default: m.SlackOAuthCallback })));
 const ToolFeed = lazy(() => import('./pages/ToolFeed').then(m => ({ default: m.ToolFeed })));
 const PretrainedDirectory = lazy(() => import('./pages/PretrainedDirectory').then(m => ({ default: m.default })));
@@ -221,6 +222,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/case-studies" element={<PageTransition><CaseStudies /></PageTransition>} />
         <Route path="/about" element={<PageTransition><About /></PageTransition>} />
         <Route path="/pricing" element={<PageTransition><Pricing /></PageTransition>} />
+        <Route path="/enterprise" element={<PageTransition><Enterprise /></PageTransition>} />
         <Route path="/demos" element={<PageTransition><Demos /></PageTransition>} />
         <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />

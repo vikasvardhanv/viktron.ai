@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BarChart3, Calendar, Check, FileText, Mail, Megaphone, Share2, Sparkles, Zap, Users } from 'lucide-react';
+import { ArrowRight, BarChart3, Calendar, Check, FileText, Mail, Megaphone, Share2, Sparkles, Zap, Users } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
 import { AnimatedSection, StaggerContainer, StaggerItem } from '../components/ui/AnimatedSection';
@@ -65,6 +65,7 @@ export const Marketing: React.FC = () => {
         description="Run growth workflows on top of AgentOps: content, campaign orchestration, and measurable performance loops."
         keywords="AgentOps marketing, growth operations, AI campaign automation, performance loops"
         url="/marketing"
+        canonicalUrl="https://viktron.ai/marketing"
       />
 
       <section className="pt-32 pb-12 px-4 relative overflow-hidden">
@@ -157,7 +158,7 @@ export const Marketing: React.FC = () => {
                   <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50">
                     {module.icon}
                   </div>
-                  <h3 className="mt-4 text-xl font-semibold text-slate-900">{module.title}</h3>
+                  <h2 className="mt-4 text-xl font-semibold text-slate-900">{module.title}</h2>
                   <p className="mt-2 text-sm leading-relaxed text-slate-600">{module.description}</p>
                   <div className="mt-4 grid gap-2 sm:grid-cols-2">
                     {module.features.map((feature) => (

@@ -17,6 +17,7 @@ export const About = () => {
         description="Viktron builds AI agent teams that actually work — Sales, Support, Content, and CEO agents coordinated by AgentIRL, the reliability layer for production multi-agent systems."
         keywords="about Viktron, AgentIRL, AI infrastructure, multi-agent orchestration, AI reliability, agent coordination, AI platform"
         url="/about"
+        canonicalUrl="https://viktron.ai/about"
       />
       {/* Hero Section */}
       <section className="pt-32 pb-20 relative overflow-hidden">

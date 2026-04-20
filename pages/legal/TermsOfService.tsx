@@ -73,7 +73,7 @@ export const TermsOfService: React.FC = () => {
 
   return (
     <Layout>
-      <SEO title="Terms of Service | Viktron" description="Terms governing use of Viktron services and website." url="/terms" />
+      <SEO title="Terms of Service | Viktron" description="Terms governing use of Viktron services and website." url="/terms" canonicalUrl="https://viktron.ai/terms" />
 
       <section className="pt-32 pb-14 px-4">
         <div className="container-custom max-w-4xl">

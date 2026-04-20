@@ -85,10 +85,11 @@ export const Demos: React.FC = () => {
   return (
     <Layout>
       <SEO
-        title="What We Build | Viktron"
-        description="Explore Viktron's AI capabilities — agent teams, voice AI, workflow automation, analytics, and more. See how we can transform your business operations."
-        keywords="AI capabilities, AI agent demos, voice AI, workflow automation, analytics, AI consulting"
+        title="AI Capabilities & Demos | Viktron Agent Platform"
+        description="Explore Viktron's full AI capabilities — autonomous agent teams, voice AI, WhatsApp automation, workflow automation, analytics, and AI consulting. Enterprise-ready solutions for every industry."
+        keywords="AI capabilities, AI agent demos, voice AI, workflow automation, analytics, AI consulting, enterprise AI platform"
         url="/demos"
+        canonicalUrl="https://viktron.ai/demos"
       />
 
       <section className="pt-32 pb-12 px-4 relative overflow-hidden">
@@ -136,7 +137,7 @@ export const Demos: React.FC = () => {
                     <h3 className="mt-4 text-lg font-semibold text-slate-900">{cap.title}</h3>
                     <p className="mt-2 text-sm text-slate-600 leading-relaxed">{cap.desc}</p>
                     <div className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-600">
-                      Learn more
+                      Explore {cap.title}
                       <ArrowRight className="h-4 w-4" />
                     </div>
                   </motion.div>
@@ -190,18 +191,23 @@ export const Demos: React.FC = () => {
   );
 };
 
-export const DemoWrapper: React.FC<{ children: React.ReactNode; title: string }> = ({ children, title }) => {
+export const DemoWrapper: React.FC<{ children: React.ReactNode; title: string; description?: string }> = ({ children, title, description }) => {
   const navigate = useNavigate();
 
   return (
     <Layout showFooter={false}>
+      <SEO
+        title={`${title} | Viktron AI Demo`}
+        description={description || `Try ${title} — Viktron AI's intelligent automation solution. See how AI agents can transform your business operations.`}
+        noindex={true}
+      />
       <div className="pt-24 pb-8 px-4">
         <div className="container-custom">
           <div className="flex items-center gap-3">
             <Button variant="secondary" onClick={() => navigate('/demos')} icon={<ArrowLeft className="h-4 w-4" />}>
               Back
             </Button>
-            <h1 className="text-xl font-semibold text-slate-900">{title}</h1>
+            <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
           </div>
         </div>
       </div>

@@ -76,6 +76,7 @@ export const Services = () => {
         description="Discover Viktron AI's 4 core products: Agent (autonomous AI teams), AgentIRL (production infrastructure), Analytics + Consulting (insights & optimization), and Rentals (hourly agent marketplace). Enterprise-ready. From $199/mo."
         keywords="Viktron AI products, AI agent teams, AgentIRL platform, analytics for AI, agent rentals, autonomous agents, enterprise AI platform, multi-agent orchestration"
         url="/services"
+        canonicalUrl="https://viktron.ai/services"
       />
       {/* Hero */}
       <section className="relative pt-40 pb-32 overflow-hidden">
@@ -126,7 +127,7 @@ export const Services = () => {
               Everything you need to deploy, scale, and optimize autonomous AI agents.
             </p>
             <p className="text-base text-slate-500 max-w-2xl mx-auto leading-relaxed mb-12">
-              From autonomous agent teams to production infrastructure, analytics, and on-demand rentals—enterprise-grade solutions built for growth.
+              From <strong>autonomous agent teams</strong> to production infrastructure, analytics, and on-demand rentals — <strong>enterprise-grade solutions</strong> built for growth.
             </p>
           </motion.div>
         </div>
@@ -232,7 +233,7 @@ export const Services = () => {
                         to={service.link}
                         className={`inline-flex items-center gap-2 text-base font-semibold ${colors.text} hover:gap-3 transition-all duration-300 mt-auto group/btn`}
                       >
-                        Learn more
+                        Explore {service.title}
                         <motion.span
                           initial={{ x: 0 }}
                           whileHover={{ x: 4 }}

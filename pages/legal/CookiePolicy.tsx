@@ -44,7 +44,7 @@ export const CookiePolicy: React.FC = () => {
 
   return (
     <Layout>
-      <SEO title="Cookie Policy | Viktron" description="Cookie usage and preference controls for Viktron services." url="/cookies" />
+      <SEO title="Cookie Policy | Viktron" description="Cookie usage and preference controls for Viktron services." url="/cookies" canonicalUrl="https://viktron.ai/cookies" />
 
       <section className="pt-32 pb-14 px-4">
         <div className="container-custom max-w-4xl">

@@ -99,6 +99,7 @@ export const Careers: React.FC = () => {
         title="Careers at Viktron | Join Our Team"
         description="Open roles and internships at Viktron. Build practical AI systems with a remote-first team."
         url="/careers"
+        canonicalUrl="https://viktron.ai/careers"
       />
 
       <section className="pt-32 pb-12 px-4 relative overflow-hidden">

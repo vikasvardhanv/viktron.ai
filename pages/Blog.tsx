@@ -65,6 +65,7 @@ export const Blog: React.FC = () => {
         description="Guides, case studies, and insights on AI agent teams, multi-agent orchestration, and the AgentIRL platform."
         keywords="AI agents blog, multi-agent systems, AgentIRL, AI automation guides, AI case studies"
         url="/blog"
+        canonicalUrl="https://viktron.ai/blog"
       />
 
       {/* Hero */}
@@ -105,7 +106,7 @@ export const Blog: React.FC = () => {
                       {article.readTime}
                     </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2 leading-tight">{article.title}</h3>
+                  <h2 className="text-lg font-semibold text-slate-900 mb-2 leading-tight">{article.title}</h2>
                   <p className="text-sm text-slate-600 leading-relaxed flex-1">{article.excerpt}</p>
                   <div className="mt-4 flex items-center justify-between">
                     <span className="text-xs text-slate-400">{article.date}</span>
