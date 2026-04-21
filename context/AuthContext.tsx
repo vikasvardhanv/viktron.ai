@@ -64,7 +64,48 @@ const getAuthApiBase = () => {
   return toApiBase(import.meta.env.VITE_API_URL);
 };
 
+
+// Cookie helpers for cross-subdomain auth
+const setCookie = (name: string, value: string, days = 7) => {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  const domain = window.location.hostname.includes('viktron.ai') ? '.viktron.ai' : window.location.hostname;
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; domain=${domain}; SameSite=Lax`;
+};
+
+const getCookie = (name: string) => {
+  return document.cookie.split('; ').reduce((r, v) => {
+    const parts = v.split('=');
+    return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+  }, '');
+};
+
+const deleteCookie = (name: string) => {
+  const domain = window.location.hostname.includes('viktron.ai') ? '.viktron.ai' : window.location.hostname;
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain};`;
+};
+
 const API_URL = getAuthApiBase();
+
+// Synchronous session sync for cross-subdomain support
+(function() {
+  const TOKEN_KEY = 'viktron_auth_token';
+  const USER_KEY = 'viktron_user';
+  
+  const getCookie = (name: string) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift());
+    return '';
+  };
+
+  if (typeof window !== 'undefined' && !localStorage.getItem(TOKEN_KEY)) {
+    const cookieToken = getCookie(TOKEN_KEY);
+    const cookieUser = getCookie(USER_KEY);
+    if (cookieToken) localStorage.setItem(TOKEN_KEY, cookieToken);
+    if (cookieUser) localStorage.setItem(USER_KEY, cookieUser);
+  }
+})();
+
 const TOKEN_KEY = 'viktron_auth_token';
 const USER_KEY = 'viktron_user';
 
@@ -77,8 +118,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Load user from localStorage on mount
   useEffect(() => {
     const loadUser = async () => {
-      const token = localStorage.getItem(TOKEN_KEY);
-      const savedUser = localStorage.getItem(USER_KEY);
+      let token = localStorage.getItem(TOKEN_KEY);
+      let savedUser = localStorage.getItem(USER_KEY);
+
+      // Try cookies if localStorage is empty (cross-subdomain support)
+      if (!token) {
+        token = getCookie(TOKEN_KEY);
+        if (token) console.log('[Auth] Found token in cookies');
+      }
+      if (!savedUser) {
+        savedUser = getCookie(USER_KEY);
+        if (savedUser) console.log('[Auth] Found user in cookies');
+      }
 
       console.log('[Auth] Loading user, token exists:', !!token, 'savedUser exists:', !!savedUser);
 
@@ -106,7 +157,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             // Token invalid, clear storage
             console.log('[Auth] Token invalid, clearing');
             localStorage.removeItem(TOKEN_KEY);
-            localStorage.removeItem(USER_KEY);
+            localStorage.removeItem(USER_KEY); deleteCookie(TOKEN_KEY); deleteCookie(USER_KEY);
             setUser(null);
           }
         } catch (error) {
@@ -134,8 +185,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const data = await response.json();
 
       if (data.success) {
-        localStorage.setItem(TOKEN_KEY, data.data.token);
-        localStorage.setItem(USER_KEY, JSON.stringify(data.data.user));
+        localStorage.setItem(TOKEN_KEY, data.data.token); setCookie(TOKEN_KEY, data.data.token);
+        localStorage.setItem(USER_KEY, JSON.stringify(data.data.user)); setCookie(USER_KEY, JSON.stringify(data.data.user));
         setUser(data.data.user);
         setShowAuthModal(false);
         return { success: true, message: 'Login successful' };
@@ -166,8 +217,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       if (data?.success) {
-        localStorage.setItem(TOKEN_KEY, data.data.token);
-        localStorage.setItem(USER_KEY, JSON.stringify(data.data.user));
+        localStorage.setItem(TOKEN_KEY, data.data.token); setCookie(TOKEN_KEY, data.data.token);
+        localStorage.setItem(USER_KEY, JSON.stringify(data.data.user)); setCookie(USER_KEY, JSON.stringify(data.data.user));
         setUser(data.data.user);
         setShowAuthModal(false);
         return { success: true, message: 'Account created successfully' };
@@ -195,8 +246,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const data = await response.json();
 
       if (data.success) {
-        localStorage.setItem(TOKEN_KEY, data.data.token);
-        localStorage.setItem(USER_KEY, JSON.stringify(data.data.user));
+        localStorage.setItem(TOKEN_KEY, data.data.token); setCookie(TOKEN_KEY, data.data.token);
+        localStorage.setItem(USER_KEY, JSON.stringify(data.data.user)); setCookie(USER_KEY, JSON.stringify(data.data.user));
         setUser(data.data.user);
         setShowAuthModal(false);
         return { success: true, message: 'Login successful' };
@@ -210,7 +261,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(USER_KEY); deleteCookie(TOKEN_KEY); deleteCookie(USER_KEY);
     setUser(null);
   }, []);
 

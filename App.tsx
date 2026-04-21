@@ -184,6 +184,20 @@ const getSubdomain = () =>
 // Animated routes wrapper
 const AnimatedRoutes: React.FC = () => {
   const location = useLocation();
+  const path = location.pathname.toLowerCase();
+
+  // Redirect /auth to /login
+  if (path === '/auth') {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Always allow /login and /signup regardless of subdomain
+  if (path === '/login') {
+    return <PageTransition><AuthPage mode="login" /></PageTransition>;
+  }
+  if (path === '/signup') {
+    return <PageTransition><AuthPage mode="signup" /></PageTransition>;
+  }
 
   // On rent.viktron.ai serve the agent marketplace at root (no path redirect needed)
   if (getSubdomain() === 'rent') {
