@@ -525,13 +525,13 @@ export const Landing = () => {
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-slate-900 tracking-tight mb-6 md:mb-8 leading-[1.1]">
                 Viktron AI:<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Enterprise AI Agent Teams Platform</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">The Intelligent Infrastructure Layer</span>
               </h1>
               <p className="text-xl text-slate-600 mb-4 leading-relaxed max-w-2xl mx-auto font-semibold">
-                The production platform for deploying, orchestrating, and scaling autonomous AI agents across sales, support, and operations.
+                The production-grade trust layer for deploying, orchestrating, and governing autonomous AI agents in mission-critical environments.
               </p>
               <p className="text-lg text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
-                Viktron AI gives you a coordinated team of <strong>AI employees that work 24/7</strong> — powered by <strong>AgentIRL</strong>, the infrastructure that orchestrates, monitors, and scales them reliably. Enterprise-grade. From <strong>$199/mo</strong>.
+                Stop building fragile chatbots. Viktron AI provides the <strong>governance, audit trails, and AgentIRL orchestration</strong> required to scale reliable AI teams 24/7 without losing control. Built for developers, trusted by the enterprise.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/contact" className="btn btn-primary btn-lg rounded-lg h-14 px-8 text-lg shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2">
@@ -605,9 +605,9 @@ export const Landing = () => {
                   transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
                   className="absolute -left-8 top-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-xl border border-slate-200 px-4 py-3 min-w-[130px]"
                 >
-                  <p className="text-[11px] text-slate-500 mb-0.5">Active Agents</p>
-                  <p className="text-2xl font-bold text-slate-900">2,400+</p>
-                  <p className="text-[11px] text-green-600 font-medium mt-0.5">↑ 23% this week</p>
+                  <p className="text-[11px] text-slate-500 mb-0.5">Agent Teams Deployed</p>
+                  <p className="text-2xl font-bold text-slate-900">147</p>
+                  <p className="text-[11px] text-green-600 font-medium mt-0.5">Production Active</p>
                 </motion.div>
 
                 {/* Floating stat: right */}
@@ -616,9 +616,9 @@ export const Landing = () => {
                   transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
                   className="absolute -right-8 top-1/3 bg-white rounded-2xl shadow-xl border border-slate-200 px-4 py-3 min-w-[130px]"
                 >
-                  <p className="text-[11px] text-slate-500 mb-0.5">Avg Response</p>
-                  <p className="text-2xl font-bold text-slate-900">&lt;8s</p>
-                  <p className="text-[11px] text-blue-600 font-medium mt-0.5">99.9% uptime</p>
+                  <p className="text-[11px] text-slate-500 mb-0.5">Tasks Automated / Mo</p>
+                  <p className="text-2xl font-bold text-slate-900">2.3M</p>
+                  <p className="text-[11px] text-blue-600 font-medium mt-0.5">Zero Policy Violations</p>
                 </motion.div>
 
                 {/* Floating badge: bottom-center */}
@@ -628,7 +628,7 @@ export const Landing = () => {
                   className="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-white rounded-full shadow-lg border border-slate-200 px-5 py-2 flex items-center gap-2"
                 >
                   <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                  <span className="text-xs font-semibold text-slate-700">4 agents running concurrently</span>
+                  <span className="text-xs font-semibold text-slate-700">AgentIRL: 12 Orchestrations Active</span>
                 </motion.div>
               </motion.div>
             </motion.div>
@@ -657,9 +657,9 @@ export const Landing = () => {
               <div className="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center mb-6 group-hover:bg-blue-500/30 transition-colors">
                 <Target className="w-7 h-7 text-blue-400" />
               </div>
-              <h2 className="text-2xl font-bold mb-3">Actually Gets Results</h2>
+              <h2 className="text-2xl font-bold mb-3">AgentIRL™ Engine</h2>
               <p className="text-slate-300 leading-relaxed">
-                Your AI agents don't brainstorm. They execute. Close deals, resolve tickets, create content—real work that drives revenue, not theory.
+                Production-grade orchestration that OpenAI/Anthropic don't provide. Multi-agent coordination, task delegation, and cross-model synchronization.
               </p>
             </motion.div>
 
@@ -674,9 +674,9 @@ export const Landing = () => {
               <div className="w-14 h-14 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-6 group-hover:bg-indigo-500/30 transition-colors">
                 <Layers className="w-7 h-7 text-indigo-400" />
               </div>
-              <h2 className="text-2xl font-bold mb-3">Unified Command Center</h2>
+              <h2 className="text-2xl font-bold mb-3">Enterprise Governance</h2>
               <p className="text-slate-300 leading-relaxed">
-                Stripe, Slack, HubSpot, Salesforce, your CRM—agents orchestrate them all. No tab-switching. No manual exports. One AI, all your tools.
+                Unlocks regulated industries. Real-time policy enforcement, strict RBAC, Human-in-the-Loop approvals, and safety guardrails.
               </p>
             </motion.div>
 
@@ -691,9 +691,9 @@ export const Landing = () => {
               <div className="w-14 h-14 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-6 group-hover:bg-cyan-500/30 transition-colors">
                 <BrainCircuit className="w-7 h-7 text-cyan-400" />
               </div>
-              <h2 className="text-2xl font-bold mb-3">Gets Smarter Every Day</h2>
+              <h2 className="text-2xl font-bold mb-3">Trust & Audit Trails</h2>
               <p className="text-slate-300 leading-relaxed">
-                Agents learn from every interaction. They remember what worked, what didn't, and how your team prefers things done.
+                SHA-256 signed immutable audit trails of every agent decision and action. Tamper-evident proof for compliance and security.
               </p>
             </motion.div>
           </div>
@@ -721,8 +721,8 @@ export const Landing = () => {
                 <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
                 Choose Your Path
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">Four Ways to Get Started</h2>
-              <p className="text-lg text-slate-600 max-w-2xl mx-auto">Pick the approach that works best for your business.</p>
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">Platform Capabilities</h2>
+              <p className="text-lg text-slate-600 max-w-2xl mx-auto">The complete infrastructure for building, deploying, and governing autonomous AI.</p>
             </motion.div>
           </div>
 
@@ -738,10 +738,10 @@ export const Landing = () => {
               <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-200 transition-all">
                 <Users className="w-6 h-6 text-blue-600" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">Agent</h3>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">Autonomous Agents</h3>
               <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Deploy AI Teams</p>
               <p className="text-slate-600 mb-6 leading-relaxed">
-                Autonomous AI agents for sales, support, content, and operations. 24/7 without human overhead.
+                Deploy specialized AI teams for sales, support, and business operations. 24/7 without human overhead.
               </p>
               <button onClick={() => setShowAgentPath(true)} className="text-blue-600 hover:text-blue-700 font-semibold text-sm flex items-center gap-2 group/btn">
                 Get Started
@@ -760,10 +760,10 @@ export const Landing = () => {
               <div className="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-indigo-200 transition-all">
                 <Cpu className="w-6 h-6 text-indigo-600" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">AgentIRL</h3>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">AgentIRL Orchestration</h3>
               <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Production Ready</p>
               <p className="text-slate-600 mb-6 leading-relaxed">
-                Enterprise infrastructure for orchestration, monitoring, and scaling. 99.9% uptime guaranteed.
+                The Intelligent Layer for multi-agent coordination, state management, and reliable workflow execution.
               </p>
               <Link to="/services/agentirl" className="text-indigo-600 hover:text-indigo-700 font-semibold text-sm flex items-center gap-2 group/btn">
                 Learn More
@@ -782,13 +782,13 @@ export const Landing = () => {
               <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-emerald-200 transition-all">
                 <BarChart3 className="w-6 h-6 text-emerald-600" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">Analytics + Consulting</h3>
-              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Insights & Optimization</p>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">Governance & Trust</h3>
+              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Enterprise Safe</p>
               <p className="text-slate-600 mb-6 leading-relaxed">
-                Track visitors, conversations, and ROI. Expert consulting to optimize your AI business.
+                Real-time policy enforcement, immutable audit trails, and strict RBAC for regulated industries.
               </p>
-              <a href="https://analytics.viktron.ai" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 font-semibold text-sm flex items-center gap-2 group/btn">
-                Explore Analytics
+              <a href="/enterprise" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 font-semibold text-sm flex items-center gap-2 group/btn">
+                View Security & Trust
                 <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
               </a>
             </motion.div>
@@ -804,13 +804,13 @@ export const Landing = () => {
               <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-purple-200 transition-all">
                 <Sparkles className="w-6 h-6 text-purple-600" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">Rentals</h3>
-              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">No Commitment</p>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">Developer SDK</h3>
+              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">API First</p>
               <p className="text-slate-600 mb-6 leading-relaxed">
-                Rent pre-built agents by the hour. Perfect for trials, testing, or scaling without long-term commitment.
+                Build and embed intelligent agentic workflows into your existing apps with our Python and TS SDKs.
               </p>
-              <Link to="/rent" className="text-purple-600 hover:text-purple-700 font-semibold text-sm flex items-center gap-2 group/btn">
-                Browse Rentals
+              <Link to="/docs" className="text-purple-600 hover:text-purple-700 font-semibold text-sm flex items-center gap-2 group/btn">
+                View Documentation
                 <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
@@ -941,12 +941,12 @@ export const Landing = () => {
               </div>
               <div className="mt-8 flex items-center gap-3">
                 <a
-                  href="https://analytics.viktron.ai"
+                  href="/enterprise"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors"
                 >
-                  Explore Analytics <ArrowRight className="w-4 h-4" />
+                  View Security & Trust <ArrowRight className="w-4 h-4" />
                 </a>
                 <Link to="/analytics" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-emerald-200 text-emerald-700 text-sm font-semibold hover:bg-emerald-50 transition-colors">
                   Preview Demo

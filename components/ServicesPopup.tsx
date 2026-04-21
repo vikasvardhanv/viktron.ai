@@ -12,33 +12,33 @@ interface ServicesPopupProps {
 
 const SERVICE_CATEGORIES = [
   {
-    title: 'Agent',
-    description: 'Deploy autonomous AI agents for sales, support, content & operations.',
+    title: 'Autonomous Agents',
+    description: 'Deploy specialized AI teams for sales, support, and business operations.',
     icon: Users,
     color: 'blue',
     link: '/onboarding',
   },
   {
-    title: 'AgentIRL',
-    description: 'Enterprise infrastructure for orchestration, monitoring & scaling.',
+    title: 'AgentIRL Orchestration',
+    description: 'The Intelligent Layer for multi-agent coordination and state management.',
     icon: Cpu,
     color: 'indigo',
     link: '/services/agentirl',
   },
   {
-    title: 'Analytics + Consulting',
-    description: 'Track performance and optimize your AI-powered business.',
+    title: 'Governance & Trust',
+    description: 'Real-time policy enforcement, audit trails, and safety guardrails.',
     icon: BarChart3,
     color: 'emerald',
-    link: 'https://analytics.viktron.ai',
-    external: true,
+    link: '/enterprise',
+    external: false,
   },
   {
-    title: 'Rentals',
-    description: 'Rent pre-built AI agents by the hour—no setup required.',
+    title: 'Developer SDK',
+    description: 'Build and embed intelligent agentic workflows into your existing apps.',
     icon: Sparkles,
     color: 'purple',
-    link: '/rent',
+    link: '/docs',
   },
 ];
 
