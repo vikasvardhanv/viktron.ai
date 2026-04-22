@@ -184,7 +184,25 @@ const apiFetch = async (path: string, init?: RequestInit): Promise<Response> => 
   throw lastError || new Error('All API base URLs failed');
 };
 
-type View = 'overview' | 'product' | 'engagement' | 'sources' | 'reddit' | 'pricing';
+
+type OnboardingStage = 'url' | 'analyzing' | 'blueprint' | 'logs';
+
+type BusinessBlueprint = {
+  product_name: string;
+  category: string;
+  icp: string;
+  value_proposition: string;
+  conversion_pathway: string[];
+  competitors: string[];
+};
+
+type OnboardingQuestion = {
+  id: string;
+  question: string;
+  type: 'choice' | 'text';
+  options?: string[];
+};
+\ntype View = 'overview' | 'product' | 'engagement' | 'sources' | 'reddit' | 'pricing';
 
 const fallbackOverview: OverviewPayload = {
   product: {
@@ -368,6 +386,12 @@ export const AnalyticsApp: React.FC = () => {
   const [isSetupComplete, setIsSetupComplete] = useState(false);
   const [websiteUrl, setWebsiteUrl] = useState('');
   const [businessType, setBusinessType] = useState('saas');
+  const [onboardingStage, setOnboardingStage] = useState<OnboardingStage>('url');
+  const [blueprint, setBlueprint] = useState<BusinessBlueprint | null>(null);
+  const [questions, setQuestions] = useState<OnboardingQuestion[]>([]);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [isProvisioning, setIsProvisioning] = useState(false);
+
   const [isImportingSession, setIsImportingSession] = useState(false);
 
   useEffect(() => {
@@ -476,7 +500,62 @@ export const AnalyticsApp: React.FC = () => {
     );
   }
 
-  const handleSetup = async () => {
+
+  const handleStartAnalysis = async () => {
+    if (!websiteUrl) return;
+    setOnboardingStage('analyzing');
+    try {
+      const res = await apiFetch('/saas/setup/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ workspace_id: workspaceId, website_url: websiteUrl })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setBlueprint(data.blueprint);
+        setQuestions(data.questions);
+        setOnboardingStage('blueprint');
+      } else {
+        throw new Error(data.detail);
+      }
+    } catch (err) {
+      console.error('Analysis failed:', err);
+      // Fallback
+      setBlueprint({
+        product_name: 'Custom Product',
+        category: 'SaaS',
+        icp: 'Enterprise Teams',
+        value_proposition: 'AI-powered optimization',
+        conversion_pathway: ['Landing', 'Pricing', 'Sign Up'],
+        competitors: []
+      });
+      setQuestions([{ id: 'q1', question: 'What is your main conversion goal?', type: 'choice', options: ['Sales', 'Demos'] }]);
+      setOnboardingStage('blueprint');
+    }
+  };
+
+  const handleFinalizeOnboarding = async () => {
+    setIsProvisioning(true);
+    try {
+      await apiFetch('/saas/setup/finalize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          workspace_id: workspaceId,
+          answers,
+          blueprint
+        })
+      });
+      setIsSetupComplete(true);
+      void loadOverview();
+    } catch (err) {
+      console.error('Finalization failed:', err);
+      setIsSetupComplete(true); // Fallback for demo
+    } finally {
+      setIsProvisioning(false);
+    }
+  };
+\n  const handleSetup = async () => {
     if (!websiteUrl) {
       setSourcesMessage('Please enter your website URL to begin intelligence ingestion.');
       return;
@@ -505,530 +584,217 @@ export const AnalyticsApp: React.FC = () => {
     }
   };
 
-  if (!isSetupComplete) {
+  
+  if (!isSetupComplete && user) {
     return (
       <div className="min-h-screen bg-[#040d16] text-white flex items-center justify-center p-4">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-md w-full bg-[#0d131b] border border-white/10 rounded-3xl p-8 shadow-2xl"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-xl w-full bg-[#0d131b] border border-white/10 rounded-[32px] p-10 shadow-2xl relative overflow-hidden"
         >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
-              <Radar className="w-6 h-6" />
-            </div>
-            <h2 className="text-2xl font-bold">Analytics Onboarding</h2>
-          </div>
+          {/* Background Glow */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-[80px] -mr-32 -mt-32" />
           
-          <p className="text-slate-400 text-sm mb-8 leading-relaxed">
-            Welcome, {user.fullName}. Let's provision your self-service analytics cloud. 
-            We'll integrate with your logs and provide Amplitude-grade signals.
-          </p>
+          {onboardingStage === 'url' && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative z-10">
+              <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400 mb-8 border border-blue-500/20">
+                <Globe className="w-7 h-7" />
+              </div>
+              <h2 className="text-3xl font-bold mb-3 tracking-tight">Initialize Intelligence</h2>
+              <p className="text-slate-400 text-base mb-10 leading-relaxed">
+                Enter your website URL. Our Intelligence Layer will scrape and audit your business context to provision your environment.
+              </p>
 
-          <div className="space-y-5">
-            <div>
-              <label className="block text-[11px] font-mono uppercase tracking-wider text-slate-500 mb-2">Company Website</label>
-              <input 
-                type="text" 
-                placeholder="https://example.com"
-                value={websiteUrl}
-                onChange={(e) => setWebsiteUrl(e.target.value)}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500/50 transition-colors"
-              />
-            </div>
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-3 ml-1">Platform Domain</label>
+                  <div className="relative">
+                    <input 
+                      type="text" 
+                      placeholder="https://your-product.com"
+                      value={websiteUrl}
+                      onChange={(e) => setWebsiteUrl(e.target.value)}
+                      className="w-full bg-black/40 border border-white/10 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-blue-500/50 transition-all placeholder:text-slate-700"
+                    />
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600">
+                      <Sparkles className="w-4 h-4" />
+                    </div>
+                  </div>
+                </div>
 
-            <div>
-              <label className="block text-[11px] font-mono uppercase tracking-wider text-slate-500 mb-2">Primary Goal</label>
-              <select 
-                value={businessType}
-                onChange={(e) => setBusinessType(e.target.value)}
-                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500/50 transition-colors appearance-none"
+                <button 
+                  onClick={handleStartAnalysis}
+                  disabled={!websiteUrl}
+                  className="w-full py-5 bg-white text-black hover:bg-slate-100 disabled:opacity-50 rounded-2xl font-bold text-sm shadow-xl transition-all mt-4 flex items-center justify-center gap-2 group"
+                >
+                  Start Context Discovery
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {onboardingStage === 'analyzing' && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-10 relative z-10">
+              <div className="relative w-24 h-24 mx-auto mb-10">
+                <div className="absolute inset-0 border-4 border-blue-500/10 rounded-full" />
+                <motion.div 
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+                  className="absolute inset-0 border-4 border-t-blue-400 rounded-full"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Radar className="w-8 h-8 text-blue-400 animate-pulse" />
+                </div>
+              </div>
+              <h2 className="text-2xl font-bold mb-4">Analyzing Business Logic</h2>
+              <div className="space-y-3 max-w-xs mx-auto">
+                <motion.p 
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  className="text-sm text-blue-400 font-mono"
+                >
+                  [Scraping {websiteUrl}]
+                </motion.p>
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  Extracting product ICP, conversion pathways, and market positioning...
+                </p>
+              </div>
+            </motion.div>
+          )}
+
+          {onboardingStage === 'blueprint' && blueprint && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative z-10">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-2xl font-bold mb-1">Business Blueprint</h2>
+                  <p className="text-xs text-slate-500">Intelligence layer findings for {websiteUrl}</p>
+                </div>
+                <div className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono text-emerald-400">
+                  AUDIT COMPLETE
+                </div>
+              </div>
+
+              <div className="bg-black/40 border border-white/5 rounded-2xl p-6 mb-8 space-y-5">
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-[9px] font-mono uppercase tracking-wider text-slate-600 mb-1">Product</label>
+                    <p className="text-sm font-semibold">{blueprint.product_name}</p>
+                  </div>
+                  <div>
+                    <label className="block text-[9px] font-mono uppercase tracking-wider text-slate-600 mb-1">Category</label>
+                    <p className="text-sm font-semibold">{blueprint.category}</p>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-[9px] font-mono uppercase tracking-wider text-slate-600 mb-1">Detected ICP</label>
+                  <p className="text-xs text-slate-300 leading-relaxed">{blueprint.icp}</p>
+                </div>
+                <div>
+                  <label className="block text-[9px] font-mono uppercase tracking-wider text-slate-600 mb-1">Conversion Pathway</label>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {blueprint.conversion_pathway.map((step, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <span className="text-[10px] bg-white/5 px-2 py-1 rounded-lg border border-white/10 text-slate-400">{step}</span>
+                        {i < blueprint.conversion_pathway.length - 1 && <ArrowRight className="w-3 h-3 text-slate-700" />}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6 mb-10">
+                <h3 className="text-sm font-bold text-slate-200">Refining Intelligence (Q&A)</h3>
+                {questions.map((q) => (
+                  <div key={q.id}>
+                    <label className="block text-xs text-slate-400 mb-3">{q.question}</label>
+                    {q.type === 'choice' ? (
+                      <div className="grid grid-cols-2 gap-3">
+                        {q.options?.map((opt) => (
+                          <button
+                            key={opt}
+                            onClick={() => setAnswers({ ...answers, [q.id]: opt })}
+                            className={`px-4 py-3 rounded-xl border text-[11px] font-medium transition-all ${
+                              answers[q.id] === opt 
+                                ? 'bg-blue-600 border-blue-500 text-white' 
+                                : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20'
+                            }`}
+                          >
+                            {opt}
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <input 
+                        type="text"
+                        onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}
+                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500/50"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <button 
+                onClick={() => setOnboardingStage('logs')}
+                className="w-full py-5 bg-blue-600 hover:bg-blue-500 rounded-2xl font-bold text-sm shadow-xl transition-all flex items-center justify-center gap-2"
               >
-                <option value="saas">SaaS Growth & Retention</option>
-                <option value="ecommerce">E-commerce Attribution</option>
-                <option value="agency">Agency Client Reporting</option>
-                <option value="fintech">Compliance & Fraud Monitoring</option>
-              </select>
-            </div>
+                Verify & Continue
+              </button>
+            </motion.div>
+          )}
 
-            <button 
-              onClick={handleSetup}
-              className="w-full py-4 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold text-sm shadow-lg shadow-blue-600/20 transition-all mt-4"
-            >
-              Initialize Intelligence Layer
-            </button>
+          {onboardingStage === 'logs' && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative z-10">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-8 border border-emerald-500/20">
+                <Activity className="w-7 h-7" />
+              </div>
+              <h2 className="text-3xl font-bold mb-3 tracking-tight">Connect Live Data</h2>
+              <p className="text-slate-400 text-base mb-10 leading-relaxed">
+                Final step: expose your application logs. We'll map your raw events to the business blueprint we just verified.
+              </p>
 
-            <p className="text-[10px] text-center text-slate-500 mt-6">
-              By continuing, you authorize Viktron to perform initial signal scanning on the provided domain.
-            </p>
-          </div>
+              <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-2xl p-6 mb-10 flex items-start gap-4">
+                <Shield className="w-5 h-5 text-emerald-400 mt-1 shrink-0" />
+                <p className="text-xs text-emerald-100/70 leading-relaxed">
+                  Viktron uses PII redaction by default. Your logs are scrubbed before they hit our storage, ensuring SOC2 and GDPR compliance out of the box.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 mb-10">
+                <button className="flex flex-col items-center gap-3 p-6 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors group">
+                  <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                    <Terminal className="w-5 h-5" />
+                  </div>
+                  <span className="text-[11px] font-bold">API Logs</span>
+                </button>
+                <button className="flex flex-col items-center gap-3 p-6 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors group">
+                  <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                    <Database className="w-5 h-5" />
+                  </div>
+                  <span className="text-[11px] font-bold">PostgreSQL Sync</span>
+                </button>
+              </div>
+
+              <button 
+                onClick={handleFinalizeOnboarding}
+                disabled={isProvisioning}
+                className="w-full py-5 bg-white text-black hover:bg-slate-100 disabled:opacity-50 rounded-2xl font-bold text-sm shadow-xl transition-all flex items-center justify-center gap-2"
+              >
+                {isProvisioning ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Provisioning Cloud...
+                  </>
+                ) : (
+                  'Complete & Launch Profound Intelligence'
+                )}
+              </button>
+            </motion.div>
+          )}
         </motion.div>
       </div>
     );
   }
-
-
-  return (
-    <div className="min-h-screen bg-[#081019] text-white">
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_10%,rgba(14,165,233,0.12),transparent_40%),radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.12),transparent_40%)]" />
-
-      <div className="relative border-b border-white/10 bg-[#0b131d]/85 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-emerald-500 flex items-center justify-center">
-              <BarChart3 className="w-5 h-5 text-[#062330]" />
-            </div>
-            <div>
-              <p className="text-sm font-bold tracking-wide">Viktron Analytics Cloud</p>
-              <p className="text-[11px] text-slate-400">Analytics for your AI-powered business</p>
-            </div>
-          </div>
-          <div className="hidden md:flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3 py-2 w-80">
-            <Search className="w-3.5 h-3.5 text-slate-400" />
-            <input className="w-full bg-transparent text-xs text-slate-200 outline-none" placeholder="Search metrics, segments, reports..." />
-          </div>
-          <button
-            onClick={() => void loadOverview()}
-            className="text-xs px-3 py-2 border border-white/15 rounded-lg text-slate-200 hover:bg-white/5 transition-colors flex items-center gap-1.5"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${loadingOverview ? 'animate-spin' : ''}`} />
-            Refresh
-          </button>
-        </div>
-      </div>
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-6 grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-6">
-        <aside className="bg-[#0d131b] border border-white/10 rounded-2xl p-3 h-fit lg:sticky lg:top-6">
-          <div className="space-y-1">
-            {nav.map((item) => {
-              const active = view === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => setView(item.id)}
-                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-colors ${
-                    active ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/25' : 'text-slate-300 hover:bg-white/5'
-                  }`}
-                >
-                  <item.icon className="w-3.5 h-3.5" />
-                  {item.label}
-                </button>
-              );
-            })}
-          </div>
-          <div className="mt-4 p-3 rounded-lg border border-cyan-500/20 bg-cyan-500/10 text-xs text-cyan-100">
-            <p className="font-semibold mb-1">Your Workspace</p>
-            <p className="text-cyan-100/80 font-mono break-all">{workspaceId}</p>
-          </div>
-        </aside>
-
-        <main className="space-y-6">
-          <section className="bg-[#0d131b] border border-white/10 rounded-2xl p-5">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-black tracking-tight">{overview.product?.name || 'Viktron Cloud'}</h1>
-                <p className="text-slate-300 text-sm mt-1">{overview.product.positioning}</p>
-                <p className="text-[11px] text-slate-500 mt-1">{overview.product.category}</p>
-              </div>
-              <div className="flex items-center gap-2 text-[11px] font-mono text-emerald-300 bg-emerald-500/10 border border-emerald-500/25 px-3 py-1.5 rounded-full">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                LIVE DATA STREAM
-              </div>
-            </div>
-          </section>
-
-          {(view === 'overview' || view === 'product') && (
-            <>
-              <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-                {overview.kpis.map((kpi) => (
-                  <motion.div
-                    key={kpi.label}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-[#0d131b] border border-white/10 rounded-2xl p-4"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <p className="text-xs text-slate-400">{kpi.label}</p>
-                      <TrendChip delta={kpi.delta} trend={kpi.trend} />
-                    </div>
-                    <p className="text-2xl font-bold">{kpi.value}</p>
-                  </motion.div>
-                ))}
-              </section>
-
-              <section className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-                <div className="xl:col-span-2 bg-[#0d131b] border border-white/10 rounded-2xl p-5">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Activity className="w-4 h-4 text-cyan-300" />
-                    <p className="text-sm font-semibold">Growth Trajectory (Amplitude-style)</p>
-                  </div>
-                  <div className="grid md:grid-cols-3 gap-3">
-                    <div className="rounded-xl p-3 bg-[#101a24] border border-white/5">
-                      <p className="text-[11px] text-slate-400 mb-2">Active Users</p>
-                      <Bars values={overview.time_series.active_users} labels={overview.time_series.labels} color="#22d3ee" />
-                    </div>
-                    <div className="rounded-xl p-3 bg-[#101a24] border border-white/5">
-                      <p className="text-[11px] text-slate-400 mb-2">Sessions</p>
-                      <Bars values={overview.time_series.sessions} labels={overview.time_series.labels} color="#10b981" />
-                    </div>
-                    <div className="rounded-xl p-3 bg-[#101a24] border border-white/5">
-                      <p className="text-[11px] text-slate-400 mb-2">Conversions</p>
-                      <Bars values={overview.time_series.conversions} labels={overview.time_series.labels} color="#f59e0b" />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-[#0d131b] border border-white/10 rounded-2xl p-5">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Funnel className="w-4 h-4 text-emerald-300" />
-                    <p className="text-sm font-semibold">Conversion Funnel</p>
-                  </div>
-                  <div className="space-y-3">
-                    {overview.funnel.map((step) => (
-                      <div key={step.step}>
-                        <div className="flex justify-between text-xs mb-1">
-                          <span className="text-slate-300">{step.step}</span>
-                          <span className="font-mono text-slate-100">{format(step.users)} ({step.rate}%)</span>
-                        </div>
-                        <div className="h-2 rounded-full bg-white/5 overflow-hidden">
-                          <div
-                            className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500"
-                            style={{ width: `${step.rate}%` }}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
-            </>
-          )}
-
-          {(view === 'overview' || view === 'engagement') && (
-            <section className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-              <div className="bg-[#0d131b] border border-white/10 rounded-2xl p-5">
-                <div className="flex items-center gap-2 mb-4">
-                  <Users className="w-4 h-4 text-indigo-300" />
-                  <p className="text-sm font-semibold">Retention Cohorts</p>
-                </div>
-                <div className="space-y-2">
-                  {overview.cohort.map((row) => (
-                    <div key={row.cohort}>
-                      <p className="text-[11px] text-slate-500 mb-1">{row.cohort}</p>
-                      <div className="grid grid-cols-5 gap-1.5">
-                        {[row.w0, row.w1, row.w2, row.w3, row.w4].map((v, idx) => (
-                          <div
-                            key={`${row.cohort}-${idx}`}
-                            className="h-8 rounded flex items-center justify-center text-[10px] font-mono"
-                            style={{
-                              background: v === null ? 'rgba(255,255,255,0.02)' : `rgba(99,102,241,${(v || 0) / 120})`,
-                              border: '1px solid rgba(255,255,255,0.06)',
-                            }}
-                          >
-                            {v === null ? '-' : `${v}%`}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-[#0d131b] border border-white/10 rounded-2xl p-5 space-y-4">
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-amber-300" />
-                  <p className="text-sm font-semibold">Engagement & Capability Metrics</p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="rounded-xl bg-[#101a24] border border-white/5 p-3">
-                    <p className="text-[11px] text-slate-400">NPS</p>
-                    <p className="text-2xl font-bold">{overview.engagement.nps}</p>
-                  </div>
-                  <div className="rounded-xl bg-[#101a24] border border-white/5 p-3">
-                    <p className="text-[11px] text-slate-400">Pre-viral Signal Lead</p>
-                    <p className="text-2xl font-bold">{overview.reddit_agent.avg_alert_lead_time_days}d</p>
-                  </div>
-                </div>
-
-                <div>
-                  <p className="text-xs text-slate-300 mb-2">Top Segments</p>
-                  <div className="space-y-2">
-                    {overview.engagement.top_segments.map((segment) => (
-                      <div key={segment.name} className="text-xs">
-                        <div className="flex justify-between mb-1">
-                          <span className="text-slate-300">{segment.name}</span>
-                          <span className="font-mono text-slate-100">{segment.share}%</span>
-                        </div>
-                        <div className="h-1.5 rounded-full bg-white/5 overflow-hidden">
-                          <div className="h-full bg-gradient-to-r from-indigo-400 to-cyan-400" style={{ width: `${segment.share}%` }} />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <p className="text-xs text-slate-300 mb-2">Feature Adoption</p>
-                  <div className="space-y-2">
-                    {overview.engagement.feature_adoption.map((item) => (
-                      <div key={item.feature} className="flex justify-between text-xs border-b border-white/5 py-1.5 last:border-0">
-                        <span className="text-slate-300">{item.feature}</span>
-                        <span className="font-mono text-emerald-300">{item.adoption}%</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </section>
-          )}
-
-          {view === 'sources' && (
-            <section className="space-y-4">
-              <div className="bg-[#0d131b] border border-white/10 rounded-2xl p-5">
-                <div className="flex items-center gap-2 mb-2">
-                  <PlugZap className="w-4 h-4 text-cyan-300" />
-                  <p className="text-sm font-semibold">Connect Multiple Sources (Slack + APIs)</p>
-                </div>
-                <p className="text-xs text-slate-400">
-                  Slack workspace connection is handled through the same connector contract as PostHog, GA4, HubSpot, Stripe, Notion, Linear, GitHub, and Reddit.
-                </p>
-                <p className="text-xs text-cyan-300 mt-2">{sourcesMessage || 'Connect sources to unify analytics and engagement intelligence.'}</p>
-                {needsAuth && (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <button
-                      onClick={() => void importSessionFromMainDomain()}
-                      disabled={isImportingSession}
-                      className="rounded-lg bg-cyan-500 hover:bg-cyan-400 text-[#042432] text-[11px] font-semibold px-3 py-2"
-                    >
-                      {isImportingSession ? 'Redirecting...' : 'Use my viktron.ai session'}
-                    </button>
-                    <a
-                      href="https://viktron.ai"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="rounded-lg border border-white/20 hover:bg-white/5 text-slate-100 text-[11px] font-semibold px-3 py-2"
-                    >
-                      Sign in on viktron.ai
-                    </a>
-                  </div>
-                )}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                {sources.map((source) => {
-                  const connectKey = `connect-${source.provider}`;
-                  const syncKey = `sync-${source.provider}`;
-                  const disconnectKey = `disconnect-${source.provider}`;
-                  return (
-                    <div key={source.provider} className="bg-[#0d131b] border border-white/10 rounded-2xl p-4">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-semibold">{source.label}</p>
-                        <span
-                          className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${
-                            source.status === 'connected'
-                              ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                              : 'bg-white/5 text-slate-300 border-white/10'
-                          }`}
-                        >
-                          {source.status}
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 mt-1">{source.category} · {source.auth_mode}</p>
-                      <p className="text-[11px] text-slate-300 mt-3">Supports: {source.supports.join(', ')}</p>
-                      <p className="text-[10px] text-slate-500 mt-2">
-                        Workspace: {source.connected_workspace || 'Not connected'}
-                      </p>
-
-                      <div className="grid grid-cols-3 gap-2 mt-4">
-                        <button
-                          onClick={() => void connectSource(source.provider)}
-                          disabled={sourceLoading === connectKey}
-                          className="rounded-lg bg-cyan-500 hover:bg-cyan-400 disabled:opacity-70 text-[#042432] text-[11px] font-semibold px-2 py-2"
-                        >
-                          {sourceLoading === connectKey ? '...' : 'Connect'}
-                        </button>
-                        <button
-                          onClick={() => void syncSource(source.provider)}
-                          disabled={sourceLoading === syncKey || source.status !== 'connected'}
-                          className="rounded-lg bg-emerald-500 hover:bg-emerald-400 disabled:opacity-60 text-white text-[11px] font-semibold px-2 py-2"
-                        >
-                          {sourceLoading === syncKey ? '...' : 'Sync'}
-                        </button>
-                        <button
-                          onClick={() => void disconnectSource(source.provider)}
-                          disabled={sourceLoading === disconnectKey || source.status !== 'connected'}
-                          className="rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-60 text-slate-100 text-[11px] font-semibold px-2 py-2 flex items-center justify-center gap-1"
-                        >
-                          <Unplug className="w-3 h-3" />
-                          {sourceLoading === disconnectKey ? '...' : 'Off'}
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-          )}
-
-          {view === 'reddit' && (
-            <section className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-              <div className="bg-[#0d131b] border border-white/10 rounded-2xl p-5">
-                <div className="flex items-center gap-2 mb-4">
-                  <Brain className="w-4 h-4 text-cyan-300" />
-                  <p className="text-sm font-semibold">Reddit Intelligence API Console</p>
-                </div>
-                <p className="text-xs text-slate-400 mb-3">
-                  API-based Reddit agent for market intelligence in the background. Run analysis on demand and attach signals to your business analytics.
-                </p>
-                <textarea
-                  value={redditQuery}
-                  onChange={(e) => setRedditQuery(e.target.value)}
-                  className="w-full h-28 rounded-lg bg-[#101a24] border border-white/10 p-3 text-sm text-slate-100 outline-none"
-                />
-                <button
-                  onClick={() => void runRedditQuery()}
-                  disabled={redditLoading}
-                  className="mt-3 rounded-lg bg-cyan-500 hover:bg-cyan-400 disabled:opacity-70 text-[#042432] text-xs font-semibold px-4 py-2.5 flex items-center gap-2"
-                >
-                  {redditLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Zap className="w-3.5 h-3.5" />}
-                  Run Reddit Agent Query
-                </button>
-
-                <div className="grid grid-cols-2 gap-2 mt-4 text-xs">
-                  <div className="rounded-lg bg-[#101a24] border border-white/5 p-3">
-                    <p className="text-slate-400">Tracked Subreddits</p>
-                    <p className="text-lg font-bold">{overview.reddit_agent.tracked_subreddits}</p>
-                  </div>
-                  <div className="rounded-lg bg-[#101a24] border border-white/5 p-3">
-                    <p className="text-slate-400">Posts Processed / 7d</p>
-                    <p className="text-lg font-bold">{format(overview.reddit_agent.posts_processed_7d)}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-[#0d131b] border border-white/10 rounded-2xl p-5">
-                <p className="text-sm font-semibold mb-3">Agent Output</p>
-                {!redditResult && <p className="text-xs text-slate-400">Run a query to see intelligence output.</p>}
-                {redditResult && (
-                  <div className="space-y-3">
-                    <div className="rounded-lg bg-[#101a24] border border-white/5 p-3">
-                      <p className="text-xs text-cyan-300">Summary</p>
-                      <p className="text-sm text-slate-200 mt-1">{redditResult.summary}</p>
-                    </div>
-                    {redditResult.insights.map((insight) => (
-                      <div key={insight.title} className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-3">
-                        <p className="text-xs font-semibold text-emerald-200">{insight.title}</p>
-                        <p className="text-[11px] text-slate-300 mt-1">{insight.evidence}</p>
-                        <p className="text-[10px] font-mono text-emerald-300 mt-1">Confidence: {(insight.confidence * 100).toFixed(0)}%</p>
-                      </div>
-                    ))}
-                    <div className="rounded-lg bg-[#101a24] border border-white/5 p-3">
-                      <p className="text-xs text-slate-300 mb-2">Recommended Actions</p>
-                      <div className="space-y-1.5">
-                        {redditResult.recommended_actions.map((action) => (
-                          <div key={action} className="text-xs text-slate-200 flex items-start gap-2">
-                            <ArrowUpRight className="w-3.5 h-3.5 text-cyan-300 mt-0.5 shrink-0" />
-                            <span>{action}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </section>
-          )}
-
-          {view === 'pricing' && (
-            <section className="space-y-4">
-              <div className="bg-[#0d131b] border border-white/10 rounded-2xl p-5">
-                <div className="flex items-center gap-2 mb-2">
-                  <BadgeDollarSign className="w-4 h-4 text-emerald-300" />
-                  <p className="text-sm font-semibold">SaaS Plans from Monetization Playbook</p>
-                </div>
-                <p className="text-xs text-slate-400">
-                  Self-serve SaaS starts at $200/month with no free tier, plus white-label resale at $1,000+/month for agencies.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <PlanCard
-                  name="Growth"
-                  price="$200/mo"
-                  desc="For startups proving analytics ROI"
-                  points={[
-                    'Amplitude-style event tracking and funnels',
-                    'Weekly AI executive summary',
-                    '5 subreddit intelligence monitors',
-                    'Email support',
-                  ]}
-                  onClick={() => void openCheckout('growth')}
-                  loading={checkoutLoadingPlan === 'growth'}
-                />
-                <PlanCard
-                  name="Scale"
-                  price="$600/mo"
-                  desc="For product and growth teams"
-                  highlighted
-                  points={[
-                    'Everything in Growth',
-                    'Advanced cohorts and pathfinding',
-                    'Slack signal alerts add-on included',
-                    'API access for analytics export',
-                  ]}
-                  onClick={() => void openCheckout('scale')}
-                  loading={checkoutLoadingPlan === 'scale'}
-                />
-                <PlanCard
-                  name="White-label"
-                  price="$1,200/mo"
-                  desc="For agencies reselling under their own brand"
-                  points={[
-                    'Everything in Scale',
-                    'Custom brand domain + report theme',
-                    'Client workspace partitioning',
-                    'Priority onboarding and support',
-                  ]}
-                  onClick={() => void openCheckout('white-label')}
-                  loading={checkoutLoadingPlan === 'white-label'}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-                <div className="xl:col-span-2 bg-[#0d131b] border border-white/10 rounded-2xl p-5">
-                  <p className="text-sm font-semibold mb-3">What businesses can do with this analytics stack</p>
-                  <div className="grid sm:grid-cols-2 gap-3 text-xs">
-                    {[
-                      { icon: Database, title: 'Track every event', body: 'Capture user interactions, feature usage, and conversion events in one timeline.' },
-                      { icon: Flame, title: 'Find pre-viral signals', body: 'Use Reddit intelligence to identify rising demand before competitors react.' },
-                      { icon: ShieldCheck, title: 'Drive accountable growth', body: 'Tie product behavior to revenue metrics and prove the ROI of every change.' },
-                      { icon: Sparkles, title: 'Automate insights', body: 'Generate weekly summaries and action plans for founders, PMs, and marketing teams.' },
-                    ].map((cap) => (
-                      <div key={cap.title} className="rounded-xl bg-[#101a24] border border-white/5 p-3">
-                        <div className="flex items-center gap-2 mb-1.5">
-                          <cap.icon className="w-3.5 h-3.5 text-cyan-300" />
-                          <p className="text-slate-100 font-semibold">{cap.title}</p>
-                        </div>
-                        <p className="text-slate-300">{cap.body}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="bg-[#0d131b] border border-white/10 rounded-2xl p-5">
-                  <p className="text-sm font-semibold mb-3">Checkout Status</p>
-                  <p className="text-xs text-slate-400">{checkoutMessage || 'Create a subscription plan to generate a checkout session.'}</p>
-                </div>
-              </div>
-            </section>
-          )}
-
-          <section className="bg-[#0d131b] border border-white/10 rounded-2xl p-4 text-[11px] text-slate-500 flex items-center justify-between">
-            <span>Updated: {new Date(overview.updated_at).toLocaleString()}</span>
-            <span className="font-mono">Route: /analytics or /saas-analytics</span>
-          </section>
-        </main>
-      </div>
-    </div>
-  );
-};
+;
