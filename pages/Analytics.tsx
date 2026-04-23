@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { motion, type Variants, type Transition } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 import {
   ArrowRight,
   BarChart3,
@@ -106,8 +107,14 @@ const dashboardPreview = [
 ];
 
 export const Analytics: React.FC = () => {
+  const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState(0);
   const [currentRow, setCurrentRow] = useState(0);
+
+  // Redirect authenticated users to the app
+  if (isAuthenticated) {
+    return <Navigate to="/saas-analytics" replace />;
+  }
 
   // Cycle through dashboard rows
   useEffect(() => {
