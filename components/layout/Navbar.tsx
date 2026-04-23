@@ -9,10 +9,10 @@ import { AboutPopup } from '../AboutPopup';
 
 const navItems: { name: string; path: string; isPopup?: 'services' | 'about'; external?: string }[] = [
   { name: 'Home', path: '/' },
-  { name: 'Platform', path: '/services', isPopup: 'services' },
+  { name: 'AgentIRL', path: '/services/agentirl' },
+  { name: 'Analytics', path: '/analytics' },
   { name: 'Enterprise', path: '/enterprise' },
   { name: 'About', path: '/about', isPopup: 'about' },
-  { name: 'Pricing', path: '/pricing' },
 ];
 
 const isRentSubdomain = typeof window !== 'undefined' && window.location.hostname.split('.')[0] === 'rent';

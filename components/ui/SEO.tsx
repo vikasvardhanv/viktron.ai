@@ -24,9 +24,9 @@ const BASE_URL = 'https://viktron.ai';
 const DEFAULT_IMAGE = `${BASE_URL}/visuals/viktronlogo.png`;
 
 export const SEO: React.FC<SEOProps> = ({
-  title = 'Viktron | AI Automation Agency & Agentic AI Solutions',
-  description = 'Viktron is a leading AI automation agency specializing in agentic AI solutions, AI chatbots, voice agents, WhatsApp automation, and intelligent business process automation. Transform your business with custom AI agents that work 24/7.',
-  keywords = 'AI automation agency, agentic AI, AI agents, AI chatbots, voice AI agents, WhatsApp automation, AI voice agents, business automation, AI consulting, custom AI solutions, conversational AI, AI process automation, intelligent automation, AI for business',
+  title = 'Viktron | Infrastructure Layer for Autonomous Agents',
+  description = 'Viktron is the missing infrastructure layer for AI agents: production-grade orchestration (AgentIRL™), real-time observability (Analytics), and enterprise governance. Multi-agent coordination, OTLP export, SOC 2 compliance.',
+  keywords = 'AI agent platform, multi-agent orchestration, AI infrastructure, AI observability, AI governance, agent orchestration, AI monitoring, AI audit trails, enterprise AI, AgentIRL, OTLP export, AI agent analytics, production AI runtime, AI compliance, agentic AI, AI automation agency, AI chatbots, voice AI agents, WhatsApp automation',
   image = DEFAULT_IMAGE,
   url = BASE_URL,
   type = 'website',
@@ -97,6 +97,15 @@ export const SEO: React.FC<SEOProps> = ({
       "Artificial Intelligence",
       "AI Automation",
       "Agentic AI",
+      "Multi-Agent Orchestration",
+      "AI Infrastructure",
+      "AI Observability",
+      "AI Governance",
+      "AI Agent Platform",
+      "AI Audit Trails",
+      "Enterprise AI",
+      "AI Compliance",
+      "OTLP Export",
       "AI Chatbots",
       "Voice AI Agents",
       "Conversational AI",

@@ -18,6 +18,8 @@ import {
   TrendingUp,
   Cpu,
   Sparkles,
+  MessageSquare,
+  Activity,
 } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { ServiceSEO } from '../components/ui/SEO';
@@ -142,8 +144,8 @@ export const AgentIRL: React.FC = () => {
     <Layout>
       {/* 1 ── SEO */}
       <ServiceSEO
-        serviceName="AgentIRL — Production Runtime for AI Agents"
-        serviceDescription="AgentIRL is the middleware platform that makes multi-agent AI systems production-ready. Orchestration, reliability engineering, enterprise integrations, observability, and policy-safe execution. 99.99% uptime SLA."
+        serviceName="AgentIRL — Multi-Agent Orchestration Platform"
+        serviceDescription="AgentIRL is the middleware layer for production AI agents. Framework-agnostic orchestration, smart tool adapters, auto-recovery, policy enforcement, and OTLP observability. 99.99% uptime SLA, <150ms latency."
       />
 
       {/* 2 ── HERO */}
@@ -177,7 +179,7 @@ export const AgentIRL: React.FC = () => {
                 variants={fadeUp}
                 className="text-5xl font-extrabold leading-tight tracking-tight text-slate-900 lg:text-6xl"
               >
-                The production runtime for real AI agents.
+                The production runtime for autonomous agents.
               </motion.h1>
 
               <motion.p variants={fadeUp} className="max-w-xl text-lg text-slate-600 leading-relaxed">
@@ -219,14 +221,27 @@ export const AgentIRL: React.FC = () => {
               </motion.div>
             </motion.div>
 
-            {/* Right — video card */}
+            {/* Right — video demo */}
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.65, ease: 'easeOut', delay: 0.15 }}
               className="flex flex-col gap-4"
             >
-              <div className="rounded-[2rem] bg-white/60 backdrop-blur-md shadow-2xl overflow-hidden border border-white/80">
+              <div className="rounded-[2rem] bg-slate-900/90 backdrop-blur-md shadow-2xl overflow-hidden border border-slate-700">
+                <div className="flex items-center justify-between px-4 py-2.5 bg-slate-800/50 border-b border-slate-700">
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-1.5">
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
+                    </div>
+                    <span className="text-[10px] text-slate-400 font-mono ml-2">AgentIRL Console</span>
+                  </div>
+                  <div className="flex items-center gap-1 text-[10px] text-emerald-400 font-mono">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> LIVE
+                  </div>
+                </div>
                 <video
                   autoPlay
                   muted
@@ -236,14 +251,125 @@ export const AgentIRL: React.FC = () => {
                   className="w-full aspect-[16/10] object-cover"
                   src="/AI_Agents_Orchestrated_into_a_System.mp4"
                 />
+                {/* Overlay captions */}
+                <div className="absolute inset-x-0 bottom-0 px-4 py-3 bg-gradient-to-t from-slate-900/90 to-transparent">
+                  <div className="flex items-center justify-between text-[10px] text-slate-300 font-mono">
+                    <span>Multi-agent coordination</span>
+                    <span className="text-emerald-400">&lt;150ms latency</span>
+                  </div>
+                </div>
               </div>
               <div className="flex justify-center">
                 <span className="rounded-full bg-emerald-100 px-4 py-1.5 text-xs font-semibold text-emerald-700 text-center">
-                  Live Runtime · Task DAG orchestration · Policy engine · Auto-recovery loops
+                  Task DAG orchestration · Policy engine · Auto-recovery · 100+ tool adapters
                 </span>
               </div>
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* 2.5 ── ARCHITECTURE DIAGRAM */}
+      <section className="py-16 bg-white border-y border-slate-200">
+        <div className="mx-auto max-w-7xl px-6">
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-10"
+          >
+            <motion.span
+              variants={fadeUp}
+              className="inline-block rounded-full bg-blue-100 px-4 py-1.5 text-sm font-semibold text-blue-700 tracking-wide"
+            >
+              Technical Architecture
+            </motion.span>
+            <motion.h2
+              variants={fadeUp}
+              className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900"
+            >
+              How AgentIRL fits in your stack
+            </motion.h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="relative"
+          >
+            {/* Architecture diagram */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+              {/* Left: Agent Frameworks */}
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Agent Frameworks</p>
+                <div className="space-y-2">
+                  {['LangChain', 'CrewAI', 'LangGraph', 'AutoGen', 'OpenAI Agents', 'Anthropic MCP'].map((fw) => (
+                    <div key={fw} className="flex items-center justify-between px-3 py-2 bg-white rounded-lg border border-slate-200">
+                      <span className="text-sm font-medium text-slate-700">{fw}</span>
+                      <ArrowRight className="w-4 h-4 text-slate-400" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Center: AgentIRL Platform */}
+              <div className="rounded-2xl border-2 border-emerald-500 bg-gradient-to-br from-emerald-50 to-white p-6 relative">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-emerald-500 text-white text-xs font-bold rounded-full">
+                  AgentIRL™
+                </div>
+                <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-4">Runtime Layer</p>
+                <div className="space-y-3">
+                  {[
+                    { icon: GitBranch, label: 'Workflow Orchestrator', desc: 'DAG execution, state management' },
+                    { icon: Database, label: 'Smart Tool Adapters', desc: '100+ pre-built integrations' },
+                    { icon: Lock, label: 'Policy Engine', desc: 'Rate limits, approval gates, content filters' },
+                    { icon: RefreshCw, label: 'Auto-Recovery', desc: 'Circuit breakers, fallback chains' },
+                    { icon: BarChart3, label: 'Observability', desc: 'Tracing, metrics, OTLP export' },
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
+                        <item.icon className="w-4 h-4 text-emerald-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-slate-900">{item.label}</p>
+                        <p className="text-xs text-slate-500">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right: Business Systems */}
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Business Systems</p>
+                <div className="space-y-2">
+                  {[
+                    { icon: Users, label: 'CRM (Salesforce, HubSpot)' },
+                    { icon: MessageSquare, label: 'Support (Zendesk, Intercom)' },
+                    { icon: Database, label: 'Data Warehouses (Snowflake)' },
+                    { icon: Globe, label: 'Communication (Slack, Teams)' },
+                    { icon: Shield, label: 'Identity (Okta, Auth0)' },
+                  ].map((sys) => (
+                    <div key={sys.label} className="flex items-center justify-between px-3 py-2 bg-white rounded-lg border border-slate-200">
+                      <ArrowRight className="w-4 h-4 text-slate-400" />
+                      <span className="text-sm font-medium text-slate-700">{sys.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Flow arrows */}
+            <div className="hidden lg:block absolute top-1/2 -left-3 -translate-y-1/2 text-slate-300">
+              <ArrowRight className="w-6 h-6 rotate-180" />
+            </div>
+            <div className="hidden lg:block absolute top-1/2 -right-3 -translate-y-1/2 text-slate-300">
+              <ArrowRight className="w-6 h-6" />
+            </div>
+          </motion.div>
         </div>
       </section>
 

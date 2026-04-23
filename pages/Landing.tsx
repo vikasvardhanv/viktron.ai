@@ -447,9 +447,9 @@ export const Landing = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
       />
       <SEO
-        title="Viktron AI | Enterprise Agent Teams Platform"
-        description="Viktron AI deploys autonomous AI agent teams for sales, support, and operations. Orchestrate, monitor, and scale with AgentIRL platform. Enterprise-grade. From $199/mo."
-        keywords="Viktron AI, AI agent teams, AI employees, AgentIRL, multi-agent orchestration, AI automation, enterprise AI, AI sales agents, customer support automation"
+        title="Viktron AI | Infrastructure Layer for Autonomous Agents"
+        description="Production-grade orchestration, observability, and governance for multi-agent AI systems. AgentIRL handles coordination. Analytics provides real-time visibility. SOC 2 ready. From $199/mo."
+        keywords="Viktron AI, AI agent platform, multi-agent orchestration, AgentIRL, AI observability, AI governance, AI audit trails, enterprise AI infrastructure, AI agent analytics, production AI runtime"
         url="/"
         canonicalUrl="https://viktron.ai/"
         schema={{
@@ -525,13 +525,13 @@ export const Landing = () => {
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-slate-900 tracking-tight mb-6 md:mb-8 leading-[1.1]">
                 Viktron AI:<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">The Intelligent Infrastructure Layer</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">The Infrastructure Layer for Autonomous Agents</span>
               </h1>
               <p className="text-xl text-slate-600 mb-4 leading-relaxed max-w-2xl mx-auto font-semibold">
-                The production-grade trust layer for deploying, orchestrating, and governing autonomous AI agents in mission-critical environments.
+                Production-grade orchestration, observability, and governance for multi-agent AI systems. Ship agents that survive real-world complexity.
               </p>
               <p className="text-lg text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
-                Stop building fragile chatbots. Viktron AI provides the <strong>governance, audit trails, and AgentIRL orchestration</strong> required to scale reliable AI teams 24/7 without losing control. Built for developers, trusted by the enterprise.
+                AgentIRL™ handles coordination across frameworks. Analytics provides real-time visibility into agent behavior and business impact. Governance enforces approval gates, audit trails, and budget caps. Built for CTOs, trusted by compliance teams.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/contact" className="btn btn-primary btn-lg rounded-lg h-14 px-8 text-lg shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2">
@@ -645,25 +645,20 @@ export const Landing = () => {
         </div>
 
         <div className="container-custom relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Value Prop 1 */}
+          <div className="text-center mb-12">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0 }}
-              className="group"
             >
-              <div className="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center mb-6 group-hover:bg-blue-500/30 transition-colors">
-                <Target className="w-7 h-7 text-blue-400" />
-              </div>
-              <h2 className="text-2xl font-bold mb-3">AgentIRL™ Engine</h2>
-              <p className="text-slate-300 leading-relaxed">
-                Production-grade orchestration that OpenAI/Anthropic don't provide. Multi-agent coordination, task delegation, and cross-model synchronization.
-              </p>
+              <span className="inline-block rounded-full bg-blue-500/20 px-4 py-1.5 text-sm font-semibold text-blue-300 tracking-wide">
+                Platform Capabilities
+              </span>
             </motion.div>
-
-            {/* Value Prop 2 */}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Value Prop 1 - AgentIRL */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -671,16 +666,21 @@ export const Landing = () => {
               transition={{ delay: 0.1 }}
               className="group"
             >
-              <div className="w-14 h-14 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-6 group-hover:bg-indigo-500/30 transition-colors">
-                <Layers className="w-7 h-7 text-indigo-400" />
+              <div className="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center mb-6 group-hover:bg-blue-500/30 transition-colors">
+                <Cpu className="w-7 h-7 text-blue-400" />
               </div>
-              <h2 className="text-2xl font-bold mb-3">Enterprise Governance</h2>
+              <h2 className="text-2xl font-bold mb-3">AgentIRL™ Orchestration</h2>
               <p className="text-slate-300 leading-relaxed">
-                Unlocks regulated industries. Real-time policy enforcement, strict RBAC, Human-in-the-Loop approvals, and safety guardrails.
+                Multi-agent coordination framework with &lt;150ms latency. Delegate tasks, spawn sub-agents, and synchronize across LangChain, CrewAI, AutoGen, and MCP without re-engineering.
               </p>
+              <ul className="mt-4 space-y-2 text-sm text-slate-400">
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-400" /> 99.99% uptime SLA</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-400" /> Framework-agnostic execution</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-400" /> Auto-recovery on failures</li>
+              </ul>
             </motion.div>
 
-            {/* Value Prop 3 */}
+            {/* Value Prop 2 - Analytics */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -688,13 +688,40 @@ export const Landing = () => {
               transition={{ delay: 0.2 }}
               className="group"
             >
-              <div className="w-14 h-14 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-6 group-hover:bg-cyan-500/30 transition-colors">
-                <BrainCircuit className="w-7 h-7 text-cyan-400" />
+              <div className="w-14 h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-6 group-hover:bg-emerald-500/30 transition-colors">
+                <BarChart3 className="w-7 h-7 text-emerald-400" />
               </div>
-              <h2 className="text-2xl font-bold mb-3">Trust & Audit Trails</h2>
+              <h2 className="text-2xl font-bold mb-3">Analytics & Observability</h2>
               <p className="text-slate-300 leading-relaxed">
-                SHA-256 signed immutable audit trails of every agent decision and action. Tamper-evident proof for compliance and security.
+                Real-time dashboards for agent performance, business metrics, and operational health. Track every action, attribute revenue, and export to your BI stack.
               </p>
+              <ul className="mt-4 space-y-2 text-sm text-slate-400">
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Live agent activity feed</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Cost attribution per task</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> OTLP export to Datadog</li>
+              </ul>
+            </motion.div>
+
+            {/* Value Prop 3 - Governance */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="group"
+            >
+              <div className="w-14 h-14 rounded-xl bg-amber-500/20 flex items-center justify-center mb-6 group-hover:bg-amber-500/30 transition-colors">
+                <Shield className="w-7 h-7 text-amber-400" />
+              </div>
+              <h2 className="text-2xl font-bold mb-3">Governance & Trust</h2>
+              <p className="text-slate-300 leading-relaxed">
+                Task-scoped delegation tokens, pre-action approval gates, and immutable audit logs. Deploy agents in regulated workflows with full compliance confidence.
+              </p>
+              <ul className="mt-4 space-y-2 text-sm text-slate-400">
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-amber-400" /> SOC 2 Type II ready</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-amber-400" /> 100% actions logged</li>
+                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-amber-400" /> Budget enforcement</li>
+              </ul>
             </motion.div>
           </div>
         </div>
@@ -726,8 +753,8 @@ export const Landing = () => {
             </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Agent - Deploy */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* AgentIRL - Orchestration */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -736,81 +763,59 @@ export const Landing = () => {
               className="p-8 rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50/50 to-blue-50/20 hover:border-blue-300 hover:shadow-lg transition-all group"
             >
               <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-200 transition-all">
-                <Users className="w-6 h-6 text-blue-600" />
+                <Cpu className="w-6 h-6 text-blue-600" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">Autonomous Agents</h3>
-              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Deploy AI Teams</p>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">AgentIRL™ Orchestration</h3>
+              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Runtime Layer</p>
               <p className="text-slate-600 mb-6 leading-relaxed">
-                Deploy specialized AI teams for sales, support, and business operations. 24/7 without human overhead.
+                Multi-agent coordination framework. Delegate tasks, spawn sub-agents, synchronize across LangChain, CrewAI, AutoGen, and MCP. Framework-agnostic execution with &lt;150ms latency.
               </p>
-              <button onClick={() => setShowAgentPath(true)} className="text-blue-600 hover:text-blue-700 font-semibold text-sm flex items-center gap-2 group/btn">
-                Get Started
+              <Link to="/services/agentirl" className="text-blue-600 hover:text-blue-700 font-semibold text-sm flex items-center gap-2 group/btn">
+                See Architecture
                 <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-              </button>
+              </Link>
             </motion.div>
 
-            {/* AgentIRL - Infrastructure */}
+            {/* Analytics - Observability */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 1 * 0.1 }}
-              className="p-8 rounded-2xl border border-indigo-200 bg-gradient-to-br from-indigo-50/50 to-indigo-50/20 hover:border-indigo-300 hover:shadow-lg transition-all group"
-            >
-              <div className="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-indigo-200 transition-all">
-                <Cpu className="w-6 h-6 text-indigo-600" />
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">AgentIRL Orchestration</h3>
-              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Production Ready</p>
-              <p className="text-slate-600 mb-6 leading-relaxed">
-                The Intelligent Layer for multi-agent coordination, state management, and reliable workflow execution.
-              </p>
-              <Link to="/services/agentirl" className="text-indigo-600 hover:text-indigo-700 font-semibold text-sm flex items-center gap-2 group/btn">
-                Learn More
-                <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-              </Link>
-            </motion.div>
-
-            {/* Analytics + Consulting */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 2 * 0.1 }}
               className="p-8 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50/50 to-emerald-50/20 hover:border-emerald-300 hover:shadow-lg transition-all group"
             >
               <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-emerald-200 transition-all">
                 <BarChart3 className="w-6 h-6 text-emerald-600" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">Governance & Trust</h3>
-              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Enterprise Safe</p>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">Analytics & Observability</h3>
+              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Real-time Visibility</p>
               <p className="text-slate-600 mb-6 leading-relaxed">
-                Real-time policy enforcement, immutable audit trails, and strict RBAC for regulated industries.
+                Live dashboards for agent performance, business metrics, and operational health. Track every action, attribute revenue, export to Datadog or Snowflake.
               </p>
-              <a href="/enterprise" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-700 font-semibold text-sm flex items-center gap-2 group/btn">
-                View Security & Trust
+              <Link to="/analytics" className="text-emerald-600 hover:text-emerald-700 font-semibold text-sm flex items-center gap-2 group/btn">
+                View Demo Dashboard
                 <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-              </a>
+              </Link>
             </motion.div>
 
-            {/* Rentals */}
+            {/* Governance - Trust */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 3 * 0.1 }}
-              className="p-8 rounded-2xl border border-purple-200 bg-gradient-to-br from-purple-50/50 to-purple-50/20 hover:border-purple-300 hover:shadow-lg transition-all group"
+              transition={{ delay: 2 * 0.1 }}
+              className="p-8 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50/50 to-amber-50/20 hover:border-amber-300 hover:shadow-lg transition-all group"
             >
-              <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-purple-200 transition-all">
-                <Sparkles className="w-6 h-6 text-purple-600" />
+              <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-amber-200 transition-all">
+                <Shield className="w-6 h-6 text-amber-600" />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">Developer SDK</h3>
-              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">API First</p>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">Governance & Trust</h3>
+              <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Compliance Ready</p>
               <p className="text-slate-600 mb-6 leading-relaxed">
-                Build and embed intelligent agentic workflows into your existing apps with our Python and TS SDKs.
+                Task-scoped delegation tokens, approval gates, immutable audit logs. SOC 2 Type II readiness package. Deploy agents in regulated workflows with confidence.
               </p>
-              <Link to="/docs" className="text-purple-600 hover:text-purple-700 font-semibold text-sm flex items-center gap-2 group/btn">
-                View Documentation
+              <Link to="/enterprise" className="text-amber-600 hover:text-amber-700 font-semibold text-sm flex items-center gap-2 group/btn">
+                View Compliance Features
                 <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
               </Link>
             </motion.div>

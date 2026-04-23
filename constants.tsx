@@ -16,6 +16,10 @@ import {
 
 export { IndustryAgentsIcon, MarketingHubIcon, ClinicIcon, ConstructionIcon, DealershipIcon, RestaurantIcon, SalonIcon, RealEstateIcon, LegalIcon, EcommerceIcon, EducationIcon, RecruitmentIcon, EmailIcon, SocialMediaIcon };
 
+// Infrastructure pillar icons
+const AgentIRLIcon = () => <Workflow className="h-10 w-10 mb-4 text-emerald-400" />;
+const AnalyticsIcon2 = () => <BarChart3 className="h-10 w-10 mb-4 text-blue-400" />;
+const GovernanceIcon = () => <ShieldCheck className="h-10 w-10 mb-4 text-purple-400" />;
 
 export const BrandLogo = ({ className = "h-32 w-32" }: { className?: string }) => {
   const videoRef = React.useRef<HTMLVideoElement>(null);
@@ -195,6 +199,101 @@ export const WhatsAppIcon = () => (
 );
 
 export const SERVICES: Service[] = [
+  // ============ INFRASTRUCTURE PILLARS ============
+  {
+    id: 'agentirl',
+    name: 'AgentIRL™ Orchestration',
+    description: 'Multi-agent coordination framework with <150ms latency. Framework-agnostic execution for LangChain, CrewAI, AutoGen, and MCP.',
+    icon: <AgentIRLIcon />,
+    category: 'automation',
+    highlight: 'Core Platform',
+    longDescription: 'AgentIRL is the middleware layer between AI models and business systems. It provides multi-agent coordination, durable workflow state with auto-recovery, smart tool adapters with structured feedback, and human-in-the-loop approval gates.',
+    benefits: [
+      '99.99% uptime SLA',
+      '<150ms coordination latency',
+      '92% error auto-recovery rate',
+      '60% token cost reduction via caching + routing',
+      'Framework-agnostic execution',
+    ],
+    features: [
+      'Multi-agent coordination (CEO → Sales → Support → Analytics)',
+      'Framework-agnostic (LangChain, CrewAI, LangGraph, AutoGen, MCP)',
+      'Durable workflow state with auto-recovery',
+      'Smart tool adapters with structured feedback',
+      'Human-in-the-loop approval gates',
+      'Real-time observability',
+    ],
+    useCases: [
+      'Enterprise agent deployment',
+      'Multi-agent workflows',
+      'Cross-system automation',
+      'Complex task orchestration',
+    ],
+    integrations: ['LangChain', 'CrewAI', 'LangGraph', 'AutoGen', 'OpenAI Agents', 'MCP', 'Slack', 'Teams'],
+  },
+  {
+    id: 'analytics',
+    name: 'Analytics & Observability',
+    description: 'Real-time dashboards for agent performance, business metrics, and operational health. Amplitude-grade event tracking.',
+    icon: <AnalyticsIcon2 />,
+    category: 'automation',
+    highlight: 'Core Platform',
+    longDescription: 'Analytics provides real-time visibility into agent behavior, business impact, and operational health. Track every agent action, attribute revenue, monitor performance, and export to your BI stack via OTLP.',
+    benefits: [
+      'Sub-second dashboard latency',
+      'Full audit trail with SHA-256 signing',
+      'Business metrics attribution',
+      'Agent performance scoring',
+      'Export to Datadog, Grafana, Snowflake',
+    ],
+    features: [
+      'Live agent activity feed',
+      'Business metrics attribution (revenue, cost, conversion)',
+      'Agent performance scoring (resolution rate, sentiment, latency)',
+      'Funnel analytics (visitor → conversation → conversion)',
+      'Custom dashboards by audience',
+      'OTLP export to observability backends',
+    ],
+    useCases: [
+      'CTO system health overview',
+      'Ops leader ROI tracking',
+      'Compliance audit trails',
+      'Agent performance optimization',
+    ],
+    integrations: ['Datadog', 'Grafana', 'Snowflake', 'Looker', 'Tableau', 'Power BI'],
+  },
+  {
+    id: 'governance',
+    name: 'Governance & Trust',
+    description: 'Task-scoped delegation tokens, pre-action approval gates, and immutable audit logs. SOC 2 Type II readiness.',
+    icon: <GovernanceIcon />,
+    category: 'automation',
+    highlight: 'Core Platform',
+    longDescription: 'Governance is the enforcement layer that makes agents safe for regulated workflows. Task-scoped delegation tokens limit agent access, pre-action policy checks block high-risk operations, and immutable audit logs provide complete provenance.',
+    benefits: [
+      '100% of actions logged with provenance',
+      '<2s gate evaluation latency',
+      'SOC 2 Type II readiness package',
+      'Configurable data residency (US, EU)',
+      'Zero uncontrolled actions',
+    ],
+    features: [
+      'Task-scoped delegation tokens (time, cost, data, tool limits)',
+      'Pre-action policy checks (block high-risk ops)',
+      'Immutable audit logs (SHA-256 signed)',
+      'Budget enforcement with hard caps',
+      'RBAC + SSO + tenant isolation',
+      'Compliance reporting automation',
+    ],
+    useCases: [
+      'Regulated industry deployment',
+      'Enterprise compliance',
+      'Audit trail generation',
+      'Risk management',
+    ],
+    integrations: ['Okta', 'Azure AD', 'OneLogin', 'SIEM tools', 'Compliance platforms'],
+  },
+
   // ============ AI AGENTS ============
   {
     id: 'chatbot',

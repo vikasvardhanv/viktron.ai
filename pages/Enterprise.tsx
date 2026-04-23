@@ -207,7 +207,7 @@ export const Enterprise: React.FC = () => {
           <AnimatedSection>
             <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-blue-600 mb-6">
               <Shield className="h-4 w-4" />
-              Enterprise Trust Layer
+              SOC 2 Type II Ready
             </div>
             <h1 className="text-5xl sm:text-7xl font-semibold tracking-tight text-slate-900 max-w-4xl mx-auto">
               AI agents you can <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">answer for.</span>
@@ -221,8 +221,13 @@ export const Enterprise: React.FC = () => {
               <Link to="/contact">
                 <Button>Talk to Enterprise Sales</Button>
               </Link>
+              <Link to="/contact">
+                <Button variant="secondary" icon={<FileText className="h-4 w-4" />}>
+                  Request Sample Audit Report
+                </Button>
+              </Link>
               <Link to="/services/agentirl">
-                <Button variant="secondary" icon={<ArrowRight className="h-4 w-4" />}>
+                <Button variant="ghost" icon={<ArrowRight className="h-4 w-4" />}>
                   See AgentIRL Platform
                 </Button>
               </Link>
@@ -233,14 +238,15 @@ export const Enterprise: React.FC = () => {
           <AnimatedSection delay={0.15}>
             <div className="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-px bg-slate-200 rounded-2xl overflow-hidden border border-slate-200">
               {[
-                { value: '100%', label: 'Actions logged' },
-                { value: '< 2s', label: 'Gate evaluation' },
-                { value: '99.9%', label: 'Uptime SLA' },
-                { value: '0', label: 'Uncontrolled actions' },
+                { value: '100%', label: 'Actions logged', sub: 'SHA-256 signed' },
+                { value: '< 2s', label: 'Gate evaluation', sub: 'Policy check latency' },
+                { value: '99.9%', label: 'Uptime SLA', sub: 'Contractual guarantee' },
+                { value: '0', label: 'Uncontrolled actions', sub: 'All gated by policy' },
               ].map((m) => (
                 <div key={m.label} className="bg-white px-6 py-5 text-center">
                   <div className="text-3xl font-bold text-slate-900">{m.value}</div>
                   <div className="text-xs text-slate-500 mt-1">{m.label}</div>
+                  <div className="text-[10px] text-slate-400 mt-0.5">{m.sub}</div>
                 </div>
               ))}
             </div>
@@ -313,6 +319,68 @@ export const Enterprise: React.FC = () => {
               </StaggerItem>
             ))}
           </StaggerContainer>
+        </div>
+      </section>
+
+      {/* Compliance controls */}
+      <section className="py-20 px-4 bg-slate-900">
+        <div className="container-custom">
+          <AnimatedSection>
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-semibold text-emerald-400 mb-4">
+                <Shield className="h-3.5 w-3.5" />
+                SOC 2 Type II Readiness
+              </div>
+              <h2 className="text-3xl font-semibold text-white mb-3">
+                Compliance controls built into the runtime
+              </h2>
+              <p className="text-slate-400 max-w-2xl mx-auto">
+                Every enterprise deployment includes a complete SOC 2 Type II readiness package:
+                control matrices, evidence collection, and audit trail documentation.
+              </p>
+            </div>
+          </AnimatedSection>
+          <StaggerContainer className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                icon: <FileText className="h-6 w-6 text-emerald-400" />,
+                title: 'Control Documentation',
+                items: ['CC1-CC9 control matrix', 'Risk assessment templates', 'Control testing procedures', 'Evidence collection automation'],
+              },
+              {
+                icon: <Database className="h-6 w-6 text-emerald-400" />,
+                title: 'Audit Trail Export',
+                items: ['Immutable SHA-256 signed logs', 'JSON/CSV export formats', 'Automated monthly reports', 'Integration with SIEM tools'],
+              },
+              {
+                icon: <Lock className="h-6 w-6 text-emerald-400" />,
+                title: 'Data Protection',
+                items: ['AES-256 encryption at rest', 'TLS 1.3 in transit', 'Tenant isolation at DB layer', 'Configurable data residency (US/EU)'],
+              },
+            ].map((control) => (
+              <StaggerItem key={control.title}>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 hover:border-emerald-500/30 transition-all">
+                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-500/10 mb-4">
+                    {control.icon}
+                  </div>
+                  <h3 className="text-lg font-semibold text-white mb-4">{control.title}</h3>
+                  <ul className="space-y-2">
+                    {control.items.map((item) => (
+                      <li key={item} className="flex items-start gap-2 text-sm text-slate-300">
+                        <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+          <div className="mt-10 text-center">
+            <Link to="/contact">
+              <Button variant="secondary">Request SOC 2 Package Sample</Button>
+            </Link>
+          </div>
         </div>
       </section>
 

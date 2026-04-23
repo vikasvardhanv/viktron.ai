@@ -202,7 +202,8 @@ type OnboardingQuestion = {
   type: 'choice' | 'text';
   options?: string[];
 };
-\ntype View = 'overview' | 'product' | 'engagement' | 'sources' | 'reddit' | 'pricing';
+
+type View = 'overview' | 'product' | 'engagement' | 'sources' | 'reddit' | 'pricing';
 
 const fallbackOverview: OverviewPayload = {
   product: {
@@ -482,7 +483,20 @@ export const AnalyticsApp: React.FC = () => {
   };
 
   const connectSource = async (provider: string) => {
-  
+    setSourceLoading(provider);
+    try {
+      const res = await apiFetch(`/saas/sources/${provider}/connect`);
+      if (res.ok) {
+        setSourcesMessage(`Connected ${provider}. Refreshing sources...`);
+        void loadSources();
+      }
+    } catch {
+      setSourcesMessage(`Failed to connect ${provider}. Check credentials.`);
+    } finally {
+      setSourceLoading('');
+    }
+  };
+
   if (!user) {
     return (
       <div className="min-h-screen bg-[#081019] text-white flex items-center justify-center">
@@ -555,7 +569,8 @@ export const AnalyticsApp: React.FC = () => {
       setIsProvisioning(false);
     }
   };
-\n  const handleSetup = async () => {
+
+  const handleSetup = async () => {
     if (!websiteUrl) {
       setSourcesMessage('Please enter your website URL to begin intelligence ingestion.');
       return;
@@ -797,4 +812,8 @@ export const AnalyticsApp: React.FC = () => {
       </div>
     );
   }
-;
+
+  return null;
+};
+
+export default AnalyticsApp;

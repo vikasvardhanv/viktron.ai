@@ -82,6 +82,7 @@ const CustomModelDemo = lazy(() => import('./pages/demos/CustomModelDemo').then(
 const DemoVideo = lazy(() => import('./pages/DemoVideo').then(m => ({ default: m.DemoVideo })));
 const InvestorDemo = lazy(() => import('./pages/InvestorDemo').then(m => ({ default: m.InvestorDemo })));
 const AnalyticsApp = lazy(() => import('./pages/analytics/AnalyticsApp').then(m => ({ default: m.AnalyticsApp })));
+const Analytics = lazy(() => import('./pages/Analytics').then(m => ({ default: m.Analytics })));
 
 // Legacy components - lazy loaded
 const MarketingHub = lazy(() => import('./components/MarketingHub').then(m => ({ default: m.MarketingHub })));
@@ -249,7 +250,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/leadbot" element={<PageTransition><LeadbotConsole /></PageTransition>} />
         <Route path="/rent" element={<PageTransition><RentAgent /></PageTransition>} />
         <Route path="/cloud" element={<PageTransition><CloudDashboard /></PageTransition>} />
-        <Route path="/analytics" element={<PageTransition><AnalyticsApp /></PageTransition>} />
+        <Route path="/analytics" element={<PageTransition><Analytics /></PageTransition>} />
         <Route path="/saas-analytics" element={<PageTransition><AnalyticsApp /></PageTransition>} />
         <Route path="/slack/oauth/callback" element={<PageTransition><SlackOAuthCallback /></PageTransition>} />
         <Route path="/tools" element={<PageTransition><ToolFeed /></PageTransition>} />
