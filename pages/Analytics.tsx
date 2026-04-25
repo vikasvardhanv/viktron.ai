@@ -207,75 +207,54 @@ export const Analytics: React.FC = () => {
               transition={{ duration: 0.65, ease: 'easeOut', delay: 0.15 }}
               className="relative"
             >
-              <div className="rounded-2xl bg-slate-900 shadow-2xl overflow-hidden border border-slate-700">
+              {/* Glow behind */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-emerald-200/40 via-teal-200/30 to-emerald-200/40 blur-2xl rounded-3xl pointer-events-none" />
+
+              <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-2xl shadow-slate-300/50 bg-white">
                 {/* Browser bar */}
-                <div className="flex items-center justify-between px-4 py-2.5 bg-slate-800/50 border-b border-slate-700">
+                <div className="flex items-center justify-between px-4 py-2.5 bg-slate-50 border-b border-slate-200">
                   <div className="flex items-center gap-2">
                     <div className="flex gap-1.5">
-                      <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-red-400/80" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/80" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-green-400/80" />
                     </div>
-                    <span className="text-[10px] text-slate-400 font-mono ml-2">app.viktron.ai/analytics</span>
+                    <span className="text-[10px] text-slate-500 font-mono ml-2">app.viktron.ai/analytics</span>
                   </div>
-                  <div className="flex items-center gap-1 text-[10px] text-emerald-400 font-mono">
-                    <RefreshCw className="w-2.5 h-2.5 animate-spin" /> LIVE
-                  </div>
-                </div>
-
-                {/* Metrics row */}
-                <div className="grid grid-cols-4 gap-px bg-slate-700 border-b border-slate-700">
-                  {metrics.map((m) => (
-                    <div key={m.label} className="bg-slate-900 px-4 py-3 text-center">
-                      <m.icon className={`w-3 h-3 mx-auto mb-1 ${m.color}`} />
-                      <p className="text-lg font-bold text-white">{m.value}</p>
-                      <p className="text-[9px] text-slate-400">{m.label}</p>
-                      <p className="text-[8px] text-emerald-400 font-mono">{m.change}</p>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Activity feed */}
-                <div className="p-4">
-                  <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-3">Live Agent Activity</p>
-                  <div className="space-y-1.5 font-mono text-[10px]">
-                    {dashboardPreview.map((row, idx) => (
-                      <motion.div
-                        key={idx}
-                        animate={{
-                          backgroundColor: idx === currentRow ? 'rgba(16, 185, 129, 0.1)' : 'transparent',
-                        }}
-                        transition={{ duration: 0.3 }}
-                        className="flex items-center justify-between px-2 py-1.5 rounded border border-slate-700/50"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="text-slate-500">{row.time}</span>
-                          <span className="text-emerald-400">{row.agent}</span>
-                        </div>
-                        <span className="text-slate-300 truncate max-w-[200px]">{row.action}</span>
-                        <span className="text-slate-500">{row.cost}</span>
-                      </motion.div>
-                    ))}
+                  <div className="flex items-center gap-1 text-[10px] text-emerald-600 font-mono">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> LIVE
                   </div>
                 </div>
 
-                {/* Chart placeholder */}
-                <div className="px-4 pb-4">
-                  <div className="flex items-end gap-1 h-20">
-                    {[40, 55, 35, 68, 45, 72, 58, 80, 65, 90, 75, 95].map((h, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ height: 0 }}
-                        whileInView={{ height: `${h}%` }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.05 }}
-                        className="flex-1 rounded-sm bg-gradient-to-t from-emerald-600 to-emerald-400 opacity-80"
-                      />
-                    ))}
-                  </div>
-                  <p className="text-[9px] text-slate-500 text-center mt-2">Conversations / hour (last 12h)</p>
-                </div>
+                {/* Dashboard image */}
+                <img
+                  src="/images/analytics-dashboard.svg"
+                  alt="Viktron Analytics Dashboard"
+                  className="w-full h-auto"
+                />
               </div>
+
+              {/* Floating stat — top left */}
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                className="absolute -left-4 top-8 bg-white rounded-xl shadow-xl border border-slate-200 px-4 py-3 min-w-[130px]"
+              >
+                <p className="text-[10px] text-slate-500 uppercase tracking-wide mb-1">Visitors</p>
+                <p className="text-2xl font-bold text-slate-900 font-mono">2,847</p>
+                <p className="text-[10px] text-emerald-600 font-medium mt-0.5">+23% this week</p>
+              </motion.div>
+
+              {/* Floating stat — bottom right */}
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                className="absolute -right-4 bottom-8 bg-white rounded-xl shadow-xl border border-slate-200 px-4 py-3 min-w-[130px]"
+              >
+                <p className="text-[10px] text-slate-500 uppercase tracking-wide mb-1">Conversions</p>
+                <p className="text-2xl font-bold text-slate-900 font-mono">312</p>
+                <p className="text-[10px] text-emerald-600 font-medium mt-0.5">+18% this week</p>
+              </motion.div>
             </motion.div>
           </div>
         </div>

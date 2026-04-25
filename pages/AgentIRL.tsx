@@ -20,6 +20,10 @@ import {
   Sparkles,
   MessageSquare,
   Activity,
+  Fingerprint,
+  KeyRound,
+  FileCheck,
+  Gauge,
 } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { ServiceSEO } from '../components/ui/SEO';
@@ -300,76 +304,426 @@ export const AgentIRL: React.FC = () => {
             transition={{ duration: 0.5 }}
             className="relative"
           >
-            {/* Architecture diagram */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
-              {/* Left: Agent Frameworks */}
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Agent Frameworks</p>
-                <div className="space-y-2">
-                  {['LangChain', 'CrewAI', 'LangGraph', 'AutoGen', 'OpenAI Agents', 'Anthropic MCP'].map((fw) => (
-                    <div key={fw} className="flex items-center justify-between px-3 py-2 bg-white rounded-lg border border-slate-200">
-                      <span className="text-sm font-medium text-slate-700">{fw}</span>
-                      <ArrowRight className="w-4 h-4 text-slate-400" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Center: AgentIRL Platform */}
-              <div className="rounded-2xl border-2 border-emerald-500 bg-gradient-to-br from-emerald-50 to-white p-6 relative">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-emerald-500 text-white text-xs font-bold rounded-full">
-                  AgentIRL™
-                </div>
-                <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-4">Runtime Layer</p>
-                <div className="space-y-3">
-                  {[
-                    { icon: GitBranch, label: 'Workflow Orchestrator', desc: 'DAG execution, state management' },
-                    { icon: Database, label: 'Smart Tool Adapters', desc: '100+ pre-built integrations' },
-                    { icon: Lock, label: 'Policy Engine', desc: 'Rate limits, approval gates, content filters' },
-                    { icon: RefreshCw, label: 'Auto-Recovery', desc: 'Circuit breakers, fallback chains' },
-                    { icon: BarChart3, label: 'Observability', desc: 'Tracing, metrics, OTLP export' },
-                  ].map((item) => (
-                    <div key={item.label} className="flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
-                        <item.icon className="w-4 h-4 text-emerald-600" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-slate-900">{item.label}</p>
-                        <p className="text-xs text-slate-500">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right: Business Systems */}
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Business Systems</p>
-                <div className="space-y-2">
-                  {[
-                    { icon: Users, label: 'CRM (Salesforce, HubSpot)' },
-                    { icon: MessageSquare, label: 'Support (Zendesk, Intercom)' },
-                    { icon: Database, label: 'Data Warehouses (Snowflake)' },
-                    { icon: Globe, label: 'Communication (Slack, Teams)' },
-                    { icon: Shield, label: 'Identity (Okta, Auth0)' },
-                  ].map((sys) => (
-                    <div key={sys.label} className="flex items-center justify-between px-3 py-2 bg-white rounded-lg border border-slate-200">
-                      <ArrowRight className="w-4 h-4 text-slate-400" />
-                      <span className="text-sm font-medium text-slate-700">{sys.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Flow arrows */}
-            <div className="hidden lg:block absolute top-1/2 -left-3 -translate-y-1/2 text-slate-300">
-              <ArrowRight className="w-6 h-6 rotate-180" />
-            </div>
-            <div className="hidden lg:block absolute top-1/2 -right-3 -translate-y-1/2 text-slate-300">
-              <ArrowRight className="w-6 h-6" />
+            {/* Architecture diagram image */}
+            <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-xl bg-slate-900">
+              <img
+                src="/images/agent-orchestration.svg"
+                alt="AgentIRL Architecture Diagram"
+                className="w-full h-auto"
+              />
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Flow indicator bar */}
+      <section className="py-8 bg-slate-50 border-b border-slate-200">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="flex items-center justify-center gap-4 text-sm text-slate-600">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span>Agent Frameworks</span>
+            </div>
+            <ArrowRight className="w-4 h-4 text-slate-400" />
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span>AgentIRL Runtime</span>
+            </div>
+            <ArrowRight className="w-4 h-4 text-slate-400" />
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span>Business Systems</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Trust Fabric Deep Dive ── */}
+      <section className="py-24 bg-gradient-to-b from-[#0F172A] to-slate-900 text-white relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-sky-500/8 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-sky-600/5 rounded-full blur-3xl" />
+        </div>
+        <div className="mx-auto max-w-7xl px-6 relative z-10">
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-14"
+          >
+            <motion.span
+              variants={fadeUp}
+              className="inline-block rounded-full bg-sky-500/15 px-4 py-1.5 text-sm font-semibold text-sky-300 tracking-wide"
+            >
+              Trust Fabric
+            </motion.span>
+            <motion.h2
+              variants={fadeUp}
+              className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight"
+            >
+              Four pillars of agent trust
+            </motion.h2>
+            <motion.p
+              variants={fadeUp}
+              className="mt-4 max-w-2xl mx-auto text-slate-400 text-lg"
+            >
+              AgentIRL doesn&apos;t hope agents behave. It proves they did.
+            </motion.p>
+          </motion.div>
+
+          {/* 4 interactive cards */}
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-2 gap-6 mb-12"
+          >
+            {[
+              {
+                icon: Fingerprint,
+                title: 'Cryptographic Identity',
+                desc: 'Every agent gets a verifiable identity with role, tools, and domain limits. Not a username — a credential that can be validated, audited, and revoked.',
+                badge: 'Identity',
+                color: 'sky',
+              },
+              {
+                icon: KeyRound,
+                title: 'Delegation Tokens',
+                desc: 'Task-scoped JWT tokens with scope attenuation. Parent → child → tool. Each token can only narrow permissions, never widen them. Revocation cascades to all descendants.',
+                badge: 'Delegation',
+                color: 'violet',
+              },
+              {
+                icon: Shield,
+                title: 'Policy Gates',
+                desc: 'Pre-action checks before every tool call, API request, data write, or spend action. Three effects: allow, deny, require_approval. Denied actions never execute.',
+                badge: 'Policy',
+                color: 'amber',
+              },
+              {
+                icon: FileCheck,
+                title: 'Provenance Ledger',
+                desc: 'Immutable SHA-256 hash-chained trail answering 5 questions: who authorized, what goal, what agent saw, why it chose that action, what changed. Tamper-evident by design.',
+                badge: 'Provenance',
+                color: 'emerald',
+              },
+            ].map((pillar) => (
+              <motion.div
+                key={pillar.title}
+                variants={fadeUp}
+                className="group rounded-2xl bg-slate-800/50 border border-slate-700/50 p-8 hover:border-sky-500/30 transition-all"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div className={`w-10 h-10 rounded-xl bg-${pillar.color}-500/20 flex items-center justify-center`}>
+                    <pillar.icon className={`w-5 h-5 text-${pillar.color}-400`} />
+                  </div>
+                  <span className={`text-xs font-mono font-bold text-${pillar.color}-400 uppercase tracking-wider`}>{pillar.badge}</span>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">{pillar.title}</h3>
+                <p className="text-slate-400 leading-relaxed text-sm">{pillar.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Trust scoring visual */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="rounded-2xl border border-slate-700/50 bg-slate-800/30 p-8 md:p-12"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div>
+                <span className="inline-block rounded-full bg-sky-500/15 px-4 py-1.5 text-sm font-semibold text-sky-300 tracking-wide mb-4">
+                  Dynamic Trust Scoring
+                </span>
+                <h3 className="text-2xl font-bold mb-4">Agents earn autonomy — they don&apos;t start with it</h3>
+                <p className="text-slate-400 leading-relaxed mb-6 text-sm">
+                  Trust scores update in real-time based on mission success rate (40%), human override frequency (25%),
+                  error recovery (20%), and latency (15%). Low-trust agents need approval. High-trust agents operate autonomously.
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-medium">&lt;40 Observation</span>
+                    <span className="text-slate-500 text-xs">Requires approval for all actions</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-300 text-xs font-medium">40-70 Supervised</span>
+                    <span className="text-slate-500 text-xs">Approval for high-risk actions only</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-medium">&gt;70 Autonomous</span>
+                    <span className="text-slate-500 text-xs">Full autonomy with provenance tracking</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col items-center gap-6">
+                {/* Trust score gauge */}
+                <div className="relative w-48 h-48">
+                  <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="#334155" strokeWidth="8" />
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="url(#agentTrustGrad)" strokeWidth="8" strokeDasharray={`${0.87 * 264} ${264}`} strokeLinecap="round" />
+                    <defs>
+                      <linearGradient id="agentTrustGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#f59e0b" />
+                        <stop offset="50%" stopColor="#38bdf8" />
+                        <stop offset="100%" stopColor="#10b981" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-4xl font-bold font-mono">87</span>
+                    <span className="text-xs text-emerald-400 font-medium uppercase tracking-wider">Autonomous</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-6 text-xs text-slate-500">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-amber-400" />
+                    <span>Success 40%</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-sky-400" />
+                    <span>Override 25%</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-emerald-400" />
+                    <span>Recovery 20%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Compliance callout */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="mt-8 rounded-2xl border border-slate-700/50 bg-slate-800/20 p-6 md:p-8"
+          >
+            <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
+              <div className="flex-1">
+                <h4 className="text-lg font-bold mb-2">Compliance & Audit</h4>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  Every action produces a signed provenance record. Export full audit trails for any mission, any agent, any time range.
+                  AgentIRL is built for SOC 2 Type II, GDPR, and HIPAA-ready environments.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-300 text-sm border border-emerald-500/20">
+                  <Shield className="w-3.5 h-3.5" /> SOC 2 Type II
+                </span>
+                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-300 text-sm border border-emerald-500/20">
+                  <Lock className="w-3.5 h-3.5" /> GDPR Ready
+                </span>
+                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-300 text-sm border border-emerald-500/20">
+                  <FileCheck className="w-3.5 h-3.5" /> Full Audit Trail
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Capabilities section */}
+      <section className="py-24 bg-white">
+        <div className="mx-auto max-w-7xl px-6">
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-14"
+          >
+            <motion.span
+              variants={fadeUp}
+              className="inline-block rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-semibold text-emerald-700 tracking-wide"
+            >
+              Platform Capabilities
+            </motion.span>
+            <motion.h2
+              variants={fadeUp}
+              className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900"
+            >
+              Everything you need for production agents
+            </motion.h2>
+          </motion.div>
+
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {capabilities.map((c) => (
+              <motion.div
+                key={c.title}
+                variants={fadeUp}
+                className="rounded-2xl border border-slate-200 bg-slate-50 p-6 hover:border-emerald-200 hover:shadow-lg transition-all"
+              >
+                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center mb-4">
+                  <c.icon className="w-5 h-5 text-emerald-600" />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">{c.title}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed">{c.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Metrics strip */}
+      <section className="py-16 bg-slate-900 text-white">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
+            {metrics.map((m) => (
+              <motion.div
+                key={m.label}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.05 }}
+              >
+                <p className="text-3xl font-bold text-white mb-1">{m.value}</p>
+                <p className="text-xs text-slate-400">{m.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="py-24 bg-gradient-to-b from-white via-emerald-50/30 to-white">
+        <div className="mx-auto max-w-7xl px-6">
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-14"
+          >
+            <motion.span
+              variants={fadeUp}
+              className="inline-block rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-semibold text-emerald-700 tracking-wide"
+            >
+              How It Works
+            </motion.span>
+            <motion.h2
+              variants={fadeUp}
+              className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900"
+            >
+              Five steps to production AI
+            </motion.h2>
+          </motion.div>
+
+          <div className="relative">
+            {/* Connection line */}
+            <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-emerald-500 via-emerald-500 to-transparent" />
+
+            <div className="space-y-8">
+              {steps.map((step, idx) => (
+                <motion.div
+                  key={step.num}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="relative pl-20"
+                >
+                  {/* Step number badge */}
+                  <div className="absolute left-0 top-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/25">
+                    <span className="text-2xl font-bold text-white">{step.num}</span>
+                  </div>
+
+                  <div className="pt-2">
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">{step.title}</h3>
+                    <p className="text-slate-600 leading-relaxed">{step.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Use cases */}
+      <section className="py-24 bg-white">
+        <div className="mx-auto max-w-7xl px-6">
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-14"
+          >
+            <motion.span
+              variants={fadeUp}
+              className="inline-block rounded-full bg-blue-100 px-4 py-1.5 text-sm font-semibold text-blue-700 tracking-wide"
+            >
+              Use Cases
+            </motion.span>
+            <motion.h2
+              variants={fadeUp}
+              className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900"
+            >
+              Built for production environments
+            </motion.h2>
+          </motion.div>
+
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {useCases.map((u) => (
+              <motion.div
+                key={u.title}
+                variants={fadeUp}
+                className="rounded-2xl border border-slate-200 bg-slate-50 p-6 hover:border-blue-200 hover:shadow-lg transition-all"
+              >
+                <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center mb-4">
+                  <u.icon className="w-5 h-5 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">{u.title}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed">{u.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Framework support */}
+      <section className="py-16 bg-slate-50 border-t border-slate-200">
+        <div className="mx-auto max-w-7xl px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-10"
+          >
+            <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Framework Agnostic</p>
+            <h2 className="text-2xl font-bold text-slate-900">Works with your existing stack</h2>
+          </motion.div>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            {frameworks.map((fw) => (
+              <motion.div
+                key={fw}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="px-6 py-3 rounded-full bg-white border border-slate-200 shadow-sm text-slate-700 font-medium"
+              >
+                {fw}
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

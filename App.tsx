@@ -41,6 +41,12 @@ const WorkflowBuilder = lazy(() => import('./pages/dashboard/WorkflowBuilder').t
 const ChannelSetup = lazy(() => import('./pages/dashboard/ChannelSetup').then(m => ({ default: m.ChannelSetup })));
 const Integrations = lazy(() => import('./pages/dashboard/Integrations').then(m => ({ default: m.Integrations })));
 const IntegrationsCallback = lazy(() => import('./pages/dashboard/IntegrationsCallback').then(m => ({ default: m.default })));
+// Trust Fabric Components
+const AgentIdentity = lazy(() => import('./pages/dashboard/AgentIdentity').then(m => ({ default: m.AgentIdentity })));
+const DelegationTokens = lazy(() => import('./pages/dashboard/DelegationTokens').then(m => ({ default: m.DelegationTokens })));
+const PolicyGateway = lazy(() => import('./pages/dashboard/PolicyGateway').then(m => ({ default: m.PolicyGateway })));
+const ProvenanceLedger = lazy(() => import('./pages/dashboard/ProvenanceLedger').then(m => ({ default: m.ProvenanceLedger })));
+const MemoryGovernance = lazy(() => import('./pages/dashboard/MemoryGovernance').then(m => ({ default: m.MemoryGovernance })));
 
 // Onboarding
 const Onboarding = lazy(() => import('./pages/Onboarding').then(m => ({ default: m.Onboarding })));
@@ -267,6 +273,12 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/dashboard/channels" element={<ProtectedRoute><ChannelSetup /></ProtectedRoute>} />
         <Route path="/dashboard/integrations" element={<ProtectedRoute><Integrations /></ProtectedRoute>} />
         <Route path="/integrations/callback" element={<IntegrationsCallback />} />
+        {/* Trust Fabric — protected */}
+        <Route path="/dashboard/agent-identity" element={<ProtectedRoute><AgentIdentity /></ProtectedRoute>} />
+        <Route path="/dashboard/delegation-tokens" element={<ProtectedRoute><DelegationTokens /></ProtectedRoute>} />
+        <Route path="/dashboard/policy-gateway" element={<ProtectedRoute><PolicyGateway /></ProtectedRoute>} />
+        <Route path="/dashboard/provenance-ledger" element={<ProtectedRoute><ProvenanceLedger /></ProtectedRoute>} />
+        <Route path="/dashboard/memory-governance" element={<ProtectedRoute><MemoryGovernance /></ProtectedRoute>} />
 
         <Route path="/login" element={<PageTransition><AuthPage mode="login" /></PageTransition>} />
         <Route path="/signup" element={<PageTransition><AuthPage mode="signup" /></PageTransition>} />

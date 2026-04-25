@@ -1219,34 +1219,79 @@ export const RentAgent: React.FC = () => {
           )}
         </div>
 
-        {/* ── Trust / Security Footer Banner ───────────────────────────────── */}
+        {/* ── Governance & Trust Section ───────────────────────────────── */}
         <div className="max-w-7xl mx-auto px-6 pb-16">
-          <div className="rounded-2xl bg-white border border-slate-200 p-8 shadow-sm">
-            <div className="grid md:grid-cols-3 gap-6">
+          <div className="rounded-2xl bg-gradient-to-br from-[#0F172A] to-slate-900 border border-slate-700 p-8 md:p-12">
+            <div className="text-center mb-8">
+              <span className="inline-block rounded-full bg-sky-500/15 px-4 py-1.5 text-sm font-semibold text-sky-300 tracking-wide mb-4">
+                Every Rented Agent Runs Under AgentIRL Governance
+              </span>
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                Trust is built in, not bolted on
+              </h3>
+              <p className="text-slate-400 max-w-2xl mx-auto">
+                When you rent an agent from the marketplace, it automatically inherits the full AgentIRL trust fabric: delegation tokens, policy gates, and immutable provenance trails.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-4 gap-4 mb-8">
               {[
                 {
-                  icon: <Shield size={20} className="text-green-600" />,
-                  title: 'Privacy First',
-                  body: 'Each agent runs in an isolated Docker container. Your keys stay yours — stored encrypted, never logged.',
+                  icon: <Shield size={18} />,
+                  title: 'Delegation Tokens',
+                  desc: 'Task-scoped JWT tokens that can only narrow permissions. Revocation cascades to child tokens.',
                 },
                 {
-                  icon: <Lock size={20} className="text-blue-600" />,
+                  icon: <Lock size={18} />,
+                  title: 'Policy Gates',
+                  desc: 'Pre-action checks before every tool call, API request, or data write. Denied actions never execute.',
+                },
+                {
+                  icon: <FileText size={18} />,
+                  title: 'Provenance Trail',
+                  desc: 'Immutable SHA-256 hash chain answering who authorized, what goal, what changed. Tamper-evident.',
+                },
+                {
+                  icon: <ShieldCheck size={18} />,
+                  title: 'Trust Scores',
+                  desc: 'Dynamic scoring from 0-100. Low-trust agents require approval. High-trust agents earn autonomy.',
+                },
+              ].map((item) => (
+                <div key={item.title} className="rounded-xl bg-slate-800/50 border border-slate-700/50 p-5">
+                  <div className="w-8 h-8 rounded-lg bg-sky-500/20 flex items-center justify-center text-sky-400 mb-3">
+                    {item.icon}
+                  </div>
+                  <p className="text-sm font-semibold text-white mb-1">{item.title}</p>
+                  <p className="text-xs text-slate-400 leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-4">
+              {[
+                {
+                  icon: <Cpu size={18} className="text-green-600" />,
+                  title: 'Runs in Your VPC',
+                  body: 'Deploy agents in your own cloud. No data leaves your environment.',
+                },
+                {
+                  icon: <Lock size={18} className="text-blue-600" />,
                   title: 'Security by Default',
-                  body: 'Non-root containers, read-only filesystems, TLS 1.3, API key auth, and rate limiting out of the box.',
+                  body: 'Non-root containers, TLS 1.3, API key auth, rate limiting, and read-only filesystems.',
                 },
                 {
-                  icon: <Globe size={20} className="text-violet-600" />,
+                  icon: <Globe size={18} className="text-violet-600" />,
                   title: 'Deploy Anywhere',
-                  body: 'Run on your laptop, self-host on any cloud, or let Viktron manage it. Standard Docker — no lock-in.',
+                  body: 'Local, self-hosted, or managed. Standard Docker — no lock-in.',
                 },
               ].map(item => (
-                <div key={item.title} className="flex items-start gap-4">
-                  <div className="w-9 h-9 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0">
+                <div key={item.title} className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-slate-700/50 border border-slate-600/50 flex items-center justify-center shrink-0">
                     {item.icon}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-slate-900 mb-1">{item.title}</p>
-                    <p className="text-xs text-slate-500 leading-relaxed">{item.body}</p>
+                    <p className="text-sm font-semibold text-white mb-1">{item.title}</p>
+                    <p className="text-xs text-slate-400 leading-relaxed">{item.body}</p>
                   </div>
                 </div>
               ))}

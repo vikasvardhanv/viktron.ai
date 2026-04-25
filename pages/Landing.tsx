@@ -1,14 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, Play, CheckCircle2, Loader2,
   Bot, Users, BrainCircuit, Target, Sparkles, Phone, MessageSquare,
-  Shield, Globe, BarChart3, Activity, Eye, Cpu, Layers, Microscope
+  Shield, Globe, BarChart3, Activity, Eye, Cpu, Layers, Microscope,
+  Lock, KeyRound, FileCheck, Gauge, AlertTriangle, Fingerprint
 } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
 import { AgentPathSelection } from '../components/AgentPathSelection';
+
+// ── Magnetic Button Component ──
+const MagneticButton = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    x.set(e.clientX - rect.left - rect.width / 2);
+    y.set(e.clientY - rect.top - rect.height / 2);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ x, y }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 // ── Demo Scenarios ──
 type DemoScenario = {
@@ -447,281 +480,584 @@ export const Landing = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
       />
       <SEO
-        title="Viktron AI | Infrastructure Layer for Autonomous Agents"
-        description="Production-grade orchestration, observability, and governance for multi-agent AI systems. AgentIRL handles coordination. Analytics provides real-time visibility. SOC 2 ready. From $199/mo."
-        keywords="Viktron AI, AI agent platform, multi-agent orchestration, AgentIRL, AI observability, AI governance, AI audit trails, enterprise AI infrastructure, AI agent analytics, production AI runtime"
+        title="Viktron AI | The Trust Layer for Autonomous Agents"
+        description="Cryptographic delegation tokens, real-time policy enforcement, and immutable provenance trails. AgentIRL makes autonomous agents safe for production — not by hoping they behave, but by proving they did."
+        keywords="Viktron AI, AI agent trust, AgentIRL, AI governance, AI provenance, delegation tokens, policy enforcement, AI audit trails, autonomous agent safety, AI compliance"
         url="/"
         canonicalUrl="https://viktron.ai/"
         schema={{
           "@context": "https://schema.org",
           "@type": "FAQPage",
           "mainEntity": [
-            { "@type": "Question", "name": "What is Viktron AI?", "acceptedAnswer": { "@type": "Answer", "text": "Viktron AI is an enterprise AI agent teams platform that deploys autonomous AI employees for sales, support, content, and operations. Agents work 24/7 and coordinate through our AgentIRL orchestration platform." } },
-            { "@type": "Question", "name": "How long does it take to deploy AI agents?", "acceptedAnswer": { "@type": "Answer", "text": "Most pre-built industry agents can be live within 1–2 weeks. Custom enterprise solutions with full integrations typically take 4–8 weeks." } },
-            { "@type": "Question", "name": "What does Viktron AI cost?", "acceptedAnswer": { "@type": "Answer", "text": "Plans start at $199/month (Starter, up to 2 agents). Pro is $499/month for up to 5 agents. Enterprise is custom-priced with unlimited agents and AgentIRL platform." } },
-            { "@type": "Question", "name": "Which industries does Viktron AI serve?", "acceptedAnswer": { "@type": "Answer", "text": "We serve restaurants, healthcare, salons, automotive, construction, real estate, legal, e-commerce, education, and recruitment industries with purpose-built AI agents." } },
-            { "@type": "Question", "name": "How is Viktron AI different from a chatbot?", "acceptedAnswer": { "@type": "Answer", "text": "Viktron AI deploys coordinated agent teams — CEO, Sales, Support, and Analytics agents working together simultaneously. AgentIRL ensures 99.9% uptime with enterprise-grade reliability." } }
+            { "@type": "Question", "name": "What is Viktron AI?", "acceptedAnswer": { "@type": "Answer", "text": "Viktron AI is the trust layer for autonomous agents. AgentIRL provides cryptographic delegation tokens, real-time policy enforcement, and immutable hash-chained provenance trails that make agent actions attributable, bounded, reviewable, and insurable." } },
+            { "@type": "Question", "name": "What is the Trust Fabric?", "acceptedAnswer": { "@type": "Answer", "text": "The Trust Fabric is AgentIRL's core differentiator — four pillars: cryptographic identity, task-scoped delegation tokens with scope attenuation, pre-action policy gates, and hash-chained provenance trails." } },
+            { "@type": "Question", "name": "How long does it take to deploy?", "acceptedAnswer": { "@type": "Answer", "text": "Most pre-built agents can be live within 1-2 weeks. Custom enterprise solutions with full integrations typically take 4-8 weeks." } },
+            { "@type": "Question", "name": "What does Viktron AI cost?", "acceptedAnswer": { "@type": "Answer", "text": "Plans start at $199/month (Starter). Pro is $499/month for up to 5 agents. Enterprise is custom-priced with unlimited agents and the full Trust Fabric." } },
+            { "@type": "Question", "name": "How is Viktron different from LangChain or CrewAI?", "acceptedAnswer": { "@type": "Answer", "text": "LangChain and CrewAI are orchestration frameworks. Viktron is the trust layer that makes them safe for production. We add delegation tokens, policy gates, provenance trails, and dynamic trust scoring on top of any framework." } }
           ]
         }}
       />
 
-      {/* ─── 1. Hero ─── */}
-      <section className="relative pt-32 pb-40 overflow-hidden">
-        {/* Background imagery + gradient blobs */}
-        {/* Full-bleed abstract hero image — very low opacity for texture */}
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-[0.035] pointer-events-none"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000')" }}
-        />
-        {/* Gradient mesh */}
-        <div className="absolute inset-0 pointer-events-none">
-          {/* Top-right blue glow */}
-          <div className="absolute -top-40 -right-40 w-[900px] h-[900px] bg-blue-200/50 blur-[160px] rounded-full" />
-          {/* Bottom-left indigo glow */}
-          <div className="absolute -bottom-20 -left-40 w-[700px] h-[700px] bg-indigo-200/40 blur-[140px] rounded-full" />
-          {/* Center violet accent */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-violet-100/30 blur-[120px] rounded-full" />
-          {/* Top-left teal micro-accent */}
-          <div className="absolute top-20 left-16 w-[300px] h-[300px] bg-cyan-100/40 blur-[100px] rounded-full" />
-        </div>
-        {/* Subtle dot-grid pattern overlay */}
+      {/* ─── 1. Hero — Trust Layer ─── */}
+      <section className="relative min-h-[100dvh] pt-24 pb-20 overflow-hidden bg-slate-900">
+        {/* Navy gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-[#0F172A] to-slate-900" />
+        {/* Subtle grid */}
         <div
           className="absolute inset-0 pointer-events-none opacity-[0.04]"
           style={{
-            backgroundImage: 'radial-gradient(circle, #3b82f6 1px, transparent 1px)',
+            backgroundImage: 'radial-gradient(circle, #38BDF8 1px, transparent 1px)',
             backgroundSize: '32px 32px',
           }}
         />
-        {/* Abstract floating shapes */}
-        <motion.div
-          animate={{ y: [0, -14, 0], rotate: [0, 6, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-28 right-[10%] w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-400/10 to-indigo-400/10 border border-blue-200/30 backdrop-blur-sm pointer-events-none"
-        />
-        <motion.div
-          animate={{ y: [0, 12, 0], rotate: [0, -8, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
-          className="absolute top-48 right-[18%] w-14 h-14 rounded-xl bg-gradient-to-br from-violet-400/10 to-purple-400/10 border border-violet-200/30 pointer-events-none"
-        />
-        <motion.div
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
-          className="absolute top-32 left-[8%] w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400/10 to-blue-400/10 border border-cyan-200/30 pointer-events-none"
-        />
-        <motion.div
-          animate={{ y: [0, 16, 0], rotate: [0, 10, 0] }}
-          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-          className="absolute bottom-12 right-[22%] w-20 h-20 rounded-full bg-gradient-to-br from-indigo-400/10 to-blue-400/10 border border-indigo-200/20 pointer-events-none"
-        />
-        {/* Horizontal gradient line accent */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-300/50 to-transparent pointer-events-none" />
+        {/* Sky accent orbs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-40 right-1/4 w-[600px] h-[600px] bg-sky-500/10 blur-[160px] rounded-full" />
+          <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-sky-600/8 blur-[120px] rounded-full" />
+        </div>
 
         <div className="container-custom relative z-10">
-          <div className="text-center max-w-3xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-mono text-blue-600 mb-8">
-                <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                Powered by AgentIRL
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+            {/* Left — Hero content */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="max-w-2xl"
+            >
+              {/* Trust badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-sky-500/10 border border-sky-500/20 text-sm text-sky-300 mb-8">
+                <Shield className="w-4 h-4" />
+                <span className="font-medium">AgentIRL™ Trust Fabric</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold text-slate-900 tracking-tight mb-6 md:mb-8 leading-[1.1]">
-                Viktron AI:<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">The Infrastructure Layer for Autonomous Agents</span>
+
+              <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-white tracking-tight mb-6 leading-[1.1]">
+                The Trust Layer<br />for{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">Autonomous Agents</span>
               </h1>
-              <p className="text-xl text-slate-600 mb-4 leading-relaxed max-w-2xl mx-auto font-semibold">
-                Production-grade orchestration, observability, and governance for multi-agent AI systems. Ship agents that survive real-world complexity.
+
+              <p className="text-lg md:text-xl text-slate-300 mb-6 leading-relaxed">
+                Every agent action is attributable, bounded, reviewable, and insurable.
+                AgentIRL makes delegation safe — not by hoping agents behave, but by
+                <span className="text-white font-semibold"> proving they did</span>.
               </p>
-              <p className="text-lg text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
-                AgentIRL™ handles coordination across frameworks. Analytics provides real-time visibility into agent behavior and business impact. Governance enforces approval gates, audit trails, and budget caps. Built for CTOs, trusted by compliance teams.
+
+              <p className="text-base text-slate-400 mb-8 leading-relaxed">
+                Cryptographic delegation tokens, real-time policy enforcement, and immutable
+                hash-chained provenance trails. For the first time, you can trust autonomous
+                agents with real work.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/contact" className="btn btn-primary btn-lg rounded-lg h-14 px-8 text-lg shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2">
-                  <Play size={18} className="fill-current" /> Get Started
-                </Link>
-                <Link to="/services" className="btn btn-secondary btn-lg rounded-lg h-14 px-8 text-lg flex items-center justify-center border-slate-200 bg-white hover:bg-slate-50 text-slate-900">
-                  Explore Platform
-                </Link>
-              </div>
-              <div className="mt-4 flex justify-center">
-                <Link to="/enterprise" className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-blue-600 transition-colors">
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  Need enterprise governance, audit logs &amp; compliance? <span className="text-blue-600 font-semibold ml-1">See Enterprise →</span>
+
+              <div className="flex flex-col sm:flex-row gap-3 mb-8">
+                <MagneticButton>
+                  <Link to="/contact" className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl bg-sky-500 text-white font-semibold hover:bg-sky-400 transition-all shadow-lg shadow-sky-500/30 text-lg">
+                    Start Free Trial <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </MagneticButton>
+                <Link to="/services" className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl border border-slate-600 text-slate-200 font-semibold hover:bg-slate-800/50 transition-all text-lg">
+                  See How It Works
                 </Link>
               </div>
 
-              {/* ── Hero Visual ── */}
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="relative mx-auto max-w-5xl mt-16"
-              >
-                {/* Glow behind the panel */}
-                <div className="absolute -inset-6 bg-gradient-to-r from-blue-200/50 via-indigo-200/40 to-violet-200/50 blur-3xl rounded-3xl pointer-events-none" />
+              {/* Trust bar */}
+              <div className="flex flex-wrap items-center gap-4 text-sm">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">
+                  <Shield className="w-4 h-4 text-sky-400" />
+                  <span className="text-slate-300 font-medium">SOC 2 Type II</span>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">
+                  <FileCheck className="w-4 h-4 text-emerald-400" />
+                  <span className="text-slate-300">100% action audit trail</span>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">
+                  <Gauge className="w-4 h-4 text-amber-400" />
+                  <span className="text-slate-300">&lt;150ms policy checks</span>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <span className="text-slate-300">14-day trial</span>
+                </div>
+              </div>
+            </motion.div>
 
-                {/* Browser-chrome wrapper */}
-                <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-2xl shadow-slate-300/50">
-                  {/* Browser top bar */}
-                  <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 border-b border-slate-200">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-400/80" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-400/80" />
-                      <div className="w-3 h-3 rounded-full bg-green-400/80" />
-                    </div>
-                    <div className="flex-1 mx-4 bg-white rounded border border-slate-200 px-3 py-0.5 text-xs text-slate-400 text-center">
-                      app.viktron.ai — AgentIRL Console
-                    </div>
-                    <div className="flex items-center gap-1 text-[10px] text-green-600 font-mono">
-                      <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> LIVE
-                    </div>
+            {/* Right — Provenance chain visualization */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="relative"
+            >
+              {/* Dashboard mockup */}
+              <div className="relative rounded-2xl overflow-hidden border border-slate-700/50 shadow-2xl shadow-sky-500/5">
+                {/* Browser chrome */}
+                <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-800 border-b border-slate-700">
+                  <div className="flex gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-400/80" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/80" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-400/80" />
                   </div>
-
-                  {/* Image compositon */}
-                  <div className="grid grid-cols-3 gap-0">
-                    <div className="col-span-2">
-                      <img
-                        src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=900"
-                        alt="AI Team collaboration"
-                        className="w-full h-80 object-cover"
-                      />
-                    </div>
-                    <div className="flex flex-col">
-                      <img
-                        src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=500"
-                        alt="Analytics dashboard"
-                        className="w-full h-40 object-cover border-b border-slate-200"
-                      />
-                      <img
-                        src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?auto=format&fit=crop&q=80&w=500"
-                        alt="AI interface"
-                        className="w-full h-40 object-cover"
-                      />
-                    </div>
+                  <div className="flex-1 bg-slate-900 rounded border border-slate-700 px-3 py-1 text-xs text-slate-400 font-mono text-center">
+                    app.viktron.ai/trust-fabric
+                  </div>
+                  <div className="flex items-center gap-1.5 text-[10px] text-sky-400 font-mono">
+                    <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
+                    VERIFIED
                   </div>
                 </div>
 
-                {/* Floating stat: left */}
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -left-8 top-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-xl border border-slate-200 px-4 py-3 min-w-[130px]"
-                >
-                  <p className="text-[11px] text-slate-500 mb-0.5">Agent Teams Deployed</p>
-                  <p className="text-2xl font-bold text-slate-900">147</p>
-                  <p className="text-[11px] text-green-600 font-medium mt-0.5">Production Active</p>
-                </motion.div>
+                {/* Provenance chain display */}
+                <div className="bg-slate-900 p-6 space-y-3">
+                  {/* Trust score header */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <p className="text-xs text-slate-500 uppercase tracking-wider font-mono">Trust Score</p>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-3xl font-bold text-white font-mono">87</span>
+                        <span className="text-sm text-sky-400 font-medium">Autonomous</span>
+                      </div>
+                    </div>
+                    <div className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono">
+                      All policies passing
+                    </div>
+                  </div>
 
-                {/* Floating stat: right */}
-                <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                  className="absolute -right-8 top-1/3 bg-white rounded-2xl shadow-xl border border-slate-200 px-4 py-3 min-w-[130px]"
-                >
-                  <p className="text-[11px] text-slate-500 mb-0.5">Tasks Automated / Mo</p>
-                  <p className="text-2xl font-bold text-slate-900">2.3M</p>
-                  <p className="text-[11px] text-blue-600 font-medium mt-0.5">Zero Policy Violations</p>
-                </motion.div>
+                  {/* Provenance chain entries */}
+                  {[
+                    { step: '1', action: 'instruction_received', who: 'founder@acme.co', status: 'authorized', time: '0.003s', color: 'sky' },
+                    { step: '2', action: 'policy_check', who: 'PolicyEngine', status: 'allowed', time: '<1ms', color: 'emerald' },
+                    { step: '3', action: 'delegation_issued', who: 'CEO → SalesAgent', status: 'token:tk_7f2a', time: '0.001s', color: 'violet' },
+                    { step: '4', action: 'tool_call:crm.read', who: 'SalesAgent', status: 'allowed', time: '0.12s', color: 'sky' },
+                    { step: '5', action: 'execution_completed', who: 'SalesAgent', status: 'verified', time: '2.1s', color: 'emerald' },
+                  ].map((entry, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.5 + idx * 0.15, duration: 0.3 }}
+                      className="flex items-center gap-3 px-4 py-2.5 rounded-lg bg-slate-800/50 border border-slate-700/50 group hover:border-slate-600/50 transition-colors"
+                    >
+                      <div className={`w-6 h-6 rounded-full bg-${entry.color}-500/20 flex items-center justify-center text-${entry.color}-400 text-xs font-mono font-bold shrink-0`}>
+                        {entry.step}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-white font-mono truncate">{entry.action}</p>
+                        <p className="text-xs text-slate-500 font-mono">{entry.who}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className={`text-xs font-mono px-2 py-0.5 rounded bg-${entry.color}-500/10 text-${entry.color}-400`}>{entry.status}</span>
+                        <span className="text-xs text-slate-600 font-mono">{entry.time}</span>
+                      </div>
+                    </motion.div>
+                  ))}
 
-                {/* Floating badge: bottom-center */}
-                <motion.div
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                  className="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-white rounded-full shadow-lg border border-slate-200 px-5 py-2 flex items-center gap-2"
-                >
-                  <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                  <span className="text-xs font-semibold text-slate-700">AgentIRL: 12 Orchestrations Active</span>
-                </motion.div>
+                  {/* Chain integrity */}
+                  <div className="flex items-center gap-2 pt-2 text-xs text-slate-500 font-mono">
+                    <Lock className="w-3.5 h-3.5 text-sky-400" />
+                    <span>SHA-256 chain integrity verified</span>
+                    <span className="text-slate-600">•</span>
+                    <span>5 entries • no gaps</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating trust level card */}
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute -left-6 top-12 bg-slate-800 rounded-xl shadow-xl border border-slate-700 px-4 py-3 min-w-[150px]"
+              >
+                <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Autonomy Level</p>
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl font-bold text-emerald-400 font-mono">87</span>
+                  <span className="text-xs text-emerald-400/80">/100</span>
+                </div>
+                <div className="w-full bg-slate-700 rounded-full h-1.5 mt-2">
+                  <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '87%' }} />
+                </div>
+              </motion.div>
+
+              {/* Floating policy check card */}
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className="absolute -right-4 bottom-16 bg-slate-800 rounded-xl shadow-xl border border-slate-700 px-4 py-3 min-w-[150px]"
+              >
+                <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Policy Engine</p>
+                <p className="text-sm text-white font-medium">12 rules active</p>
+                <div className="flex items-center gap-1 mt-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span className="text-[10px] text-emerald-400 font-medium">0 violations today</span>
+                </div>
               </motion.div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ─── 1.5. Value Propositions ─── */}
-      <section className="py-24 bg-slate-900 text-white relative overflow-hidden">
-        {/* Background elements */}
+      {/* ─── 1.5. The Problem We Solve ─── */}
+      <section className="py-24 bg-white relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-red-50/50 rounded-full blur-3xl" />
+        </div>
+        <div className="container-custom relative z-10">
+          <div className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <span className="inline-block rounded-full bg-red-50 px-4 py-1.5 text-sm font-semibold text-red-700 tracking-wide mb-4">
+                The Problem
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">
+                Agents fail. Silently. Expensively. Unaccountably.
+              </h2>
+            </motion.div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: <AlertTriangle className="w-8 h-8 text-red-500" />,
+                stat: '72%',
+                statLabel: 'of agent tasks fail in production',
+                title: 'Agents Fail Silently',
+                desc: 'No audit trail when things go wrong. No way to know what happened, why, or who authorized it.',
+                bg: 'bg-red-50',
+                border: 'border-red-100',
+              },
+              {
+                icon: <Eye className="w-8 h-8 text-amber-500" />,
+                stat: '97%',
+                statLabel: 'of AI breaches lacked access controls',
+                title: 'No Accountability',
+                desc: 'Agents can\'t be audited, traced, or governed. Every action is a black box with no chain of custody.',
+                bg: 'bg-amber-50',
+                border: 'border-amber-100',
+              },
+              {
+                icon: <Lock className="w-8 h-8 text-slate-500" />,
+                stat: '60%',
+                statLabel: 'of AI leaders cite trust as #1 barrier',
+                title: 'Can\'t Trust With Real Work',
+                desc: 'Without provenance and policy gates, agents stay sandboxed — unable to handle production workloads.',
+                bg: 'bg-slate-50',
+                border: 'border-slate-200',
+              },
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className={`relative rounded-2xl ${item.bg} border ${item.border} p-8`}
+              >
+                <div className="mb-4">{item.icon}</div>
+                <p className="text-4xl font-bold text-slate-900 font-mono mb-1">{item.stat}</p>
+                <p className="text-sm text-slate-500 mb-4">{item.statLabel}</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h3>
+                <p className="text-slate-600 leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── 1.6. How AgentIRL Works (Trust Fabric Flow) ─── */}
+      <section className="py-24 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-20 left-1/4 w-[500px] h-[500px] bg-sky-100/30 rounded-full blur-3xl" />
+          <div className="absolute -bottom-20 right-1/4 w-[400px] h-[400px] bg-cyan-100/20 rounded-full blur-3xl" />
+        </div>
+        <div className="container-custom relative z-10">
+          <div className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <span className="inline-block rounded-full bg-sky-50 px-4 py-1.5 text-sm font-semibold text-sky-700 tracking-wide mb-4">
+                How It Works
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-4">
+                Four pillars of agent trust
+              </h2>
+              <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                AgentIRL doesn&apos;t hope agents behave. It <span className="font-semibold text-slate-900">proves</span> they did.
+              </p>
+            </motion.div>
+          </div>
+
+          {/* 4-step flow */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                step: '01',
+                icon: <Fingerprint className="w-6 h-6" />,
+                title: 'Identity',
+                desc: 'Every agent gets a cryptographic identity with role, tools, and domain limits. Not a username — a verifiable credential.',
+                color: 'sky',
+              },
+              {
+                step: '02',
+                icon: <KeyRound className="w-6 h-6" />,
+                title: 'Delegation',
+                desc: 'Task-scoped tokens with scope attenuation. Parent → child → tool. Each token can only narrow permissions, never widen them.',
+                color: 'violet',
+              },
+              {
+                step: '03',
+                icon: <Shield className="w-6 h-6" />,
+                title: 'Policy Gates',
+                desc: 'Pre-action checks before every tool call, API request, data write, or spend action. Denied actions never execute.',
+                color: 'amber',
+              },
+              {
+                step: '04',
+                icon: <FileCheck className="w-6 h-6" />,
+                title: 'Provenance',
+                desc: 'Immutable hash-chained trail answering: who authorized, what goal, what agent saw, why it chose that action, what changed.',
+                color: 'emerald',
+              },
+            ].map((pillar, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="relative group"
+              >
+                <div className="rounded-2xl bg-white border border-slate-200 p-8 h-full hover:shadow-lg hover:border-slate-300 transition-all">
+                  <div className={`w-12 h-12 rounded-xl bg-${pillar.color}-500/10 flex items-center justify-center mb-4 text-${pillar.color}-500`}>
+                    {pillar.icon}
+                  </div>
+                  <span className={`text-xs font-mono font-bold text-${pillar.color}-500 tracking-wider uppercase`}>Step {pillar.step}</span>
+                  <h3 className="text-xl font-bold text-slate-900 mt-2 mb-3">{pillar.title}</h3>
+                  <p className="text-slate-600 leading-relaxed text-sm">{pillar.desc}</p>
+                </div>
+                {/* Connector arrow (hidden on mobile and last) */}
+                {idx < 3 && (
+                  <div className="hidden lg:block absolute top-1/2 -right-3 z-10 text-slate-300">
+                    <ArrowRight className="w-6 h-6" />
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Trust scoring callout */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="mt-12 rounded-2xl bg-slate-900 p-8 md:p-12 text-white"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div>
+                <span className="inline-block rounded-full bg-sky-500/20 px-4 py-1.5 text-sm font-semibold text-sky-300 tracking-wide mb-4">
+                  Dynamic Trust Scoring
+                </span>
+                <h3 className="text-2xl md:text-3xl font-bold mb-4">
+                  Agents earn autonomy — they don&apos;t start with it
+                </h3>
+                <p className="text-slate-400 leading-relaxed mb-6">
+                  Trust scores update in real-time based on mission success rate, human override frequency,
+                  error recovery, and latency. Low-trust agents require approval. High-trust agents operate autonomously.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <span className="px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-sm font-medium">
+                    &lt;40 Observation
+                  </span>
+                  <span className="px-3 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-300 text-sm font-medium">
+                    40-70 Supervised
+                  </span>
+                  <span className="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-sm font-medium">
+                    &gt;70 Autonomous
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-col items-center gap-6">
+                {/* Trust score gauge */}
+                <div className="relative w-48 h-48">
+                  <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="#1e293b" strokeWidth="8" />
+                    <circle cx="50" cy="50" r="42" fill="none" stroke="url(#trustGradient)" strokeWidth="8" strokeDasharray={`${0.87 * 264} ${264}`} strokeLinecap="round" />
+                    <defs>
+                      <linearGradient id="trustGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#f59e0b" />
+                        <stop offset="50%" stopColor="#38bdf8" />
+                        <stop offset="100%" stopColor="#10b981" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-4xl font-bold font-mono">87</span>
+                    <span className="text-xs text-emerald-400 font-medium uppercase tracking-wider">Autonomous</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 text-sm text-slate-400">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-amber-400" />
+                    <span>Mission Success 40%</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-sky-400" />
+                    <span>Override Rate 25%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ─── 2. Platform Capabilities ─── */}
+      <section className="py-24 bg-gradient-to-b from-[#0F172A] via-[#1e293b] to-[#0F172A] text-white relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-sky-500/8 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-sky-600/5 rounded-full blur-3xl" />
         </div>
 
         <div className="container-custom relative z-10">
-          <div className="text-center mb-12">
+          <div className="text-center mb-16">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0 }}
             >
-              <span className="inline-block rounded-full bg-blue-500/20 px-4 py-1.5 text-sm font-semibold text-blue-300 tracking-wide">
+              <span className="inline-block rounded-full bg-sky-500/15 px-4 py-1.5 text-sm font-semibold text-sky-300 tracking-wide">
                 Platform Capabilities
               </span>
             </motion.div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Value Prop 1 - AgentIRL */}
+
+          {/* Bento grid layout */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Trust Fabric - LEAD card (full width) */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="group"
+              className="md:col-span-3 group relative rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-sky-500/20 p-8 overflow-hidden"
             >
-              <div className="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center mb-6 group-hover:bg-blue-500/30 transition-colors">
-                <Cpu className="w-7 h-7 text-blue-400" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-sky-500/5 rounded-full blur-3xl group-hover:bg-sky-500/10 transition-colors" />
+              <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-sky-500/20 flex items-center justify-center mb-6">
+                    <Shield className="w-6 h-6 text-sky-400" />
+                  </div>
+                  <h2 className="text-2xl font-bold mb-3">Trust Fabric & Governance</h2>
+                  <p className="text-slate-300 leading-relaxed mb-6">
+                    The core differentiator. Every agent action gets a cryptographic delegation token, passes through policy gates before execution, and produces an immutable hash-chained provenance record. This is what makes autonomous agents safe for production.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sky-500/10 text-sky-300 text-sm border border-sky-500/20">
+                      <KeyRound className="w-3.5 h-3.5" /> Delegation tokens
+                    </span>
+                    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sky-500/10 text-sky-300 text-sm border border-sky-500/20">
+                      <Shield className="w-3.5 h-3.5" /> Policy gates
+                    </span>
+                    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-300 text-sm border border-emerald-500/20">
+                      <FileCheck className="w-3.5 h-3.5" /> Hash-chained provenance
+                    </span>
+                    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-300 text-sm border border-emerald-500/20">
+                      <Gauge className="w-3.5 h-3.5" /> Dynamic trust scores
+                    </span>
+                    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-300 text-sm border border-emerald-500/20">
+                      <CheckCircle2 className="w-3.5 h-3.5" /> SOC 2 Type II
+                    </span>
+                    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-300 text-sm border border-emerald-500/20">
+                      <CheckCircle2 className="w-3.5 h-3.5" /> Budget caps
+                    </span>
+                  </div>
+                </div>
+                <div className="relative">
+                  <div className="rounded-xl border border-slate-700 bg-slate-900 p-4 space-y-3">
+                    {/* Mini provenance preview */}
+                    <div className="flex items-center justify-between text-xs font-mono text-slate-400 mb-2">
+                      <span>Provenance Chain</span>
+                      <span className="text-emerald-400 flex items-center gap-1"><Lock className="w-3 h-3" /> Verified</span>
+                    </div>
+                    {[
+                      { step: 'delegation_issued', from: 'CEO', to: 'SalesAgent', status: 'tk_7f2a' },
+                      { step: 'policy_check', from: 'PolicyEngine', to: 'crm.read', status: 'allowed' },
+                      { step: 'action_completed', from: 'SalesAgent', to: 'founder', status: 'verified' },
+                    ].map((entry, i) => (
+                      <div key={i} className="flex items-center gap-2 text-xs font-mono bg-slate-800/50 rounded-lg px-3 py-2 border border-slate-700/50">
+                        <span className="w-5 h-5 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400 text-[10px] font-bold">{i + 1}</span>
+                        <span className="text-white flex-1 truncate">{entry.step}</span>
+                        <span className="text-slate-500">{entry.from}→{entry.to}</span>
+                        <span className="text-emerald-400">{entry.status}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <h2 className="text-2xl font-bold mb-3">AgentIRL™ Orchestration</h2>
-              <p className="text-slate-300 leading-relaxed">
-                Multi-agent coordination framework with &lt;150ms latency. Delegate tasks, spawn sub-agents, and synchronize across LangChain, CrewAI, AutoGen, and MCP without re-engineering.
-              </p>
-              <ul className="mt-4 space-y-2 text-sm text-slate-400">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-400" /> 99.99% uptime SLA</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-400" /> Framework-agnostic execution</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-400" /> Auto-recovery on failures</li>
-              </ul>
             </motion.div>
 
-            {/* Value Prop 2 - Analytics */}
+            {/* AgentIRL orchestration card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="group"
+              className="group relative rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 p-8 overflow-hidden"
             >
-              <div className="w-14 h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-6 group-hover:bg-emerald-500/30 transition-colors">
-                <BarChart3 className="w-7 h-7 text-emerald-400" />
+              <div className="absolute top-0 right-0 w-48 h-48 bg-sky-500/5 rounded-full blur-3xl group-hover:bg-sky-500/10 transition-colors" />
+              <div className="relative z-10">
+                <div className="w-12 h-12 rounded-xl bg-sky-500/20 flex items-center justify-center mb-6">
+                  <Cpu className="w-6 h-6 text-sky-400" />
+                </div>
+                <h2 className="text-xl font-bold mb-3">AgentIRL™ Orchestration</h2>
+                <p className="text-slate-300 text-sm leading-relaxed mb-4">
+                  Multi-agent coordination with &lt;150ms latency. Delegate, spawn, and synchronize across LangChain, CrewAI, and AutoGen.
+                </p>
+                <div className="grid grid-cols-1 gap-2">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-sky-400" />
+                    <span className="text-sm text-slate-400">99.99% uptime SLA</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-sky-400" />
+                    <span className="text-sm text-slate-400">Framework-agnostic</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-sky-400" />
+                    <span className="text-sm text-slate-400">Auto-recovery</span>
+                  </div>
+                </div>
               </div>
-              <h2 className="text-2xl font-bold mb-3">Analytics & Observability</h2>
-              <p className="text-slate-300 leading-relaxed">
-                Real-time dashboards for agent performance, business metrics, and operational health. Track every action, attribute revenue, and export to your BI stack.
-              </p>
-              <ul className="mt-4 space-y-2 text-sm text-slate-400">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Live agent activity feed</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> Cost attribution per task</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-400" /> OTLP export to Datadog</li>
-              </ul>
             </motion.div>
 
-            {/* Value Prop 3 - Governance */}
+            {/* Analytics card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="group"
+              className="group relative rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 p-8 overflow-hidden"
             >
-              <div className="w-14 h-14 rounded-xl bg-amber-500/20 flex items-center justify-center mb-6 group-hover:bg-amber-500/30 transition-colors">
-                <Shield className="w-7 h-7 text-amber-400" />
+              <div className="absolute top-0 right-0 w-48 h-48 bg-teal-500/5 rounded-full blur-3xl group-hover:bg-teal-500/10 transition-colors" />
+              <div className="relative z-10">
+                <div className="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center mb-6">
+                  <BarChart3 className="w-6 h-6 text-teal-400" />
+                </div>
+                <h2 className="text-xl font-bold mb-3">Analytics</h2>
+                <p className="text-slate-300 text-sm leading-relaxed mb-4">
+                  Real-time dashboards, cost attribution, OTLP export to Datadog.
+                </p>
+                <ul className="space-y-2 text-sm text-slate-400">
+                  <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-teal-400" /> Live activity feed</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-teal-400" /> Cost per task</li>
+                  <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-teal-400" /> BI integrations</li>
+                </ul>
               </div>
-              <h2 className="text-2xl font-bold mb-3">Governance & Trust</h2>
-              <p className="text-slate-300 leading-relaxed">
-                Task-scoped delegation tokens, pre-action approval gates, and immutable audit logs. Deploy agents in regulated workflows with full compliance confidence.
-              </p>
-              <ul className="mt-4 space-y-2 text-sm text-slate-400">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-amber-400" /> SOC 2 Type II ready</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-amber-400" /> 100% actions logged</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-amber-400" /> Budget enforcement</li>
-              </ul>
             </motion.div>
           </div>
         </div>
@@ -729,12 +1065,11 @@ export const Landing = () => {
 
 
 
-      {/* ─── 2. Four Products ─── */}
-      <section className="py-24 bg-gradient-to-b from-white via-blue-50/20 to-white relative overflow-hidden">
-        {/* Background decoration */}
+      {/* ─── 2. Platform Capabilities ─── */}
+      <section className="py-24 bg-gradient-to-b from-white via-emerald-50/20 to-white relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-blue-100/15 rounded-full blur-3xl" />
-          <div className="absolute -bottom-40 -left-40 w-[400px] h-[400px] bg-indigo-100/10 rounded-full blur-3xl" />
+          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-emerald-100/15 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-[400px] h-[400px] bg-teal-100/10 rounded-full blur-3xl" />
         </div>
         <div className="container-custom relative z-10">
           <div className="text-center mb-16">
@@ -744,8 +1079,8 @@ export const Landing = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 text-blue-600 text-xs font-semibold mb-6 backdrop-blur-sm">
-                <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 text-emerald-700 text-xs font-semibold mb-6 backdrop-blur-sm">
+                <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
                 Choose Your Path
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-4">Platform Capabilities</h2>
@@ -760,17 +1095,17 @@ export const Landing = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0 * 0.1 }}
-              className="p-8 rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50/50 to-blue-50/20 hover:border-blue-300 hover:shadow-lg transition-all group"
+              className="p-8 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50/50 to-emerald-50/20 hover:border-emerald-300 hover:shadow-lg transition-all group"
             >
-              <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-blue-200 transition-all">
-                <Cpu className="w-6 h-6 text-blue-600" />
+              <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-emerald-200 transition-all">
+                <Cpu className="w-6 h-6 text-emerald-600" />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-2">AgentIRL™ Orchestration</h3>
               <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Runtime Layer</p>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Multi-agent coordination framework. Delegate tasks, spawn sub-agents, synchronize across LangChain, CrewAI, AutoGen, and MCP. Framework-agnostic execution with &lt;150ms latency.
               </p>
-              <Link to="/services/agentirl" className="text-blue-600 hover:text-blue-700 font-semibold text-sm flex items-center gap-2 group/btn">
+              <Link to="/services/agentirl" className="text-emerald-700 hover:text-emerald-800 font-semibold text-sm flex items-center gap-2 group/btn">
                 See Architecture
                 <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
               </Link>
@@ -782,17 +1117,17 @@ export const Landing = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 1 * 0.1 }}
-              className="p-8 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50/50 to-emerald-50/20 hover:border-emerald-300 hover:shadow-lg transition-all group"
+              className="p-8 rounded-2xl border border-teal-200 bg-gradient-to-br from-teal-50/50 to-teal-50/20 hover:border-teal-300 hover:shadow-lg transition-all group"
             >
-              <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-emerald-200 transition-all">
-                <BarChart3 className="w-6 h-6 text-emerald-600" />
+              <div className="w-12 h-12 rounded-xl bg-teal-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-teal-200 transition-all">
+                <BarChart3 className="w-6 h-6 text-teal-600" />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-2">Analytics & Observability</h3>
               <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Real-time Visibility</p>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Live dashboards for agent performance, business metrics, and operational health. Track every action, attribute revenue, export to Datadog or Snowflake.
               </p>
-              <Link to="/analytics" className="text-emerald-600 hover:text-emerald-700 font-semibold text-sm flex items-center gap-2 group/btn">
+              <Link to="/analytics" className="text-teal-700 hover:text-teal-800 font-semibold text-sm flex items-center gap-2 group/btn">
                 View Demo Dashboard
                 <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
               </Link>
@@ -804,17 +1139,17 @@ export const Landing = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 2 * 0.1 }}
-              className="p-8 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50/50 to-amber-50/20 hover:border-amber-300 hover:shadow-lg transition-all group"
+              className="p-8 rounded-2xl border border-purple-200 bg-gradient-to-br from-purple-50/50 to-purple-50/20 hover:border-purple-300 hover:shadow-lg transition-all group"
             >
-              <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-amber-200 transition-all">
-                <Shield className="w-6 h-6 text-amber-600" />
+              <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-purple-200 transition-all">
+                <Shield className="w-6 h-6 text-purple-600" />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-2">Governance & Trust</h3>
               <p className="text-sm text-slate-500 mb-4 font-mono uppercase tracking-wide">Compliance Ready</p>
               <p className="text-slate-600 mb-6 leading-relaxed">
                 Task-scoped delegation tokens, approval gates, immutable audit logs. SOC 2 Type II readiness package. Deploy agents in regulated workflows with confidence.
               </p>
-              <Link to="/enterprise" className="text-amber-600 hover:text-amber-700 font-semibold text-sm flex items-center gap-2 group/btn">
+              <Link to="/enterprise" className="text-purple-700 hover:text-purple-800 font-semibold text-sm flex items-center gap-2 group/btn">
                 View Compliance Features
                 <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
               </Link>
@@ -1081,13 +1416,13 @@ export const Landing = () => {
       {/* ─── 8. CTA ─── */}
       <section className="relative py-32 overflow-hidden text-white">
         {/* Gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0F172A] via-slate-800 to-[#0F172A]" />
 
         {/* Animated background elements */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute -top-40 -left-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
+          <div className="absolute -top-40 -left-40 w-80 h-80 bg-sky-500/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-sky-600/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-sky-500/5 rounded-full blur-3xl" />
         </div>
 
         <div className="container-custom max-w-3xl relative z-10">
@@ -1099,20 +1434,20 @@ export const Landing = () => {
             className="text-center"
           >
             <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight leading-tight">
-              Stop hiring.<br className="hidden md:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-indigo-400">Start deploying Viktron AI.</span>
+              Trust your agents<br className="hidden md:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">with real work.</span>
             </h2>
             <p className="text-xl text-slate-300 mb-12 max-w-2xl mx-auto leading-relaxed">
-              Autonomous agent teams for sales, support, and operations.
-              Enterprise-ready. Production infrastructure. <br /> Live in 1-3 weeks.
+              Cryptographic delegation tokens, real-time policy gates, and immutable provenance trails.
+              Enterprise-ready. Production infrastructure. Live in 1-3 weeks.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.3 }}
               >
-                <Link to="/contact" className="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-slate-900 text-lg font-bold hover:bg-blue-50 transition-colors shadow-xl shadow-blue-500/25">
-                  Get Started with Viktron AI
+                <Link to="/contact" className="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-sky-500 text-white text-lg font-bold hover:bg-sky-400 transition-colors shadow-xl shadow-sky-500/25">
+                  Start Free Trial
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
               </motion.div>

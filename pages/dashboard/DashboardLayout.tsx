@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutDashboard, GitBranch, Radio, LogOut, ChevronRight, Plug } from 'lucide-react';
+import { LayoutDashboard, GitBranch, Radio, LogOut, ChevronRight, Plug, Shield, Key, FileText, Brain, Lock } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const C = {
@@ -14,6 +14,14 @@ const navItems = [
   { to: '/dashboard/workflow', label: 'Workflow Builder', icon: GitBranch, exact: false },
   { to: '/dashboard/channels', label: 'Channel Setup', icon: Radio, exact: false },
   { to: '/dashboard/integrations', label: 'Integrations', icon: Plug, exact: false },
+];
+
+const trustNavItems = [
+  { to: '/dashboard/agent-identity', label: 'Agent Identity', icon: Shield, exact: false },
+  { to: '/dashboard/delegation-tokens', label: 'Delegation Tokens', icon: Key, exact: false },
+  { to: '/dashboard/policy-gateway', label: 'Policy Gateway', icon: Lock, exact: false },
+  { to: '/dashboard/provenance-ledger', label: 'Provenance Ledger', icon: FileText, exact: false },
+  { to: '/dashboard/memory-governance', label: 'Memory Governance', icon: Brain, exact: false },
 ];
 
 interface Props { children: React.ReactNode; teamName?: string; }
@@ -57,6 +65,27 @@ export const DashboardLayout: React.FC<Props> = ({ children, teamName }) => {
               <ChevronRight size={13} className="opacity-0 group-hover:opacity-40 transition-opacity" />
             </NavLink>
           ))}
+
+          {/* Trust Fabric Section */}
+          <div className="pt-4 mt-4 border-t" style={{ borderColor: C.border }}>
+            <div className="px-3 mb-2 text-[10px] font-medium uppercase tracking-wider" style={{ color: C.muted }}>
+              Trust Fabric
+            </div>
+            {trustNavItems.map(({ to, label, icon: Icon, exact }) => (
+              <NavLink
+                key={to} to={to} end={exact}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group"
+                style={({ isActive }) => ({
+                  background: isActive ? 'rgba(168,85,247,0.12)' : 'transparent',
+                  color: isActive ? C.purple : C.muted,
+                })}
+              >
+                <Icon size={17} />
+                <span className="flex-1">{label}</span>
+                <ChevronRight size={13} className="opacity-0 group-hover:opacity-40 transition-opacity" />
+              </NavLink>
+            ))}
+          </div>
         </nav>
 
         {/* User + logout */}
