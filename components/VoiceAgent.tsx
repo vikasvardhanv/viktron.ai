@@ -200,7 +200,7 @@ export const VoiceAgent: React.FC<{ onRestart: () => void }> = ({ onRestart }) =
                         }
 
                         // Handle Audio
-                        const audioData = message.serverContent?.modelTurn?.parts[0]?.inlineData?.data;
+                        const audioData = message.serverContent?.modelTurn?.parts?.[0]?.inlineData?.data;
                         if (audioData && outputAudioContextRef.current) {
                             const ctx = outputAudioContextRef.current;
                             nextStartTimeRef.current = Math.max(nextStartTimeRef.current, ctx.currentTime);

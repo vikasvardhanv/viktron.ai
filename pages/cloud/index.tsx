@@ -142,10 +142,10 @@ export default function CloudDashboard() {
             <div key={i} style={{ display: "flex", gap: "0.75rem", padding: "0.2rem 0", lineHeight: 1.6 }}>
               <span style={{ color: "#475569", flexShrink: 0 }}>{new Date(evt.timestamp).toLocaleTimeString()}</span>
               <span style={{ color: "#60a5fa", flexShrink: 0 }}>[{evt.agent_id}]</span>
-              <span style={{ color: "#a3e635" }}>{evt.event_type}</span>
-              {evt.data?.error && (
+              <span style={{ color: "#a3e635" }}>{String(evt.event_type)}</span>
+              {evt.data?.error ? (
                 <span style={{ color: "#f87171" }}>ERR: {String(evt.data.error)}</span>
-              )}
+              ) : null}
             </div>
           ))}
           {events.length === 0 && !loading && (

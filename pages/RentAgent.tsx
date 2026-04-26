@@ -1005,7 +1005,9 @@ export const RentAgent: React.FC = () => {
   const [agents, setAgents] = useState<AgentEntry[]>(AGENTS);
 
   useEffect(() => {
-    registryApi.listAgents().then(setAgents).catch(() => { /* keep inline fallback */ });
+    registryApi.listAgents().then((data) => {
+      setAgents(data as AgentEntry[]);
+    }).catch(() => { /* keep inline fallback */ });
   }, []);
 
   const categories = useMemo(() => {

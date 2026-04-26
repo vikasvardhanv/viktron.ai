@@ -1,0 +1,86 @@
+# Viktron AI Analytics Demo Video Prompt
+
+## For HeyGen Video Generation
+
+**Duration:** 30 seconds
+**Style:** Professional SaaS product demo, dark theme, emerald accents
+**Aspect Ratio:** 16:9 landscape
+
+---
+
+## Scene Breakdown
+
+### Scene 1 (0-5s): Terminal Deployment
+**Visual:** Black terminal window with monospace font
+**Action:** Cursor types command, agents spawn
+**Text on screen:**
+```
+$ viktron deploy --agents sales,support,analytics
+→ Spawning agent team...
+→ CEO Agent: Online
+→ Sales Agent: Online
+→ Support Agent: Online
+→ Analytics Agent: Online
+```
+
+### Scene 2 (5-15s): Architecture Visualization
+**Visual:** Animated node graph on dark background
+**Action:** Nodes light up as agents connect
+- Left: Agent framework logos (LangChain, CrewAI, AutoGen)
+- Center: AgentIRL runtime box with pulsing emerald connections
+- Right: Business systems (CRM, Support, Data Warehouse)
+**Text overlay:** "Multi-agent coordination in <150ms"
+
+### Scene 3 (15-25s): Live Dashboard
+**Visual:** Analytics dashboard (use /images/analytics-dashboard.svg as reference)
+**Action:** Metrics update in real-time, activity feed scrolls
+**Metrics shown:**
+- Visitors: 2,847 (+23%)
+- AI Conversations: 1,204 (+41%)
+- Conversions: 312 (+18%)
+- Cost/Task: $8.47 (-12%)
+**Text overlay:** "Real-time observability"
+
+### Scene 4 (25-30s): Audit Export
+**Visual:** Dashboard with export modal
+**Action:** Click "Export Audit Log" → CSV/JSON download
+**Text overlay:**
+- "100% actions logged"
+- "SOC 2 Type II ready"
+- "Export to CSV, JSON, or SIEM"
+
+---
+
+## Voiceover Script (Optional)
+
+"Deploy your AI agent team in seconds. AgentIRL orchestrates across frameworks with sub-150ms latency. Watch every action in real-time. Export complete audit trails for compliance. Viktron AI — infrastructure for autonomous agents."
+
+---
+
+## Visual Style Notes
+
+- **Background:** Dark slate (#0B0F19 to #111827 gradient)
+- **Accent color:** Emerald (#10B981)
+- **Font:** Geist Mono or JetBrains Mono for code
+- **Motion:** Smooth spring animations (stiffness: 100, damping: 20)
+- **Icons:** Clean line icons, 1.5px stroke
+- **Borders:** 1px slate (#1F2937)
+- **Shadows:** Subtle diffusion shadows, no neon glows
+
+---
+
+## Music/Sound (Optional)
+
+- Minimal tech ambient, 100-110 BPM
+- Subtle click sounds on terminal typing
+- Soft whoosh on scene transitions
+- No vocals during voiceover sections
+
+---
+
+## End Card
+
+**Logo:** Viktron AI
+**Tagline:** "Infrastructure for Autonomous Agents"
+**CTA:** "Start free trial at viktron.ai"
+**Badge:** "14-day trial · No credit card"

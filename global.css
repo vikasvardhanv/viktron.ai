@@ -1,101 +1,216 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://rsms.me/inter/inter.css');
 
-@theme {
-  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-
-  --color-slate-50: #f8fafc;
-  --color-slate-100: #f1f5f9;
-  --color-slate-200: #e2e8f0;
-  --color-slate-300: #cbd5e1;
-  --color-slate-400: #94a3b8;
-  --color-slate-500: #64748b;
-  --color-slate-600: #475569;
-  --color-slate-700: #334155;
-  --color-slate-800: #1e293b;
-  --color-slate-900: #0f172a;
-  --color-slate-950: #020617;
-
-  /* Trust Fabric palette: Navy primary, Sky accent */
-  --color-navy: #0F172A;
-  --color-sky-accent: #0369A1;
-  --color-sky-light: #38BDF8;
-
-  --color-primary: #0369A1;
-  --color-primary-foreground: #ffffff;
-
-  --color-background: #ffffff;
-  --color-foreground: #0f172a;
-
-  --animate-fade-in: fadeIn 0.5s ease-out;
-  --animate-slide-up: slideUp 0.5s ease-out;
+:root {
+  /* Navy dark mode foundation */
+  --background: 15 23 42;        /* navy-900 #0f172a */
+  --foreground: 248 250 252;     /* slate-50 #f8fafc */
+  --card-bg: 30 41 59;           /* navy-800 #1e293b */
+  --card-border: 148 163 184;    /* slate-400 */
   
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  @keyframes slideUp {
-    from { transform: translateY(10px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
+  /* Emerald primary accent */
+  --accent: 16 185 129;          /* emerald-500 #10b981 */
+  --accent-hover: 5 150 105;     /* emerald-600 #059669 */
+  --accent-light: 110 231 183;   /* emerald-300 #6ee7b7 */
+  
+  /* Semantic colors */
+  --success: 16 185 129;         /* emerald-500 */
+  --warning: 245 158 11;         /* amber-500 */
+  --error: 239 68 68;            /* red-500 */
+  --info: 6 182 212;             /* cyan-500 */
+  
+  /* Text layers */
+  --text-primary: 248 250 252;   /* slate-50 */
+  --text-secondary: 203 213 225; /* slate-300 */
+  --text-tertiary: 148 163 184;  /* slate-400 */
+  --text-muted: 100 116 139;     /* slate-500 */
+  
+  /* Animations */
+  --duration-instant: 0ms;
+  --duration-fast: 100ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 500ms;
+}
+
+/* Dark mode override */
+:root.dark {
+  --background: 15 23 42;        /* navy-900 */
+  --foreground: 248 250 252;     /* slate-50 */
 }
 
 /* Base Styles */
-body {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
+* {
+  border-color: rgb(30 41 59 / <alpha-value>);
+}
+
+html {
+  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Linear-style Utilities */
-
-/* Glass Cards */
-.card {
-  @apply bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-300;
-}
-.card:hover {
-  @apply border-blue-200;
+body {
+  background-color: rgb(15 23 42);
+  color: rgb(248 250 252);
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Buttons */
+/* Typography Defaults */
+h1 { @apply text-4xl font-bold tracking-tight; }
+h2 { @apply text-3xl font-bold tracking-tight; }
+h3 { @apply text-2xl font-bold tracking-tight; }
+h4 { @apply text-xl font-semibold; }
+h5 { @apply text-lg font-semibold; }
+h6 { @apply text-base font-semibold; }
+
+p { @apply text-base leading-relaxed; }
+small { @apply text-sm text-slate-400; }
+
+/* Links */
+a {
+  @apply text-emerald-500 hover:text-emerald-400 transition-colors;
+  
+  &:focus-visible {
+    @apply outline-none ring-2 ring-emerald-500 ring-offset-2 ring-offset-slate-950 rounded;
+  }
+}
+
+/* Buttons - Premium defaults */
 .btn {
-  @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer;
+  @apply inline-flex items-center justify-center 
+         rounded-lg px-4 py-2.5 text-sm font-medium
+         transition-all duration-200 ease-out
+         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
+         disabled:opacity-50 disabled:cursor-not-allowed
+         cursor-pointer select-none;
 }
 
 .btn-primary {
-  @apply bg-blue-600 text-white hover:bg-blue-700 shadow-sm shadow-blue-500/20;
+  @apply bg-emerald-500 text-slate-900 font-semibold
+         hover:bg-emerald-600 active:bg-emerald-700
+         shadow-lg shadow-emerald-500/20
+         focus-visible:ring-emerald-500 focus-visible:ring-offset-slate-950;
 }
 
 .btn-secondary {
-  @apply bg-white text-slate-900 hover:bg-slate-50 border border-slate-200 shadow-sm;
+  @apply bg-slate-800 text-slate-50 
+         border border-slate-700 hover:border-slate-600
+         hover:bg-slate-700 active:bg-slate-600
+         focus-visible:ring-emerald-500;
 }
 
 .btn-ghost {
-  @apply text-slate-600 hover:text-slate-900 hover:bg-slate-100;
+  @apply text-slate-400 hover:text-slate-200 
+         hover:bg-slate-800/50 active:bg-slate-700/50
+         focus-visible:ring-emerald-500;
 }
 
-/* Utils */
-.container-custom {
-  @apply max-w-7xl mx-auto px-4 md:px-6 w-full;
+.btn-sm {
+  @apply px-3 py-1.5 text-xs;
 }
 
-/* Touch-friendly tap targets */
-@media (max-width: 767px) {
-  .btn, .card, a, button {
+.btn-lg {
+  @apply px-6 py-3 text-base;
+}
+
+/* Cards - Glass morphism effect */
+.card {
+  @apply rounded-xl border border-slate-700/50 
+         bg-slate-800/30 backdrop-blur-xl
+         shadow-xl shadow-black/20
+         p-6 transition-all duration-300;
+}
+
+.card:hover {
+  @apply border-emerald-500/30 bg-slate-800/40;
+}
+
+.card-interactive {
+  @apply cursor-pointer hover:shadow-2xl hover:shadow-emerald-500/10;
+}
+
+/* Inputs - Premium styling */
+input, textarea, select {
+  @apply w-full rounded-lg px-4 py-2.5
+         bg-slate-900/50 border border-slate-700
+         text-slate-50 placeholder-slate-500
+         transition-all duration-200
+         focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50;
+  
+  &::selection {
+    @apply bg-emerald-500/30 text-slate-50;
+  }
+}
+
+input:disabled {
+  @apply bg-slate-900/20 text-slate-500 cursor-not-allowed;
+}
+
+/* Labels */
+label {
+  @apply block text-sm font-medium text-slate-200 mb-2;
+}
+
+/* Container */
+.container {
+  @apply max-w-7xl mx-auto px-4 md:px-6 lg:px-8;
+}
+
+/* Utility: Glass effect (liquid glass) */
+.glass {
+  @apply backdrop-blur-xl bg-white/5 border border-white/10 rounded-xl;
+}
+
+.glass-emerald {
+  @apply backdrop-blur-xl bg-emerald-500/5 border border-emerald-500/20 rounded-xl;
+}
+
+/* Utility: Section spacing */
+.section-sm { @apply py-12 md:py-16; }
+.section-md { @apply py-16 md:py-24; }
+.section-lg { @apply py-24 md:py-32; }
+
+/* Utility: Gradient backgrounds */
+.bg-gradient-hero {
+  background: linear-gradient(135deg, 
+    rgb(15, 23, 42) 0%,
+    rgb(30, 41, 59) 50%,
+    rgb(15, 23, 42) 100%);
+}
+
+.bg-gradient-emerald {
+  background: linear-gradient(135deg,
+    rgba(16, 185, 129, 0.1) 0%,
+    rgba(16, 185, 129, 0.05) 100%);
+}
+
+/* Utility: Text gradients */
+.text-gradient {
+  @apply bg-gradient-to-r from-emerald-400 to-emerald-600 bg-clip-text text-transparent;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .btn, input, textarea, .card {
     min-height: 44px;
-    min-width: 44px;
   }
   
-  /* Prevent horizontal scroll on mobile */
-  body {
-    overflow-x: hidden;
+  html {
+    font-size: 16px;
   }
-  
-  /* Smooth scrolling */
+}
+
+/* Anti-aliasing and smooth rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth scroll for the entire page */
+@supports (scroll-behavior: smooth) {
   html {
     scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
   }
 }
 

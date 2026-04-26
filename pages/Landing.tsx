@@ -34,7 +34,7 @@ const MagneticButton = ({ children, className }: { children: React.ReactNode; cl
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      animate={{ x, y }}
+      style={{ x, y }}
       transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }}
       className={className}
     >

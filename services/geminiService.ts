@@ -103,7 +103,7 @@ export async function generateSummary(serviceId: string, serviceName: string, an
             systemInstruction: "You are a helpful AI assistant for Viktron, an AI consulting agency. Your task is to summarize a potential client's project requirements based on their answers to a questionnaire.",
         }
     });
-    return response.text;
+    return response.text || '';
   } catch (error) {
     console.error("Error generating summary with Gemini:", error);
     return "Thank you for providing your details. It seems there was an issue generating a summary, but we have your information. The next step is to book a call with our team to discuss your project further.";
@@ -241,7 +241,7 @@ Remember: Be specific, actionable, and professional. Avoid generic advice. Tailo
                 systemInstruction: "You are an elite business strategist known for creating exceptional business plans. Your plans are detailed, data-informed, and investor-ready. Always provide specific, actionable recommendations rather than generic advice. Write in a professional yet accessible tone.",
             }
         });
-        return response.text;
+        return response.text || '';
     } catch (error) {
         console.error("Error generating business plan with Gemini:", error);
         return "We're sorry, but there was an error generating your business plan. Please check the console for details and try again.";
@@ -330,7 +330,7 @@ export async function generateAgentResponse(
                 systemInstruction: systemInstruction,
             }
         });
-        return response.text;
+        return response.text || '';
     } catch (error) {
         console.error(`Error generating ${agentType} agent response:`, error);
         throw new Error("Failed to generate response");
@@ -388,7 +388,7 @@ export async function generateMarketingContent(
                 systemInstruction: "You are an expert marketing copywriter. Create engaging, conversion-focused content that resonates with the target audience.",
             }
         });
-        return response.text;
+        return response.text || '';
     } catch (error) {
         console.error("Error generating marketing content:", error);
         throw new Error("Failed to generate content");
@@ -436,7 +436,7 @@ export async function generateEmailCampaign(
                 systemInstruction: "You are an expert email marketing strategist. Create high-converting email sequences that build relationships and drive action.",
             }
         });
-        return response.text;
+        return response.text || '';
     } catch (error) {
         console.error("Error generating email campaign:", error);
         throw new Error("Failed to generate email campaign");

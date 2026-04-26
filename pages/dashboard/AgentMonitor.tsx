@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Users, CheckSquare, Wifi, Crown, Briefcase,
-  Code2, TrendingUp, Headphones, PenTool, Zap, AlertCircle,
+  Users, CheckCircle2, CheckSquare, Wifi, Crown, Briefcase,
+  Code2, TrendingUp, Headphones, PenTool, Play, Zap, AlertCircle,
   Activity, Bot, RefreshCw, BrainCircuit, DollarSign,
   Heart, Clock, ChevronRight, X, Terminal, Loader2,
 } from 'lucide-react';
@@ -756,7 +756,7 @@ export const AgentMonitor: React.FC = () => {
         const skills = Array.isArray(res.data?.skills) ? res.data.skills : [];
         setSkillNames(
           skills
-            .map((skill) => String((skill as Record<string, unknown>).name || ''))
+            .map((skill: any) => String((skill as Record<string, unknown>).name || ''))
             .filter(Boolean)
             .slice(0, 8),
         );

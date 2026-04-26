@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   Activity,
+  ArrowRight,
   ArrowUpRight,
   BadgeDollarSign,
   BarChart3,
@@ -11,6 +12,7 @@ import {
   Database,
   Flame,
   Funnel,
+  Globe,
   LineChart,
   Loader2,
   MessagesSquare,
@@ -18,8 +20,10 @@ import {
   Radar,
   RefreshCw,
   Search,
+  Shield,
   ShieldCheck,
   Sparkles,
+  Terminal,
   TrendingUp,
   Unplug,
   Users,

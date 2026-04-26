@@ -100,7 +100,7 @@ export const Onboarding: React.FC = () => {
               <OnboardingForm
                 onSubmit={handleFormSubmit}
                 isLoading={isLoading}
-                error={step === 'error' ? error : undefined}
+                error={error}
               />
             </motion.div>
           )}

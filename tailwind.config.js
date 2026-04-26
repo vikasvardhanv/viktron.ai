@@ -1,14 +1,31 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'Geist', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        mono: ['Geist Mono', 'JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+        // Geist first (per Viktron taste config)
+        sans: ['Geist', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        mono: ['Geist Mono', 'SF Mono', 'Monaco', 'Cascadia Code', 'monospace'],
+        display: ['Geist', 'Satoshi', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
       },
       colors: {
-        // Linear-inspired Slate/Zinc scale
+        // Navy dark mode foundation
+        navy: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          950: '#020617',
+        },
+        // Slate: Neutral scale
         slate: {
           50: '#f8fafc',
           100: '#f1f5f9',
@@ -22,33 +39,33 @@ export default {
           900: '#0f172a', 
           950: '#020617',
         },
-        // Linear Primary
-        primary: {
-          DEFAULT: '#5E6AD2',
-          foreground: '#ffffff',
-          50: '#EFF1FC',
-          100: '#E0E3F9',
-          200: '#C2C9F3',
-          300: '#A3AEEB',
-          400: '#8594E4',
-          500: '#5E6AD2',
-          600: '#4250C3',
-          700: '#323E9F',
-          800: '#232B7A',
-          900: '#151952',
-        },
-        // Emerald accent for infrastructure positioning
+        // Emerald PRIMARY ACCENT (infrastructure-focused)
         emerald: {
-          50: '#ECFDF5',
-          100: '#D1FAE5',
-          200: '#A7F3D0',
-          300: '#6EE7B7',
-          400: '#34D399',
-          500: '#10B981',
+          50: '#ecfdf5',
+          100: '#d1fae5',
+          200: '#a7f3d0',
+          300: '#6ee7b7',
+          400: '#34d399',
+          500: '#10b981',
           600: '#059669',
           700: '#047857',
-          800: '#065F46',
-          900: '#064E3B',
+          800: '#065f46',
+          900: '#064e3b',
+        },
+        // Primary mapped to Emerald
+        primary: {
+          DEFAULT: '#10b981',
+          foreground: '#0f172a',
+          50: '#ecfdf5',
+          100: '#d1fae5',
+          200: '#a7f3d0',
+          300: '#6ee7b7',
+          400: '#34d399',
+          500: '#10b981',
+          600: '#059669',
+          700: '#047857',
+          800: '#065f46',
+          900: '#064e3b',
         },
         // Semantic Colors (mapping to CSS variables)
         border: "rgb(var(--border) / <alpha-value>)",
