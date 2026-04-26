@@ -8,8 +8,8 @@ import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { CookieBanner, CookiePreferences } from './components/CookieConsent';
 
 // Lazy load all pages for faster initial load
-const Landing = lazy(() => import('./pages/Landing').then(m => ({ default: m.Landing })));
-const Services = lazy(() => import('./pages/Services').then(m => ({ default: m.Services })));
+const Landing = lazy(() => import('./pages/LandingV2').then(m => ({ default: m.default })));
+const Services = lazy(() => import('./pages/ServicesV2').then(m => ({ default: m.default })));
 const DemoForm = lazy(() => import('./pages/DemoForm').then(m => ({ default: m.DemoForm })));
 const Marketing = lazy(() => import('./pages/Marketing').then(m => ({ default: m.Marketing })));
 const Demos = lazy(() => import('./pages/Demos').then(m => ({ default: m.Demos })));
@@ -24,7 +24,7 @@ const About = lazy(() => import('./pages/About').then(m => ({ default: m.About }
 const UseCases = lazy(() => import('./pages/UseCases').then(m => ({ default: m.UseCases })));
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail').then(m => ({ default: m.ServiceDetail })));
 const LeadbotConsole = lazy(() => import('./pages/LeadbotConsole').then(m => ({ default: m.LeadbotConsole })));
-const Pricing = lazy(() => import('./pages/Pricing').then(m => ({ default: m.Pricing })));
+const Pricing = lazy(() => import('./pages/PricingV2').then(m => ({ default: m.default })));
 const Blog = lazy(() => import('./pages/Blog').then(m => ({ default: m.Blog })));
 const RentAgent = lazy(() => import('./pages/RentAgent').then(m => ({ default: m.RentAgent })));
 const Enterprise = lazy(() => import('./pages/Enterprise').then(m => ({ default: m.Enterprise })));
