@@ -29,6 +29,7 @@ const Blog = lazy(() => import('./pages/Blog').then(m => ({ default: m.Blog })))
 const RentAgent = lazy(() => import('./pages/RentAgent').then(m => ({ default: m.RentAgent })));
 const Enterprise = lazy(() => import('./pages/Enterprise').then(m => ({ default: m.Enterprise })));
 const Docs = lazy(() => import('./pages/Docs').then(m => ({ default: m.Docs })));
+const TrustFabric = lazy(() => import('./pages/TrustFabric').then(m => ({ default: m.default })));
 const SlackOAuthCallback = lazy(() => import('./pages/SlackOAuthCallback').then(m => ({ default: m.SlackOAuthCallback })));
 const ToolFeed = lazy(() => import('./pages/ToolFeed').then(m => ({ default: m.ToolFeed })));
 const PretrainedDirectory = lazy(() => import('./pages/PretrainedDirectory').then(m => ({ default: m.default })));
@@ -237,6 +238,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/" element={<PageTransition><Landing /></PageTransition>} />
         <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
         <Route path="/services/agentirl" element={<PageTransition><AgentIRL /></PageTransition>} />
+        <Route path="/services/trust-fabric" element={<PageTransition><TrustFabric /></PageTransition>} />
         <Route path="/services/agent-orchestration" element={<Navigate to="/services/agentirl" replace />} />
         <Route path="/services/:serviceId" element={<PageTransition><ServiceDetail /></PageTransition>} />
         <Route path="/use-cases" element={<PageTransition><UseCases /></PageTransition>} />
