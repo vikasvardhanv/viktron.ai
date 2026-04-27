@@ -25,6 +25,17 @@ const C = {
   muted: '#6B7280',
 };
 
+// Safe formatting helpers to prevent null errors
+const formatCost = (value: number | null | undefined): string => {
+  if (value === null || value === undefined || isNaN(value)) return '$0.00';
+  return `$${(value as number).toFixed(2)}`;
+};
+
+const formatConfidence = (value: number | null | undefined): string => {
+  if (value === null || value === undefined || isNaN(value)) return '0%';
+  return `${((value as number) * 100).toFixed(0)}%`;
+};
+
 type LedgerEntry = ProvenanceEntry;
 
 const FiveQuestionCard: React.FC<{ entry: LedgerEntry }> = ({ entry }) => {
@@ -91,10 +102,10 @@ const FiveQuestionCard: React.FC<{ entry: LedgerEntry }> = ({ entry }) => {
                 {key === 'who' && <span className="text-white">{entry.who_authorized.user_email}</span>}
                 {key === 'what_goal' && <span className="text-white truncate">{entry.what_goal.task_description}</span>}
                 {key === 'what_saw' && <span>{entry.what_saw.tools_used.length} tools used</span>}
-                {key === 'why_chose' && <span>Confidence: {(entry.why_chose.confidence_score * 100).toFixed(0)}%</span>}
+                {key === 'why_chose' && <span>Confidence: {formatConfidence(entry.why_chose?.confidence_score)}</span>}
                 {key === 'what_changed' && (
                   <span className="flex items-center gap-2">
-                    <span style={{ color: C.yellow }}>${entry.what_changed.cost_usd.toFixed(2)}</span>
+                    <span style={{ color: C.yellow }}>{formatCost(entry.what_changed?.cost_usd)}</span>
                     <span style={{ color: C.muted }}>{entry.what_changed.latency_ms}ms</span>
                   </span>
                 )}
@@ -163,7 +174,7 @@ const LedgerEntryCard: React.FC<{ entry: LedgerEntry; expanded: boolean; onToggl
         <div className="mt-3 flex items-center gap-4 text-xs">
           <span className="flex items-center gap-1" style={{ color: C.yellow }}>
             <DollarSign size={12} />
-            ${entry.what_changed.cost_usd.toFixed(2)}
+            {formatCost(entry.what_changed?.cost_usd)}
           </span>
           <span className="flex items-center gap-1" style={{ color: C.muted }}>
             <Activity size={12} />
@@ -175,7 +186,7 @@ const LedgerEntryCard: React.FC<{ entry: LedgerEntry; expanded: boolean; onToggl
           </span>
           <span className="flex items-center gap-1" style={{ color: C.green }}>
             <CheckCircle2 size={12} />
-            {(entry.why_chose.confidence_score * 100).toFixed(0)}% confidence
+            {formatConfidence(entry.why_chose?.confidence_score)} confidence
           </span>
         </div>
       </div>
@@ -423,14 +434,14 @@ export const ProvenanceLedger: React.FC = () => {
               <DollarSign size={16} style={{ color: C.yellow }} />
               <span className="text-xs" style={{ color: C.muted }}>Total Cost</span>
             </div>
-            <p className="text-2xl font-bold text-white">${stats.totalCost.toFixed(2)}</p>
+            <p className="text-2xl font-bold text-white">{formatCost(stats?.totalCost)}</p>
           </div>
           <div className="rounded-xl p-4 border" style={{ background: C.card, borderColor: C.border }}>
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp size={16} style={{ color: C.purple }} />
               <span className="text-xs" style={{ color: C.muted }}>Avg Confidence</span>
             </div>
-            <p className="text-2xl font-bold text-white">{(stats.avgConfidence * 100).toFixed(0)}%</p>
+            <p className="text-2xl font-bold text-white">{formatConfidence(stats?.avgConfidence)}</p>
           </div>
         </div>
 

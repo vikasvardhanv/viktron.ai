@@ -19,6 +19,12 @@ const C = {
   cyan: '#06B6D4', muted: '#6B7280',
 };
 
+// Safe formatting helper
+const formatCost = (value: number | null | undefined): string => {
+  if (value === null || value === undefined || isNaN(value)) return '$0.00';
+  return `$${(value as number).toFixed(2)}`;
+};
+
 interface PolicyRuleCondition {
   field: 'tool' | 'domain' | 'cost' | 'data_sensitivity' | 'agent_role' | 'time_of_day';
   operator: 'equals' | 'contains' | 'greater_than' | 'less_than' | 'in' | 'not_in' | 'regex';
@@ -398,7 +404,7 @@ const ApprovalCard: React.FC<{ approval: PendingApproval; onApprove: () => void;
           )}
           {approval.action.cost_usd && (
             <span className="px-2 py-0.5 rounded flex items-center gap-1" style={{ background: `${C.yellow}15`, color: C.yellow }}>
-              <DollarSign size={10} />${approval.action.cost_usd.toFixed(2)}
+              <DollarSign size={10} />{formatCost(approval.action.cost_usd)}
             </span>
           )}
           {approval.action.data_sensitivity && (
