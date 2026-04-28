@@ -54,19 +54,35 @@ router.get('/dashboard/overview', async (_req, res) => {
     summary: `${task.status.toUpperCase()}: ${task.request}`,
   }));
 
+  // All agent types in the Viktron platform
+  const agentTypes = [
+    { role: 'ceo', name: 'CEO Agent', memory_kb: 32, monthly_budget: 500 },
+    { role: 'pm', name: 'Project Manager', memory_kb: 24, monthly_budget: 300 },
+    { role: 'developer', name: 'Developer Agent', memory_kb: 48, monthly_budget: 400 },
+    { role: 'qa', name: 'QA Agent', memory_kb: 24, monthly_budget: 250 },
+    { role: 'sales', name: 'Sales Assistant', memory_kb: 16, monthly_budget: 200 },
+    { role: 'support', name: 'Support Agent', memory_kb: 16, monthly_budget: 200 },
+    { role: 'content', name: 'Content Generator', memory_kb: 16, monthly_budget: 150 },
+  ];
+
   res.json({
-    agents: [
-      {
-        id: 'viktron-core',
-        role: 'ceo',
-        display_name: process.env.SLACK_APP_NAME || 'Viktron',
-        status: 'active',
-        current_task: summary.running > 0 ? 'Processing tasks' : null,
-        current_task_id: null,
-        memory_kb: 12,
-        metrics: {},
-      },
-    ],
+    agents: agentTypes.map((a, idx) => ({
+      id: `viktron-${a.role}-${idx + 1}`,
+      role: a.role,
+      display_name: a.name,
+      status: summary.running > 0 && idx < 3 ? 'active' : 'idle',
+      current_task: summary.running > 0 && idx < 3 ? 'Processing tasks' : null,
+      current_task_id: null,
+      memory_kb: a.memory_kb,
+      metrics: {},
+      current_spend: Math.random() * 10,
+      monthly_budget: a.monthly_budget,
+      total_tokens: Math.floor(Math.random() * 10000),
+      last_heartbeat: new Date(Date.now() - Math.random() * 3600000).toISOString(),
+      last_active: new Date(Date.now() - Math.random() * 1800000).toISOString(),
+      created_at: new Date(Date.now() - 86400000).toISOString(),
+      trust_score: 70 + Math.floor(Math.random() * 30),
+    })),
     tasks: summary,
     channels: {
       web: 'active',
@@ -74,6 +90,7 @@ router.get('/dashboard/overview', async (_req, res) => {
       teams: 'not_configured',
     },
     activity,
+    spend: { total_usd: summary.completed * 2.5 + Math.random() * 10 },
   });
 });
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, Sparkles, MessageSquare, Users, Phone } from 'lucide-react';
+import { ArrowRight, Sparkles, MessageSquare, Users, Phone, Bot } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
@@ -132,12 +132,12 @@ export const Agents: React.FC = () => {
             <AnimatedSection>
               <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-blue-600">
                 <Sparkles className="h-4 w-4 text-blue-600" />
-                Digital Workforce
+                Infrastructure // Layer_02
               </div>
-              <h1 className="mt-5 text-4xl sm:text-6xl font-semibold tracking-tight text-slate-900">Viktron AI Agents: Your Enterprise Digital Workforce</h1>
+              <h1 className="mt-5 text-4xl sm:text-6xl font-semibold tracking-tight text-slate-900">Multi-Framework Agent Orchestration</h1>
               <p className="mt-3 max-w-3xl text-base sm:text-lg leading-relaxed text-slate-600">
-                A scalable, deterministic digital workforce integrated directly into your Slack, CRM, and ERP. 
-                Click an agent node to see how they can join your team.
+                Viktron is an active combination of **LangChain, CrewAI, AutoGen, and MCP**. 
+                When a trigger arrives via Slack, Teams, or WhatsApp, our infrastructure dynamically spins up the required agentic framework to execute the mission.
               </p>
             </AnimatedSection>
           </div>
@@ -237,9 +237,9 @@ export const Agents: React.FC = () => {
                           {expanded ? <Sparkles size={24} /> : <ArrowRight size={24} />}
                        </div>
                       <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-400">
-                        {expanded ? 'Collapse' : 'Deploy'}
+                        {expanded ? 'Collapse' : 'Initialize'}
                       </span>
-                      <span className="text-xl font-bold text-slate-800 tracking-tight">Agent Core</span>
+                      <span className="text-xl font-bold text-slate-800 tracking-tight text-center">Orchestration Engine</span>
                     </div>
                   </motion.button>
                 </div>
@@ -292,7 +292,7 @@ export const Agents: React.FC = () => {
                   <div className="absolute top-[380px] left-1/2 z-20 -translate-x-1/2 flex flex-col items-center gap-2">
                      <span className="w-px h-16 bg-gradient-to-b from-blue-200 to-transparent"></span>
                      <div className="rounded-full border border-blue-100 bg-white px-6 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-blue-600 shadow-sm animate-bounce">
-                        Tap Core to Deploy
+                        Tap Engine to Preview Nodes
                      </div>
                   </div>
                 ) : null}
@@ -310,7 +310,7 @@ export const Agents: React.FC = () => {
                 >
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div className="min-w-0">
-                      <p className="text-xs uppercase tracking-[0.14em] text-slate-500">Selected Agent</p>
+                      <p className="text-xs uppercase tracking-[0.14em] text-slate-500">Framework Archetype</p>
                       <h2 className="mt-1 text-2xl font-semibold text-slate-900">{selectedAgent.name}</h2>
                       <p className="mt-2 max-w-2xl text-sm text-slate-600">{selectedAgent.description}</p>
                       <div className="mt-3 flex flex-wrap gap-2">
@@ -330,21 +330,21 @@ export const Agents: React.FC = () => {
                         onClick={() => launchAgent(selectedAgent.id)}
                         className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-xs font-semibold text-white hover:bg-blue-700"
                       >
-                        Deploy to Channels
+                        Automate Deployment
                         <ArrowRight className="h-3.5 w-3.5" />
                       </button>
                       <button
                         onClick={() => navigate('/demo-form')}
                         className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-800 hover:bg-blue-50"
                       >
-                        Custom Setup
+                        Architecture Brief
                       </button>
                     </div>
                   </div>
 
                   {/* Channel Selection */}
                   <div className="mt-6 pt-6 border-t border-slate-100">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">Available Deployment Channels</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">Provisioning Channels</p>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                       {[
                         { name: 'Slack', icon: MessageSquare, color: 'hover:border-[#4A154B] hover:text-[#4A154B]', link: '/contact?channel=slack' },
@@ -374,6 +374,49 @@ export const Agents: React.FC = () => {
               ) : null}
             </AnimatePresence>
           </div>
+        </section>
+
+        {/* Orchestration Flow Section */}
+        <section className="py-24 bg-slate-50 border-t border-slate-100">
+           <div className="container-custom">
+              <div className="max-w-3xl">
+                 <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-6">How Orchestration Works</h2>
+                 <p className="text-lg text-slate-600 mb-12 leading-relaxed text-zinc-500">
+                    Viktron doesn't just run static scripts. We provide a dynamic infrastructure that reacts to business triggers in real-time.
+                 </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-8">
+                 {[
+                   { 
+                     title: '01 // Input Trigger', 
+                     desc: 'A message arrives via Slack, an email is received, or a webhook is fired from your CRM.',
+                     icon: MessageSquare 
+                   },
+                   { 
+                     title: '02 // Orchestration', 
+                     desc: 'The Orchestration Engine selects the best framework (CrewAI for team workflows, AutoGen for multi-agent conversations) based on task complexity.',
+                     icon: Sparkles 
+                   },
+                   { 
+                     title: '03 // Provisioning', 
+                     desc: 'Specialized agent nodes are spun up instantly, execute the mission across your tools, and return structured results.',
+                     icon: Bot 
+                   },
+                 ].map((step, i) => {
+                   const StepIcon = step.icon;
+                   return (
+                     <div key={i} className="p-8 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 mb-6">
+                           <StepIcon size={24} />
+                        </div>
+                        <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-blue-500 mb-4">{step.title}</h4>
+                        <p className="text-slate-600 text-sm leading-relaxed">{step.desc}</p>
+                     </div>
+                   );
+                 })}
+              </div>
+           </div>
         </section>
       </div>
     </Layout>
