@@ -39,13 +39,13 @@ export const Navbar: React.FC = () => {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-500 h-24 flex items-center ${
           isScrolled
-            ? 'bg-[#050505]/90 border-b border-white/5 backdrop-blur-xl py-3'
-            : 'bg-transparent border-b border-transparent py-5'
+            ? 'bg-[#050505]/90 border-b border-white/5 backdrop-blur-xl'
+            : 'bg-transparent border-b border-transparent'
         }`}
       >
-        <div className="max-w-[1400px] mx-auto px-6">
+        <div className="max-w-[1400px] mx-auto px-6 w-full">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group">
@@ -56,7 +56,7 @@ export const Navbar: React.FC = () => {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-1">
+            <div className="hidden lg:flex items-center gap-2">
               {navItems.map((item) => {
                 const isActive = item.path === '/' 
                   ? location.pathname === '/' 
@@ -72,36 +72,25 @@ export const Navbar: React.FC = () => {
                     {item.external ? (
                       <a 
                         href={item.external} 
-                        className="px-6 py-3 text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-all block"
+                        className="px-6 py-2 text-[10px] font-mono font-bold uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-all block"
                       >
                         {item.name}
                       </a>
-                    ) : item.isPopup ? (
+                    ) : (
                       <div className="relative">
                         <Link 
                           to={item.path}
-                          className={`px-6 py-3 flex items-center gap-2 text-[10px] font-mono font-black uppercase tracking-[0.3em] transition-all duration-300 border border-transparent ${
+                          className={`px-5 py-2 flex items-center gap-2 text-[10px] font-mono font-black uppercase tracking-[0.3em] transition-all duration-300 border ${
                             isActive 
-                              ? 'bg-primary text-black shadow-[0_0_30px_rgba(204,255,0,0.6)] border-primary' 
-                              : 'text-zinc-500 hover:text-white'
+                              ? 'bg-primary text-black border-primary shadow-[0_0_20px_rgba(204,255,0,0.3)]' 
+                              : 'text-zinc-500 hover:text-white border-transparent'
                           }`}
                         >
-                          {item.name} <ChevronDown size={10} className={`transition-transform duration-300 ${activePopup === item.isPopup ? 'rotate-180' : ''}`} />
+                          {item.name} {item.isPopup && <ChevronDown size={10} className={`transition-transform duration-300 ${activePopup === item.isPopup ? 'rotate-180' : ''}`} />}
                         </Link>
                         {item.isPopup === 'about' && <AboutPopup isOpen={activePopup === 'about'} onClose={() => setActivePopup(null)} />}
                         {item.isPopup === 'product' && <ProductPopup isOpen={activePopup === 'product'} onClose={() => setActivePopup(null)} />}
                       </div>
-                    ) : (
-                      <Link 
-                        to={item.path} 
-                        className={`px-6 py-3 text-[10px] font-mono font-black uppercase tracking-[0.3em] transition-all duration-300 border border-transparent block ${
-                          isActive 
-                            ? 'bg-primary text-black shadow-[0_0_30px_rgba(204,255,0,0.6)] border-primary' 
-                            : 'text-zinc-500 hover:text-white'
-                        }`}
-                      >
-                        {item.name}
-                      </Link>
                     )}
                   </div>
                 );
