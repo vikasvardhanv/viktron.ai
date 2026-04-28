@@ -46,9 +46,9 @@ export const Navbar: React.FC = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'bg-white/80 border-b border-slate-200 backdrop-blur-md'
+            ? 'bg-[#060810]/90 border-b border-white/[0.06] backdrop-blur-xl'
             : 'bg-transparent border-b border-transparent'
         }`}
       >
@@ -57,13 +57,13 @@ export const Navbar: React.FC = () => {
             {/* Logo */}
             {isRentSubdomain ? (
               <a href="https://viktron.ai" className="flex items-center gap-2 group">
-                <div className="text-blue-600"><BrandIcon className="h-8 w-8" /></div>
-                <span className="text-lg font-bold text-slate-900">Viktron</span>
+                <div className="text-indigo-400"><BrandIcon className="h-8 w-8" /></div>
+                <span className="text-lg font-bold text-white">Viktron</span>
               </a>
             ) : (
               <Link to="/" className="flex items-center gap-2 group">
-                <div className="text-blue-600"><BrandIcon className="h-8 w-8" /></div>
-                <span className="text-lg font-bold text-slate-900">Viktron</span>
+                <div className="text-indigo-400"><BrandIcon className="h-8 w-8" /></div>
+                <span className="text-lg font-bold text-white font-jakarta">Viktron</span>
               </Link>
             )}
 
@@ -76,7 +76,7 @@ export const Navbar: React.FC = () => {
                     <a
                       key={item.path}
                       href={`https://viktron.ai${item.path}`}
-                      className="text-sm font-medium transition-colors flex items-center gap-1 text-slate-600 hover:text-slate-900"
+                      className="text-sm font-medium transition-colors flex items-center gap-1 text-white/60 hover:text-white"
                     >
                       {item.name}
                       <ChevronDown className="w-3 h-3" />
@@ -103,8 +103,8 @@ export const Navbar: React.FC = () => {
                           if (item.isPopup === 'services') setIsServicesOpen(!isServicesOpen);
                           if (item.isPopup === 'about') setIsAboutOpen(!isAboutOpen);
                         }}
-                        className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer text-slate-600 hover:text-slate-900 ${
-                          location.pathname.startsWith(item.path) && item.path !== '/' ? 'text-blue-600' : ''
+                        className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer text-white/60 hover:text-white ${
+                          location.pathname.startsWith(item.path) && item.path !== '/' ? 'text-indigo-400' : ''
                         }`}
                       >
                         {item.name}
@@ -154,8 +154,8 @@ export const Navbar: React.FC = () => {
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`text-sm font-medium transition-colors text-slate-600 hover:text-slate-900 ${
-                      location.pathname === item.path ? 'text-blue-600' : ''
+                    className={`text-sm font-medium transition-colors text-white/60 hover:text-white ${
+                      location.pathname === item.path ? 'text-indigo-400' : ''
                     }`}
                   >
                     {item.name}
@@ -170,15 +170,15 @@ export const Navbar: React.FC = () => {
                 <div className="relative">
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors"
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/[0.05] transition-colors"
                   >
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                      <User className="h-4 w-4 text-blue-600" />
+                    <div className="w-8 h-8 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center">
+                      <User className="h-4 w-4 text-indigo-400" />
                     </div>
-                    <span className="text-sm font-medium text-slate-700">
+                    <span className="text-sm font-medium text-white/80">
                       {user?.fullName?.split(' ')[0] || 'Account'}
                     </span>
-                    <ChevronDown className={`h-4 w-4 text-slate-500 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`h-4 w-4 text-white/40 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
                   </button>
 
                   <AnimatePresence>
@@ -187,18 +187,18 @@ export const Navbar: React.FC = () => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
-                        className="absolute right-0 mt-2 w-48 py-2 bg-white border border-slate-200 rounded-lg shadow-lg"
+                        className="absolute right-0 mt-2 w-48 py-2 bg-[#0d0f1a] border border-white/[0.08] rounded-xl shadow-2xl backdrop-blur-xl"
                       >
-                        <div className="px-4 py-2 border-b border-slate-100">
-                          <p className="text-sm font-medium text-slate-900 truncate">{user?.fullName}</p>
-                          <p className="text-xs text-slate-500 truncate">{user?.email}</p>
+                        <div className="px-4 py-2 border-b border-white/[0.06]">
+                          <p className="text-sm font-medium text-white truncate">{user?.fullName}</p>
+                          <p className="text-xs text-white/40 truncate">{user?.email}</p>
                         </div>
                         <button
                           onClick={() => {
                             logout();
                             setShowUserMenu(false);
                           }}
-                          className="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors"
+                          className="w-full flex items-center gap-2 px-4 py-2 text-sm text-white/60 hover:text-white hover:bg-white/[0.04] transition-colors"
                         >
                           <LogOut className="h-4 w-4" />
                           Sign Out
@@ -213,13 +213,16 @@ export const Navbar: React.FC = () => {
                     setAuthModalMode('login');
                     setShowAuthModal(true);
                   }}
-                  className="btn-ghost text-sm font-medium"
+                  className="text-sm font-medium text-white/60 hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-white/[0.04]"
                 >
                   Sign In
                 </button>
               )}
               {isAuthenticated ? (
-                <Link to="/contact" className="btn btn-primary text-sm">
+                <Link
+                  to="/contact"
+                  className="text-sm font-semibold px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white transition-colors shadow-lg shadow-indigo-500/20"
+                >
                   Get Started
                 </Link>
               ) : (
@@ -229,9 +232,9 @@ export const Navbar: React.FC = () => {
                     setShowAuthModal(true);
                     navigate('/signup');
                   }}
-                  className="btn btn-primary text-sm"
+                  className="text-sm font-semibold px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white transition-colors shadow-lg shadow-indigo-500/20"
                 >
-                  Get Started
+                  Book Demo
                 </button>
               )}
             </div>
@@ -239,7 +242,7 @@ export const Navbar: React.FC = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-slate-600 hover:text-slate-900 transition-colors"
+              className="md:hidden p-2 text-white/60 hover:text-white transition-colors"
             >
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -257,7 +260,7 @@ export const Navbar: React.FC = () => {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 md:hidden"
           >
-            <div className="absolute inset-0 bg-slate-900" />
+            <div className="absolute inset-0 bg-[#060810]/95 backdrop-blur-xl" />
             <div className="relative pt-24 px-6">
               <div className="flex flex-col gap-2">
                 {navItems.map((item, index) => (

@@ -153,15 +153,15 @@ export const AgentIRL: React.FC = () => {
       />
 
       {/* 2 ── HERO */}
-      <section className="relative overflow-hidden bg-[#f7f8f5] pt-28 pb-20">
-        {/* Radial gradient decorations */}
+      <section className="relative overflow-hidden bg-[#060810] pt-28 pb-20">
+        <div className="bg-grid absolute inset-0" />
         <div
-          className="pointer-events-none absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full opacity-30"
-          style={{ background: 'radial-gradient(circle, #10b981 0%, transparent 70%)' }}
+          className="pointer-events-none absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full opacity-20"
+          style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 70%)' }}
         />
         <div
-          className="pointer-events-none absolute -bottom-40 -right-20 h-[500px] w-[500px] rounded-full opacity-20"
-          style={{ background: 'radial-gradient(circle, #06b6d4 0%, transparent 70%)' }}
+          className="pointer-events-none absolute -bottom-40 -right-20 h-[500px] w-[500px] rounded-full opacity-15"
+          style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.3) 0%, transparent 70%)' }}
         />
 
         <div className="relative mx-auto max-w-7xl px-6">
@@ -174,22 +174,24 @@ export const AgentIRL: React.FC = () => {
               className="flex flex-col gap-6"
             >
               <motion.div variants={fadeUp}>
-                <span className="inline-block rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-semibold text-emerald-700 tracking-wide">
-                  AgentIRL Platform
-                </span>
+                <div className="moat-badge inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono mb-2">
+                  <Shield className="h-3 w-3 text-purple-400" />
+                  <span className="text-purple-300 uppercase tracking-widest">AgentIRL Trust Fabric — Our Moat</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+                </div>
               </motion.div>
 
               <motion.h1
                 variants={fadeUp}
-                className="text-5xl font-extrabold leading-tight tracking-tight text-slate-900 lg:text-6xl"
+                className="font-jakarta text-5xl font-extrabold leading-tight tracking-tight text-white lg:text-6xl"
               >
-                The production runtime for autonomous agents.
+                The trust fabric for <span className="shimmer-text">autonomous agents.</span>
               </motion.h1>
 
-              <motion.p variants={fadeUp} className="max-w-xl text-lg text-slate-600 leading-relaxed">
-                AgentIRL is the middleware layer between your AI models and your business systems.
-                It handles orchestration, reliability engineering, enterprise integrations, and
-                policy-safe execution — so your agents actually finish their jobs.
+              <motion.p variants={fadeUp} className="max-w-xl text-lg text-white/60 leading-relaxed">
+                AgentIRL is the governance layer between your AI models and your business systems.
+                Cryptographic identity, dynamic trust scoring, policy enforcement, and tamper-evident
+                provenance — so your agents run autonomously with enterprise confidence.
               </motion.p>
 
               {/* Metric chips */}
@@ -201,8 +203,9 @@ export const AgentIRL: React.FC = () => {
                 ].map((chip) => (
                   <span
                     key={chip}
-                    className="rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-sm font-medium text-emerald-800"
+                    className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-1.5 text-sm font-medium text-white/60"
                   >
+                    <CheckCircle2 className="h-3 w-3 text-emerald-400" />
                     {chip}
                   </span>
                 ))}
@@ -212,13 +215,13 @@ export const AgentIRL: React.FC = () => {
               <motion.div variants={fadeUp} className="flex flex-wrap gap-4 pt-2">
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+                  className="btn-premium btn-primary-glow inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white"
                 >
                   Book a Demo <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-400"
+                  className="btn-premium inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
                 >
                   Talk to Engineering
                 </Link>
@@ -274,7 +277,7 @@ export const AgentIRL: React.FC = () => {
       </section>
 
       {/* 2.5 ── ARCHITECTURE DIAGRAM */}
-      <section className="py-16 bg-white border-y border-slate-200">
+      <section className="py-16 bg-[#060810] border-y border-white/[0.06]">
         <div className="mx-auto max-w-7xl px-6">
           <motion.div
             variants={stagger}
@@ -283,15 +286,13 @@ export const AgentIRL: React.FC = () => {
             viewport={{ once: true }}
             className="text-center mb-10"
           >
-            <motion.span
-              variants={fadeUp}
-              className="inline-block rounded-full bg-blue-100 px-4 py-1.5 text-sm font-semibold text-blue-700 tracking-wide"
-            >
+            <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/20 bg-blue-500/10 text-blue-400 text-xs font-mono uppercase tracking-widest mb-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
               Technical Architecture
-            </motion.span>
+            </motion.div>
             <motion.h2
               variants={fadeUp}
-              className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900"
+              className="mt-4 font-jakarta text-3xl font-extrabold tracking-tight text-white"
             >
               How AgentIRL fits in your stack
             </motion.h2>
@@ -305,7 +306,7 @@ export const AgentIRL: React.FC = () => {
             className="relative"
           >
             {/* Architecture diagram image */}
-            <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-xl bg-slate-900">
+            <div className="rounded-2xl overflow-hidden border border-white/[0.08] shadow-2xl bg-[#0d0f1a]">
               <img
                 src="/images/agent-orchestration.svg"
                 alt="AgentIRL Architecture Diagram"
@@ -317,19 +318,19 @@ export const AgentIRL: React.FC = () => {
       </section>
 
       {/* Flow indicator bar */}
-      <section className="py-8 bg-slate-50 border-b border-slate-200">
+      <section className="py-8 bg-[#060810] border-b border-white/[0.06]">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="flex items-center justify-center gap-4 text-sm text-slate-600">
+          <div className="flex items-center justify-center gap-4 text-sm text-white/50">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-emerald-500" />
               <span>Agent Frameworks</span>
             </div>
-            <ArrowRight className="w-4 h-4 text-slate-400" />
+            <ArrowRight className="w-4 h-4 text-white/30" />
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-emerald-500" />
               <span>AgentIRL Runtime</span>
             </div>
-            <ArrowRight className="w-4 h-4 text-slate-400" />
+            <ArrowRight className="w-4 h-4 text-white/30" />
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-emerald-500" />
               <span>Business Systems</span>
@@ -529,7 +530,7 @@ export const AgentIRL: React.FC = () => {
       </section>
 
       {/* Capabilities section */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-[#060810]">
         <div className="mx-auto max-w-7xl px-6">
           <motion.div
             variants={stagger}
@@ -546,7 +547,7 @@ export const AgentIRL: React.FC = () => {
             </motion.span>
             <motion.h2
               variants={fadeUp}
-              className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900"
+              className="mt-4 text-3xl font-extrabold tracking-tight text-white"
             >
               Everything you need for production agents
             </motion.h2>
@@ -563,13 +564,13 @@ export const AgentIRL: React.FC = () => {
               <motion.div
                 key={c.title}
                 variants={fadeUp}
-                className="rounded-2xl border border-slate-200 bg-slate-50 p-6 hover:border-emerald-200 hover:shadow-lg transition-all"
+                className="rounded-2xl border border-white/[0.08] bg-[#060810] p-6 hover:border-emerald-200 hover:shadow-lg transition-all"
               >
                 <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center mb-4">
                   <c.icon className="w-5 h-5 text-emerald-600" />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 mb-2">{c.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{c.desc}</p>
+                <p className="text-sm text-white/55 leading-relaxed">{c.desc}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -614,7 +615,7 @@ export const AgentIRL: React.FC = () => {
             </motion.span>
             <motion.h2
               variants={fadeUp}
-              className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900"
+              className="mt-4 text-3xl font-extrabold tracking-tight text-white"
             >
               Five steps to production AI
             </motion.h2>
@@ -641,7 +642,7 @@ export const AgentIRL: React.FC = () => {
 
                   <div className="pt-2">
                     <h3 className="text-xl font-bold text-slate-900 mb-2">{step.title}</h3>
-                    <p className="text-slate-600 leading-relaxed">{step.desc}</p>
+                    <p className="text-white/55 leading-relaxed">{step.desc}</p>
                   </div>
                 </motion.div>
               ))}
@@ -651,7 +652,7 @@ export const AgentIRL: React.FC = () => {
       </section>
 
       {/* Use cases */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-[#060810]">
         <div className="mx-auto max-w-7xl px-6">
           <motion.div
             variants={stagger}
@@ -668,7 +669,7 @@ export const AgentIRL: React.FC = () => {
             </motion.span>
             <motion.h2
               variants={fadeUp}
-              className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900"
+              className="mt-4 text-3xl font-extrabold tracking-tight text-white"
             >
               Built for production environments
             </motion.h2>
@@ -685,13 +686,13 @@ export const AgentIRL: React.FC = () => {
               <motion.div
                 key={u.title}
                 variants={fadeUp}
-                className="rounded-2xl border border-slate-200 bg-slate-50 p-6 hover:border-blue-200 hover:shadow-lg transition-all"
+                className="rounded-2xl border border-white/[0.08] bg-[#060810] p-6 hover:border-blue-200 hover:shadow-lg transition-all"
               >
                 <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center mb-4">
                   <u.icon className="w-5 h-5 text-blue-600" />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 mb-2">{u.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{u.desc}</p>
+                <p className="text-sm text-white/55 leading-relaxed">{u.desc}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -699,7 +700,7 @@ export const AgentIRL: React.FC = () => {
       </section>
 
       {/* Framework support */}
-      <section className="py-16 bg-slate-50 border-t border-slate-200">
+      <section className="py-16 bg-[#060810] border-t border-white/[0.08]">
         <div className="mx-auto max-w-7xl px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -708,7 +709,7 @@ export const AgentIRL: React.FC = () => {
             className="text-center mb-10"
           >
             <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Framework Agnostic</p>
-            <h2 className="text-2xl font-bold text-slate-900">Works with your existing stack</h2>
+            <h2 className="text-2xl font-bold text-white">Works with your existing stack</h2>
           </motion.div>
 
           <div className="flex flex-wrap justify-center gap-4">
@@ -718,7 +719,7 @@ export const AgentIRL: React.FC = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="px-6 py-3 rounded-full bg-white border border-slate-200 shadow-sm text-slate-700 font-medium"
+                className="px-6 py-3 rounded-full bg-white/[0.04] border border-white/[0.08] shadow-sm text-white/75 font-medium"
               >
                 {fw}
               </motion.div>
@@ -743,7 +744,7 @@ export const AgentIRL: React.FC = () => {
             >
               The Production Problem
             </motion.span>
-            <motion.h2 variants={fadeUp} className="max-w-2xl text-4xl font-extrabold tracking-tight text-slate-900">
+            <motion.h2 variants={fadeUp} className="max-w-2xl text-4xl font-extrabold tracking-tight text-white">
               Why 95% of AI agent projects never reach production
             </motion.h2>
             <motion.p variants={fadeUp} className="max-w-xl text-slate-500 text-lg">
@@ -823,14 +824,14 @@ export const AgentIRL: React.FC = () => {
       </section>
 
       {/* 4 ── HOW IT WORKS — sticky scroll */}
-      <section className="bg-slate-50 py-24">
+      <section className="bg-[#060810] py-24">
         <div className="mx-auto max-w-7xl px-6">
           {/* Section header */}
           <div className="mb-16 flex flex-col items-center gap-4 text-center">
             <span className="font-mono text-sm font-semibold uppercase tracking-widest text-emerald-600">
               How AgentIRL Works
             </span>
-            <h2 className="max-w-xl text-4xl font-extrabold tracking-tight text-slate-900">
+            <h2 className="max-w-xl text-4xl font-extrabold tracking-tight text-white">
               From raw instruction to completed task — reliably.
             </h2>
           </div>
@@ -844,7 +845,7 @@ export const AgentIRL: React.FC = () => {
                   ref={(el) => { stepRefs.current[i] = el; }}
                   className={`rounded-2xl border p-8 transition-all duration-300 ${
                     activeStep === i
-                      ? 'border-emerald-500 bg-white shadow-lg'
+                      ? 'border-emerald-500 bg-white/[0.06] shadow-lg'
                       : 'border-transparent bg-slate-100'
                   }`}
                 >
@@ -855,7 +856,7 @@ export const AgentIRL: React.FC = () => {
                   >
                     {step.num}
                   </p>
-                  <p className="mt-2 text-lg font-bold text-slate-900">{step.title}</p>
+                  <p className="mt-2 text-lg font-bold text-white">{step.title}</p>
                   <p className="mt-2 text-slate-500 leading-relaxed">{step.desc}</p>
                 </div>
               ))}
@@ -904,7 +905,7 @@ export const AgentIRL: React.FC = () => {
             viewport={{ once: true }}
             className="mb-14 flex flex-col items-center gap-4 text-center"
           >
-            <motion.h2 variants={fadeUp} className="text-4xl font-extrabold tracking-tight text-slate-900">
+            <motion.h2 variants={fadeUp} className="text-4xl font-extrabold tracking-tight text-white">
               Every capability you need in production
             </motion.h2>
             <motion.p variants={fadeUp} className="max-w-xl text-slate-500 text-lg">
@@ -926,12 +927,12 @@ export const AgentIRL: React.FC = () => {
                 <motion.div
                   key={cap.title}
                   variants={fadeUp}
-                  className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm transition hover:shadow-md"
+                  className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 shadow-sm transition hover:shadow-md"
                 >
                   <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50">
                     <Icon className="h-5 w-5 text-emerald-600" />
                   </div>
-                  <p className="mb-2 font-bold text-slate-900">{cap.title}</p>
+                  <p className="mb-2 font-bold text-white">{cap.title}</p>
                   <p className="text-sm text-slate-500 leading-relaxed">{cap.desc}</p>
                 </motion.div>
               );
@@ -944,16 +945,16 @@ export const AgentIRL: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mt-12 rounded-2xl border border-slate-200 bg-slate-50 p-8"
+            className="mt-12 rounded-2xl border border-white/[0.08] bg-[#060810] p-8"
           >
-            <p className="mb-5 text-center text-sm font-semibold text-slate-600 uppercase tracking-widest">
+            <p className="mb-5 text-center text-sm font-semibold text-white/55 uppercase tracking-widest">
               Works with every major framework
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               {frameworks.map((fw) => (
                 <span
                   key={fw}
-                  className="rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-medium text-slate-700 shadow-sm"
+                  className="rounded-full border border-white/[0.08] bg-white/[0.04] px-5 py-2 text-sm font-medium text-white/75 shadow-sm"
                 >
                   {fw}
                 </span>
@@ -987,7 +988,7 @@ export const AgentIRL: React.FC = () => {
             viewport={{ once: true }}
             className="mb-14 flex flex-col items-center gap-4 text-center"
           >
-            <motion.h2 variants={fadeUp} className="text-4xl font-extrabold tracking-tight text-slate-900">
+            <motion.h2 variants={fadeUp} className="text-4xl font-extrabold tracking-tight text-white">
               Built for every team shipping agents
             </motion.h2>
             <motion.p variants={fadeUp} className="max-w-xl text-slate-500 text-lg">
@@ -1014,7 +1015,7 @@ export const AgentIRL: React.FC = () => {
                   <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-slate-900">
                     <Icon className="h-5 w-5 text-emerald-400" />
                   </div>
-                  <p className="mb-2 font-bold text-slate-900">{uc.title}</p>
+                  <p className="mb-2 font-bold text-white">{uc.title}</p>
                   <p className="text-sm text-slate-500 leading-relaxed">{uc.desc}</p>
                 </motion.div>
               );
