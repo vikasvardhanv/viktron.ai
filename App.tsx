@@ -33,6 +33,7 @@ const TrustFabric = lazy(() => import('./pages/TrustFabric'));
 const SlackOAuthCallback = lazy(() => import('./pages/SlackOAuthCallback').then(m => ({ default: m.SlackOAuthCallback })));
 const ToolFeed = lazy(() => import('./pages/ToolFeed').then(m => ({ default: m.ToolFeed })));
 const PretrainedDirectory = lazy(() => import('./pages/PretrainedDirectory').then(m => ({ default: m.default })));
+const Agents = lazy(() => import('./pages/Agents').then(m => ({ default: m.Agents })));
 const SpawnApproval = lazy(() => import('./pages/SpawnApproval').then(m => ({ default: m.default })));
 const CloudDashboard = lazy(() => import('./pages/cloud/index'));
 
@@ -232,6 +233,7 @@ const AnimatedRoutes: React.FC = () => {
         <Route path="/demos" element={<PageTransition><Demos /></PageTransition>} />
         <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+        <Route path="/agents" element={<PageTransition><Agents /></PageTransition>} />
         <Route path="/careers" element={<PageTransition><Careers /></PageTransition>} />
         <Route path="/demo-form" element={<PageTransition><DemoForm /></PageTransition>} />
         <Route path="/white-label" element={<PageTransition><WhiteLabel /></PageTransition>} />

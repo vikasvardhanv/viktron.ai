@@ -19,7 +19,7 @@ const ABOUT_LINKS = [
     icon: Bot,
     label: 'Rent an Agent',
     desc: 'Browse and deploy our specialized digital workforce.',
-    path: '/agents',
+    path: '/rent',
   },
   {
     icon: Briefcase,

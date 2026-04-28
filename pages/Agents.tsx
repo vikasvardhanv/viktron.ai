@@ -134,16 +134,51 @@ export const Agents: React.FC = () => {
                 <Sparkles className="h-4 w-4 text-blue-600" />
                 Workforce Rental // Layer_02
               </div>
-              <h1 className="mt-5 text-4xl sm:text-6xl font-semibold tracking-tight text-slate-900">Rent an Agent: Multi-Framework Orchestration</h1>
+              <h1 className="mt-5 text-4xl sm:text-6xl font-semibold tracking-tight text-slate-900">Agent Framework & Orchestration</h1>
               <p className="mt-3 max-w-3xl text-base sm:text-lg leading-relaxed text-slate-600">
                 Viktron is an active combination of **LangChain, CrewAI, AutoGen, and MCP**. 
-                When a trigger arrives via Slack, Teams, or WhatsApp, our infrastructure dynamically spins up the required agentic framework to execute the mission.
+                Our infrastructure dynamically coordinates specialized agents across 3,000+ tools.
               </p>
+              
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                className="mt-12 rounded-3xl overflow-hidden border border-slate-200 shadow-2xl relative group"
+              >
+                 <img src="/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/agents_coordination_premium_1777367425116.png" alt="Agents Coordinating" className="w-full aspect-[21/9] object-cover" />
+                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent flex items-end p-12">
+                    <div className="text-white max-w-xl">
+                       <h3 className="text-2xl font-bold mb-2">Neural Sync™</h3>
+                       <p className="text-white/80 text-sm">Real-time collaborative intelligence across multiple agentic nodes.</p>
+                    </div>
+                 </div>
+              </motion.div>
             </AnimatedSection>
           </div>
         </section>
 
         <section className="relative px-4 pb-12 pt-6">
+          <div className="container-custom text-center mb-16">
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-400 mb-6">Connect to our infrastructure via</p>
+            <div className="flex flex-wrap justify-center gap-4">
+              {[
+                { name: 'Slack', icon: MessageSquare, link: '/contact?channel=slack' },
+                { name: 'Teams', icon: Users, link: '/contact?channel=teams' },
+                { name: 'WhatsApp', icon: Phone, link: 'https://wa.me/447441443734' },
+                { name: 'Telegram', icon: Sparkles, link: '/contact?channel=telegram' },
+              ].map((ch) => (
+                <a 
+                  key={ch.name}
+                  href={ch.link}
+                  className="flex items-center gap-3 px-8 py-4 rounded-2xl border border-slate-200 bg-white shadow-sm hover:border-blue-400 hover:text-blue-600 transition-all group"
+                >
+                  <ch.icon size={18} className="text-slate-400 group-hover:text-blue-600" />
+                  <span className="text-xs font-black uppercase tracking-widest">Connect on {ch.name}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+
           <div className="container-custom">
             <div className="mx-auto" style={{ height: `${sceneHeight * sceneScale}px` }}>
               <div
@@ -424,6 +459,49 @@ export const Agents: React.FC = () => {
                      </div>
                    );
                  })}
+              </div>
+           </div>
+        {/* Integrations Section */}
+        <section className="py-32 bg-white border-t border-slate-100 overflow-hidden">
+           <div className="container-custom">
+              <div className="grid lg:grid-cols-2 gap-20 items-center">
+                 <div>
+                    <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 mb-8">3,000+ Integrations. Infinite Possibilities.</h2>
+                    <p className="text-lg text-slate-600 mb-10 leading-relaxed">
+                       Our agents don't work in isolation. They integrate directly with your existing stack — from enterprise ERPs and CRMs to specialized engineering tools and marketing platforms.
+                    </p>
+                    <div className="grid grid-cols-2 gap-6">
+                       {[
+                         { label: 'Enterprise', desc: 'SAP, Oracle, Salesforce' },
+                         { label: 'Engineering', desc: 'GitHub, Jira, AWS' },
+                         { label: 'Marketing', desc: 'HubSpot, Meta, Google' },
+                         { label: 'Productivity', desc: 'Notion, Slack, Teams' },
+                       ].map((item, i) => (
+                         <div key={i} className="border-l-2 border-blue-100 pl-6">
+                            <h4 className="text-sm font-bold text-slate-900 mb-1">{item.label}</h4>
+                            <p className="text-xs text-slate-500 uppercase tracking-wider">{item.desc}</p>
+                         </div>
+                       ))}
+                    </div>
+                    <button className="mt-12 btn-acid !px-10 py-4">View All Integrations</button>
+                 </div>
+                 
+                 <div className="relative">
+                    <div className="grid grid-cols-3 gap-4 opacity-[0.4] grayscale group-hover:grayscale-0 transition-all duration-700">
+                       {[...Array(9)].map((_, i) => (
+                         <div key={i} className="aspect-square rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center p-6">
+                            <div className="w-full h-full bg-slate-200 rounded-lg animate-pulse" />
+                         </div>
+                       ))}
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-[100px]" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                       <div className="obsidian-panel p-12 text-center bg-white/80 backdrop-blur-md">
+                          <div className="text-6xl font-black text-slate-900 mb-2">3,000+</div>
+                          <div className="text-xs font-mono font-bold uppercase tracking-[0.4em] text-blue-600">Active Connectors</div>
+                       </div>
+                    </div>
+                 </div>
               </div>
            </div>
         </section>
