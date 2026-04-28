@@ -77,20 +77,22 @@ export const Navbar: React.FC = () => {
                         {item.name}
                       </a>
                     ) : (
-                      <div className="relative">
-                        <Link 
-                          to={item.path}
-                          className={`px-6 py-2.5 flex items-center gap-2 text-[10px] font-mono font-black uppercase tracking-[0.3em] transition-all duration-500 ${
-                            isActive 
-                              ? 'bg-primary text-black shadow-[0_0_25px_rgba(204,255,0,0.4)]' 
-                              : 'text-zinc-500 hover:text-white border-transparent'
-                          }`}
-                        >
-                          {item.name} {item.isPopup && <ChevronDown size={10} className={`transition-transform duration-300 ${activePopup === item.isPopup ? 'rotate-180' : ''}`} />}
-                        </Link>
-                        {item.isPopup === 'about' && <AboutPopup isOpen={activePopup === 'about'} onClose={() => setActivePopup(null)} />}
-                        {item.isPopup === 'product' && <ProductPopup isOpen={activePopup === 'product'} onClose={() => setActivePopup(null)} />}
-                      </div>
+                     <div className="relative">
+                         <Link 
+                           to={item.path}
+                           className={`px-6 py-2.5 flex items-center gap-2 text-[10px] font-mono font-black uppercase tracking-[0.3em] transition-all duration-500 relative group ${isActive 
+                             ? 'text-black bg-gradient-to-r from-emerald-400 via-lime-400 to-emerald-400 shadow-[0_0_30px_rgba(132,204,221,0.3)] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-yellow-400 before:via-lime-400 before:to-emerald-400' 
+                             : 'text-zinc-400 hover:text-white hover:bg-white/5 border-transparent'}
+                         `}
+                       >
+                           {item.name} {item.isPopup && <ChevronDown size={10} className={`transition-transform duration-300 ${activePopup === item.isPopup ? 'rotate-180' : ''}`} />}
+                           {isActive && (
+                             <span className="absolute -bottom-[1px] left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-lime-400 to-transparent opacity-80" />
+                           )}
+                       </Link>
+                       {item.isPopup === 'about' && <AboutPopup isOpen={activePopup === 'about'} onClose={() => setActivePopup(null)} />}
+                       {item.isPopup === 'product' && <ProductPopup isOpen={activePopup === 'product'} onClose={() => setActivePopup(null)} />}
+                     </div>
                     )}
                   </div>
                 );
@@ -172,16 +174,17 @@ export const Navbar: React.FC = () => {
             >
                <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-8 right-8 text-zinc-500"><X size={24} /></button>
               <div className="flex flex-col gap-8">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-4xl font-black uppercase tracking-tighter text-white hover:text-primary transition-colors leading-none"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+                 {navItems.map((item) => (
+                   <Link
+                     key={item.path}
+                     to={item.path}
+                     onClick={() => setIsMobileMenuOpen(false)}
+                     className={`text-4xl font-black uppercase tracking-tighter transition-all ${location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path.split('?')[0])) ? 'text-lime-400 bg-lime-400/10 border-l-4 border-lime-400 pl-6' : 'text-white hover:text-lime-400 hover:bg-white/5'}`}
+                   >
+                     {item.name}
+                   </Link>
+                 ))}
+
               </div>
               <div className="mt-auto space-y-4">
                  <button className="w-full btn-acid py-6 uppercase font-mono text-[11px] tracking-widest font-black">Request Access</button>
