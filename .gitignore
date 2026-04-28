@@ -44,4 +44,4 @@ DEPLOYMENT.md
 server/data/agent-state.json
 
 # TypeScript build info
-tsconfig.tsbuildinfo
+tsconfig.tsbuildinfo.worktrees/
