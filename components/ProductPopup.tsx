@@ -25,7 +25,7 @@ const PRODUCT_LINKS = [
     icon: Bot,
     label: 'AI Agents',
     desc: 'Specialized autonomous workforce.',
-    path: '/use-cases',
+    path: '/agents',
   },
 ];
 
