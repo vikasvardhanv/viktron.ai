@@ -92,33 +92,33 @@ export const TrustFabric: React.FC = () => (
             { 
               name: 'IDENTITY BINDING', 
               desc: 'Every agent has a unique cryptographic fingerprint.',
-              img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/trust_identity_fingerprint_1777384752838.png',
+              img: '/assets/images/trust/identity.png',
               active: true 
             },
             { 
               name: 'RUNTIME POLICY', 
               desc: 'Enforce tool permissions before they execute.',
-              img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/trust_policy_shield_1777384781574.png'
+              img: '/assets/images/trust/policy.png'
             },
             { 
               name: 'BUDGET GUARDS', 
               desc: 'Hard stops on LLM costs and API spend per task.',
-              img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/trust_budget_guards_1777384808400.png'
+              img: '/assets/images/trust/budget.png'
             },
             { 
               name: 'AUDIT LEDGER', 
               desc: 'Immutable provenance for compliance and debugging.',
-              img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/trust_audit_ledger_1777384830915.png'
+              img: '/assets/images/trust/ledger.png'
             },
             { 
               name: 'ZERO-TRUST VAULT', 
               desc: 'Credential injection at the moment of execution.',
-              img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/trust_zero_trust_vault_1777384863756.png'
+              img: '/assets/images/trust/vault.png'
             },
             { 
               name: 'SMART ADAPTERS', 
               desc: 'Normalize API data for 94% token efficiency.',
-              img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/trust_smart_adapters_1777384888857.png'
+              img: '/assets/images/trust/adapters.png'
             },
           ].map((l, i) => (
             <FU key={i} d={i * 0.05} className={`obsidian-panel p-0 overflow-hidden group hover:scale-[1.02] transition-all duration-500 ${l.active ? 'border-primary/20 bg-primary/[0.01]' : ''}`}>

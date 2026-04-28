@@ -89,16 +89,38 @@ export const AgentIRL: React.FC = () => (
     <section className="py-40 bg-[#050505] border-t border-white/5 relative">
       <div className="max-w-7xl mx-auto px-6">
         <Label>01 // RUNTIME CAPABILITIES</Label>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5 mt-20 border border-white/5 overflow-hidden">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-20">
           {[
-            { t: 'Interception', d: 'Evaluates tool calls before they hit your production APIs.' },
-            { t: 'Identity', d: 'Binds every action to a cryptographically verified agent fingerprint.' },
-            { t: 'Budgeting', d: 'Enforces hard token and dollar limits at the runtime level.' },
-            { t: 'Provenance', d: 'Records an immutable hash-chained ledger of every decision.' },
+            { 
+              t: 'Interception', 
+              d: 'Evaluates tool calls before they hit your production APIs.',
+              img: '/assets/images/trust/policy.png'
+            },
+            { 
+              t: 'Identity', 
+              d: 'Binds every action to a cryptographically verified agent fingerprint.',
+              img: '/assets/images/trust/identity.png'
+            },
+            { 
+              t: 'Budgeting', 
+              d: 'Enforces hard token and dollar limits at the runtime level.',
+              img: '/assets/images/trust/budget.png'
+            },
+            { 
+              t: 'Provenance', 
+              d: 'Records an immutable hash-chained ledger of every decision.',
+              img: '/assets/images/trust/ledger.png'
+            },
           ].map((f, i) => (
-            <FU key={i} d={i * 0.05} className="bg-[#050505] p-12 space-y-8 group hover:bg-[#080808] transition-colors">
-               <div className="font-mono text-[11px] text-primary uppercase font-bold tracking-[0.2em]">{f.t}</div>
-               <p className="text-zinc-400 text-sm leading-relaxed">{f.d}</p>
+            <FU key={i} d={i * 0.05} className="obsidian-panel p-0 overflow-hidden group hover:scale-[1.02] transition-all duration-500">
+               <div className="aspect-video overflow-hidden relative border-b border-white/5">
+                  <img src={f.img} alt={f.t} className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-40" />
+               </div>
+               <div className="p-8 space-y-4">
+                  <div className="font-mono text-[11px] text-primary uppercase font-bold tracking-[0.2em]">{f.t}</div>
+                  <p className="text-zinc-500 text-xs leading-relaxed font-light">{f.d}</p>
+               </div>
             </FU>
           ))}
         </div>
@@ -158,30 +180,30 @@ export const AgentIRL: React.FC = () => (
        </div>
     </section>
 
-    {/* ══════════════════ 03: CAPABILITIES ══════════════════ */}
+    {/* ══════════════════ 03: ENGINES ══════════════════ */}
     <section className="py-40 bg-[#050505] relative">
        <div className="max-w-7xl mx-auto px-6">
           <Label>03 // PLATFORM ENGINES</Label>
-          <div className="grid md:grid-cols-3 gap-8 mt-20">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-20">
              {[
-               { icon: Fingerprint, name: 'Identity Binding', desc: 'Every agent has a unique cryptographic fingerprint.' },
-               { icon: Shield, name: 'Runtime Policy', desc: 'Enforce tool permissions before they execute.' },
-               { icon: Activity, name: 'Budget Guards', desc: 'Hard stops on LLM costs and API spend per task.' },
-               { icon: FileCheck, name: 'Audit Ledger', desc: 'Immutable provenance for compliance and debugging.' },
-               { icon: Lock, name: 'Zero-Trust Vault', desc: 'Credential injection at the moment of execution.' },
-               { icon: Database, name: 'Smart Adapters', desc: 'Normalize API data for 94% token efficiency.' },
-             ].map((c, i) => {
-               const Icon = c.icon;
-               return (
-                 <FU key={i} d={i * 0.05} className="obsidian-panel p-12 group hover:border-primary/40 transition-all">
-                    <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-400 group-hover:text-primary transition-colors mb-8">
-                       <Icon size={24} />
-                    </div>
-                    <h4 className="text-white font-bold text-sm mb-4 uppercase tracking-tight">{c.name}</h4>
-                    <p className="text-zinc-400 text-xs leading-relaxed">{c.desc}</p>
-                 </FU>
-               );
-             })}
+               { name: 'IDENTITY BINDING', desc: 'Every agent has a unique cryptographic fingerprint.', img: '/assets/images/trust/identity.png' },
+               { name: 'RUNTIME POLICY', desc: 'Enforce tool permissions before they execute.', img: '/assets/images/trust/policy.png' },
+               { name: 'BUDGET GUARDS', desc: 'Hard stops on LLM costs and API spend per task.', img: '/assets/images/trust/budget.png' },
+               { name: 'AUDIT LEDGER', desc: 'Immutable provenance for compliance and debugging.', img: '/assets/images/trust/ledger.png' },
+               { name: 'ZERO-TRUST VAULT', desc: 'Credential injection at the moment of execution.', img: '/assets/images/trust/vault.png' },
+               { name: 'SMART ADAPTERS', desc: 'Normalize API data for 94% token efficiency.', img: '/assets/images/trust/adapters.png' },
+             ].map((c, i) => (
+               <FU key={i} d={i * 0.05} className="obsidian-panel p-0 overflow-hidden group hover:scale-[1.02] transition-all duration-500">
+                  <div className="aspect-[4/3] overflow-hidden relative border-b border-white/5">
+                     <img src={c.img} alt={c.name} className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
+                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-40" />
+                  </div>
+                  <div className="p-8 space-y-4">
+                    <h4 className="text-white font-bold text-sm uppercase tracking-tight group-hover:text-primary transition-colors">{c.name}</h4>
+                    <p className="text-zinc-500 text-[10px] leading-relaxed font-light">{c.desc}</p>
+                  </div>
+               </FU>
+             ))}
           </div>
        </div>
     </section>

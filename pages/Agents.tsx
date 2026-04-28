@@ -145,7 +145,7 @@ export const Agents: React.FC = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 className="mt-12 rounded-3xl overflow-hidden border border-slate-200 shadow-2xl relative group"
               >
-                 <img src="/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/agents_coordination_premium_1777367425116.png" alt="Agents Coordinating" className="w-full aspect-[21/9] object-cover" />
+                 <img src="/assets/images/agents/coordination.png" alt="Agents Coordinating" className="w-full aspect-[21/9] object-cover" />
                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent flex items-end p-12">
                     <div className="text-white max-w-xl">
                        <h3 className="text-2xl font-bold mb-2">Neural Sync™</h3>
@@ -427,19 +427,19 @@ export const Agents: React.FC = () => {
                      title: '01 // Input Trigger', 
                      desc: 'A message arrives via Slack, an email is received, or a webhook is fired from your CRM.',
                      icon: MessageSquare,
-                     img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/orchestration_trigger_abstract_1777366708531.png'
+                     img: '/assets/images/agents/trigger.png'
                    },
                    { 
                      title: '02 // Orchestration', 
                      desc: 'The Orchestration Engine selects the best framework (CrewAI for team workflows, AutoGen for multi-agent conversations) based on task complexity.',
                      icon: Sparkles,
-                     img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/orchestration_engine_abstract_1777366723532.png'
+                     img: '/assets/images/agents/engine.png'
                    },
                    { 
                      title: '03 // Provisioning', 
                      desc: 'Specialized agent nodes are spun up instantly, execute the mission across your tools, and return structured results.',
                      icon: Bot,
-                     img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/orchestration_provisioning_abstract_1777366736216.png'
+                     img: '/assets/images/agents/provisioning.png'
                    },
                  ].map((step, i) => {
                    const StepIcon = step.icon;
