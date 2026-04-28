@@ -1,41 +1,35 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Users, Briefcase, BookOpen, ArrowRight, Bot } from 'lucide-react';
+import { Layers, Activity, Bot, ArrowRight, Shield } from 'lucide-react';
 
-interface AboutPopupProps {
+interface ProductPopupProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const ABOUT_LINKS = [
+const PRODUCT_LINKS = [
   {
-    icon: Users,
-    label: 'Mission',
-    desc: 'The Viktron story and our infrastructure goals.',
-    path: '/about',
+    icon: Shield,
+    label: 'Agent IRL',
+    desc: 'The reliability & governance layer.',
+    path: '/services/agentirl',
+  },
+  {
+    icon: Activity,
+    label: 'AI Analytics',
+    desc: 'Full-length intelligence & telemetry.',
+    path: '/analytics',
   },
   {
     icon: Bot,
-    label: 'Agents',
-    desc: 'Meet our core autonomous team members.',
+    label: 'AI Agents',
+    desc: 'Specialized autonomous workforce.',
     path: '/use-cases',
-  },
-  {
-    icon: Briefcase,
-    label: 'Careers',
-    desc: 'Join the infrastructure revolution.',
-    path: '/careers',
-  },
-  {
-    icon: BookOpen,
-    label: 'Blog',
-    desc: 'Intelligence reports and engineering logs.',
-    path: '/blog',
   },
 ];
 
-export const AboutPopup: React.FC<AboutPopupProps> = ({ isOpen, onClose }) => {
+export const ProductPopup: React.FC<ProductPopupProps> = ({ isOpen, onClose }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -47,7 +41,7 @@ export const AboutPopup: React.FC<AboutPopupProps> = ({ isOpen, onClose }) => {
           className="absolute top-full left-0 mt-4 w-[280px] obsidian-panel p-2 z-[100] bg-[#080808]/95 backdrop-blur-xl"
         >
           <div className="space-y-1">
-            {ABOUT_LINKS.map((item, idx) => {
+            {PRODUCT_LINKS.map((item, idx) => {
               const Icon = item.icon;
               return (
                 <Link

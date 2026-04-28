@@ -1,142 +1,120 @@
+/**
+ * Viktron AI — Engineering Blog
+ * "Intelligence Reports & Engineering Logs."
+ */
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
-import { AnimatedSection, StaggerContainer, StaggerItem } from '../components/ui/AnimatedSection';
-import { ArrowRight, BookOpen, Clock } from 'lucide-react';
+import { ArrowRight, BookOpen, Clock, Activity, Zap, Cpu } from 'lucide-react';
+
+const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.ReactNode; className?: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8, delay: d, ease: [0.16, 1, 0.3, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
+
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <div className="section-label">{children}</div>
+);
 
 const ARTICLES = [
   {
-    tag: 'Guide',
-    tagColor: 'bg-blue-50 text-blue-600',
-    title: 'What Is a Multi-Agent System? (And Why Your Business Needs One)',
-    excerpt: 'Single AI chatbots handle one task. Multi-agent systems coordinate specialists — Sales, Support, Content — like a digital workforce that runs 24/7.',
-    date: 'Jan 2026',
-    readTime: '5 min read',
+    tag: 'ARCHITECTURE',
+    title: 'The AgentIRL Trust Fabric: Designing Governance for Autonomous Workforces',
+    excerpt: 'How we built a 6-layer security stack to intercept and validate non-deterministic agent actions at scale.',
+    date: 'MAR 2026',
+    time: '12 MIN READ',
+    icon: Cpu,
   },
   {
-    tag: 'Product',
-    tagColor: 'bg-indigo-50 text-indigo-600',
-    title: 'AgentIRL: The Reliability Layer Missing From Every AI Stack',
-    excerpt: 'AI frameworks are powerful. But they need an operations layer to be production-ready — retry logic, failover, monitoring. That\'s AgentIRL.',
-    date: 'Feb 2026',
-    readTime: '7 min read',
+    tag: 'TELEMETRY',
+    title: 'Beyond the Dashboard: Real-time OTLP Analytics for Multi-Agent Systems',
+    excerpt: 'Why traditional product analytics fail in agentic workflows and how to monitor reasoning chains.',
+    date: 'FEB 2026',
+    time: '8 MIN READ',
+    icon: Activity,
   },
   {
-    tag: 'Case Study',
-    tagColor: 'bg-emerald-50 text-emerald-600',
-    title: 'How a Real Estate Agency Automated 80% of Lead Qualification',
-    excerpt: 'One AI Sales Agent, integrated with their CRM. 200+ leads/month qualified automatically. Average response time: under 8 seconds.',
-    date: 'Feb 2026',
-    readTime: '4 min read',
-  },
-  {
-    tag: 'Explainer',
-    tagColor: 'bg-purple-50 text-purple-600',
-    title: 'Voice AI Agents vs. Traditional IVR: What\'s Actually Different',
-    excerpt: 'IVR presses buttons. Voice AI understands context, handles objections, and books appointments — all in natural conversation.',
-    date: 'Feb 2026',
-    readTime: '6 min read',
-  },
-  {
-    tag: 'Strategy',
-    tagColor: 'bg-amber-50 text-amber-600',
-    title: 'The ROI of AI Agent Teams: A Framework for Business Leaders',
-    excerpt: 'How to calculate the real return on AI agents — from reduced payroll to faster lead response and higher conversion rates.',
-    date: 'Mar 2026',
-    readTime: '8 min read',
-  },
-  {
-    tag: 'Technical',
-    tagColor: 'bg-cyan-50 text-cyan-600',
-    title: 'Building Reliable AI Workflows With Agent Orchestration',
-    excerpt: 'How we coordinate multiple AI agents to handle complex business processes — delegation, conflict resolution, and parallel execution.',
-    date: 'Mar 2026',
-    readTime: '10 min read',
+    tag: 'RELIABILITY',
+    title: 'Zero-Rewrite Deployment: Wrapping Legacy APIs for Agentic Interaction',
+    excerpt: 'Implementing institutional-grade reliability without changing a single line of your core business logic.',
+    date: 'FEB 2026',
+    time: '10 MIN READ',
+    icon: Zap,
   },
 ];
 
 export const Blog: React.FC = () => {
   return (
-    <Layout>
-      <SEO
-        title="Blog & Resources | Viktron"
-        description="Guides, case studies, and insights on AI agent teams, multi-agent orchestration, and the AgentIRL platform."
-        keywords="AI agents blog, multi-agent systems, AgentIRL, AI automation guides, AI case studies"
-        url="/blog"
-        canonicalUrl="https://viktron.ai/blog"
-      />
+    <Layout showBackground={false}>
+      <SEO title="Engineering Blog — Viktron AI Intelligence Reports" description="Engineering logs, architecture deep-dives, and intelligence reports on autonomous systems." />
 
-      {/* Hero */}
-      <section className="pt-32 pb-12 px-4 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-50/50 rounded-full blur-[130px] pointer-events-none" />
-        <div className="container-custom relative z-10">
-          <AnimatedSection>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-xs font-mono text-blue-600 mb-6">
-              <BookOpen className="w-3 h-3" /> Blog & Resources
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight leading-[1.1]">
-              Insights on<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">AI Agents.</span>
-            </h1>
-            <p className="mt-4 max-w-3xl text-lg text-slate-600 leading-relaxed">
-              Guides, case studies, and deep dives on building, deploying, and scaling AI agent teams for real businesses.
-            </p>
-          </AnimatedSection>
+      {/* ═══════════════════════════ HERO ═══════════════════════════ */}
+      <section className="relative min-h-[60vh] bg-[#050505] flex flex-col justify-center pt-40 pb-20 overflow-hidden">
+        <div className="absolute inset-0 grid-paper opacity-[0.05] pointer-events-none" />
+        <div className="max-w-[1400px] mx-auto px-6 w-full relative z-10 text-center">
+          <FU d={0}>
+             <Label>INTELLIGENCE_REPORTS</Label>
+             <h1 className="heading-precision text-7xl md:text-[140px] text-white leading-[0.8] tracking-[-0.05em] uppercase font-black mt-10">
+                LOGS &<br />
+                <span className="text-zinc-700">INSIGHTS.</span>
+             </h1>
+          </FU>
         </div>
       </section>
 
-      {/* Articles Grid */}
-      <section className="pb-20 px-4">
-        <div className="container-custom">
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ARTICLES.map((article, idx) => (
-              <StaggerItem key={idx}>
-                <motion.div
-                  whileHover={{ y: -3 }}
-                  className="rounded-2xl border border-slate-200 bg-white p-6 h-full flex flex-col hover:border-blue-200 hover:shadow-lg transition-all duration-300"
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${article.tagColor}`}>
-                      {article.tag}
-                    </span>
-                    <div className="flex items-center gap-1 text-xs text-slate-400">
-                      <Clock className="w-3 h-3" />
-                      {article.readTime}
-                    </div>
+      {/* ══════════════════ ARTICLES ══════════════════ */}
+      <section className="py-20 bg-[#050505] relative border-t border-white/5">
+        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+           {ARTICLES.map((a, i) => {
+             const Icon = a.icon;
+             return (
+               <FU key={i} d={i * 0.05}>
+                  <div className="obsidian-panel p-10 h-full flex flex-col space-y-8 group hover:border-primary/40 transition-all cursor-pointer">
+                     <div className="flex justify-between items-start">
+                        <div className="w-10 h-10 obsidian-inset flex items-center justify-center text-zinc-600 group-hover:text-primary transition-colors">
+                           <Icon size={18} />
+                        </div>
+                        <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">{a.date}</span>
+                     </div>
+                     <div className="flex-1 space-y-4">
+                        <span className="text-[9px] font-mono text-primary font-bold tracking-[0.2em] uppercase">{a.tag}</span>
+                        <h2 className="text-white font-bold text-xl uppercase tracking-tighter leading-tight group-hover:text-primary transition-colors">{a.title}</h2>
+                        <p className="text-zinc-500 text-sm leading-relaxed line-clamp-3">{a.excerpt}</p>
+                     </div>
+                     <div className="pt-8 flex items-center justify-between border-t border-white/5">
+                        <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">{a.time}</span>
+                        <ArrowRight size={16} className="text-zinc-800 group-hover:text-primary transition-all" />
+                     </div>
                   </div>
-                  <h2 className="text-lg font-semibold text-slate-900 mb-2 leading-tight">{article.title}</h2>
-                  <p className="text-sm text-slate-600 leading-relaxed flex-1">{article.excerpt}</p>
-                  <div className="mt-4 flex items-center justify-between">
-                    <span className="text-xs text-slate-400">{article.date}</span>
-                    <span className="inline-flex items-center gap-1 text-sm font-semibold text-blue-600">
-                      Read <ArrowRight className="w-3.5 h-3.5" />
-                    </span>
-                  </div>
-                </motion.div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
+               </FU>
+             );
+           })}
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-16 px-4 bg-slate-50 border-y border-slate-200">
-        <div className="container-custom text-center">
-          <h2 className="text-2xl font-bold text-slate-900 mb-3">Want to see AI agents in action?</h2>
-          <p className="text-slate-600 mb-6 max-w-xl mx-auto">
-            Book a demo and we'll show you exactly how AI agent teams can transform your business operations.
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Link to="/contact" className="btn btn-primary">
-              Book a Demo <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link to="/use-cases" className="btn btn-secondary">
-              View Use Cases
-            </Link>
-          </div>
-        </div>
+      {/* ══════════════════ CTA ══════════════════ */}
+      <section className="py-60 bg-[#050505] text-center relative overflow-hidden border-t border-white/5">
+         <div className="max-w-5xl mx-auto px-6 relative z-10">
+            <FU d={0}>
+               <h2 className="heading-precision text-7xl md:text-[140px] text-white mb-16 uppercase tracking-tighter font-black leading-[0.8]">
+                  STAY<br />
+                  <span className="text-zinc-700">INFORMED.</span>
+               </h2>
+               <div className="flex flex-wrap justify-center gap-6">
+                  <input type="email" placeholder="ENTER_EMAIL_FOR_REPORTS" className="bg-transparent border border-white/10 px-8 py-5 font-mono text-[10px] tracking-widest text-white outline-none focus:border-primary w-[300px]" />
+                  <button className="btn-acid px-12 py-5">Subscribe</button>
+               </div>
+            </FU>
+         </div>
       </section>
     </Layout>
   );

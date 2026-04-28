@@ -29,7 +29,7 @@ const Blog = lazy(() => import('./pages/Blog').then(m => ({ default: m.Blog })))
 const RentAgent = lazy(() => import('./pages/RentAgent').then(m => ({ default: m.RentAgent })));
 const Enterprise = lazy(() => import('./pages/Enterprise').then(m => ({ default: m.Enterprise })));
 const Docs = lazy(() => import('./pages/Docs').then(m => ({ default: m.Docs })));
-const TrustFabric = lazy(() => import('./pages/TrustFabric').then(m => ({ default: m.default })));
+const TrustFabric = lazy(() => import('./pages/TrustFabric'));
 const SlackOAuthCallback = lazy(() => import('./pages/SlackOAuthCallback').then(m => ({ default: m.SlackOAuthCallback })));
 const ToolFeed = lazy(() => import('./pages/ToolFeed').then(m => ({ default: m.ToolFeed })));
 const PretrainedDirectory = lazy(() => import('./pages/PretrainedDirectory').then(m => ({ default: m.default })));
@@ -97,42 +97,23 @@ const SnakeGame = lazy(() => import('./components/SnakeGame').then(m => ({ defau
 
 // Loading spinner for lazy loaded components
 const LoadingSpinner: React.FC = () => (
-  <div className="min-h-screen bg-white flex flex-col items-center justify-center gap-6">
-    {/* Agent network animation */}
-    <div className="relative w-24 h-24">
-      {/* Outer orbit ring */}
-      <div className="absolute inset-0 rounded-full border-2 border-blue-100 animate-spin" style={{ animationDuration: '3s' }} />
-      {/* Middle orbit ring */}
-      <div className="absolute inset-3 rounded-full border-2 border-indigo-100 animate-spin" style={{ animationDuration: '2s', animationDirection: 'reverse' }} />
-      {/* Center agent brain */}
+  <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center gap-10">
+    <div className="relative w-32 h-32">
+      <div className="absolute inset-0 rounded-full border border-white/5 animate-spin" style={{ animationDuration: '4s' }} />
+      <div className="absolute inset-4 rounded-full border border-primary/10 animate-spin" style={{ animationDuration: '3s', animationDirection: 'reverse' }} />
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 2a4 4 0 0 1 4 4v1h1a3 3 0 0 1 3 3v1a3 3 0 0 1-3 3h-1v1a4 4 0 0 1-8 0v-1H7a3 3 0 0 1-3-3v-1a3 3 0 0 1 3-3h1V6a4 4 0 0 1 4-4z"/>
-            <circle cx="9" cy="10" r="1" fill="white" stroke="none"/>
-            <circle cx="15" cy="10" r="1" fill="white" stroke="none"/>
-          </svg>
+        <div className="w-12 h-12 obsidian-inset flex items-center justify-center border border-primary/20 shadow-[0_0_20px_rgba(204,255,0,0.1)]">
+           <div className="w-2 h-2 bg-primary animate-pulse rounded-full" />
         </div>
       </div>
-      {/* Orbiting agent dots */}
-      {[0, 120, 240].map((deg, i) => (
-        <div
-          key={i}
-          className="absolute w-3 h-3 rounded-full bg-blue-500 shadow-sm shadow-blue-400/50"
-          style={{
-            top: '50%', left: '50%',
-            transform: `rotate(${deg}deg) translateX(38px) translateY(-50%)`,
-            animation: `spin ${2 + i * 0.5}s linear infinite`,
-          }}
-        />
-      ))}
     </div>
-    <div className="text-center">
-      <p className="text-sm font-semibold text-slate-900">Initializing agents</p>
-      <p className="text-xs text-slate-400 mt-1 font-mono flex items-center gap-1.5 justify-center">
-        <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-        Connecting to AgentIRL runtime...
-      </p>
+    <div className="text-center space-y-4">
+      <p className="text-[10px] font-mono font-bold text-white uppercase tracking-[0.4em]">Initializing_Agents</p>
+      <div className="flex items-center gap-3 justify-center">
+         <div className="w-8 h-px bg-white/10" />
+         <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest">Connecting_to_AgentIRL_Runtime</p>
+         <div className="w-8 h-px bg-white/10" />
+      </div>
     </div>
   </div>
 );

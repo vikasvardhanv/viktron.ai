@@ -173,3 +173,5 @@ export const TrustFabric: React.FC = () => (
     </section>
   </Layout>
 );
+
+export default TrustFabric;

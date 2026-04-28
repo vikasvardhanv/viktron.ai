@@ -1,207 +1,136 @@
+/**
+ * Viktron AI — Careers
+ * "Join the Infrastructure Revolution."
+ */
 import React, { useState } from 'react';
-import { Briefcase, CheckCircle2, Globe, Heart, Sparkles, Users, Zap } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Briefcase, CheckCircle2, Globe, Heart, Sparkles, Users, Zap, ArrowRight, Cpu, Code, Shield } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
-import { AnimatedSection, StaggerContainer, StaggerItem } from '../components/ui/AnimatedSection';
-import { Button } from '../components/ui/Button';
 
-type Position = {
-  title: string;
-  department: string;
-  location: string;
-  type: string;
-  description: string;
-  requirements: string[];
-};
+const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.ReactNode; className?: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8, delay: d, ease: [0.16, 1, 0.3, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
 
-const positions: Position[] = [
-  {
-    title: 'Python AI Agent Intern',
-    department: 'Engineering',
-    location: 'Remote / Chicago, IL',
-    type: 'Internship',
-    description: 'Build and test Python-based AI agents for real client automation workflows.',
-    requirements: [
-      'Strong interest in Python and AI',
-      'Basic API and automation understanding',
-      'Available for 3+ months',
-    ],
-  },
-  {
-    title: 'ADK Intern',
-    department: 'Engineering',
-    location: 'Remote / Chicago, IL',
-    type: 'Internship',
-    description: 'Contribute to our internal Agent Development Kit tools, docs, and testing workflows.',
-    requirements: [
-      'Programming fundamentals',
-      'Clear technical communication',
-      'Strong problem-solving mindset',
-    ],
-  },
-  {
-    title: 'Senior AI Engineer',
-    department: 'Engineering',
-    location: 'Remote',
-    type: 'Full-time',
-    description: 'Architect and ship production-grade agentic systems with modern LLM and workflow stacks.',
-    requirements: [
-      '5+ years engineering experience',
-      'LLM integration in production',
-      'Backend architecture skills',
-    ],
-  },
-  {
-    title: 'Full Stack Developer',
-    department: 'Engineering',
-    location: 'Remote',
-    type: 'Full-time',
-    description: 'Build scalable web applications and internal tooling for AI products and client operations.',
-    requirements: [
-      'React + TypeScript expertise',
-      'Node or Python backend experience',
-      'API and database design',
-    ],
-  },
-  {
-    title: 'AI Solutions Architect',
-    department: 'Product',
-    location: 'Remote',
-    type: 'Full-time',
-    description: 'Translate business requirements into deployable AI architecture for client teams.',
-    requirements: [
-      'System design experience',
-      'Strong client communication',
-      'AI/automation implementation track record',
-    ],
-  },
-];
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <div className="section-label">{children}</div>
+);
 
-const benefits = [
-  { icon: <Globe className="h-5 w-5 text-blue-600" />, title: 'Remote-first team' },
-  { icon: <Heart className="h-5 w-5 text-emerald-500" />, title: 'Health and wellness support' },
-  { icon: <Zap className="h-5 w-5 text-indigo-500" />, title: 'Work with latest AI stack' },
-  { icon: <Users className="h-5 w-5 text-blue-500" />, title: 'High ownership culture' },
+const positions = [
+  {
+    title: 'Distributed Systems Engineer',
+    dept: 'INFRASTRUCTURE',
+    location: 'REMOTE / CHICAGO',
+    desc: 'Architect the high-performance interceptors and routing logic that power the AgentIRL Trust Fabric.',
+  },
+  {
+    title: 'AI Agent Architect',
+    dept: 'PRODUCT',
+    location: 'REMOTE',
+    desc: 'Build specialized, multi-agent workflows that handle complex business logic with non-deterministic models.',
+  },
+  {
+    title: 'Full Stack Engineer (UI/UX)',
+    dept: 'PLATFORM',
+    location: 'REMOTE',
+    desc: 'Create institutional-grade dashboards and telemetry visualizations for autonomous workforces.',
+  },
 ];
 
 export const Careers: React.FC = () => {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
-  const handleApply = (position: string) => {
-    const subject = `Application: ${position}`;
-    const body = `Hi Viktron,\n\nI'm interested in applying for the ${position} role.\n\nPlease find my details attached.`;
-    window.location.href = `mailto:tech@viktron.ai?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const handleApply = (pos: string) => {
+    window.location.href = `mailto:tech@viktron.ai?subject=Application: ${pos}`;
   };
 
   return (
-    <Layout>
-      <SEO
-        title="Careers at Viktron | Join Our Team"
-        description="Open roles and internships at Viktron. Build practical AI systems with a remote-first team."
-        url="/careers"
-        canonicalUrl="https://viktron.ai/careers"
-      />
+    <Layout showBackground={false}>
+      <SEO title="Careers — Join the Autonomous Infrastructure Revolution" description="Build the production layer for AI agents at Viktron." />
 
-      <section className="pt-32 pb-12 px-4 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-50/50 rounded-full blur-[130px] pointer-events-none" />
-        <div className="container-custom relative z-10">
-          <AnimatedSection>
-            <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-              <Briefcase className="h-4 w-4 text-blue-600" />
-              Careers
-            </div>
-            <h1 className="mt-6 text-5xl sm:text-7xl font-semibold tracking-tight text-slate-900">
-              Build practical AI
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">with us.</span>
-            </h1>
-            <p className="mt-4 max-w-3xl text-lg text-slate-600 leading-relaxed">
-              We're hiring builders who care about shipping real systems, not demo-only features.
-            </p>
-          </AnimatedSection>
+      {/* ═══════════════════════════ HERO ═══════════════════════════ */}
+      <section className="relative min-h-[70vh] bg-[#050505] flex flex-col justify-center pt-40 pb-20 overflow-hidden">
+        <div className="absolute inset-0 grid-paper opacity-[0.05] pointer-events-none" />
+        <div className="max-w-[1400px] mx-auto px-6 w-full relative z-10 text-center">
+          <FU d={0}>
+             <Label>TALENT_ALLOCATION</Label>
+             <h1 className="heading-precision text-7xl md:text-[140px] text-white leading-[0.8] tracking-[-0.05em] uppercase font-black mt-10">
+                BUILD THE<br />
+                <span className="text-zinc-700">FABRIC.</span>
+             </h1>
+             <p className="heading-editorial text-3xl text-zinc-300 mt-12 max-w-2xl mx-auto">
+                Join the team building the production runtime for autonomous intelligence.
+             </p>
+          </FU>
         </div>
       </section>
 
-      <section className="pb-10 px-4">
-        <div className="container-custom">
-          <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {benefits.map((benefit) => (
-              <StaggerItem key={benefit.title}>
-                <div className="bg-white rounded-2xl border border-slate-200 p-4 h-full hover:border-blue-200 hover:shadow-lg transition-all duration-300">
-                  <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50">
-                    {benefit.icon}
-                  </div>
-                  <p className="mt-3 text-sm font-semibold text-slate-800">{benefit.title}</p>
+      {/* ══════════════════ POSITIONS ══════════════════ */}
+      <section className="py-20 bg-[#050505] relative border-t border-white/5">
+        <div className="max-w-5xl mx-auto px-6 space-y-6">
+           {positions.map((p, i) => (
+             <FU key={i} d={i * 0.05}>
+                <div className="obsidian-panel p-10 flex flex-col md:flex-row md:items-center gap-12 group hover:border-primary/40 transition-all">
+                   <div className="flex-1 space-y-4">
+                      <div className="flex items-center gap-4">
+                         <span className="text-[10px] font-mono text-primary font-bold tracking-[0.2em] uppercase">{p.dept}</span>
+                         <div className="w-1.5 h-1.5 rounded-full bg-primary/20" />
+                         <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">{p.location}</span>
+                      </div>
+                      <h2 className="text-white font-bold text-2xl uppercase tracking-tighter">{p.title}</h2>
+                      <p className="text-zinc-500 text-sm max-w-xl">{p.desc}</p>
+                   </div>
+                   <button 
+                     onClick={() => handleApply(p.title)}
+                     className="btn-acid px-10 py-4 flex items-center justify-center gap-3"
+                   >
+                      Apply <ArrowRight size={16} />
+                   </button>
                 </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
+             </FU>
+           ))}
         </div>
       </section>
 
-      <section className="pb-20 px-4">
-        <div className="container-custom">
-          <AnimatedSection>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
-              <div className="mb-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Open positions</p>
-              </div>
-              <div className="space-y-3">
-                {positions.map((position, index) => (
-                  <article key={position.title} className="rounded-2xl border border-slate-200 bg-white p-5">
-                    <div className="flex flex-wrap items-start justify-between gap-3">
-                      <div>
-                        <h2 className="text-xl font-semibold text-slate-900">{position.title}</h2>
-                        <p className="mt-1 text-sm text-slate-600">
-                          {position.department} · {position.location} · {position.type}
-                        </p>
-                      </div>
-                      <Button variant="secondary" size="sm" onClick={() => setSelectedIndex(selectedIndex === index ? null : index)}>
-                        {selectedIndex === index ? 'Hide details' : 'View details'}
-                      </Button>
+      {/* ══════════════════ VALUES ══════════════════ */}
+      <section className="py-40 bg-[#080808] border-y border-white/5 relative">
+         <div className="max-w-7xl mx-auto px-6">
+            <Label>ENGINEERING_CULTURE</Label>
+            <div className="grid md:grid-cols-3 gap-12 mt-20">
+               {[
+                 { icon: Cpu, t: 'Production First', d: 'We don\'t ship demos. We ship reliable, high-uptime infrastructure.' },
+                 { icon: Shield, t: 'Trust Focused', d: 'Security and governance are at the core of everything we build.' },
+                 { icon: Code, t: 'Zero-Waste', d: 'Highly efficient, type-safe, and distributed systems architecture.' },
+               ].map((v, i) => (
+                 <FU key={i} d={i * 0.1} className="space-y-6">
+                    <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-600">
+                       <v.icon size={20} />
                     </div>
-
-                    <p className="mt-3 text-sm text-slate-600">{position.description}</p>
-
-                    {selectedIndex === index ? (
-                      <div className="mt-4 space-y-2">
-                        {position.requirements.map((requirement) => (
-                          <div key={requirement} className="flex items-start gap-2 text-sm text-slate-700">
-                            <CheckCircle2 className="h-4 w-4 mt-0.5 text-emerald-500" />
-                            {requirement}
-                          </div>
-                        ))}
-                      </div>
-                    ) : null}
-
-                    <div className="mt-4">
-                      <Button onClick={() => handleApply(position.title)}>
-                        Apply via Email
-                      </Button>
-                    </div>
-                  </article>
-                ))}
-              </div>
+                    <h3 className="text-white font-bold text-lg uppercase tracking-tight">{v.t}</h3>
+                    <p className="text-zinc-500 text-sm leading-relaxed">{v.d}</p>
+                 </FU>
+               ))}
             </div>
-          </AnimatedSection>
-        </div>
+         </div>
       </section>
 
-      <section className="pb-20 px-4">
-        <div className="container-custom">
-          <AnimatedSection>
-            <div className="rounded-3xl border border-slate-200 bg-white p-7 text-center">
-              <Sparkles className="h-9 w-9 mx-auto text-blue-600" />
-              <h2 className="mt-4 text-3xl font-semibold text-slate-900">No perfect match listed?</h2>
-              <p className="mt-3 max-w-2xl mx-auto text-slate-600">
-                Send your resume and what you want to build at Viktron. We review every strong profile.
-              </p>
-              <div className="mt-6">
-                <Button onClick={() => handleApply('General Application')}>Send General Application</Button>
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
+      {/* ══════════════════ CTA ══════════════════ */}
+      <section className="py-60 bg-[#050505] text-center relative overflow-hidden">
+         <div className="max-w-5xl mx-auto px-6 relative z-10">
+            <FU d={0}>
+               <h2 className="heading-precision text-7xl md:text-[140px] text-white mb-16 uppercase tracking-tighter font-black">
+                  HIRE<br />
+                  <span className="text-zinc-700">HUMANS.</span>
+               </h2>
+               <button onClick={() => handleApply('General')} className="btn-acid px-16 py-6">Send General Dossier</button>
+            </FU>
+         </div>
       </section>
     </Layout>
   );
