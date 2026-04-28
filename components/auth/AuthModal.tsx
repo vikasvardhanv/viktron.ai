@@ -12,7 +12,7 @@ const toApiBase = (value?: string) => {
 import { Button } from '../ui/Button';
 import {
   X, Mail, Lock, User, Building2, Phone, ArrowRight, Eye, EyeOff,
-  AlertCircle, CheckCircle2, Loader2, ArrowLeft, Home
+  AlertCircle, CheckCircle2, Loader2, ArrowLeft, Home, Check, Shield
 } from 'lucide-react';
 
 // Google Icon
@@ -306,18 +306,18 @@ export const AuthModal: React.FC = () => {
                   <img src="/visuals/viktronlogo.png" alt="Viktron" className="w-6 h-6 grayscale hover:grayscale-0 transition-all" />
                 </div>
               </div>
-              <h2 className="text-3xl font-bold text-white uppercase tracking-tighter mb-2">
+              <h2 className="text-3xl font-bold text-white uppercase tracking-tighter mb-3">
                 {view === 'options'
-                  ? (isSignUp ? 'Spawn Agent' : 'System Access')
+                  ? (isSignUp ? 'Initialize_Agent' : 'Welcome_Back')
                   : view === 'email-login'
-                    ? 'Email Authentication'
-                    : 'Initialize Identity'
+                    ? 'Email_Auth_Protocol'
+                    : 'Provision_Identity'
                 }
               </h2>
-              <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.3em]">
+              <p className="text-zinc-500 font-mono text-[9px] uppercase tracking-[0.3em]">
                 {view === 'options'
-                  ? (isSignUp ? 'Select provisioning method' : 'Verify institutional credentials')
-                  : (view === 'email-login' ? 'Enter encrypted credentials' : 'Define institutional parameters')
+                  ? 'Choose_Authentication_Method'
+                  : 'Execute_Encrypted_Credential_Sequence'
                 }
               </p>
             </div>
@@ -398,14 +398,14 @@ export const AuthModal: React.FC = () => {
                 </button>
 
                 {/* Terms notice */}
-                <p className="text-[9px] font-mono uppercase tracking-[0.2em] text-zinc-600 text-center mt-10 leading-relaxed">
-                  By accessing the Control Plane, you agree to the{' '}
+                <p className="text-[9px] font-mono uppercase tracking-[0.2em] text-zinc-600 text-center mt-12 leading-relaxed">
+                  By continuing, you agree to our{' '}
                   <Link to="/terms" onClick={() => setShowAuthModal(false)} className="text-primary hover:underline">
                     Terms_of_Service
                   </Link>{' '}
                   and{' '}
                   <Link to="/privacy" onClick={() => setShowAuthModal(false)} className="text-primary hover:underline">
-                    Privacy_Protocol
+                    Privacy_Policy
                   </Link>
                 </p>
 
@@ -615,10 +615,9 @@ export const AuthModal: React.FC = () => {
               </form>
             )}
 
-            {/* Security note */}
-            <div className="flex items-center justify-center gap-3 text-[9px] font-mono uppercase tracking-[0.2em] text-zinc-700 mt-10">
+            <div className="flex items-center justify-center gap-3 text-[9px] font-mono uppercase tracking-[0.3em] text-zinc-700 mt-12 pt-8 border-t border-white/5">
               <Shield className="h-3.5 w-3.5" />
-              <span>AES-256_ENCRYPTED_SESSION</span>
+              <span>256-BIT_SSL_ENCRYPTED_SESSION</span>
             </div>
           </div>
         </motion.div>
