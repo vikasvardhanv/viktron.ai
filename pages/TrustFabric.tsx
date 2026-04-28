@@ -87,23 +87,50 @@ export const TrustFabric: React.FC = () => (
     <section className="py-40 bg-[#050505] border-t border-white/5 relative">
       <div className="max-w-7xl mx-auto px-6">
         <Label>01 // ENFORCEMENT PILLARS</Label>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/5 mt-20 border border-white/5 overflow-hidden">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-20">
           {[
-            { icon: Fingerprint, name: 'Identity', desc: 'Every agent instance is bound to a unique cryptographic fingerprint.' },
-            { icon: Key, name: 'Delegation', desc: 'Scoped JWTs restrict permissions as agents spawn sub-tasks.' },
-            { icon: Shield, name: 'Policy Gateway', desc: 'Sub-50ms interception of tool calls against corporate rules.' },
-            { icon: Activity, name: 'Budget Guards', desc: 'Hard stops on LLM costs and API spend per mission.' },
-            { icon: Lock, name: 'Secrets Vault', desc: 'Zero-trust credential injection at the moment of execution.' },
-            { icon: FileCheck, name: 'Provenance', desc: 'Immutable SHA-256 chain of every decision and action.' },
+            { 
+              icon: Fingerprint, 
+              name: 'IDENTITY', 
+              desc: 'Verified cryptographic identity bound to every action token.',
+              active: true 
+            },
+            { 
+              icon: Key, 
+              name: 'DELEGATION', 
+              desc: 'Scoped JWTs that restrict permissions as tasks evolve.' 
+            },
+            { 
+              icon: Shield, 
+              name: 'POLICY GATE', 
+              desc: 'Sub-50ms interception of tool calls against corporate rules.' 
+            },
+            { 
+              icon: Activity, 
+              name: 'BUDGET', 
+              desc: 'Per-agent token and API spend cap enforcement.' 
+            },
+            { 
+              icon: Lock, 
+              name: 'SECRETS', 
+              desc: 'Zero-trust injection of API keys at tool-call runtime.' 
+            },
+            { 
+              icon: FileCheck, 
+              name: 'PROVENANCE', 
+              desc: 'Immutable chain of every decision, reason, and action.' 
+            },
           ].map((l, i) => {
             const Icon = l.icon;
             return (
-              <FU key={i} d={i * 0.05} className="bg-[#050505] p-12 space-y-8 group hover:bg-[#080808] transition-colors">
-                 <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-400 group-hover:text-primary transition-colors">
-                    <Icon size={24} />
+              <FU key={i} d={i * 0.05} className={`obsidian-panel p-12 space-y-8 group hover:scale-[1.02] transition-all duration-500 ${l.active ? 'border-primary/20 bg-primary/[0.02]' : ''}`}>
+                 <div className={`w-12 h-12 obsidian-inset flex items-center justify-center transition-colors ${l.active ? 'text-primary' : 'text-zinc-600 group-hover:text-primary'}`}>
+                    <Icon size={20} className={l.active ? 'text-glow' : ''} />
                  </div>
-                 <h4 className="text-white font-bold text-base uppercase tracking-tight">{l.name}</h4>
-                 <p className="text-zinc-400 text-sm leading-relaxed">{l.desc}</p>
+                 <div className="space-y-4">
+                   <h4 className="text-white font-bold text-lg uppercase tracking-tight">{l.name}</h4>
+                   <p className="text-zinc-500 text-sm leading-relaxed font-light">{l.desc}</p>
+                 </div>
               </FU>
             );
           })}
