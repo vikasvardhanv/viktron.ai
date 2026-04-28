@@ -3,23 +3,28 @@
 
 :root {
   /* 21st.dev / Linear inspired OKLCH color palette */
-  --background: oklch(0.13 0.02 260); /* Deep rich dark #0A0A0A */
-  --foreground: oklch(0.98 0.01 260); /* Crisp white */
+  --background: oklch(0.12 0.02 260); /* Deeper #08090E */
+  --foreground: oklch(0.98 0.01 260);
   
-  --card: oklch(0.18 0.02 260);
-  --card-border: oklch(0.25 0.02 260);
+  --card: oklch(0.16 0.02 260);
+  --card-border: oklch(0.22 0.02 260);
   
-  --primary: oklch(0.65 0.15 250); /* Vivid electric blue/indigo */
-  --primary-hover: oklch(0.75 0.15 250);
-  --primary-glow: oklch(0.65 0.15 250 / 0.2);
+  --primary: oklch(0.62 0.18 260); /* Deep indigo */
+  --primary-hover: oklch(0.7 0.18 260);
+  --primary-glow: oklch(0.62 0.18 260 / 0.15);
 
-  --accent-emerald: oklch(0.7 0.15 160); /* Trust/Verified green */
-  --accent-purple: oklch(0.65 0.2 300); /* AI/Magic purple */
-  --accent-amber: oklch(0.75 0.15 50); /* Warning/Human-in-loop */
+  --accent-emerald: oklch(0.75 0.12 160); 
+  --accent-violet: oklch(0.68 0.18 300);
+  --accent-amber: oklch(0.78 0.12 60); 
+  --accent-red: oklch(0.65 0.22 25);
 
   --text-primary: oklch(0.98 0.01 260);
-  --text-secondary: oklch(0.75 0.02 260);
-  --text-muted: oklch(0.55 0.02 260);
+  --text-secondary: oklch(0.8 0.02 260);
+  --text-muted: oklch(0.5 0.02 260);
+
+  /* Cinematic Easing */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 body {
@@ -307,3 +312,81 @@ code, pre, .font-mono {
 /* Scrollbar hide for horizontal scroll */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* God-Level UI Utilities */
+
+.hero-glow-main {
+  background: radial-gradient(circle at 50% -20%, var(--primary-glow) 0%, transparent 60%);
+}
+
+.mask-fade-bottom {
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+}
+
+.bento-card-base {
+  @apply relative overflow-hidden rounded-3xl border border-white/5 bg-white/[0.02] p-8 transition-all duration-500;
+  box-shadow: 0 0 0 1px inset rgba(255,255,255,0.03);
+}
+
+.bento-card-base:hover {
+  @apply border-white/10 bg-white/[0.04] -translate-y-1;
+  box-shadow: 0 20px 40px -20px rgba(0,0,0,0.5), 0 0 0 1px inset rgba(255,255,255,0.06);
+}
+
+.bento-glow-violet:hover {
+  box-shadow: 0 20px 40px -20px rgba(0,0,0,0.5), 0 0 24px -12px var(--accent-violet);
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Grid Ray Effect */
+.grid-rays {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black 0%, transparent 40%);
+  -webkit-mask-image: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black 0%, transparent 40%);
+}
+
+/* 21st.dev / Linear Border Shimmer */
+.border-shimmer {
+  position: relative;
+}
+.border-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer-sweep 3s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  padding: 1px;
+}
+
+/* Conviction Heavy Typography */
+.heading-hero {
+  @apply font-jakarta font-extrabold tracking-tight;
+  line-height: 0.95;
+}
+
+/* Remotion-style transition speeds */
+.transition-remotion {
+  transition: all 0.7s var(--ease-expo);
+}
