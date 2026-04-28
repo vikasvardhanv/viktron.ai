@@ -111,77 +111,81 @@ export const CookiePreferences: React.FC = () => {
             className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <GlassCard className="p-8" tilt={false}>
+            <div className="relative obsidian-panel p-8 shadow-2xl overflow-hidden group">
+              <div className="scan-line opacity-10" />
+              
               {/* Header */}
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 rounded-xl bg-sky-500/20 text-sky-400">
-                    <Cookie className="h-6 w-6" />
+              <div className="flex items-start justify-between mb-8">
+                <div className="flex items-center gap-4">
+                  <div className="p-4 obsidian-inset border border-white/5 text-primary">
+                    <Cookie className="h-6 w-6 text-glow" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-white">Cookie Preferences</h2>
-                    <p className="text-white/50 text-sm">Manage your cookie settings</p>
+                    <div className="section-label !mb-0">SYSTEM_PREFERENCES // COOKIES</div>
+                    <h2 className="text-2xl font-bold text-white uppercase tracking-tighter">Cookie Preferences</h2>
                   </div>
                 </div>
                 <button
                   onClick={() => setShowPreferences(false)}
-                  className="p-2 rounded-lg hover:bg-white/10 transition-colors text-white/60 hover:text-white"
+                  className="p-2 rounded-none hover:bg-white/5 transition-colors text-zinc-500 hover:text-primary"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
 
               {/* Description */}
-              <p className="text-white/60 text-sm mb-6">
+              <p className="text-zinc-500 text-[11px] font-mono uppercase tracking-widest leading-relaxed mb-8 max-w-2xl">
                 We use cookies to enhance your experience. You can choose which categories of cookies you want to allow.
                 For more information, please read our{' '}
-                <Link to="/cookies" className="text-sky-400 hover:underline" onClick={() => setShowPreferences(false)}>
-                  Cookie Policy
+                <Link to="/cookies" className="text-primary hover:underline" onClick={() => setShowPreferences(false)}>
+                  [COOKIE_POLICY]
                 </Link>.
               </p>
 
               {/* Cookie Categories */}
-              <div className="space-y-4 mb-8">
+              <div className="space-y-4 mb-10">
                 {cookieCategories.map((category) => (
                   <div
                     key={category.id}
-                    className={`p-4 rounded-xl border transition-all ${
+                    className={`p-6 obsidian-inset border transition-all ${
                       preferences[category.id]
-                        ? 'bg-sky-500/10 border-sky-500/30'
-                        : 'bg-white/5 border-white/10'
+                        ? 'border-primary/30 bg-primary/5'
+                        : 'border-white/5'
                     }`}
                   >
-                    <div className="flex items-start gap-4">
-                      <div className={`p-2 rounded-lg ${
-                        preferences[category.id] ? 'bg-sky-500/20 text-sky-400' : 'bg-white/10 text-white/50'
+                    <div className="flex items-start gap-6">
+                      <div className={`p-3 obsidian-panel border ${
+                        preferences[category.id] ? 'border-primary/50 text-primary' : 'border-white/5 text-zinc-600'
                       }`}>
                         {category.icon}
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-4 mb-1">
-                          <h3 className="font-semibold text-white">{category.name}</h3>
+                        <div className="flex items-center justify-between gap-4 mb-2">
+                          <h3 className={`font-bold uppercase tracking-tighter transition-colors ${
+                            preferences[category.id] ? 'text-white' : 'text-zinc-500'
+                          }`}>{category.name}</h3>
 
                           {category.required ? (
-                            <span className="px-2 py-1 text-xs font-medium rounded-full bg-emerald-500/20 text-emerald-400">
-                              Always Active
+                            <span className="text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-primary px-3 py-1 obsidian-panel border border-primary/20">
+                              ALWAYS_ACTIVE
                             </span>
                           ) : (
                             <button
                               onClick={() => handleToggle(category.id as 'analytics' | 'marketing' | 'preferences')}
-                              className={`relative w-12 h-6 rounded-full transition-colors ${
-                                preferences[category.id] ? 'bg-sky-500' : 'bg-white/20'
+                              className={`relative w-12 h-6 transition-all duration-300 ${
+                                preferences[category.id] ? 'bg-primary' : 'bg-zinc-800'
                               }`}
                             >
                               <span
-                                className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform ${
-                                  preferences[category.id] ? 'translate-x-6' : 'translate-x-0'
+                                className={`absolute top-1 left-1 w-4 h-4 transition-transform duration-300 ${
+                                  preferences[category.id] ? 'translate-x-6 bg-black' : 'translate-x-0 bg-zinc-500'
                                 }`}
                               />
                             </button>
                           )}
                         </div>
-                        <p className="text-white/50 text-sm">{category.description}</p>
+                        <p className="text-zinc-500 text-[10px] font-mono uppercase tracking-widest leading-relaxed">{category.description}</p>
                       </div>
                     </div>
                   </div>
@@ -189,24 +193,27 @@ export const CookiePreferences: React.FC = () => {
               </div>
 
               {/* Actions */}
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   onClick={rejectAll}
-                  className="flex-1 px-5 py-3 text-sm font-medium text-white/60 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-colors"
+                  className="flex-1 px-6 py-4 text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-500 hover:text-white transition-colors"
                 >
                   Reject All
                 </button>
                 <button
                   onClick={acceptAll}
-                  className="flex-1 px-5 py-3 text-sm font-medium text-white bg-white/10 hover:bg-white/15 rounded-xl transition-colors"
+                  className="btn-obsidian flex-1 !py-4"
                 >
                   Accept All
                 </button>
-                <Button onClick={handleSave} className="flex-1" icon={<Check className="h-4 w-4" />}>
+                <button 
+                  onClick={handleSave} 
+                  className="btn-acid flex-1 !py-4 flex items-center justify-center gap-3"
+                >
+                  <Check className="h-3.5 w-3.5" />
                   Save Preferences
-                </Button>
+                </button>
               </div>
-            </GlassCard>
           </motion.div>
         </motion.div>
       )}

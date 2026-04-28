@@ -37,7 +37,7 @@ const Label = ({ children }: { children: React.ReactNode }) => (
 const contactMethods = [
   { icon: Mail, title: 'Technical Inquiry', value: 'info@viktron.ai', href: 'mailto:info@viktron.ai' },
   { icon: Phone, title: 'Institutional Line', value: '+1 (844) 660-8065', href: 'tel:+18446608065' },
-  { icon: MessageSquare, title: 'Secure Channel', value: 'WhatsApp Connect', href: 'https://Wa.me/+16307033569' },
+  { icon: MessageSquare, title: 'Secure Channel', value: 'WhatsApp Connect', href: 'https://Wa.me/+13022069668' },
 ];
 
 const serviceOptions = [
