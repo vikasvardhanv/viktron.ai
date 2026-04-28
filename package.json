@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "description": "Viktron - AI Agency for Business Automation. Custom AI agents, chatbots, marketing automation, and enterprise LLM integration.",
   "author": "Viktron <info@viktron.ai>",
   "homepage": "https://viktron-ai.vercel.app",
