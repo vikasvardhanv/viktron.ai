@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, MessageSquare, Users, Phone } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
 import { AnimatedSection } from '../components/ui/AnimatedSection';
@@ -330,15 +330,44 @@ export const Agents: React.FC = () => {
                         onClick={() => launchAgent(selectedAgent.id)}
                         className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-xs font-semibold text-white hover:bg-blue-700"
                       >
-                        Launch Demo
+                        Deploy to Channels
                         <ArrowRight className="h-3.5 w-3.5" />
                       </button>
                       <button
                         onClick={() => navigate('/demo-form')}
                         className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-800 hover:bg-blue-50"
                       >
-                        Book
+                        Custom Setup
                       </button>
+                    </div>
+                  </div>
+
+                  {/* Channel Selection */}
+                  <div className="mt-6 pt-6 border-t border-slate-100">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">Available Deployment Channels</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {[
+                        { name: 'Slack', icon: MessageSquare, color: 'hover:border-[#4A154B] hover:text-[#4A154B]', link: '/contact?channel=slack' },
+                        { name: 'Teams', icon: Users, color: 'hover:border-[#4B53BC] hover:text-[#4B53BC]', link: '/contact?channel=teams' },
+                        { name: 'WhatsApp', icon: Phone, color: 'hover:border-[#25D366] hover:text-[#25D366]', link: 'https://wa.me/447441443734' },
+                        { name: 'Telegram', icon: Sparkles, color: 'hover:border-[#0088cc] hover:text-[#0088cc]', link: '/contact?channel=telegram' },
+                      ].map((ch) => {
+                        const ChIcon = ch.icon;
+                        return (
+                          <a
+                            key={ch.name}
+                            href={ch.link}
+                            target={ch.link.startsWith('http') ? '_blank' : '_self'}
+                            rel="noopener noreferrer"
+                            className={`flex items-center gap-3 p-3 rounded-xl border border-slate-100 bg-slate-50/50 transition-all ${ch.color} group`}
+                          >
+                            <div className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center transition-transform group-hover:scale-110">
+                              <ChIcon size={16} />
+                            </div>
+                            <span className="text-xs font-bold text-slate-700">{ch.name}</span>
+                          </a>
+                        );
+                      })}
                     </div>
                   </div>
                 </motion.div>
