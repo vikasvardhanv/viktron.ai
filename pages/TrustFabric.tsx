@@ -72,13 +72,13 @@ export const TrustFabric: React.FC = () => (
               <Link to="/enterprise" className="btn-obsidian">Governance Specs</Link>
             </FU>
           </div>
-          <FU d={0.4} className="relative group">
-             <div className="obsidian-panel p-16 flex items-center justify-center relative shimmer">
-                <div className="scan-line opacity-30" />
-                <img src={ASSETS.shield} alt="Trust Shield" className="w-full h-full object-contain grayscale brightness-90 animate-float group-hover:brightness-110 transition-all duration-1000" />
-                <div className="absolute inset-0 acid-glow opacity-10 pointer-events-none" />
-             </div>
-          </FU>
+           <FU d={0.4} className="relative group">
+              <div className="obsidian-panel p-16 flex items-center justify-center relative shimmer">
+                 <div className="scan-line opacity-30" />
+                 <img src={ASSETS.shield} alt="Trust Shield" loading="lazy" width="512" height="512" className="w-full h-full object-contain grayscale brightness-90 animate-float group-hover:brightness-110 transition-all duration-1000" />
+                 <div className="absolute inset-0 acid-glow opacity-10 pointer-events-none" />
+              </div>
+           </FU>
         </div>
       </div>
     </section>

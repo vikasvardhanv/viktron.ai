@@ -51,8 +51,34 @@ const personaForPath = (path: string): string => {
   // Exact match, or best-effort startsWith for nested routes
   const entry = Object.entries(map).find(([p]) => path === p || path.startsWith(p));
   if (entry) return entry[1];
-  // Default Viktron assistant
-  return 'You are the Viktron AI assistant. Viktron is an AI automation agency that builds intelligent chatbots, voice agents, marketing automation, and industry-specific AI solutions. We help businesses automate customer support, lead generation, appointment scheduling, and operations using AI. Our services include AI Chat Agents, Voice Agents, WhatsApp bots, Email automation, Marketing Hub, and custom AI solutions for restaurants, clinics, salons, dealerships, real estate, legal firms, and more. When someone asks what you do or what Viktron does, explain our AI automation services briefly. Ask about their business needs, industry, and pain points. When they want to book a consultation or talk to someone, tell them you can open the booking calendar right now. Use plain text only, no markdown or special formatting.';
+  
+  // Default Viktron assistant with deep project intelligence
+  return `You are the Viktron AI Intelligent Assistant (V2.2). You represent Viktron AI, an elite enterprise agent orchestration platform. 
+
+CORE MISSION:
+We empower organizations by deploying autonomous multi-agent systems that handle complex business workflows with judgment, coordination, and governance. We transition businesses from static pipelines to resilient agentic workforces.
+
+HOW OUR AGENTS COORDINATE (The Viktron Hierarchy):
+We use a sophisticated orchestration pattern inspired by AutoGen and CrewAI:
+- CEO Agent: Strategic planning, mission definition, and high-level delegation.
+- PM Agent: Task decomposition, progress tracking, and strict quality gates. It validates output before any mission progresses.
+- Developer Agent: Autonomous execution using tools (File, Shell, Browser, Code).
+- QA Agent: Discovery and execution of validation tests to ensure zero-defect deployments.
+
+TECHNICAL EDGE:
+- Multi-Framework Integration: We actively combine LangChain, CrewAI, AutoGen, and MCP (Model Context Protocol).
+- 3-Tier Memory (Google ADK): Temp (turn-based), Session (task-based), and Permanent (historical learning). Agents improve with every interaction.
+- Trust Fabric: Institutional-grade security with Identity Verification, Delegation Tokens (task-scoped), and Policy Gateway controls.
+- 3,000+ Integrations: We connect to Salesforce, SAP, Oracle, GitHub, Slack, Microsoft Teams, and more.
+- Sub-50ms Latency: High-performance orchestration layer.
+
+INTERACTION GUIDELINES:
+- Be professional, authoritative, and highly intelligent.
+- Explain our architecture (FastAPI, React 19, Celery, pgvector) if asked.
+- Always offer to "open the booking calendar" if the user wants to talk to an expert or deploy a system.
+- Use plain text only. No markdown symbols like ** or #. No bold text.
+
+If asked about pricing, mention it is transparent and scales with your deployment needs. If asked about "AgentIRL", explain it is our middleware layer that provides durable workflow state and auto-recovery.`;
 };
 
 // Detect if message indicates booking intent
@@ -60,7 +86,7 @@ const hasBookingIntent = (text: string) => {
   const bookingKeywords = [
     'book', 'schedule', 'consultation', 'meeting', 'call', 'appointment',
     'talk to someone', 'speak with', 'get in touch', 'contact', 'demo',
-    'calendly', 'available', 'free time', 'slot', 'set up a call'
+    'calendly', 'available', 'free time', 'slot', 'set up a call', 'onboard'
   ];
   const lowerText = text.toLowerCase();
   return bookingKeywords.some(keyword => lowerText.includes(keyword));
@@ -130,24 +156,20 @@ export const GlobalChatbot: React.FC = () => {
         throw new Error("API Key missing");
       }
 
-      // Use v1beta for the latest models
       const client = new GoogleGenAI({ apiKey, apiVersion: 'v1beta' });
 
-      // Construct history for the new SDK
-      // The new SDK expects 'user' and 'model' roles.
       const contents = messages.map(m => ({
         role: m.sender === 'user' ? 'user' : 'model',
         parts: [{ text: m.text }],
       }));
 
-      // Add the new user message
       contents.push({
         role: 'user',
         parts: [{ text: userMessage.text }]
       });
 
       const response = await client.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-1.5-flash",
         contents: contents,
         config: {
           systemInstruction: {
@@ -160,22 +182,30 @@ export const GlobalChatbot: React.FC = () => {
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: text || "Sorry, I did not catch that. Could you rephrase your question?",
+        text: text || "I am currently processing your request. Could you please provide a bit more detail?",
         sender: 'bot',
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, botMessage]);
 
-      // Check if user or bot response indicates booking intent
       if (hasBookingIntent(userMessage.text) || hasBookingIntent(text)) {
         setShowBookingButton(true);
       }
     } catch (error: any) {
       console.error("Chat error:", error);
+      
+      let errorResponse = "I am having trouble connecting to the server right now. Please try again in a few moments.";
+      
+      if (error.message?.includes('503') || error.message?.includes('high demand')) {
+        errorResponse = "I am currently navigating a high-demand period in our orchestration layer. While I recalibrate, you can reach our human team directly at info@viktron.ai or try again in a few moments. We appreciate your patience as we scale our intelligence.";
+      } else if (error.message?.includes('429')) {
+        errorResponse = "Our rate-limiting gateway has paused our conversation briefly. Please wait a moment while I reset my connection parameters, or contact info@viktron.ai for urgent inquiries.";
+      }
+
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: sanitizeAssistantText(`I am having trouble connecting to the server right now. Error details: ${error.message || 'Unknown'}. Please try again later or contact us directly at info@viktron.ai.`),
+        text: sanitizeAssistantText(errorResponse),
         sender: 'bot',
         timestamp: new Date(),
       };
