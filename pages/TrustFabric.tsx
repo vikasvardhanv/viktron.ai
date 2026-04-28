@@ -12,14 +12,14 @@ import {
 import { Layout } from '../components/layout/Layout';
 import { ServiceSEO } from '../components/ui/SEO';
 
-// ─── ASSETS ──────────────────────────────────────────────────────────────────
+// ─── ASSETS (Public Directory) ─────────────────────────────────────────────
 const ASSETS = {
-  shield: "/Users/vikashvardhan/.gemini/antigravity/brain/1f2ef31e-d578-4028-8c95-618a85eba259/agentirl_trust_shield_1777348951595.png",
+  shield: "/assets/branding/shield.png",
 };
 
 const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.ReactNode; className?: string }) => (
   <motion.div
-    initial={{ opacity: 0, y: 15 }}
+    initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.8, delay: d, ease: [0.16, 1, 0.3, 1] }}
@@ -30,10 +30,7 @@ const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.R
 );
 
 const Label = ({ children }: { children: React.ReactNode }) => (
-  <div className="section-label font-mono text-[10px] uppercase tracking-[0.3em] text-muted mb-8 flex items-center gap-4">
-    {children}
-    <div className="h-px flex-1 bg-white/10" />
-  </div>
+  <div className="section-label">{children}</div>
 );
 
 export const TrustFabric: React.FC = () => (
@@ -45,41 +42,40 @@ export const TrustFabric: React.FC = () => (
 
     {/* ═══════════════════════════ HERO ═══════════════════════════ */}
     <section className="relative min-h-[90vh] bg-[#050505] flex flex-col justify-center pt-32 pb-20 overflow-hidden">
-      <div className="absolute inset-0 grid-paper opacity-[0.03] pointer-events-none" />
-      <div className="max-w-[1400px] mx-auto px-6 w-full">
+      <div className="absolute inset-0 grid-paper opacity-[0.05] pointer-events-none" />
+      <div className="max-w-[1400px] mx-auto px-6 w-full relative z-10">
         <div className="grid lg:grid-cols-[1.2fr_1fr] gap-20 items-center">
           <div className="space-y-12">
             <FU d={0}>
-              <div className="flex items-center gap-3 font-mono text-[10px] text-primary tracking-[0.2em] uppercase">
-                <div className="w-8 h-px bg-primary" />
-                INFRASTRUCTURE_SECURITY // LAYER_06
+              <div className="flex items-center gap-3 font-mono text-[10px] text-primary tracking-[0.3em] uppercase font-bold">
+                <div className="w-12 h-px bg-primary" />
+                SECURITY_ARCHITECTURE // LAYER_06
               </div>
             </FU>
             <FU d={0.1}>
-              <h1 className="heading-precision text-6xl md:text-8xl text-white">
+              <h1 className="heading-precision text-7xl md:text-8xl text-white leading-[0.85] tracking-[-0.04em]">
                 THE TRUST<br />
-                <span className="text-muted">FABRIC.</span>
+                <span className="text-zinc-700">FABRIC.</span>
               </h1>
-              <p className="heading-editorial text-3xl text-zinc-300 mt-6 max-w-xl">
+              <p className="heading-editorial text-3xl text-zinc-300 mt-8 max-w-xl">
                 Cryptographic governance for every agent decision.
               </p>
             </FU>
             <FU d={0.2}>
-              <p className="max-w-xl text-zinc-400 text-base leading-relaxed">
-                The Trust Fabric is a multi-layered security stack that intercepts agent actions 
-                to ensure SOC 2 compliance. It's the definitive layer for autonomous enterprise 
-                risk management.
+              <p className="max-w-xl text-zinc-400 text-lg leading-relaxed">
+                The Trust Fabric is a 6-layer security stack that intercepts agent actions 
+                to ensure SOC 2 compliance and institutional-grade risk management.
               </p>
             </FU>
             <FU d={0.3} className="flex gap-6">
-              <Link to="/contact" className="btn-acid">Request CISO Briefing</Link>
-              <Link to="/enterprise" className="btn-obsidian border-white/20">Compliance Specs</Link>
+              <Link to="/contact" className="btn-acid">CISO Security Brief</Link>
+              <Link to="/enterprise" className="btn-obsidian">Governance Specs</Link>
             </FU>
           </div>
-          <FU d={0.4} className="relative">
-             <div className="obsidian-panel p-12 flex items-center justify-center relative">
-                <div className="absolute inset-0 scan-line" />
-                <img src={ASSETS.shield} alt="Trust Shield" className="w-full h-full object-contain grayscale brightness-90 animate-float" />
+          <FU d={0.4} className="relative group">
+             <div className="obsidian-panel p-16 flex items-center justify-center relative shimmer">
+                <div className="scan-line opacity-30" />
+                <img src={ASSETS.shield} alt="Trust Shield" className="w-full h-full object-contain grayscale brightness-90 animate-float group-hover:brightness-110 transition-all duration-1000" />
                 <div className="absolute inset-0 acid-glow opacity-10 pointer-events-none" />
              </div>
           </FU>
@@ -87,10 +83,10 @@ export const TrustFabric: React.FC = () => (
       </div>
     </section>
 
-    {/* ══════════════════ THE 6 LAYERS ══════════════════ */}
-    <section className="py-40 bg-[#050505] border-t border-white/5">
+    {/* ══════════════════ 01: THE 6 LAYERS ══════════════════ */}
+    <section className="py-40 bg-[#050505] border-t border-white/5 relative">
       <div className="max-w-7xl mx-auto px-6">
-        <Label>01 // THE 6 LAYERS OF ENFORCEMENT</Label>
+        <Label>01 // ENFORCEMENT PILLARS</Label>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/5 mt-20 border border-white/5 overflow-hidden">
           {[
             { icon: Fingerprint, name: 'Identity', desc: 'Every agent instance is bound to a unique cryptographic fingerprint.' },
@@ -102,12 +98,12 @@ export const TrustFabric: React.FC = () => (
           ].map((l, i) => {
             const Icon = l.icon;
             return (
-              <FU key={i} d={i * 0.05} className="bg-[#050505] p-12 space-y-6 group hover:bg-[#080808] transition-colors">
-                 <div className="w-10 h-10 obsidian-inset flex items-center justify-center text-zinc-600 group-hover:text-primary">
-                    <Icon size={20} />
+              <FU key={i} d={i * 0.05} className="bg-[#050505] p-12 space-y-8 group hover:bg-[#080808] transition-colors">
+                 <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-600 group-hover:text-primary transition-colors">
+                    <Icon size={24} />
                  </div>
-                 <h4 className="text-white font-bold text-sm uppercase tracking-tight">{l.name}</h4>
-                 <p className="text-zinc-500 text-xs leading-relaxed">{l.desc}</p>
+                 <h4 className="text-white font-bold text-base uppercase tracking-tight">{l.name}</h4>
+                 <p className="text-zinc-500 text-sm leading-relaxed">{l.desc}</p>
               </FU>
             );
           })}
@@ -115,44 +111,45 @@ export const TrustFabric: React.FC = () => (
       </div>
     </section>
 
-    {/* ══════════════════ WHY TRUST FABRIC? ══════════════════ */}
-    <section className="py-40 bg-[#080808] border-y border-white/5">
+    {/* ══════════════════ 02: THE NECESSITY ══════════════════ */}
+    <section className="py-40 bg-[#080808] border-y border-white/5 relative overflow-hidden">
        <div className="max-w-7xl mx-auto px-6">
-          <Label>02 // THE NECESSITY</Label>
+          <Label>02 // INSTITUTIONAL TRUST</Label>
           <div className="grid lg:grid-cols-2 gap-24 items-center mt-20">
              <FU d={0}>
-                <h2 className="heading-precision text-5xl text-white mb-8 uppercase tracking-tighter">Beyond the<br />Prompt.</h2>
-                <p className="text-zinc-400 text-lg leading-relaxed mb-10">
-                   Prompt engineering is not a security strategy. Trust Fabric moves governance 
-                   to the infrastructure layer, ensuring that no matter what the LLM generates, 
-                   it cannot violate your corporate boundaries.
+                <h2 className="heading-precision text-6xl text-white mb-10 uppercase tracking-tighter">Beyond the<br />Prompt.</h2>
+                <p className="text-zinc-300 text-xl leading-relaxed mb-12 font-light">
+                   Prompt engineering is not security. Trust Fabric moves governance 
+                   to the infrastructure layer, ensuring institutional boundaries 
+                   cannot be violated by model output.
                 </p>
-                <div className="grid sm:grid-cols-2 gap-6">
+                <div className="grid sm:grid-cols-2 gap-10">
                    {[
                      { t: 'SOC 2 Ready', d: 'Automated audit evidence generation.' },
-                     { t: 'Human-in-Loop', d: 'Risk-aware approval triggers.' },
-                     { t: 'Framework Agnostic', d: 'Works with LangChain, CrewAI, etc.' },
+                     { t: 'Risk-Aware', d: 'Human-in-loop approval triggers.' },
+                     { t: 'Multi-Cloud', d: 'Deploy on-prem or across any VPC.' },
                      { t: 'Immutable', d: 'SHA-256 chain provenance.' },
                    ].map((item, i) => (
-                     <div key={i} className="space-y-2">
-                        <div className="text-primary font-mono text-[10px] uppercase font-bold tracking-widest">{item.t}</div>
-                        <p className="text-zinc-600 text-xs leading-relaxed">{item.d}</p>
+                     <div key={i} className="space-y-3">
+                        <div className="text-primary font-mono text-[11px] uppercase font-bold tracking-[0.2em]">{item.t}</div>
+                        <p className="text-zinc-500 text-sm leading-relaxed">{item.d}</p>
                      </div>
                    ))}
                 </div>
              </FU>
-             <FU d={0.2} className="obsidian-panel p-12 bg-[#050505]">
-                <h4 className="font-mono text-[10px] text-muted mb-8 tracking-widest uppercase">// LIVE_PROVENANCE_STREAM</h4>
-                <div className="space-y-4 font-mono text-[11px]">
+             <FU d={0.2} className="obsidian-panel p-16 bg-[#050505] relative shimmer">
+                <div className="scan-line opacity-20" />
+                <h4 className="font-mono text-[10px] text-zinc-600 mb-10 tracking-[0.3em] uppercase font-bold">// PROVENANCE_STREAM</h4>
+                <div className="space-y-6 font-mono text-[11px]">
                    {[
-                     { l: 'IDENTITY_VERIFIED', s: 'text-primary' },
+                     { l: 'IDENTITY_TOKEN_VERIFIED', s: 'text-primary' },
                      { l: 'POLICY_EVAL_GRANTED', s: 'text-primary' },
-                     { l: 'BUDGET_RESERVE_OK', s: 'text-primary' },
-                     { l: 'CREDENTIAL_INJECTED', s: 'text-primary' },
-                     { l: 'LEDGER_ENTRY_RECORDED', s: 'text-muted' },
+                     { l: 'BUDGET_RESERVE_ACTIVE', s: 'text-primary' },
+                     { l: 'CREDENTIAL_SCOPED_INJECT', s: 'text-primary' },
+                     { l: 'LEDGER_ENTRY_RECORDED', s: 'text-zinc-700' },
                    ].map((log, i) => (
-                     <div key={i} className="flex gap-4">
-                        <span className="text-zinc-800">[{1420 + i}]</span>
+                     <div key={i} className="flex gap-6">
+                        <span className="text-zinc-800">[{2840 + i}]</span>
                         <span className={log.s}>{log.l}</span>
                      </div>
                    ))}
@@ -163,13 +160,14 @@ export const TrustFabric: React.FC = () => (
     </section>
 
     {/* ══════════════════ CTA ══════════════════ */}
-    <section className="py-60 bg-[#050505]">
-       <div className="max-w-4xl mx-auto px-6 text-center">
+    <section className="py-60 bg-[#050505] text-center relative overflow-hidden">
+       <div className="absolute inset-0 grid-paper opacity-[0.03] pointer-events-none" />
+       <div className="max-w-5xl mx-auto px-6 relative z-10">
           <FU d={0}>
-             <h2 className="heading-precision text-6xl text-white mb-12 uppercase">
-                GOVERN<br />EVERYTHING.
+             <h2 className="heading-precision text-7xl md:text-[140px] text-white mb-16 uppercase tracking-tighter font-black">
+                GOVERN<br />ALL.
              </h2>
-             <Link to="/contact" className="btn-acid px-12 py-5">Talk to a Solutions Architect</Link>
+             <Link to="/contact" className="btn-acid px-16 py-6">Consult an Architect</Link>
           </FU>
        </div>
     </section>

@@ -2,36 +2,36 @@
  * Viktron AI — Landing Page
  * "The Enterprise Control Plane For AI Agents."
  *
- * Design System: OBSIDIAN PRECISION (God-Level 2.1)
+ * Design System: OBSIDIAN PRECISION v2.2 (UI PRO MAX)
  * Aesthetic: Institutional, Minimalist, Precision Infrastructure.
  * Palette: Obsidian, Bone, Acid Green.
  */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, Shield, BarChart3, Server, CheckCircle2,
   Lock, Activity, Fingerprint, KeyRound,
-  FileCheck, Globe, ShoppingBag
+  FileCheck, ShoppingBag, Zap, Database
 } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
 
-// ─── ASSETS ──────────────────────────────────────────────────────────────────
+// ─── ASSETS (Public Directory) ─────────────────────────────────────────────
 const ASSETS = {
-  hero: "/Users/vikashvardhan/.gemini/antigravity/brain/1f2ef31e-d578-4028-8c95-618a85eba259/viktron_editorial_obsidian_ui_1777350115611.png",
-  moat: "/Users/vikashvardhan/.gemini/antigravity/brain/1f2ef31e-d578-4028-8c95-618a85eba259/agentirl_brutalist_infrastructure_1777350129546.png",
-  cloud: "/Users/vikashvardhan/.gemini/antigravity/brain/1f2ef31e-d578-4028-8c95-618a85eba259/viktron_cloud_orchestration_visual_1777351348062.png",
-  analytics: "/Users/vikashvardhan/.gemini/antigravity/brain/1f2ef31e-d578-4028-8c95-618a85eba259/ai_analytics_telemetry_visual_1777351362088.png",
-  marketplace: "/Users/vikashvardhan/.gemini/antigravity/brain/1f2ef31e-d578-4028-8c95-618a85eba259/agent_marketplace_visual_1777351374273.png",
-  ledger: "/Users/vikashvardhan/.gemini/antigravity/brain/1f2ef31e-d578-4028-8c95-618a85eba259/provenance_ledger_abstract_1777348980017.png",
+  hero: "/assets/branding/hero.png",
+  moat: "/assets/branding/moat.png",
+  cloud: "/assets/branding/cloud.png",
+  analytics: "/assets/branding/analytics.png",
+  marketplace: "/assets/branding/marketplace.png",
+  ledger: "/assets/branding/ledger.png",
 };
 
 // ─── SHARED COMPONENTS ────────────────────────────────────────────────────────
 
 const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.ReactNode; className?: string }) => (
   <motion.div
-    initial={{ opacity: 0, y: 15 }}
+    initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: '-20px' }}
     transition={{ duration: 0.8, delay: d, ease: [0.16, 1, 0.3, 1] }}
@@ -42,10 +42,7 @@ const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.R
 );
 
 const Label = ({ children }: { children: React.ReactNode }) => (
-  <div className="section-label font-mono text-[10px] uppercase tracking-[0.3em] text-muted mb-8 flex items-center gap-4">
-    {children}
-    <div className="h-px flex-1 bg-white/10" />
-  </div>
+  <div className="section-label">{children}</div>
 );
 
 // ─── SECTIONS ─────────────────────────────────────────────────────────────────
@@ -58,55 +55,79 @@ export const Landing: React.FC = () => {
         description="Viktron provides the governance infrastructure to run autonomous AI agents safely at scale. AgentIRL Trust Fabric, Cloud Orchestration, and Real-time Analytics."
       />
 
-      {/* ═══════════════════════════ HERO: WHAT WE DO ═══════════════════════════ */}
-      <section className="relative min-h-screen bg-[#050505] flex flex-col justify-center pt-24 pb-20">
-        <div className="absolute inset-0 grid-paper opacity-[0.03] pointer-events-none" />
+      {/* ═══════════════════════════ HERO ═══════════════════════════ */}
+      <section className="relative min-h-screen bg-[#050505] flex flex-col justify-center pt-24 pb-20 overflow-hidden">
+        <div className="absolute inset-0 grid-paper opacity-[0.05] pointer-events-none" />
         
-        <div className="max-w-[1400px] mx-auto px-6 w-full">
-          <div className="grid lg:grid-cols-[1.1fr_1fr] gap-20 items-center">
+        <div className="max-w-[1400px] mx-auto px-6 w-full relative z-10">
+          <div className="grid lg:grid-cols-[1fr_1.1fr] gap-20 items-center">
             
             <div className="space-y-12">
               <FU d={0}>
-                <div className="flex items-center gap-3 font-mono text-[10px] text-primary tracking-[0.2em] uppercase">
-                  <div className="w-8 h-px bg-primary" />
-                  VIKTRON AI // SYSTEM_STATUS: OPERATIONAL
+                <div className="flex items-center gap-3 font-mono text-[10px] text-primary tracking-[0.3em] uppercase font-bold">
+                  <div className="w-12 h-px bg-primary" />
+                  VIKTRON SYSTEM_STATUS // ACTIVE
                 </div>
               </FU>
 
               <FU d={0.1}>
-                <h1 className="heading-precision text-6xl md:text-8xl lg:text-[110px] text-white">
+                <h1 className="heading-precision text-7xl md:text-8xl lg:text-[130px] text-white leading-[0.85] tracking-[-0.05em]">
                   AGENT<br />
-                  <span className="text-muted">CONTROL.</span>
+                  <span className="text-zinc-700">CONTROL.</span>
                 </h1>
-                <p className="heading-editorial text-3xl text-zinc-300 mt-6 max-w-xl">
-                  We build the infrastructure that makes autonomous AI safe for production.
+                <p className="heading-editorial text-3xl md:text-4xl text-zinc-300 mt-8 max-w-xl">
+                  The definitive infrastructure layer for autonomous enterprise intelligence.
                 </p>
               </FU>
 
               <FU d={0.2}>
-                <p className="max-w-xl text-zinc-400 text-base leading-relaxed">
-                  Viktron is an **Enterprise Control Plane**. While others help you build agents, 
-                  we provide the governance layer—intercepting every tool call and reason 
-                  to ensure security, compliance, and budget adherence.
+                <p className="max-w-xl text-zinc-400 text-lg leading-relaxed">
+                  Viktron is an **Enterprise Control Plane**. We provide the governance 
+                  interceptor that wraps your agent workforce in a secure, high-trust 
+                  runtime with real-time policy enforcement.
                 </p>
               </FU>
 
               <FU d={0.3}>
                 <div className="flex flex-wrap items-center gap-6">
-                  <Link to="/contact" className="btn-acid px-8 py-4">Request Access</Link>
-                  <Link to="/services/agentirl" className="btn-obsidian px-8 py-4 border-white/20">Read Technical Specs</Link>
+                  <Link to="/contact" className="btn-acid px-10 py-5">Request Technical Access</Link>
+                  <Link to="/services/agentirl" className="btn-obsidian px-10 py-5">System Architecture</Link>
                 </div>
               </FU>
             </div>
 
-            <FU d={0.4} className="relative">
-              <div className="obsidian-panel overflow-hidden aspect-[16/10] relative group">
-                <img src={ASSETS.hero} alt="Control Plane Interface" className="w-full h-full object-cover opacity-90 grayscale group-hover:grayscale-0 transition-all duration-1000" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-60" />
-                <div className="absolute top-6 right-6 flex items-center gap-2 px-3 py-1.5 rounded-sm bg-black/80 border border-white/10 backdrop-blur-md">
-                   <div className="w-1.5 h-1.5 bg-primary animate-pulse rounded-full" />
-                   <span className="font-mono text-[9px] text-primary font-bold uppercase">Live Telemetry</span>
+            <FU d={0.4} className="relative group">
+              <div className="obsidian-panel overflow-hidden aspect-[16/10] relative shimmer">
+                <div className="scan-line" />
+                <img src={ASSETS.hero} alt="Control Plane Interface" className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-[2000ms]" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-40" />
+                
+                {/* Floating Meta HUD */}
+                <div className="absolute top-8 right-8 p-4 glass-bone font-mono text-[10px] space-y-2">
+                   <div className="flex justify-between gap-8 text-primary">
+                      <span>LATENCY</span>
+                      <span>2ms</span>
+                   </div>
+                   <div className="flex justify-between gap-8 text-zinc-500">
+                      <span>CLUSTER</span>
+                      <span>[V-PRD-01]</span>
+                   </div>
                 </div>
+              </div>
+              
+              {/* Offset Detail Card */}
+              <div className="absolute -bottom-10 -left-10 p-10 glass-bone max-w-[280px] hidden xl:block">
+                 <div className="font-mono text-[10px] text-primary mb-4 tracking-widest uppercase font-bold">// GOVERNANCE_ACTIVE</div>
+                 <p className="text-[11px] text-zinc-400 leading-relaxed mb-6">
+                    Every tool call is intercepted and validated against corporate policy before execution.
+                 </p>
+                 <div className="h-0.5 bg-zinc-800 relative overflow-hidden">
+                    <motion.div 
+                      className="absolute inset-y-0 left-0 bg-primary"
+                      animate={{ width: ['0%', '100%'] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    />
+                 </div>
               </div>
             </FU>
 
@@ -114,84 +135,80 @@ export const Landing: React.FC = () => {
         </div>
       </section>
 
-      {/* ══════════════════ WHAT IT IS: INFRASTRUCTURE ══════════════════ */}
-      <section className="py-40 bg-[#050505] border-t border-white/5">
+      {/* ══════════════════ 01: WHAT IT IS ══════════════════ */}
+      <section className="py-40 bg-[#050505] border-t border-white/5 relative">
         <div className="max-w-7xl mx-auto px-6">
-          <Label>01 // WHAT IT IS</Label>
+          <Label>01 // THE INFRASTRUCTURE LAYER</Label>
           
-          <div className="grid lg:grid-cols-2 gap-24 items-start mt-20">
+          <div className="grid lg:grid-cols-2 gap-24 items-center mt-20">
             <FU d={0}>
-              <h2 className="heading-precision text-5xl md:text-7xl text-white mb-10">
-                The Trust Fabric.
+              <h2 className="heading-precision text-6xl md:text-8xl text-white mb-10 uppercase tracking-tighter">
+                The Trust<br />Fabric.
               </h2>
-              <p className="text-zinc-400 text-lg leading-relaxed mb-12">
-                AgentIRL™ is our proprietary moat. It is a **governance interceptor** that wraps your 
-                agent frameworks (LangChain, CrewAI, AutoGen) in a secure "Trust Fabric". 
-                It prevents rogue actions before they execute, providing SOC 2 proof for every agent decision.
+              <p className="text-zinc-300 text-xl leading-relaxed mb-12 font-light">
+                AgentIRL™ is a **governance interceptor** that wraps your agent frameworks 
+                (LangChain, CrewAI, AutoGen) in a secure "Trust Fabric". It stops 
+                rogue actions before they execute.
               </p>
               
-              <div className="grid sm:grid-cols-2 gap-8">
+              <div className="grid sm:grid-cols-2 gap-10">
                  {[
-                   { t: 'Identity', d: 'Cryptographic identity for every agent.' },
+                   { t: 'Identity', d: 'Cryptographic binding for every agent.' },
                    { t: 'Policy', d: 'Real-time tool-call interception.' },
                    { t: 'Budget', d: 'Per-agent spend guardrails.' },
                    { t: 'Audit', d: 'Immutable SHA-256 provenance.' },
                  ].map((f, i) => (
-                   <div key={i} className="space-y-2">
-                      <div className="text-primary font-mono text-[10px] uppercase font-bold tracking-widest">{f.t}</div>
-                      <p className="text-zinc-500 text-xs leading-relaxed">{f.d}</p>
+                   <div key={i} className="space-y-3">
+                      <div className="text-primary font-mono text-[11px] uppercase font-bold tracking-[0.2em]">{f.t}</div>
+                      <p className="text-zinc-500 text-sm leading-relaxed">{f.d}</p>
                    </div>
                  ))}
               </div>
             </FU>
 
             <FU d={0.2}>
-              <div className="obsidian-panel p-2 relative group">
-                <img src={ASSETS.moat} alt="Infrastructure" className="w-full h-full object-cover grayscale brightness-75 group-hover:brightness-100 transition-all duration-1000" />
-                <div className="absolute inset-0 acid-glow opacity-10 pointer-events-none" />
-                <div className="absolute -bottom-8 -right-8 p-6 obsidian-panel glass-bone max-w-[200px]">
-                  <p className="text-[10px] font-mono text-zinc-400 italic">"The definitive layer for autonomous enterprise risk management."</p>
-                </div>
+              <div className="obsidian-panel p-3 relative group overflow-hidden shimmer">
+                <img src={ASSETS.moat} alt="Infrastructure" className="w-full h-full object-cover grayscale brightness-90 group-hover:brightness-110 transition-all duration-1000" />
+                <div className="absolute inset-0 acid-glow opacity-20 pointer-events-none" />
+                <div className="absolute top-6 left-6 font-mono text-[9px] text-primary/60 tracking-widest uppercase">// SECURE_CORE_v4.2</div>
               </div>
             </FU>
           </div>
         </div>
       </section>
 
-      {/* ══════════════════ HOW IT WORKS: THE 6-LAYER SHIELD ══════════════════ */}
-      <section className="py-40 bg-[#080808] border-y border-white/5">
+      {/* ══════════════════ 02: HOW IT WORKS ══════════════════ */}
+      <section className="py-40 bg-[#080808] border-y border-white/5 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
-          <Label>02 // HOW IT WORKS</Label>
+          <Label>02 // ENFORCEMENT LAYERS</Label>
           
           <FU d={0} className="text-center mb-24">
-             <h2 className="heading-precision text-5xl md:text-8xl text-white uppercase tracking-tighter">
+             <h2 className="heading-precision text-6xl md:text-9xl text-white uppercase tracking-tighter leading-[0.85]">
                 The 6-Layer<br />Shield.
              </h2>
-             <p className="text-zinc-500 text-lg mt-6 max-w-2xl mx-auto">
-                Viktron intercepts agent actions across six independently enforced layers.
-                Execution is only granted when all six layers return a SHA-256 verified token.
+             <p className="text-zinc-400 text-xl mt-8 max-w-2xl mx-auto font-light">
+                Viktron intercepts agent actions across six independently enforced layers, 
+                ensuring institutional-grade reliability at scale.
              </p>
           </FU>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { name: 'Identity', icon: Fingerprint, desc: 'Verified cryptographic identity bound to agent token.' },
+              { name: 'Identity', icon: Fingerprint, desc: 'Verified cryptographic identity bound to every action token.' },
               { name: 'Delegation', icon: KeyRound, desc: 'Scoped JWTs that restrict permissions as tasks evolve.' },
-              { name: 'Policy Gate', icon: Shield, desc: 'Interception of tool calls against enterprise rules.' },
-              { name: 'Budget Envelope', icon: Activity, desc: 'Per-agent token and API spend cap enforcement.' },
-              { name: 'Secrets Vault', icon: Lock, desc: 'Zero-trust injection of API keys at tool-call runtime.' },
+              { name: 'Policy Gate', icon: Shield, desc: 'Sub-50ms interception of tool calls against corporate rules.' },
+              { name: 'Budget', icon: Activity, desc: 'Per-agent token and API spend cap enforcement.' },
+              { name: 'Secrets', icon: Lock, desc: 'Zero-trust injection of API keys at tool-call runtime.' },
               { name: 'Provenance', icon: FileCheck, desc: 'Immutable chain of every decision, reason, and action.' },
             ].map((l, i) => {
               const Icon = l.icon;
               return (
-                <FU key={i} d={i * 0.05}>
-                   <div className="obsidian-panel p-8 h-full space-y-6 hover:border-primary/30 transition-colors group">
-                      <div className="w-10 h-10 obsidian-inset flex items-center justify-center text-zinc-600 group-hover:text-primary">
-                        <Icon size={20} />
-                      </div>
-                      <h4 className="text-white font-bold text-sm tracking-tight uppercase">{l.name}</h4>
-                      <p className="text-zinc-500 text-xs leading-relaxed">{l.desc}</p>
+                <FU key={i} d={i * 0.05} className="obsidian-panel p-10 h-full space-y-8 group hover:border-primary/50 transition-all">
+                   <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-500 group-hover:text-primary transition-colors">
+                     <Icon size={24} />
                    </div>
+                   <h4 className="text-white font-bold text-base tracking-tight uppercase">{l.name}</h4>
+                   <p className="text-zinc-500 text-sm leading-relaxed">{l.desc}</p>
                 </FU>
               );
             })}
@@ -199,86 +216,53 @@ export const Landing: React.FC = () => {
         </div>
       </section>
 
-      {/* ══════════════════ PRODUCT DEEP-DIVE ══════════════════ */}
-      <section className="py-40 bg-[#050505]">
+      {/* ══════════════════ 03: PLATFORM ══════════════════ */}
+      <section className="py-40 bg-[#050505] relative">
         <div className="max-w-7xl mx-auto px-6">
-          <Label>03 // THE PLATFORM</Label>
+          <Label>03 // CORE INFRASTRUCTURE</Label>
           
-          <div className="space-y-32 mt-20">
-            {/* AgentIRL */}
-            <div className="grid lg:grid-cols-2 gap-20 items-center">
-               <FU d={0} className="order-2 lg:order-1">
-                  <div className="obsidian-panel overflow-hidden border-primary/20">
-                     <img src={ASSETS.moat} alt="AgentIRL" className="w-full h-64 object-cover" />
-                     <div className="p-8">
-                        <div className="text-primary font-mono text-[10px] uppercase font-bold mb-4">Core Interceptor</div>
-                        <h3 className="heading-precision text-4xl text-white mb-6 uppercase">AgentIRL™</h3>
-                        <p className="text-zinc-400 text-sm leading-relaxed mb-8">
-                           The heart of the control plane. AgentIRL intercepts agent intent at the reasoning layer 
-                           and validates it against cryptographic identity and corporate policy before execution.
-                        </p>
-                        <Link to="/services/agentirl" className="btn-obsidian text-[10px]">Technical Documentation</Link>
-                     </div>
-                  </div>
-               </FU>
-               <FU d={0.1} className="order-1 lg:order-2">
-                  <h3 className="text-zinc-600 font-mono text-[12px] uppercase tracking-[0.5em] mb-4">INTERCEPT_VALIDATE_CHAIN</h3>
-                  <h2 className="heading-precision text-5xl text-white mb-8">The Governance<br />Engine.</h2>
-                  <ul className="space-y-4">
-                     {['Real-time interception', 'SOC 2 compliant logs', 'Policy as Code', 'Human-in-loop triggers'].map(t => (
-                       <li key={t} className="flex items-center gap-3 text-zinc-400 text-sm">
-                          <CheckCircle2 size={14} className="text-primary" />
-                          {t}
-                       </li>
-                     ))}
-                  </ul>
-               </FU>
-            </div>
-
+          <div className="space-y-40 mt-32">
             {/* Viktron Cloud */}
-            <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <div className="grid lg:grid-cols-2 gap-24 items-center">
                <FU d={0}>
-                  <h3 className="text-zinc-600 font-mono text-[12px] uppercase tracking-[0.5em] mb-4">DEPLOY_SCALE_ORCHESTRATE</h3>
-                  <h2 className="heading-precision text-5xl text-white mb-8">Viktron Cloud<br />Infrastructure.</h2>
-                  <p className="text-zinc-500 text-sm leading-relaxed mb-8">
+                  <h3 className="text-primary font-mono text-[11px] uppercase tracking-[0.4em] mb-6 font-bold">// DEPLOY_SCALE_ORCHESTRATE</h3>
+                  <h2 className="heading-precision text-6xl text-white mb-8 uppercase tracking-tighter">Viktron Cloud.</h2>
+                  <p className="text-zinc-400 text-lg leading-relaxed mb-10">
                      Scale your agent workforce across 100+ enterprise integrations. 
                      Multi-agent task queues with auto-scaling runtimes and intelligent LLM cost routing.
                   </p>
-                  <Link to="/enterprise" className="btn-obsidian text-[10px]">Cloud Infrastructure Stats</Link>
+                  <Link to="/enterprise" className="btn-obsidian text-[11px]">System Status: Online</Link>
                </FU>
                <FU d={0.1}>
-                  <div className="obsidian-panel overflow-hidden border-primary/20 relative group">
-                     <img src={ASSETS.cloud} alt="Viktron Cloud" className="w-full h-80 object-cover grayscale brightness-50 group-hover:brightness-100 group-hover:grayscale-0 transition-all duration-1000" />
-                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent" />
-                     <div className="absolute bottom-8 left-8">
-                        <div className="font-mono text-[10px] text-primary">100+ INTEGRATIONS ACTIVE</div>
-                     </div>
+                  <div className="obsidian-panel overflow-hidden border-primary/20 relative group shimmer">
+                     <img src={ASSETS.cloud} alt="Viktron Cloud" className="w-full h-[400px] object-cover grayscale brightness-50 group-hover:brightness-100 group-hover:grayscale-0 transition-all duration-1000" />
+                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-60" />
                   </div>
                </FU>
             </div>
 
             {/* AI Analytics */}
-            <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <div className="grid lg:grid-cols-2 gap-24 items-center">
                <FU d={0} className="order-2 lg:order-1">
-                  <div className="obsidian-panel overflow-hidden border-primary/20">
-                     <img src={ASSETS.analytics} alt="Analytics" className="w-full h-80 object-cover" />
+                  <div className="obsidian-panel overflow-hidden border-primary/20 shimmer">
+                     <img src={ASSETS.analytics} alt="Analytics" className="w-full h-[400px] object-cover" />
                   </div>
                </FU>
                <FU d={0.1} className="order-1 lg:order-2">
-                  <h3 className="text-zinc-600 font-mono text-[12px] uppercase tracking-[0.5em] mb-4">OBSERVE_REPLAY_IMPROVE</h3>
-                  <h2 className="heading-precision text-5xl text-white mb-8">Full-Fidelity<br />AI Analytics.</h2>
-                  <p className="text-zinc-400 text-sm leading-relaxed mb-8">
-                     See exactly what your agents see. Real-time OTLP telemetry and per-session replay of every decision. 
-                     Audit reasoning chains to eliminate hallucinations and improve accuracy.
+                  <h3 className="text-primary font-mono text-[11px] uppercase tracking-[0.4em] mb-6 font-bold">// OBSERVE_REPLAY_IMPROVE</h3>
+                  <h2 className="heading-precision text-6xl text-white mb-8 uppercase tracking-tighter">AI Analytics.</h2>
+                  <p className="text-zinc-400 text-lg leading-relaxed mb-10">
+                     Full-fidelity session replay and real-time OTLP telemetry. See exactly 
+                     what your agents saw and audit reasoning chains to eliminate hallucinations.
                   </p>
-                  <div className="flex gap-4">
-                     <div className="text-center p-4 bg-white/5 border border-white/10 flex-1">
-                        <div className="text-2xl font-bold text-white">99.9%</div>
-                        <div className="text-[9px] text-muted uppercase">Observability</div>
+                  <div className="grid grid-cols-2 gap-6">
+                     <div className="obsidian-panel p-6 border-l-primary border-l-2">
+                        <div className="text-3xl font-bold text-white mb-1 tracking-tighter">99.9%</div>
+                        <div className="text-[10px] text-zinc-600 uppercase tracking-widest">Observability</div>
                      </div>
-                     <div className="text-center p-4 bg-white/5 border border-white/10 flex-1">
-                        <div className="text-2xl font-bold text-primary">&lt;50ms</div>
-                        <div className="text-[9px] text-muted uppercase">Telemetry Lag</div>
+                     <div className="obsidian-panel p-6 border-l-primary border-l-2">
+                        <div className="text-3xl font-bold text-primary mb-1 tracking-tighter">&lt;50ms</div>
+                        <div className="text-[10px] text-zinc-600 uppercase tracking-widest">Telemetry Lag</div>
                      </div>
                   </div>
                </FU>
@@ -287,25 +271,25 @@ export const Landing: React.FC = () => {
         </div>
       </section>
 
-      {/* ══════════════════ MARKETPLACE: RENT AGENTS ══════════════════ */}
-      <section className="py-40 bg-[#080808] border-y border-white/5">
+      {/* ══════════════════ 04: MARKETPLACE ══════════════════ */}
+      <section className="py-40 bg-[#080808] border-y border-white/5 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
-           <div className="grid lg:grid-cols-[1fr_1.5fr] gap-20 items-center">
+           <div className="grid lg:grid-cols-[1fr_1.4fr] gap-24 items-center">
               <div>
-                 <Label>04 // CAPABILITIES</Label>
-                 <h2 className="heading-precision text-5xl text-white mb-8 uppercase">Rent Your<br />Workforce.</h2>
-                 <p className="text-zinc-500 text-sm leading-relaxed mb-10">
-                    Need a Sales agent for lead qualification? A DevOps agent for CI/CD? 
-                    Access the Viktron Marketplace to rent pre-configured, highly specialized 
-                    agents that run securely in your VPC.
+                 <Label>04 // RENTAL WORKFORCE</Label>
+                 <h2 className="heading-precision text-6xl text-white mb-10 uppercase tracking-tighter">Rent Your<br />Workforce.</h2>
+                 <p className="text-zinc-400 text-lg leading-relaxed mb-12">
+                    Access the Viktron Marketplace to rent pre-configured, specialized 
+                    agents—Sales, DevOps, Legal—that run securely within your VPC 
+                    under our Trust Fabric governance.
                  </p>
-                 <Link to="/rent-agent" className="btn-acid flex items-center justify-center gap-2">
-                    <ShoppingBag size={14} /> Browse Marketplace
+                 <Link to="/rent-agent" className="btn-acid flex items-center justify-center gap-3 py-6">
+                    <ShoppingBag size={18} /> Browse Marketplace
                  </Link>
               </div>
               <FU d={0.2}>
-                 <div className="obsidian-panel overflow-hidden aspect-[16/9]">
-                    <img src={ASSETS.marketplace} alt="Marketplace" className="w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 hover:brightness-100 transition-all duration-1000" />
+                 <div className="obsidian-panel overflow-hidden aspect-[16/10] shimmer group">
+                    <img src={ASSETS.marketplace} alt="Marketplace" className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-110 transition-all duration-1000" />
                  </div>
               </FU>
            </div>
@@ -313,16 +297,21 @@ export const Landing: React.FC = () => {
       </section>
 
       {/* ══════════════════════ CTA ══════════════════════ */}
-      <section className="py-60 bg-[#050505] relative overflow-hidden">
-        <div className="absolute inset-0 grid-paper opacity-[0.02] pointer-events-none" />
-        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+      <section className="py-60 bg-[#050505] relative overflow-hidden text-center">
+        <div className="absolute inset-0 grid-paper opacity-[0.03] pointer-events-none" />
+        <div className="max-w-5xl mx-auto px-6 relative z-10">
           <FU d={0}>
-            <h2 className="heading-precision text-6xl md:text-9xl text-white mb-12">
-               START<br />DEVOPSing.
+            <h2 className="heading-precision text-7xl md:text-[140px] text-white mb-16 uppercase tracking-tighter leading-[0.8] font-black">
+               DEPLOY<br />TRUST.
             </h2>
-            <div className="flex flex-wrap items-center justify-center gap-8">
-              <Link to="/contact" className="btn-acid px-12 py-5 text-sm">Request Technical Access</Link>
-              <Link to="/enterprise" className="btn-obsidian px-12 py-5 text-sm border-white/20">Talk to Engineering</Link>
+            <div className="flex flex-wrap items-center justify-center gap-10">
+              <Link to="/contact" className="btn-acid px-16 py-6 text-sm">Request Technical Briefing</Link>
+              <Link to="/enterprise" className="btn-obsidian px-16 py-6 text-sm">System Specs</Link>
+            </div>
+            <div className="mt-24 flex flex-wrap justify-center gap-16 text-[10px] font-mono text-zinc-600 uppercase tracking-[0.4em] font-bold">
+              <span className="flex items-center gap-2 text-primary/80"><Shield size={12} /> SOC 2 READY</span>
+              <span className="flex items-center gap-2"><Lock size={12} /> ZERO-TRUST</span>
+              <span className="flex items-center gap-2"><Activity size={12} /> OTLP NATIVE</span>
             </div>
           </FU>
         </div>
