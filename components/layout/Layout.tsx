@@ -31,65 +31,36 @@ export const Layout: React.FC<LayoutProps> = ({
   }, []);
 
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-transparent text-[#13213a]">
+    <div className="relative min-h-screen overflow-x-clip bg-[#050505] text-white">
+      {/* Dynamic Infrastructure Background */}
       {showBackground && (
-        <div className={`page-noise pointer-events-none absolute inset-0 -z-10 overflow-hidden ${isMobile ? 'hidden' : ''}`}>
-          <video
-            className="absolute inset-0 h-full w-full object-cover opacity-[0.28] blur-[1px] saturate-[1.2]"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="none"
-            poster="/visuals/site-backdrop.svg"
-            aria-hidden="true"
-          >
-            <source src="/videos/strategy-demo.mp4" type="video/mp4" />
-          </video>
-          <video
-            className="absolute inset-0 hidden h-full w-full object-cover opacity-[0.18] mix-blend-soft-light md:block"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="none"
-            poster="/visuals/site-backdrop-detail.svg"
-            aria-hidden="true"
-          >
-            <source src="/videos/development-demo.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-white/74" />
-          <div className="absolute inset-x-0 top-0 h-80 bg-gradient-to-b from-[#dce7fa]/78 via-[#edf3fb]/50 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-[#edf3fb]/82 to-transparent" />
-          <div className="absolute -top-28 right-[-8rem] h-80 w-80 rounded-full bg-[#89b3ff]/24 blur-3xl" />
-          <div className="absolute top-28 left-[-7rem] h-64 w-64 rounded-full bg-[#89e1c7]/24 blur-3xl" />
+        <div className={`fixed inset-0 pointer-events-none -z-10 overflow-hidden ${isMobile ? 'opacity-20' : 'opacity-40'}`}>
+          <div className="absolute inset-0 grid-paper opacity-[0.05]" />
+          <div className="absolute top-[-10%] right-[-10%] w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full" />
+          <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary/5 blur-[100px] rounded-full" />
+          
+          {/* Subtle tech lines */}
           <div
-            className="absolute inset-0 opacity-[0.06]"
+            className="absolute inset-0 opacity-[0.03]"
             style={{
-              backgroundImage:
-                'linear-gradient(rgba(43,67,107,0.22) 1px, transparent 1px), linear-gradient(90deg, rgba(43,67,107,0.22) 1px, transparent 1px)',
-              backgroundSize: '108px 108px',
-              maskImage: 'linear-gradient(to bottom, black, transparent 80%)',
+              backgroundImage: 'linear-gradient(rgba(204,255,0,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(204,255,0,0.2) 1px, transparent 1px)',
+              backgroundSize: '64px 64px',
             }}
           />
         </div>
       )}
 
-      {/* Mobile-friendly static background alternative */}
-      {showBackground && isMobile && (
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-[#edf3fb] via-white to-[#edf3fb]" />
-      )}
-
       {/* Navigation */}
       <Navbar />
+      
       <main className="relative z-10" role="main">
         {children}
       </main>
 
-      {/* Footer with semantic HTML */}
+      {/* Footer */}
       {showFooter && <Footer />}
 
-      {/* Global AI Chatbot - lazy loaded for performance */}
+      {/* Global AI Chatbot */}
       <Suspense fallback={<ChatbotFallback />}>
         <GlobalChatbot />
       </Suspense>

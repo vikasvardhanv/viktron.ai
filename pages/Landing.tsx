@@ -308,7 +308,7 @@ export const Landing: React.FC = () => {
               <Link to="/contact" className="btn-acid px-16 py-6 text-sm">Request Technical Briefing</Link>
               <Link to="/enterprise" className="btn-obsidian px-16 py-6 text-sm">System Specs</Link>
             </div>
-            <div className="mt-24 flex flex-wrap justify-center gap-16 text-[10px] font-mono text-zinc-600 uppercase tracking-[0.4em] font-bold">
+            <div className="mt-24 flex flex-wrap justify-center gap-16 text-[10px] font-mono text-zinc-400 uppercase tracking-[0.4em] font-bold">
               <span className="flex items-center gap-2 text-primary/80"><Shield size={12} /> SOC 2 READY</span>
               <span className="flex items-center gap-2"><Lock size={12} /> ZERO-TRUST</span>
               <span className="flex items-center gap-2"><Activity size={12} /> OTLP NATIVE</span>

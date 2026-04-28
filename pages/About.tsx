@@ -1,303 +1,195 @@
+/**
+ * Viktron AI — About Page
+ * "The Foundation of Autonomous Intelligence."
+ */
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Layout } from '../components/layout/Layout';
-import { SEO } from '../components/ui/SEO';
-import {
+import { 
   Target, Users, ShieldCheck, Zap, Globe, Cpu, ArrowRight,
   Layers, BrainCircuit, Database, GitBranch, Rocket, Shield,
-  TrendingUp, CheckCircle2, Bot, Workflow, Eye, Sparkles
+  TrendingUp, CheckCircle2, Bot, Workflow, Eye, Sparkles, Activity
 } from 'lucide-react';
+import { Layout } from '../components/layout/Layout';
+import { SEO } from '../components/ui/SEO';
 
-export const About = () => {
+// ─── SHARED COMPONENTS ────────────────────────────────────────────────────────
+
+const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.ReactNode; className?: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8, delay: d, ease: [0.16, 1, 0.3, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
+
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <div className="section-label">{children}</div>
+);
+
+// ─── CONFIG ───────────────────────────────────────────────────────────────────
+
+const stackLayers = [
+  { label: 'Layer 5: Business Logic', desc: 'Pricing, brand voice, and domain constraints.', icon: Sparkles },
+  { label: 'Layer 4: Agent Workforce', desc: 'Specialized Sales, Support, and Content agents.', icon: Bot },
+  { label: 'Layer 3: AgentIRL Runtime', desc: 'Orchestration, reliability, and cost governance.', icon: BrainCircuit },
+  { label: 'Layer 2: Agent Frameworks', desc: 'LangGraph, CrewAI, and custom orchestration.', icon: Layers },
+  { label: 'Layer 1: Neural Compute', desc: 'GPT-4o, Claude 3.5, and Gemini Pro 1.5.', icon: Cpu },
+];
+
+export const About: React.FC = () => {
   return (
-    <Layout>
-      <SEO
-        title="About Viktron | AI Agent Teams & AgentIRL Infrastructure"
-        description="Viktron builds AI agent teams that actually work — Sales, Support, Content, and CEO agents coordinated by AgentIRL, the reliability layer for production multi-agent systems."
-        keywords="about Viktron, AgentIRL, AI infrastructure, multi-agent orchestration, AI reliability, agent coordination, AI platform"
-        url="/about"
-        canonicalUrl="https://viktron.ai/about"
-      />
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 relative overflow-hidden">
-        {/* Background imagery + gradient blobs — matching Landing page */}
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-[0.035] pointer-events-none"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000')" }}
-        />
-        {/* Gradient mesh */}
-        <div className="absolute inset-0 pointer-events-none">
-          {/* Top-right blue glow */}
-          <div className="absolute -top-40 -right-40 w-[900px] h-[900px] bg-blue-200/50 blur-[160px] rounded-full" />
-          {/* Bottom-left indigo glow */}
-          <div className="absolute -bottom-20 -left-40 w-[700px] h-[700px] bg-indigo-200/40 blur-[140px] rounded-full" />
-          {/* Center violet accent */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-violet-100/30 blur-[120px] rounded-full" />
-          {/* Top-left teal micro-accent */}
-          <div className="absolute top-20 left-16 w-[300px] h-[300px] bg-cyan-100/40 blur-[100px] rounded-full" />
-        </div>
-        {/* Subtle dot-grid pattern overlay */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.04]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, #3b82f6 1px, transparent 1px)',
-            backgroundSize: '32px 32px',
-          }}
-        />
-        <div className="container-custom relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center max-w-4xl mx-auto mb-20"
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-mono mb-6">
-              <Cpu className="w-3 h-3" /> About Viktron
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6 tracking-tight leading-[1.1]">
-              We Build AI Teams <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">That Actually Work.</span>
+    <Layout showBackground={false}>
+      <SEO title="About Viktron AI — The Foundation of Autonomous Intelligence" description="Viktron builds the infrastructure layer that makes AI agents reliable for production enterprise use cases." />
+
+      {/* ═══════════════════════════ HERO ═══════════════════════════ */}
+      <section className="relative min-h-screen bg-[#050505] flex flex-col justify-center pt-32 pb-20 overflow-hidden">
+        <div className="absolute inset-0 grid-paper opacity-[0.05] pointer-events-none" />
+        <div className="max-w-[1400px] mx-auto px-6 w-full relative z-10 text-center">
+          <FU d={0}>
+             <div className="flex justify-center mb-12">
+                <div className="flex items-center gap-3 font-mono text-[10px] text-primary tracking-[0.3em] uppercase font-bold text-glow">
+                   <div className="w-12 h-px bg-primary" />
+                   PLATFORM_ORIGIN // v2.2
+                   <div className="w-12 h-px bg-primary" />
+                </div>
+             </div>
+          </FU>
+          <FU d={0.1}>
+            <h1 className="heading-precision text-7xl md:text-[140px] text-white leading-[0.8] tracking-[-0.05em] uppercase font-black">
+              BEYOND THE<br />
+              <span className="text-zinc-700">DEMO.</span>
             </h1>
-            <p className="text-xl text-slate-600 leading-relaxed max-w-3xl mx-auto">
-              Viktron is a dual product: sellable AI agent teams on top, and AgentIRL — the
-              coordination infrastructure that makes multi-agent systems reliable — underneath.
-              Agents are the revenue engine. AgentIRL is the foundation.
+            <p className="heading-editorial text-3xl md:text-4xl text-zinc-300 mt-12 max-w-3xl mx-auto">
+              We build the infrastructure that makes AI agents production-ready.
             </p>
-          </motion.div>
+          </FU>
         </div>
       </section>
 
-      {/* The Problem We Solve */}
-      <section className="py-20 bg-slate-50 border-y border-slate-200">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">The Real Problem</h2>
-              <div className="space-y-4 text-slate-600 leading-relaxed">
+      {/* ══════════════════ THE PROBLEM ══════════════════ */}
+      <section className="py-40 bg-[#080808] relative border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-24 items-center">
+            <FU d={0}>
+              <Label>THE PROBLEM</Label>
+              <h2 className="heading-precision text-6xl text-white uppercase tracking-tighter mb-10 leading-[0.85]">The Production Gap.</h2>
+              <div className="space-y-8 text-zinc-400 text-lg leading-relaxed">
                 <p>
-                  AI frameworks like CrewAI, LangGraph, and OpenAI Agents SDK are powerful — but they're
-                  <strong className="text-slate-800"> building blocks, not finished products</strong>.
-                  A business can't deploy a raw LangGraph workflow and expect it to handle real customers.
+                  AI frameworks are powerful building blocks, but they aren't finished products. 
+                  A business cannot deploy raw LLM workflows and expect institutional reliability.
                 </p>
                 <p>
-                  The gap between "AI demo" and "AI in production" is massive: reliability, error handling,
-                  multi-channel routing, shared state, human oversight, cost management, compliance.
-                  Most AI experiments fail here — not because the models aren't smart enough, but because
-                  the <strong className="text-slate-800">operations layer is missing</strong>.
+                  The gap between a "cool demo" and "production scale" is massive: 
+                  <span className="text-white"> reliability, error handling, cost governance, and compliance.</span> 
+                  Most AI experiments fail because the operations layer is missing.
                 </p>
-                <p>
-                  That's exactly what we build.
+                <p className="font-bold text-primary tracking-widest text-[10px] font-mono uppercase">
+                  VIKTRON IS THE OPERATIONS LAYER.
                 </p>
               </div>
-            </motion.div>
+            </FU>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="absolute inset-0 bg-gradient-to-tr from-blue-100 to-purple-100 rounded-2xl transform rotate-2 scale-105 opacity-40" />
-              <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 relative z-10">
-                <h3 className="font-bold text-slate-900 mb-6 text-lg">The Stack We Built</h3>
-                <div className="space-y-4">
-                  {[
-                    { label: 'Layer 5: Your Business', desc: 'Pricing, FAQ, services, brand voice', icon: Sparkles, color: 'text-purple-600' },
-                    { label: 'Layer 4: AI Agents', desc: 'Sales, Support, Content, CEO agents', icon: Bot, color: 'text-blue-600' },
-                    { label: 'Layer 3: AgentIRL', desc: 'Orchestration, reliability, monitoring', icon: BrainCircuit, color: 'text-cyan-600' },
-                    { label: 'Layer 2: Frameworks', desc: 'CrewAI, LangGraph, CAMEL, OpenAI SDK', icon: Layers, color: 'text-emerald-600' },
-                    { label: 'Layer 1: LLMs', desc: 'GPT-4, Claude, Gemini, open-source', icon: Cpu, color: 'text-amber-600' },
-                  ].map((layer, idx) => (
-                    <div key={idx} className="flex items-start gap-4 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-                      <div className={`w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center shrink-0 ${layer.color}`}>
-                        <layer.icon className="w-4 h-4" />
+            <FU d={0.2} className="relative group">
+              <div className="obsidian-panel p-12 relative overflow-hidden shimmer">
+                <div className="scan-line opacity-20" />
+                <h3 className="font-mono text-[11px] text-zinc-500 uppercase tracking-widest mb-10 font-bold">// THE_GOVERNANCE_STACK</h3>
+                <div className="space-y-6">
+                  {stackLayers.map((layer, i) => {
+                    const Icon = layer.icon;
+                    return (
+                      <div key={i} className="flex gap-6 items-start group/item transition-all hover:translate-x-2">
+                        <div className="w-10 h-10 obsidian-inset flex items-center justify-center text-zinc-600 group-hover/item:text-primary">
+                          <Icon size={18} />
+                        </div>
+                        <div>
+                          <div className="text-[11px] font-mono text-white font-bold uppercase tracking-widest mb-1">{layer.label}</div>
+                          <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">{layer.desc}</div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="text-sm font-semibold text-slate-900">{layer.label}</div>
-                        <div className="text-xs text-slate-500">{layer.desc}</div>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
-            </motion.div>
+            </FU>
           </div>
         </div>
       </section>
 
-      {/* What is AgentIRL */}
-      <section className="py-24">
-        <div className="container-custom">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-100 text-cyan-700 text-xs font-mono mb-6">
-              <BrainCircuit className="w-3 h-3" /> The Foundation
+      {/* ══════════════════ AGENTIRL ══════════════════ */}
+      <section className="py-40 bg-[#050505] relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-24">
+            <Label>THE FOUNDATION</Label>
+            <h2 className="heading-precision text-6xl md:text-8xl text-white uppercase tracking-tighter leading-[0.85] mt-10">What is<br />AgentIRL?</h2>
+            <p className="text-zinc-400 max-w-2xl mx-auto text-xl mt-10 font-light">
+               The reliability layer for the autonomous era. It makes AI agents 
+               safe for mission-critical enterprise deployment.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              { icon: Workflow, title: 'Unified Orchestration', desc: 'Coordinate agents across any framework into one single control plane.' },
+              { icon: Shield, title: 'Reliability Engine', desc: 'Automatic retries, circuit breakers, and 99.9% uptime guarantees.' },
+              { icon: Activity, title: 'Full Observability', desc: 'Real-time telemetry showing every action, decision, and spend record.' },
+              { icon: Users, title: 'Approval Gates', desc: 'Configurable human-in-the-loop triggers for high-stakes decisions.' },
+              { icon: Database, title: 'Global Shared State', desc: 'Update context once, and every agent knows instantly. No data silos.' },
+              { icon: Target, title: 'Reasoning Audit', desc: 'Drill down into reasoning chains to eliminate hallucinations.' },
+            ].map((f, i) => {
+              const Icon = f.icon;
+              return (
+                <FU key={i} d={i * 0.05} className="obsidian-panel p-12 space-y-8 group hover:border-primary/40 transition-all">
+                  <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-600 group-hover:text-primary transition-colors">
+                    <Icon size={24} />
+                  </div>
+                  <h3 className="text-white font-bold text-base uppercase tracking-tight">{f.title}</h3>
+                  <p className="text-zinc-500 text-xs leading-relaxed uppercase tracking-widest font-mono">{f.desc}</p>
+                </FU>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════ VISION ══════════════════ */}
+      <section className="py-40 bg-[#080808] border-y border-white/5 relative">
+         <div className="max-w-7xl mx-auto px-6">
+            <Label>VISION // 2026</Label>
+            <div className="grid md:grid-cols-3 gap-12 mt-20">
+               {[
+                 { title: 'Hire Your Workforce', desc: 'coordinated agent teams that handle complex business functions from day one.', icon: Bot },
+                 { title: 'The Control Plane', desc: 'Enterprises use AgentIRL to build their own custom autonomous systems.', icon: Layers },
+                 { title: 'The Open Market', desc: 'A global marketplace where developers trade specialized agent nodes.', icon: Globe },
+               ].map((v, i) => (
+                 <FU key={i} d={i * 0.1} className="space-y-8">
+                    <div className="text-zinc-800 font-black text-7xl italic leading-none opacity-20">0{i+1}</div>
+                    <h3 className="text-white font-bold text-2xl uppercase tracking-tighter">{v.title}</h3>
+                    <p className="text-zinc-500 text-sm leading-relaxed">{v.desc}</p>
+                 </FU>
+               ))}
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">What is AgentIRL?</h2>
-            <p className="text-slate-600 max-w-3xl mx-auto text-lg leading-relaxed">
-              AgentIRL (Agent Integration & Reliability Layer) is the coordination infrastructure
-              that sits between AI frameworks and your business — like <strong>Fastly sits between websites
-              and users</strong>. It makes AI agents production-ready.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { icon: Workflow, title: 'Multi-Agent Orchestration', desc: 'Coordinate agents built with CrewAI, LangGraph, CAMEL, and custom frameworks in one unified system.' },
-              { icon: Shield, title: 'Reliability Engine', desc: 'Automatic retries, circuit breakers, fallback models, and graceful degradation. 99.9% uptime SLA.' },
-              { icon: Eye, title: 'Full Observability', desc: 'Real-time dashboards showing every agent action, decision, cost, and latency across your entire AI workforce.' },
-              { icon: Users, title: 'Human-in-the-Loop', desc: 'Configurable approval gates for high-stakes decisions. Agents pause and wait for human review.' },
-              { icon: Database, title: 'Shared State', desc: 'All agents share context. Update pricing once — every agent knows instantly. No data silos.' },
-              { icon: TrendingUp, title: 'Self-Improving (ADAS)', desc: 'Based on ICLR 2025 research: agents evolve automatically through Automated Design of Agentic Systems.' },
-            ].map((feature, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.08 }}
-                className="p-6 rounded-xl bg-slate-50 border border-slate-100 hover:border-cyan-200 transition-colors group"
-              >
-                <feature.icon className="w-8 h-8 text-slate-400 group-hover:text-cyan-600 mb-4 transition-colors" />
-                <h3 className="text-lg font-bold text-slate-900 mb-2">{feature.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{feature.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+         </div>
       </section>
 
-      {/* How We Scale */}
-      <section className="py-24">
-        <div className="container-custom">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">How We Scale</h2>
-            <p className="text-slate-600 max-w-2xl mx-auto">
-              Two products growing simultaneously — agents on top, infrastructure underneath.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-            <div className="hidden md:block absolute top-[60px] left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-blue-200/0 via-blue-200 to-blue-200/0" />
-
-            {[
-              {
-                phase: 'Now',
-                title: 'AI Agent Teams',
-                desc: 'Sell coordinated AI agent teams to businesses. Sales, Support, Content, CEO agents that work together. Revenue from $199-999/mo subscriptions.',
-                icon: Bot,
-                items: ['Agent team deployment', 'Multi-channel support', 'Knowledge base training', 'Dashboard & reports'],
-              },
-              {
-                phase: 'Growing',
-                title: 'AgentIRL Platform',
-                desc: 'The infrastructure layer matures. Enterprises start using AgentIRL to build their own agent systems on top of our orchestration.',
-                icon: Layers,
-                items: ['Self-serve platform', 'Custom agent building', 'Enterprise integrations', 'ADAS optimization'],
-              },
-              {
-                phase: 'Year 2+',
-                title: 'Open Platform',
-                desc: 'AgentIRL becomes an open platform. Third-party developers build and sell agents through our marketplace. We become the Shopify of AI agents.',
-                icon: Globe,
-                items: ['Agent marketplace', 'Developer SDK', 'Partner ecosystem', 'Global scale'],
-              },
-            ].map((phase, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.15 }}
-                className="relative"
-              >
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white px-3 text-xs font-mono text-blue-600 border border-blue-200 rounded-full py-0.5 z-10">
-                  {phase.phase}
-                </div>
-                <div className="p-8 rounded-2xl border border-slate-200 bg-white hover:shadow-md transition-shadow h-full">
-                  <phase.icon className="w-10 h-10 text-blue-600 mb-4" />
-                  <h3 className="text-xl font-bold text-slate-900 mb-3">{phase.title}</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-6">{phase.desc}</p>
-                  <ul className="space-y-2">
-                    {phase.items.map((item, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-slate-700">
-                        <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="py-20 bg-slate-50 border-y border-slate-200">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { icon: Target, title: 'Build What Sells', desc: 'Agents generate revenue from day one. Infrastructure grows underneath. We don\'t wait for product-market fit — we ship and iterate.' },
-              { icon: ShieldCheck, title: 'Reliability Over Features', desc: 'A reliable agent that handles 3 tasks well beats an unreliable one that handles 30. We optimize for production quality.' },
-              { icon: Users, title: 'Human + AI, Not AI Alone', desc: 'The best systems keep humans in the loop for high-stakes decisions. We build approval gates, not autonomous black boxes.' },
-            ].map((card, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="p-8 rounded-xl bg-white border border-slate-200 hover:border-blue-200 transition-colors group"
-              >
-                <card.icon className="w-8 h-8 text-slate-400 group-hover:text-blue-600 mb-4 transition-colors" />
-                <h3 className="text-xl font-bold text-slate-900 mb-2">{card.title}</h3>
-                <p className="text-slate-600 leading-relaxed">{card.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Trust Badges */}
-      <section className="py-12 border-b border-slate-200">
-        <div className="container-custom">
-          <div className="flex flex-wrap items-center justify-center gap-8">
-            {[
-              { icon: ShieldCheck, label: 'SOC 2 Ready' },
-              { icon: Shield, label: 'End-to-End Encrypted' },
-              { icon: Zap, label: '99.9% Uptime SLA' },
-              { icon: Globe, label: 'Multi-Region Deploy' },
-            ].map((item, idx) => (
-              <div key={idx} className="flex items-center gap-2 text-sm text-slate-500">
-                <item.icon className="w-4 h-4 text-slate-400" />
-                {item.label}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 bg-slate-900 text-white text-center">
-        <div className="container-custom max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Hire Your AI Team?</h2>
-          <p className="text-slate-300 text-lg mb-8 max-w-2xl mx-auto">
-            Start with a single AI Sales Agent for $199/mo, or deploy a full coordinated team.
-            No long-term contracts. See results in the first week.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link to="/agents" className="btn bg-white text-slate-900 hover:bg-blue-50 px-8 py-3 rounded-xl text-lg font-semibold">
-              Browse AI Agents
-            </Link>
-            <Link to="/use-cases" className="btn border border-slate-700 text-white hover:bg-slate-800 px-8 py-3 rounded-xl text-lg">
-              See Use Cases
-            </Link>
-          </div>
-        </div>
+      {/* ══════════════════ CTA ══════════════════ */}
+      <section className="py-60 bg-[#050505] text-center relative overflow-hidden">
+         <div className="max-w-5xl mx-auto px-6 relative z-10">
+            <FU d={0}>
+               <h2 className="heading-precision text-7xl md:text-[140px] text-white mb-16 uppercase tracking-tighter font-black leading-[0.8]">
+                  BUILT TO<br />
+                  LAST.
+               </h2>
+               <div className="flex flex-wrap justify-center gap-10">
+                  <Link to="/contact" className="btn-acid px-16 py-6">Consult an Architect</Link>
+                  <Link to="/use-cases" className="btn-obsidian px-16 py-6">Explore Utility</Link>
+               </div>
+            </FU>
+         </div>
       </section>
     </Layout>
   );

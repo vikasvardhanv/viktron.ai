@@ -97,7 +97,7 @@ export const AgentIRL: React.FC = () => (
           ].map((f, i) => (
             <FU key={i} d={i * 0.05} className="bg-[#050505] p-12 space-y-8 group hover:bg-[#080808] transition-colors">
                <div className="font-mono text-[11px] text-primary uppercase font-bold tracking-[0.2em]">{f.t}</div>
-               <p className="text-zinc-500 text-sm leading-relaxed">{f.d}</p>
+               <p className="text-zinc-400 text-sm leading-relaxed">{f.d}</p>
             </FU>
           ))}
         </div>
@@ -125,7 +125,7 @@ export const AgentIRL: React.FC = () => (
                         <div className="font-mono text-2xl text-primary/20 pt-1 font-bold">{s.n}</div>
                         <div>
                            <h4 className="text-white font-bold text-base mb-2 uppercase tracking-tight">{s.t}</h4>
-                           <p className="text-zinc-500 text-sm leading-relaxed">{s.b}</p>
+                           <p className="text-zinc-400 text-sm leading-relaxed">{s.b}</p>
                         </div>
                      </div>
                    ))}
@@ -173,11 +173,11 @@ export const AgentIRL: React.FC = () => (
                const Icon = c.icon;
                return (
                  <FU key={i} d={i * 0.05} className="obsidian-panel p-12 group hover:border-primary/40 transition-all">
-                    <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-500 group-hover:text-primary transition-colors mb-8">
+                    <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-400 group-hover:text-primary transition-colors mb-8">
                        <Icon size={24} />
                     </div>
                     <h4 className="text-white font-bold text-sm mb-4 uppercase tracking-tight">{c.name}</h4>
-                    <p className="text-zinc-500 text-xs leading-relaxed">{c.desc}</p>
+                    <p className="text-zinc-400 text-xs leading-relaxed">{c.desc}</p>
                  </FU>
                );
              })}

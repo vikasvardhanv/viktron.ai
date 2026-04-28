@@ -99,11 +99,11 @@ export const TrustFabric: React.FC = () => (
             const Icon = l.icon;
             return (
               <FU key={i} d={i * 0.05} className="bg-[#050505] p-12 space-y-8 group hover:bg-[#080808] transition-colors">
-                 <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-600 group-hover:text-primary transition-colors">
+                 <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-400 group-hover:text-primary transition-colors">
                     <Icon size={24} />
                  </div>
                  <h4 className="text-white font-bold text-base uppercase tracking-tight">{l.name}</h4>
-                 <p className="text-zinc-500 text-sm leading-relaxed">{l.desc}</p>
+                 <p className="text-zinc-400 text-sm leading-relaxed">{l.desc}</p>
               </FU>
             );
           })}
@@ -132,7 +132,7 @@ export const TrustFabric: React.FC = () => (
                    ].map((item, i) => (
                      <div key={i} className="space-y-3">
                         <div className="text-primary font-mono text-[11px] uppercase font-bold tracking-[0.2em]">{item.t}</div>
-                        <p className="text-zinc-500 text-sm leading-relaxed">{item.d}</p>
+                        <p className="text-zinc-400 text-sm leading-relaxed">{item.d}</p>
                      </div>
                    ))}
                 </div>
@@ -149,8 +149,8 @@ export const TrustFabric: React.FC = () => (
                      { l: 'LEDGER_ENTRY_RECORDED', s: 'text-zinc-700' },
                    ].map((log, i) => (
                      <div key={i} className="flex gap-6">
-                        <span className="text-zinc-800">[{2840 + i}]</span>
-                        <span className={log.s}>{log.l}</span>
+                        <span className="text-zinc-500">[{2840 + i}]</span>
+                        <span className={log.l === 'LEDGER_ENTRY_RECORDED' ? 'text-zinc-400' : 'text-primary'}>{log.l}</span>
                      </div>
                    ))}
                 </div>

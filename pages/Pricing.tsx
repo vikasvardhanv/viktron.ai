@@ -1,277 +1,194 @@
+/**
+ * Viktron AI — Pricing
+ * "Scale Your Intelligence Capacity."
+ */
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { 
+  CheckCircle2, X as XIcon, ChevronDown, ArrowRight, Sparkles, 
+  Calendar, Shield, Activity, Zap, Layers, Lock, Database
+} from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
-import { AnimatedSection } from '../components/ui/AnimatedSection';
-import { Button } from '../components/ui/Button';
-import {
-  CheckCircle2, X as XIcon, ChevronDown, ArrowRight, Sparkles, Calendar, Shield,
-} from 'lucide-react';
+
+// ─── SHARED COMPONENTS ────────────────────────────────────────────────────────
+
+const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.ReactNode; className?: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8, delay: d, ease: [0.16, 1, 0.3, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
+
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <div className="section-label">{children}</div>
+);
+
+// ─── CONFIG ───────────────────────────────────────────────────────────────────
 
 const TIERS = [
   {
-    name: 'Starter',
+    name: 'Starter Node',
     price: '$199',
     period: '/mo',
-    desc: 'Single AI agent for one use case.',
-    highlight: false,
-    badge: null,
-    features: [
-      '1 AI Agent (Sales or Support)',
-      'Up to 500 conversations/mo',
-      'Email & SMS channels',
-      'Basic analytics dashboard',
-      '5-day onboarding',
-      'Email support',
-    ],
-    cta: 'Get Started',
+    desc: 'Single specialized agent for one use case.',
+    features: ['1 AI Agent (Sales or Support)', '500 Task Cycles / mo', 'Email & SMS Interface', 'Basic Telemetry', '5-Day Provisioning'],
   },
   {
-    name: 'Growth',
+    name: 'Growth Cluster',
     price: '$499',
     period: '/mo',
-    desc: 'Agent team with CEO coordination.',
+    desc: 'Coordinated workforce with CEO orchestrator.',
     highlight: true,
-    badge: 'Most Popular',
-    features: [
-      'Sales + Support + Content + CEO agents',
-      'Unlimited conversations',
-      'All channels (voice, chat, email, SMS)',
-      'Full analytics & daily reports',
-      'Priority onboarding (48h)',
-      'Priority support',
-    ],
-    cta: 'Get Started',
+    features: ['Full Agent Team (4 Nodes)', 'Unlimited Task Cycles', 'All Channels (Voice/Web/Social)', 'Live Observability Feed', '48hr Provisioning'],
   },
   {
-    name: 'Enterprise',
+    name: 'Enterprise Plane',
     price: 'Custom',
     period: '',
-    desc: 'Full platform + AgentIRL + custom agents.',
-    highlight: false,
-    badge: null,
-    features: [
-      'AgentIRL platform access',
-      'Custom agent development',
-      'Enterprise integrations (SAP, Oracle)',
-      'Dedicated engineering pod',
-      'SLA-backed 99.9% uptime',
-      'Dedicated account manager',
-    ],
-    cta: 'Contact Sales',
+    desc: 'The complete AgentIRL infrastructure.',
+    features: ['Private VPC Deployment', 'AgentIRL Platform Access', 'Custom Workflow Engineering', 'SLA-Backed 99.99% Uptime', 'Institutional Support'],
   },
-];
-
-const COMPARISON = [
-  { feature: 'AI Agents', starter: '1', growth: '3–4', enterprise: 'Unlimited' },
-  { feature: 'Conversations/mo', starter: '500', growth: 'Unlimited', enterprise: 'Unlimited' },
-  { feature: 'Channels', starter: 'Email, SMS', growth: 'All', enterprise: 'All + Custom' },
-  { feature: 'Analytics', starter: 'Basic', growth: 'Full', enterprise: 'Full + Custom' },
-  { feature: 'AgentIRL Platform', starter: false, growth: false, enterprise: true },
-  { feature: 'Custom Agent Dev', starter: false, growth: false, enterprise: true },
-  { feature: 'Uptime SLA', starter: false, growth: '99.9%', enterprise: '99.9%' },
-  { feature: 'Support', starter: 'Email', growth: 'Priority', enterprise: 'Dedicated' },
-  { feature: 'Onboarding', starter: '5 days', growth: '48 hours', enterprise: 'White-glove' },
 ];
 
 const FAQS = [
-  { q: 'Can I cancel anytime?', a: 'Yes. No long-term contracts. Cancel at any time — your agents will run through the end of the billing period.' },
-  { q: 'How long does setup take?', a: 'Starter plans go live in 5 business days. Growth plans launch in 48 hours with priority onboarding. Enterprise timelines are scoped during consultation.' },
-  { q: 'What channels do agents work on?', a: 'Voice calls, WhatsApp, website chatbot, email, and SMS. Enterprise plans support custom integrations with any API.' },
-  { q: 'Do you offer a free trial?', a: 'We offer a 14-day pilot with clear success metrics. If the results don\'t meet the agreed benchmarks, you pay nothing.' },
-  { q: 'What is AgentIRL?', a: 'AgentIRL is our coordination infrastructure layer — it handles orchestration, monitoring, retry logic, and failover for multi-agent systems. Available on Enterprise plans.' },
+  { q: 'What are Task Cycles?', a: 'A task cycle is a single agent run that produces a result — e.g., answering a customer query, booking a meeting, or generating a content report.' },
+  { q: 'How long is provisioning?', a: 'Starter nodes are active within 5 days. Growth clusters are typically live in 48 hours. Enterprise timelines are scoped by architects.' },
+  { q: 'Where is my data stored?', a: 'All data is encrypted with AES-256. For Enterprise, we support custom data residency (US/EU) and private VPC deployments.' },
+  { q: 'Can I scale my cluster?', a: 'Yes. You can add specialized nodes to your cluster at any time. Billing adjusts automatically at the next cycle.' },
 ];
 
 export const Pricing: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <Layout>
-      <SEO
-        title="Pricing | Viktron AI Agent Teams"
-        description="Transparent pricing for AI agent teams. Start at $199/mo for a single agent, scale to full enterprise teams with AgentIRL."
-        keywords="AI agent pricing, AI team cost, Viktron pricing, AI automation pricing"
-        url="/pricing"
-        canonicalUrl="https://viktron.ai/pricing"
-      />
+    <Layout showBackground={false}>
+      <SEO title="Pricing — Viktron AI Agent Infrastructure" description="Transparent pricing for specialized AI agent teams and AgentIRL infrastructure." />
 
-      {/* Hero */}
-      <section className="pt-32 pb-16 px-4 relative overflow-hidden">
-        {/* Background imagery + gradient blobs — matching Landing page */}
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-[0.035] pointer-events-none"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000')" }}
-        />
-        {/* Gradient mesh */}
-        <div className="absolute inset-0 pointer-events-none">
-          {/* Top-right blue glow */}
-          <div className="absolute -top-40 -right-40 w-[900px] h-[900px] bg-blue-200/50 blur-[160px] rounded-full" />
-          {/* Bottom-left indigo glow */}
-          <div className="absolute -bottom-20 -left-40 w-[700px] h-[700px] bg-indigo-200/40 blur-[140px] rounded-full" />
-          {/* Center violet accent */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-violet-100/30 blur-[120px] rounded-full" />
-          {/* Top-left teal micro-accent */}
-          <div className="absolute top-20 left-16 w-[300px] h-[300px] bg-cyan-100/40 blur-[100px] rounded-full" />
+      {/* ═══════════════════════════ HERO ═══════════════════════════ */}
+      <section className="relative min-h-[60vh] bg-[#050505] flex flex-col justify-center pt-40 pb-20 overflow-hidden">
+        <div className="absolute inset-0 grid-paper opacity-[0.05] pointer-events-none" />
+        <div className="max-w-[1400px] mx-auto px-6 w-full relative z-10 text-center">
+          <FU d={0}>
+             <Label>RESOURCE_ALLOCATION</Label>
+             <h1 className="heading-precision text-7xl md:text-[140px] text-white leading-[0.8] tracking-[-0.05em] uppercase font-black mt-10">
+                CAPACITY<br />
+                <span className="text-zinc-700">PRICING.</span>
+             </h1>
+             <p className="heading-editorial text-3xl text-zinc-300 mt-12 max-w-2xl mx-auto">
+                Predictable cost for autonomous performance.
+             </p>
+          </FU>
         </div>
-        {/* Subtle dot-grid pattern overlay */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.04]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, #3b82f6 1px, transparent 1px)',
-            backgroundSize: '32px 32px',
-          }}
-        />
-        <div className="container-custom relative z-10 text-center">
-          <AnimatedSection>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-xs font-mono text-blue-600 mb-6">
-              <Sparkles className="w-3 h-3" /> Pricing
+      </section>
+
+      {/* ══════════════════ PRICING CARDS ══════════════════ */}
+      <section className="py-20 bg-[#050505] relative border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6">
+           <div className="grid md:grid-cols-3 gap-8">
+              {TIERS.map((t, i) => (
+                <FU key={i} d={i * 0.05} className={`obsidian-panel p-12 flex flex-col h-full ${t.highlight ? 'border-primary/50 ring-1 ring-primary/20' : ''}`}>
+                   <div className="flex justify-between items-start mb-2">
+                      <h3 className="text-white font-bold text-2xl uppercase tracking-tighter">{t.name}</h3>
+                      {t.highlight && <span className="px-3 py-1 bg-primary text-black text-[9px] font-mono font-bold tracking-widest uppercase">POPULAR</span>}
+                   </div>
+                   <p className="text-zinc-500 text-xs mb-8 uppercase tracking-widest font-mono">{t.desc}</p>
+                   <div className="flex items-baseline gap-2 mb-10">
+                      <span className="text-6xl font-black text-white tracking-tighter">{t.price}</span>
+                      <span className="text-xs font-mono text-zinc-600 uppercase tracking-widest">{t.period}</span>
+                   </div>
+                   <ul className="space-y-4 mb-12 flex-1">
+                      {t.features.map((f, j) => (
+                        <li key={j} className="flex items-start gap-4 text-xs text-zinc-400 font-mono tracking-widest uppercase">
+                           <CheckCircle2 size={12} className="text-primary mt-0.5 shrink-0" />
+                           {f}
+                        </li>
+                      ))}
+                   </ul>
+                   <Link to="/contact" className={t.highlight ? 'btn-acid w-full py-5' : 'btn-obsidian w-full py-5'}>
+                      {t.name === 'Enterprise Plane' ? 'Contact Sales' : 'Allocate Nodes'}
+                   </Link>
+                </FU>
+              ))}
+           </div>
+        </div>
+      </section>
+
+      {/* ══════════════════ FAQ ══════════════════ */}
+      <section className="py-40 bg-[#080808] border-y border-white/5 relative">
+         <div className="max-w-4xl mx-auto px-6">
+            <Label>SYSTEM_QUESTIONS</Label>
+            <div className="space-y-4 mt-20">
+               {FAQS.map((f, i) => (
+                 <FU key={i} d={i * 0.05}>
+                    <div className="obsidian-panel overflow-hidden">
+                       <button 
+                         onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                         className="w-full p-8 flex items-center justify-between text-left hover:bg-white/5 transition-colors"
+                       >
+                          <span className="text-white font-bold text-sm uppercase tracking-widest">{f.q}</span>
+                          <ChevronDown size={16} className={`text-zinc-500 transition-transform ${openFaq === i ? 'rotate-180 text-primary' : ''}`} />
+                       </button>
+                       <AnimatePresence>
+                          {openFaq === i && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              className="px-8 pb-8 text-zinc-400 text-sm leading-relaxed"
+                            >
+                               {f.a}
+                            </motion.div>
+                          )}
+                       </AnimatePresence>
+                    </div>
+                 </FU>
+               ))}
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight leading-[1.1]">
-              Simple, transparent<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600">pricing.</span>
-            </h1>
-            <p className="mt-4 max-w-2xl mx-auto text-lg text-slate-600 leading-relaxed">
-              Start with a single agent. Scale to a full AI workforce. No hidden fees, no long-term contracts.
-            </p>
-          </AnimatedSection>
-        </div>
+         </div>
       </section>
 
-      {/* Pricing Cards */}
-      <section className="pb-20 px-4">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {TIERS.map((tier, idx) => (
-              <motion.div
-                key={tier.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className={`relative rounded-2xl border p-8 ${
-                  tier.highlight
-                    ? 'border-blue-300 bg-blue-50/30 shadow-lg shadow-blue-100/50'
-                    : 'border-slate-200 bg-white'
-                }`}
-              >
-                {tier.badge && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-blue-600 text-white text-xs font-semibold rounded-full">
-                    {tier.badge}
-                  </div>
-                )}
-                <h2 className="text-xl font-bold text-slate-900">{tier.name}</h2>
-                <p className="text-sm text-slate-500 mt-1">{tier.desc}</p>
-                <div className="mt-6 mb-6">
-                  <span className="text-4xl font-bold text-slate-900">{tier.price}</span>
-                  <span className="text-slate-500">{tier.period}</span>
-                </div>
-                <Link to="/contact">
-                  <Button
-                    className="w-full justify-center"
-                    variant={tier.highlight ? 'primary' : 'secondary'}
-                    icon={<ArrowRight className="h-4 w-4" />}
-                  >
-                    {tier.cta}
-                  </Button>
-                </Link>
-                <ul className="mt-8 space-y-3">
-                  {tier.features.map((f, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
-                      <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+      {/* ══════════════════ SPECS ══════════════════ */}
+      <section className="py-20 bg-[#050505] relative">
+         <div className="max-w-7xl mx-auto px-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+               {[
+                 { icon: Lock, l: 'ENCRYPTION', v: 'AES-256' },
+                 { icon: Shield, l: 'COMPLIANCE', v: 'SOC 2 Ready' },
+                 { icon: Database, l: 'RESIDENCY', v: 'US/EU' },
+                 { icon: Zap, l: 'LATENCY', v: '< 50ms' },
+               ].map((s, i) => (
+                 <FU key={i} d={i * 0.05} className="text-center space-y-4">
+                    <div className="w-10 h-10 obsidian-inset flex items-center justify-center text-zinc-600 mx-auto">
+                       <s.icon size={18} />
+                    </div>
+                    <div>
+                       <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-1">{s.l}</div>
+                       <div className="text-sm text-white font-bold tracking-widest">{s.v}</div>
+                    </div>
+                 </FU>
+               ))}
+            </div>
+         </div>
       </section>
 
-      {/* Feature Comparison */}
-      <section className="py-20 px-4 bg-slate-50 border-y border-slate-200">
-        <div className="container-custom">
-          <AnimatedSection>
-            <h2 className="text-3xl font-bold text-slate-900 text-center mb-12">Compare Plans</h2>
-          </AnimatedSection>
-          <div className="max-w-4xl mx-auto overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-slate-200">
-                  <th className="py-3 pr-4 text-sm font-semibold text-slate-900 w-1/4">Feature</th>
-                  <th className="py-3 px-4 text-sm font-semibold text-slate-900 text-center">Starter</th>
-                  <th className="py-3 px-4 text-sm font-semibold text-blue-600 text-center">Growth</th>
-                  <th className="py-3 pl-4 text-sm font-semibold text-slate-900 text-center">Enterprise</th>
-                </tr>
-              </thead>
-              <tbody>
-                {COMPARISON.map((row, idx) => (
-                  <tr key={idx} className="border-b border-slate-100">
-                    <td className="py-3 pr-4 text-sm text-slate-700 font-medium">{row.feature}</td>
-                    {[row.starter, row.growth, row.enterprise].map((val, i) => (
-                      <td key={i} className="py-3 px-4 text-sm text-center">
-                        {val === true ? (
-                          <CheckCircle2 className="w-4 h-4 text-blue-600 mx-auto" />
-                        ) : val === false ? (
-                          <XIcon className="w-4 h-4 text-slate-300 mx-auto" />
-                        ) : (
-                          <span className="text-slate-600">{val}</span>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="py-20 px-4">
-        <div className="container-custom max-w-3xl">
-          <AnimatedSection>
-            <h2 className="text-3xl font-bold text-slate-900 text-center mb-12">Frequently Asked Questions</h2>
-          </AnimatedSection>
-          <div className="space-y-3">
-            {FAQS.map((faq, idx) => (
-              <div key={idx} className="rounded-xl border border-slate-200 overflow-hidden">
-                <button
-                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-slate-50 transition-colors"
-                >
-                  <span className="text-sm font-semibold text-slate-900">{faq.q}</span>
-                  <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${openFaq === idx ? 'rotate-180' : ''}`} />
-                </button>
-                {openFaq === idx && (
-                  <div className="px-6 pb-4">
-                    <p className="text-sm text-slate-600 leading-relaxed">{faq.a}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 px-4 bg-slate-900 text-white text-center">
-        <div className="container-custom max-w-3xl">
-          <Shield className="w-10 h-10 text-blue-400 mx-auto mb-6" />
-          <h2 className="text-3xl font-bold mb-4">Not sure which plan is right?</h2>
-          <p className="text-slate-300 text-lg mb-8">
-            Book a free consultation. We'll map your needs to the right plan — no pressure, no pitch.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link to="/contact">
-              <Button icon={<Calendar className="h-4 w-4" />}>Book Consultation</Button>
-            </Link>
-            <Link to="/services">
-              <Button variant="secondary">Explore Services</Button>
-            </Link>
-          </div>
-        </div>
+      {/* ══════════════════ CTA ══════════════════ */}
+      <section className="py-60 bg-[#050505] text-center relative overflow-hidden border-t border-white/5">
+         <div className="max-w-5xl mx-auto px-6 relative z-10">
+            <FU d={0}>
+               <h2 className="heading-precision text-7xl md:text-[140px] text-white mb-16 uppercase tracking-tighter font-black leading-[0.8]">
+                  SELECT<br />
+                  <span className="text-zinc-700">MODEL.</span>
+               </h2>
+               <Link to="/contact" className="btn-acid px-16 py-6">Consult an Architect</Link>
+            </FU>
+         </div>
       </section>
     </Layout>
   );

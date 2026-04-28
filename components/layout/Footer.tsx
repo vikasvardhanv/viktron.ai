@@ -48,7 +48,7 @@ export const Footer = () => {
 
             <div className="flex items-center gap-6">
               {[Github, Twitter, Linkedin, MessageSquare].map((Icon, i) => (
-                <a key={i} href="#" className="text-zinc-600 hover:text-primary transition-colors duration-300">
+                <a key={i} href="#" className="text-zinc-400 hover:text-primary transition-colors duration-300">
                   <Icon size={18} />
                 </a>
               ))}
@@ -115,7 +115,7 @@ export const Footer = () => {
         </div>
 
         <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
-          <p className="text-zinc-600 text-[10px] font-mono uppercase tracking-widest">
+          <p className="text-zinc-500 text-[10px] font-mono uppercase tracking-widest">
             © {new Date().getFullYear()} Viktron Inc. [GLOBAL_HQ] | <a href="https://seojuice.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">v2.2_INSTITUTIONAL</a>
           </p>
           <div className="flex items-center gap-3 text-[10px] font-mono text-primary font-bold tracking-widest">

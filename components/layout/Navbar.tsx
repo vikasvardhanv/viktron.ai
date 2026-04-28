@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, User, LogOut, Shield } from 'lucide-react';
+import { Menu, X, ChevronDown, User, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
-import { ServicesPopup } from '../ServicesPopup';
 import { AboutPopup } from '../AboutPopup';
 
 const navItems: { name: string; path: string; isPopup?: 'services' | 'about'; external?: string }[] = [
@@ -15,16 +14,12 @@ const navItems: { name: string; path: string; isPopup?: 'services' | 'about'; ex
   { name: 'About', path: '/about', isPopup: 'about' },
 ];
 
-const isRentSubdomain = typeof window !== 'undefined' && window.location.hostname.split('.')[0] === 'rent';
-
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
   const { isAuthenticated, user, logout, setShowAuthModal, setAuthModalMode } = useAuth();
 
   useEffect(() => {
@@ -56,40 +51,44 @@ export const Navbar: React.FC = () => {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-10">
-              {navItems.map((item) => (
-                <div key={item.path} className="relative group/item">
-                  {item.external ? (
-                    <a 
-                      href={item.external} 
-                      className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-primary transition-colors"
-                    >
-                      {item.name}
-                    </a>
-                  ) : item.isPopup ? (
-                    <div 
-                      onMouseEnter={() => setIsAboutOpen(true)}
-                      onMouseLeave={() => setIsAboutOpen(false)}
-                      className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-primary transition-colors cursor-pointer"
-                    >
-                      {item.name} <ChevronDown size={10} />
-                      <AboutPopup isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
-                    </div>
-                  ) : (
-                    <Link 
-                      to={item.path} 
-                      className={`text-[10px] font-mono font-bold uppercase tracking-[0.2em] transition-colors ${
-                        location.pathname === item.path ? 'text-primary' : 'text-zinc-400 hover:text-primary'
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  )}
-                  <div className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-500 ${
-                    location.pathname === item.path ? 'w-full' : 'w-0 group-hover/item:w-full'
-                  }`} />
-                </div>
-              ))}
+            <div className="hidden lg:flex items-center gap-2">
+              {navItems.map((item) => {
+                const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path));
+                return (
+                  <div key={item.path} className="relative group/item">
+                    {item.external ? (
+                      <a 
+                        href={item.external} 
+                        className="px-4 py-2 text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-all"
+                      >
+                        {item.name}
+                      </a>
+                    ) : item.isPopup ? (
+                      <div 
+                        onMouseEnter={() => setIsAboutOpen(true)}
+                        onMouseLeave={() => setIsAboutOpen(false)}
+                        className={`px-4 py-2 flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.2em] transition-all cursor-pointer ${
+                          isActive ? 'bg-primary text-black' : 'text-zinc-400 hover:text-white'
+                        }`}
+                      >
+                        {item.name} <ChevronDown size={10} />
+                        <AboutPopup isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
+                      </div>
+                    ) : (
+                      <Link 
+                        to={item.path} 
+                        className={`px-4 py-2 text-[10px] font-mono font-bold uppercase tracking-[0.2em] transition-all duration-300 ${
+                          isActive 
+                            ? 'bg-primary text-black shadow-[0_0_20px_rgba(204,255,0,0.4)]' 
+                            : 'text-zinc-400 hover:text-white'
+                        }`}
+                      >
+                        {item.name}
+                      </Link>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             {/* CTA / Auth */}
