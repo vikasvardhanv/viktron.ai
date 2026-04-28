@@ -1,272 +1,160 @@
-import React, { useEffect, useState } from 'react';
+/**
+ * Viktron AI — Institutional Onboarding
+ * "Provisioning Your Autonomous Workforce."
+ */
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { CheckCircle2, AlertCircle, Loader2, ArrowRight, Zap, Users, Target } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Activity, CheckCircle2, AlertCircle, ArrowRight, Zap, Users, Shield, Cpu, Globe } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
-import { OnboardingForm } from '../components/OnboardingForm';
-import { onboardingService, OnboardingRequest, OnboardingResponse } from '../services/onboardingService';
 import { useAuth } from '../context/AuthContext';
 
-type OnboardingStep = 'form' | 'provisioning' | 'success' | 'error';
+const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.ReactNode; className?: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: d, ease: [0.16, 1, 0.3, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
+
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <div className="section-label">{children}</div>
+);
 
 export const Onboarding: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { user, isLoading: authLoading } = useAuth();
+  const [step, setStep] = useState<'INITIAL' | 'PROVISIONING' | 'SUCCESS'>('INITIAL');
 
-  const [step, setStep] = useState<OnboardingStep>('form');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [onboardingData, setOnboardingData] = useState<OnboardingResponse | null>(null);
-
-  // Get redirect path from query params
-  const params = new URLSearchParams(location.search);
-  const redirectPath = params.get('redirect') || '/dashboard';
-
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!authLoading && !user) {
-      navigate(`/signup?redirect=${encodeURIComponent(location.pathname)}`);
-    }
-  }, [user, authLoading, navigate, location.pathname]);
-
-  const handleFormSubmit = async (data: OnboardingRequest) => {
-    setError('');
-    setIsLoading(true);
-    setStep('provisioning');
-
-    try {
-      const response = await onboardingService.createOnboarding(data);
-      setOnboardingData(response);
-      setStep('success');
-
-      // Auto-redirect after 3 seconds
-      setTimeout(() => {
-        navigate(redirectPath);
-      }, 3000);
-    } catch (err: any) {
-      setError(err.message || 'Failed to provision agents. Please try again.');
-      setStep('error');
-      setIsLoading(false);
-    }
+  // Simple demo simulation
+  const startProvisioning = () => {
+    setStep('PROVISIONING');
+    setTimeout(() => setStep('SUCCESS'), 4000);
   };
 
-  if (authLoading) {
-    return (
-      <Layout showFooter={false}>
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="h-12 w-12 rounded-full border-2 border-slate-200 border-t-blue-600 animate-spin" />
-        </div>
-      </Layout>
-    );
-  }
-
   return (
-    <Layout showFooter={false}>
-      <SEO
-        title="Onboard Your AI Team | Viktron AI"
-        description="Set up your enterprise AI agent team in minutes. Choose your plan, configure your workspace, and start automating."
-        url="/onboarding"
-        noindex
-      />
+    <Layout showFooter={false} showBackground={false}>
+      <SEO title="Onboarding — Provisioning Your AI Team" description="Initialize your enterprise AI workforce in the Viktron cloud." />
 
-      <section className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-12 px-4">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-12"
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-mono mb-4">
-              Step {step === 'form' ? '1' : step === 'provisioning' ? '2' : '3'} of 3
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-3">
-              Set Up Your AI Team
-            </h1>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Let's provision your enterprise AI agents. This takes about a minute.
-            </p>
-          </motion.div>
+      <section className="min-h-screen bg-[#050505] flex items-center justify-center p-6 relative overflow-hidden">
+        <div className="absolute inset-0 grid-paper opacity-[0.05] pointer-events-none" />
+        
+        <div className="max-w-xl w-full">
+          <AnimatePresence mode="wait">
+            {step === 'INITIAL' && (
+              <FU key="initial" className="space-y-12">
+                 <div className="text-center">
+                    <Label>ENVIRONMENT_INITIALIZATION</Label>
+                    <h1 className="heading-precision text-5xl text-white uppercase tracking-tighter mt-8 mb-4">Deploy Your<br /><span className="text-zinc-700">Workforce.</span></h1>
+                    <p className="text-zinc-500 text-sm max-w-xs mx-auto leading-relaxed">Let's provision your institutional AI environment and initialize the AgentIRL Trust Fabric.</p>
+                 </div>
 
-          {/* Form Step */}
-          {step === 'form' && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="bg-white rounded-2xl border border-slate-200 p-8 md:p-12 shadow-sm"
-            >
-              <OnboardingForm
-                onSubmit={handleFormSubmit}
-                isLoading={isLoading}
-                error={error}
-              />
-            </motion.div>
-          )}
-
-          {/* Provisioning Step */}
-          {step === 'provisioning' && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-white rounded-2xl border border-slate-200 p-8 md:p-12 shadow-sm"
-            >
-              <div className="text-center space-y-6">
-                <div className="flex justify-center">
-                  <div className="relative w-16 h-16">
-                    <div className="absolute inset-0 rounded-full border-4 border-slate-100" />
-                    <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-blue-600 animate-spin" />
-                  </div>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-slate-900 mb-2">Provisioning Your Team</h2>
-                  <p className="text-slate-600">
-                    We're setting up your AI agents and configuring your workspace. This usually takes 30-60 seconds.
-                  </p>
-                </div>
-                <div className="space-y-2 text-sm text-slate-600">
-                  <div className="flex items-center gap-2 justify-center">
-                    <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                    Creating team workspace
-                  </div>
-                  <div className="flex items-center gap-2 justify-center">
-                    <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                    Provisioning agents
-                  </div>
-                  <div className="flex items-center gap-2 justify-center">
-                    <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                    Configuring integrations
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Success Step */}
-          {step === 'success' && onboardingData && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-white rounded-2xl border border-slate-200 p-8 md:p-12 shadow-sm"
-            >
-              <div className="text-center space-y-6">
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: 'spring', delay: 0.2 }}
-                  className="flex justify-center"
-                >
-                  <div className="rounded-full bg-emerald-100 p-4">
-                    <CheckCircle2 className="w-12 h-12 text-emerald-600" />
-                  </div>
-                </motion.div>
-                <div>
-                  <h2 className="text-3xl font-bold text-slate-900 mb-2">Agents Provisioned!</h2>
-                  <p className="text-lg text-slate-600">
-                    Your AI team is ready to go to work.
-                  </p>
-                </div>
-
-                {/* Agent Summary */}
-                <div className="bg-blue-50 rounded-xl p-6 text-left space-y-4">
-                  <div>
-                    <div className="text-sm font-semibold text-slate-600 uppercase">Team Details</div>
-                    <div className="space-y-2 mt-3 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Plan Tier:</span>
-                        <span className="font-semibold text-slate-900 capitalize">{onboardingData.tier}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Team ID:</span>
-                        <code className="font-mono text-xs text-slate-500 truncate">{onboardingData.team_id}</code>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-slate-600">Status:</span>
-                        <span className="font-semibold text-emerald-600 capitalize">{onboardingData.status}</span>
-                      </div>
+                 <div className="obsidian-panel p-10 space-y-8">
+                    <div className="space-y-6">
+                       <div className="space-y-2">
+                          <label className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest ml-1">WORKPLACE_DOMAIN</label>
+                          <input 
+                            type="text" 
+                            placeholder="viktron.ai" 
+                            className="w-full bg-[#080808] border border-white/5 px-6 py-4 font-mono text-[11px] text-white outline-none focus:border-primary transition-all uppercase tracking-widest"
+                          />
+                       </div>
+                       <div className="space-y-2">
+                          <label className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest ml-1">PRIMARY_OBJECTIVE</label>
+                          <select className="w-full bg-[#080808] border border-white/5 px-6 py-4 font-mono text-[11px] text-zinc-500 outline-none focus:border-primary transition-all uppercase tracking-widest">
+                             <option>GROWTH_AUTOMATION</option>
+                             <option>CUSTOMER_OPERATIONS</option>
+                             <option>ENGINEERING_SCALE</option>
+                          </select>
+                       </div>
                     </div>
-                  </div>
 
-                  <div className="border-t border-blue-200 pt-4">
-                    <div className="text-sm font-semibold text-slate-600 uppercase mb-3">Provisioned Agents</div>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                      {onboardingData.provisioned_agents.map((agent, idx) => (
-                        <div
-                          key={idx}
-                          className="bg-white rounded-lg px-3 py-2 text-sm font-medium text-slate-900 border border-slate-200 flex items-center gap-2"
-                        >
-                          <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                          <span className="capitalize">{agent}</span>
-                        </div>
-                      ))}
+                    <button 
+                      onClick={startProvisioning}
+                      className="w-full btn-acid py-6 flex items-center justify-center gap-4 text-xs font-black uppercase tracking-[0.2em]"
+                    >
+                       Initialize Protocol <ArrowRight size={16} />
+                    </button>
+                 </div>
+
+                 <div className="grid grid-cols-3 gap-4">
+                    {[Zap, Shield, Globe].map((Icon, i) => (
+                      <div key={i} className="obsidian-inset p-4 flex items-center justify-center text-zinc-800 border border-white/5">
+                         <Icon size={16} />
+                      </div>
+                    ))}
+                 </div>
+              </FU>
+            )}
+
+            {step === 'PROVISIONING' && (
+              <FU key="provisioning" className="text-center space-y-12">
+                 <div className="relative w-32 h-32 mx-auto">
+                    <div className="absolute inset-0 rounded-full border border-white/5 animate-spin" style={{ animationDuration: '4s' }} />
+                    <div className="absolute inset-4 rounded-full border border-primary/10 animate-spin" style={{ animationDuration: '2s', animationDirection: 'reverse' }} />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                       <Activity className="text-primary animate-pulse" size={32} />
                     </div>
-                  </div>
-                </div>
+                 </div>
+                 
+                 <div className="space-y-4">
+                    <h2 className="text-white font-bold text-2xl uppercase tracking-tighter">PROVISIONING_ENVIRONMENT</h2>
+                    <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.4em] animate-pulse">Allocating_Resources_for_{user?.id || 'USER'}</p>
+                 </div>
 
-                <p className="text-sm text-slate-500">
-                  Redirecting to dashboard in 3 seconds...
-                </p>
+                 <div className="max-w-xs mx-auto space-y-2">
+                    {['SPAWNING_CEO_ORCHESTRATOR', 'INITIALIZING_TRUST_FABRIC', 'WIRING_OTLP_TELEMETRY'].map((log, i) => (
+                      <motion.div 
+                        key={i}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: i * 0.8 }}
+                        className="flex items-center gap-3 text-[9px] font-mono text-zinc-600 uppercase tracking-widest"
+                      >
+                         <div className="w-1 h-1 rounded-full bg-primary" />
+                         {log}
+                      </motion.div>
+                    ))}
+                 </div>
+              </FU>
+            )}
 
-                <button
-                  onClick={() => navigate(redirectPath)}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
-                >
-                  Go to Dashboard
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </motion.div>
-          )}
+            {step === 'SUCCESS' && (
+              <FU key="success" className="text-center space-y-12">
+                 <div className="w-24 h-24 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center mx-auto shadow-[0_0_40px_rgba(204,255,0,0.15)]">
+                    <CheckCircle2 className="text-primary" size={40} />
+                 </div>
 
-          {/* Error Step */}
-          {step === 'error' && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-white rounded-2xl border border-slate-200 p-8 md:p-12 shadow-sm"
-            >
-              <div className="text-center space-y-6">
-                <div className="flex justify-center">
-                  <div className="rounded-full bg-red-100 p-4">
-                    <AlertCircle className="w-12 h-12 text-red-600" />
-                  </div>
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-slate-900 mb-2">Provisioning Failed</h2>
-                  <p className="text-red-600 font-medium">{error}</p>
-                </div>
-                <button
-                  onClick={() => { setStep('form'); setError(''); setIsLoading(false); }}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors"
-                >
-                  Try Again
-                </button>
-              </div>
-            </motion.div>
-          )}
+                 <div className="space-y-4">
+                    <h2 className="text-white font-bold text-4xl uppercase tracking-tighter">DEPLOYED.</h2>
+                    <p className="text-zinc-500 text-sm max-w-xs mx-auto">Your institutional AI workforce is now operational in the Viktron cloud.</p>
+                 </div>
 
-          {/* Features */}
-          {step === 'form' && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6"
-            >
-              {[
-                { icon: Zap, title: 'Instant Provisioning', desc: 'Your agents go live in seconds' },
-                { icon: Users, title: 'Full Team', desc: 'Sales, Support, Content & CEO agents' },
-                { icon: Target, title: 'Production Ready', desc: 'Enterprise-grade security & uptime' },
-              ].map((feature, i) => (
-                <div key={i} className="bg-white rounded-xl p-6 border border-slate-200">
-                  <feature.icon className="w-8 h-8 text-blue-600 mb-3" />
-                  <h3 className="font-semibold text-slate-900 mb-1">{feature.title}</h3>
-                  <p className="text-sm text-slate-600">{feature.desc}</p>
-                </div>
-              ))}
-            </motion.div>
-          )}
+                 <div className="obsidian-panel p-8 border-primary/20 text-left">
+                    <div className="flex justify-between items-center mb-6">
+                       <span className="text-[10px] font-mono text-primary font-bold uppercase tracking-widest">DEPLOYMENT_SUMMARY</span>
+                       <span className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest">MAR 28, 2026</span>
+                    </div>
+                    <div className="space-y-3 font-mono text-[10px] text-zinc-400 uppercase tracking-widest">
+                       <div className="flex justify-between"><span>Active_Nodes</span><span className="text-white">12</span></div>
+                       <div className="flex justify-between"><span>Trust_Score</span><span className="text-white">0.998</span></div>
+                       <div className="flex justify-between"><span>Gateway_Status</span><span className="text-primary">LOCKED</span></div>
+                    </div>
+                 </div>
+
+                 <button 
+                   onClick={() => navigate('/analytics')}
+                   className="btn-acid px-12 py-5 uppercase font-black tracking-widest text-xs"
+                 >
+                    Enter Control Plane
+                 </button>
+              </FU>
+            )}
+          </AnimatePresence>
         </div>
       </section>
     </Layout>

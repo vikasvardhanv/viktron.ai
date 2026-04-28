@@ -1,356 +1,163 @@
+/**
+ * Viktron AI — Institutional Services
+ * "The Full-Stack Ecosystem for Autonomous Intelligence."
+ */
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout';
-import {
-  ArrowRight, CheckCircle2, Users, Cpu, BarChart3, Sparkles, Zap
-} from 'lucide-react';
 import { SEO } from '../components/ui/SEO';
+import { 
+  ArrowRight, CheckCircle2, Users, Cpu, BarChart3, Sparkles, Zap, 
+  ShieldCheck, Activity, Database, Globe
+} from 'lucide-react';
 
-const MAIN_SERVICES = [
+const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.ReactNode; className?: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: d, ease: [0.16, 1, 0.3, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
+
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <div className="section-label">{children}</div>
+);
+
+const SERVICES = [
   {
-    title: "Agent",
-    desc: "Deploy autonomous AI agents for Sales, Support, Content, and CEO-level orchestration. 24/7 operations with zero human overhead.",
+    id: 'AGENT',
+    title: 'AGENT_FORCES',
+    desc: 'Deploy autonomous specialist teams for Sales, Support, and Content with zero human overhead.',
     icon: Users,
-    link: '/onboarding',
-    color: 'blue',
-    bgImage: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200',
-    features: [
-      "Sales Agent — Qualify leads & close deals",
-      "Support Agent — Auto-resolve customer tickets",
-      "Content Agent — Marketing copy & posts",
-      "CEO Agent — Orchestrate all agents"
-    ]
+    path: '/onboarding',
+    meta: 'AUTONOMOUS_WORKFORCE',
   },
   {
-    title: "AgentIRL",
-    desc: "Enterprise infrastructure for multi-agent orchestration. Deploy, monitor, and scale with 99.9% uptime and production-grade security.",
+    id: 'AGENTIRL',
+    title: 'AGENTIRL_CORE',
+    desc: 'Enterprise infrastructure for multi-agent orchestration, monitoring, and production reliability.',
     icon: Cpu,
-    link: '/services/agentirl',
-    color: 'indigo',
-    bgImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200',
-    features: [
-      "Multi-Agent Orchestration — Sync & coordinate",
-      "Real-time Observability — Monitor all activity",
-      "Enterprise Reliability — Auto-retry & fallbacks",
-      "50+ Integrations — Connect your tech stack"
-    ]
+    path: '/services/agentirl',
+    meta: 'INFRASTRUCTURE_RUNTIME',
   },
   {
-    title: "Analytics + Consulting",
-    desc: "Track visitors, conversations, and conversions. Expert consulting to optimize your AI-powered business for maximum ROI.",
+    id: 'ANALYTICS',
+    title: 'AI_TELEMETRY',
+    desc: 'Track reasoning chains and conversion funnels with sub-50ms observability and expert consulting.',
     icon: BarChart3,
-    link: 'https://analytics.viktron.ai',
-    color: 'emerald',
-    bgImage: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1200',
+    path: 'https://analytics.viktron.ai',
+    meta: 'INTELLIGENCE_OBSERVABILITY',
     external: true,
-    features: [
-      "Visitor Tracking — See all customer activity",
-      "Conversion Funnels — Revenue flow optimization",
-      "Agent Performance — Quality & sentiment metrics",
-      "Expert Consulting — Custom ROI strategies"
-    ]
+  },
+  {
+    id: 'RENTALS',
+    title: 'AGENT_RENTALS',
+    desc: 'On-demand registry for renting pre-built agents by the hour or day. Instant deployment.',
+    icon: Sparkles,
+    path: '/rent',
+    meta: 'GLOBAL_REGISTRY',
   }
 ];
 
-const RENTALS_SERVICE = {
-  title: "Rentals",
-  desc: "Rent pre-built AI agents by the hour or day. Start immediately without setup — perfect for trials, scaling, or seasonal needs.",
-  icon: Sparkles,
-  link: '/rent',
-  color: 'purple',
-  bgImage: 'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&q=80&w=1200',
-  features: [
-    "Hourly Pricing — Pay exactly what you use",
-    "Pre-built Agents — Sales, Support, Content ready",
-    "No Setup — Deploy in seconds",
-    "Auto-scaling — Handle peak demand instantly"
-  ]
-};
-
-export const Services = () => {
+export const Services: React.FC = () => {
   return (
-    <Layout>
-      <SEO
-        title="Viktron AI Products | Agent, AgentIRL, Analytics, Rentals"
-        description="Discover Viktron AI's 4 core products: Agent (autonomous AI teams), AgentIRL (production infrastructure), Analytics + Consulting (insights & optimization), and Rentals (hourly agent marketplace). Enterprise-ready. From $199/mo."
-        keywords="Viktron AI products, AI agent teams, AgentIRL platform, analytics for AI, agent rentals, autonomous agents, enterprise AI platform, multi-agent orchestration"
-        url="/services"
-        canonicalUrl="https://viktron.ai/services"
-      />
-      {/* Hero */}
-      <section className="relative pt-40 pb-32 overflow-hidden">
-        {/* Background imagery + gradient blobs — matching Landing page */}
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-[0.035] pointer-events-none"
-          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=2000')" }}
-        />
-        {/* Gradient mesh */}
-        <div className="absolute inset-0 pointer-events-none">
-          {/* Top-right blue glow */}
-          <div className="absolute -top-40 -right-40 w-[900px] h-[900px] bg-blue-200/50 blur-[160px] rounded-full" />
-          {/* Bottom-left indigo glow */}
-          <div className="absolute -bottom-20 -left-40 w-[700px] h-[700px] bg-indigo-200/40 blur-[140px] rounded-full" />
-          {/* Center violet accent */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-violet-100/30 blur-[120px] rounded-full" />
-          {/* Top-left teal micro-accent */}
-          <div className="absolute top-20 left-16 w-[300px] h-[300px] bg-cyan-100/40 blur-[100px] rounded-full" />
-        </div>
-        {/* Subtle dot-grid pattern overlay */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.04]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, #3b82f6 1px, transparent 1px)',
-            backgroundSize: '32px 32px',
-          }}
-        />
+    <Layout showBackground={false}>
+      <SEO title="Services — The Viktron AI Institutional Ecosystem" description="Explore our 4 core products: Agent, AgentIRL, Analytics, and Rentals." />
 
-        {/* Content */}
-        <div className="container-custom relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center max-w-4xl mx-auto"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 text-blue-600 text-xs font-semibold mb-8 backdrop-blur-sm hover:shadow-lg transition-shadow duration-300">
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-              Viktron AI Products
+      {/* ─── HERO ─── */}
+      <section className="relative pt-40 pb-20 bg-[#050505] overflow-hidden">
+        <div className="absolute inset-0 grid-paper opacity-[0.05] pointer-events-none" />
+        <div className="max-w-[1400px] mx-auto px-6 relative z-10 text-center">
+           <FU d={0}>
+              <Label>SYSTEM_ARCHETYPES // ECOSYSTEM_v2.2</Label>
+              <h1 className="heading-precision text-7xl md:text-[140px] text-white leading-[0.8] tracking-[-0.05em] uppercase font-black mt-10">
+                 CORE<br />
+                 <span className="text-zinc-700">STACK.</span>
+              </h1>
+              <p className="heading-editorial text-2xl text-zinc-300 mt-12 max-w-2xl mx-auto">
+                 The full-stack ecosystem for building, deploying, and scaling autonomous workforces.
+              </p>
+           </FU>
+        </div>
+      </section>
+
+      {/* ─── GRID ─── */}
+      <section className="py-20 bg-[#050505] relative min-h-screen">
+         <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+            {SERVICES.map((s, i) => (
+              <FU key={s.id} d={i * 0.05}>
+                 <div className="obsidian-panel p-12 h-full flex flex-col group hover:border-primary/40 transition-all cursor-pointer">
+                    <div className="flex justify-between items-start mb-12">
+                       <div className="w-16 h-16 obsidian-inset flex items-center justify-center border border-white/5 group-hover:border-primary/20 transition-all text-zinc-500 group-hover:text-primary">
+                          <s.icon size={28} />
+                       </div>
+                       <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">{s.meta}</span>
+                    </div>
+                    
+                    <div className="flex-1 space-y-6">
+                       <h3 className="text-white font-bold text-4xl uppercase tracking-tighter group-hover:text-primary transition-colors">{s.title}</h3>
+                       <p className="text-zinc-500 text-lg leading-relaxed max-w-md">{s.desc}</p>
+                    </div>
+
+                    <div className="mt-16 pt-10 border-t border-white/5 flex items-center justify-between">
+                       <div className="flex items-center gap-6">
+                          <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-600 uppercase tracking-widest">
+                             <ShieldCheck size={14} /> SOC2_READY
+                          </div>
+                          <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-600 uppercase tracking-widest">
+                             <Activity size={14} /> 99.9%_UPTIME
+                          </div>
+                       </div>
+                       {s.external ? (
+                         <a href={s.path} target="_blank" rel="noopener noreferrer" className="btn-acid !px-10 !py-4 !text-[10px]">Initialize</a>
+                       ) : (
+                         <Link to={s.path} className="btn-acid !px-10 !py-4 !text-[10px]">Initialize</Link>
+                       )}
+                    </div>
+                 </div>
+              </FU>
+            ))}
+         </div>
+      </section>
+
+      {/* ─── INFRASTRUCTURE ─── */}
+      <section className="py-40 bg-[#080808] border-y border-white/5 relative">
+         <div className="max-w-7xl mx-auto px-6">
+            <Label>PLATFORM_CAPABILITIES</Label>
+            <div className="grid md:grid-cols-3 gap-16 mt-20">
+               {[
+                 { icon: Globe, t: 'Global Deployment', d: 'Deploy agents across 12+ regions with sub-50ms orchestration latency.' },
+                 { icon: Database, t: 'Provenance Ledger', d: 'Every agent action is recorded on an immutable ledger for institutional audit.' },
+                 { icon: Zap, t: 'Real-time Telemetry', d: 'Monitor reasoning chains and token efficiency through OTLP-native streams.' },
+               ].map((v, i) => (
+                 <FU key={i} d={i * 0.1} className="space-y-6">
+                    <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-600">
+                       <v.icon size={20} />
+                    </div>
+                    <h3 className="text-white font-bold text-lg uppercase tracking-tight">{v.t}</h3>
+                    <p className="text-zinc-500 text-sm leading-relaxed">{v.d}</p>
+                 </FU>
+               ))}
             </div>
-
-            <h1 className="text-5xl md:text-7xl font-bold text-slate-900 mb-6 tracking-tight leading-tight">
-              Four Products.<br className="hidden md:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 animate-gradient">One AI Platform.</span>
-            </h1>
-
-            <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed mb-2 font-medium">
-              Everything you need to deploy, scale, and optimize autonomous AI agents.
-            </p>
-            <p className="text-base text-slate-500 max-w-2xl mx-auto leading-relaxed mb-12">
-              From <strong>autonomous agent teams</strong> to production infrastructure, analytics, and on-demand rentals — <strong>enterprise-grade solutions</strong> built for growth.
-            </p>
-          </motion.div>
-        </div>
+         </div>
       </section>
 
-      {/* Main Services Grid */}
-      <section className="py-24 bg-gradient-to-b from-white via-slate-50/50 to-white relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-emerald-100/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-1/4 w-[300px] h-[300px] bg-blue-100/10 rounded-full blur-3xl" />
-        </div>
-        <div className="container-custom">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-3">Core Services</h2>
-            <p className="text-slate-600 text-lg">Enterprise-grade solutions for autonomous AI agents.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            {MAIN_SERVICES.map((service, idx) => {
-              const colorMap: { [key: string]: { bg: string; border: string; text: string; textHover: string; icon: string; iconCheck: string; shadow: string } } = {
-                blue: { bg: 'bg-blue-50', border: 'border-blue-200/50 hover:border-blue-300', text: 'text-blue-600', textHover: 'group-hover:text-blue-700', icon: 'text-blue-600', iconCheck: 'text-blue-500', shadow: 'group-hover:shadow-blue-500/10' },
-                indigo: { bg: 'bg-indigo-50', border: 'border-indigo-200/50 hover:border-indigo-300', text: 'text-indigo-600', textHover: 'group-hover:text-indigo-700', icon: 'text-indigo-600', iconCheck: 'text-indigo-500', shadow: 'group-hover:shadow-indigo-500/10' },
-                emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200/50 hover:border-emerald-300', text: 'text-emerald-600', textHover: 'group-hover:text-emerald-700', icon: 'text-emerald-600', iconCheck: 'text-emerald-500', shadow: 'group-hover:shadow-emerald-500/10' },
-                purple: { bg: 'bg-purple-50', border: 'border-purple-200/50 hover:border-purple-300', text: 'text-purple-600', textHover: 'group-hover:text-purple-700', icon: 'text-purple-600', iconCheck: 'text-purple-500', shadow: 'group-hover:shadow-purple-500/10' },
-              };
-              const colors = colorMap[service.color] || colorMap.blue;
-
-              return (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.12, duration: 0.5 }}
-                  className={`relative rounded-2xl border ${colors.border} overflow-hidden bg-white backdrop-blur-sm transition-all duration-500 group flex flex-col h-full hover:shadow-2xl ${colors.shadow}`}
-                >
-                  {/* Accent line at top */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-current to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ color: service.color === 'blue' ? '#2563eb' : service.color === 'indigo' ? '#4f46e5' : service.color === 'emerald' ? '#059669' : '#a855f7' }} />
-
-                  {/* Background Image */}
-                  <div className="relative h-56 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
-                    <img
-                      src={service.bgImage}
-                      alt={service.title}
-                      className="w-full h-full object-cover opacity-75 group-hover:opacity-90 transition-all duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/50" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-8 flex flex-col flex-1">
-                    {/* Icon */}
-                    <div className={`w-14 h-14 rounded-xl ${colors.bg} flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300`}>
-                      <service.icon className={`w-7 h-7 ${colors.icon}`} />
-                    </div>
-
-                    {/* Title */}
-                    <h3 className={`text-2xl lg:text-3xl font-bold text-slate-900 mb-3 ${colors.textHover} transition-colors duration-300`}>
-                      {service.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-slate-600 mb-7 leading-relaxed text-base flex-1">
-                      {service.desc}
-                    </p>
-
-                    {/* Features */}
-                    <ul className="space-y-3 mb-8">
-                      {service.features.map((feature, i) => (
-                        <motion.li
-                          key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.05 }}
-                          className="flex items-start gap-3"
-                        >
-                          <CheckCircle2 className={`w-5 h-5 ${colors.iconCheck} shrink-0 mt-0.5`} />
-                          <span className="text-slate-700 text-sm font-medium">{feature}</span>
-                        </motion.li>
-                      ))}
-                    </ul>
-
-                    {/* CTA Button */}
-                    {service.external ? (
-                      <a
-                        href={service.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`inline-flex items-center gap-2 text-base font-semibold ${colors.text} hover:gap-3 transition-all duration-300 mt-auto group/btn`}
-                      >
-                        Explore
-                        <motion.span
-                          initial={{ x: 0 }}
-                          whileHover={{ x: 4 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <ArrowRight className="w-5 h-5" />
-                        </motion.span>
-                      </a>
-                    ) : (
-                      <Link
-                        to={service.link}
-                        className={`inline-flex items-center gap-2 text-base font-semibold ${colors.text} hover:gap-3 transition-all duration-300 mt-auto group/btn`}
-                      >
-                        Explore {service.title}
-                        <motion.span
-                          initial={{ x: 0 }}
-                          whileHover={{ x: 4 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <ArrowRight className="w-5 h-5" />
-                        </motion.span>
-                      </Link>
-                    )}
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
+      {/* ─── CTA ─── */}
+      <section className="py-60 bg-[#050505] text-center relative overflow-hidden">
+         <div className="max-w-5xl mx-auto px-6 relative z-10">
+            <FU d={0}>
+               <h2 className="heading-precision text-7xl md:text-[140px] text-white mb-16 uppercase tracking-tighter font-black leading-[0.8]">
+                  COMMAND<br />
+                  <span className="text-zinc-700">READY.</span>
+               </h2>
+               <Link to="/contact" className="btn-acid px-16 py-6 inline-block">Consult Our Architects</Link>
+            </FU>
+         </div>
       </section>
-
-      {/* Rentals Section */}
-      <section className="py-24 bg-gradient-to-br from-white via-purple-50/30 to-slate-50 relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-purple-200/15 rounded-full blur-3xl" />
-          <div className="absolute -bottom-32 -right-32 w-[400px] h-[400px] bg-indigo-100/10 rounded-full blur-3xl" />
-        </div>
-        <div className="container-custom">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-3">Agent Rentals</h2>
-            <p className="text-slate-600 text-lg">Start immediately without long-term commitment.</p>
-          </div>
-
-          <div className="max-w-3xl mx-auto">
-            {(() => {
-              const service = RENTALS_SERVICE;
-              const colorMap: { [key: string]: { bg: string; border: string; text: string; textHover: string; icon: string; iconCheck: string; shadow: string } } = {
-                blue: { bg: 'bg-blue-50', border: 'border-blue-200/50 hover:border-blue-300', text: 'text-blue-600', textHover: 'group-hover:text-blue-700', icon: 'text-blue-600', iconCheck: 'text-blue-500', shadow: 'group-hover:shadow-blue-500/10' },
-                indigo: { bg: 'bg-indigo-50', border: 'border-indigo-200/50 hover:border-indigo-300', text: 'text-indigo-600', textHover: 'group-hover:text-indigo-700', icon: 'text-indigo-600', iconCheck: 'text-indigo-500', shadow: 'group-hover:shadow-indigo-500/10' },
-                emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200/50 hover:border-emerald-300', text: 'text-emerald-600', textHover: 'group-hover:text-emerald-700', icon: 'text-emerald-600', iconCheck: 'text-emerald-500', shadow: 'group-hover:shadow-emerald-500/10' },
-                purple: { bg: 'bg-purple-50', border: 'border-purple-200/50 hover:border-purple-300', text: 'text-purple-600', textHover: 'group-hover:text-purple-700', icon: 'text-purple-600', iconCheck: 'text-purple-500', shadow: 'group-hover:shadow-purple-500/10' },
-              };
-              const colors = colorMap[service.color] || colorMap.blue;
-
-              return (
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5 }}
-                  className={`relative rounded-2xl border ${colors.border} overflow-hidden bg-white backdrop-blur-sm transition-all duration-500 group flex flex-col h-full hover:shadow-2xl ${colors.shadow}`}
-                >
-                  {/* Accent line at top */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-current to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ color: '#a855f7' }} />
-
-                  {/* Background Image */}
-                  <div className="relative h-64 overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
-                    <img
-                      src={service.bgImage}
-                      alt={service.title}
-                      className="w-full h-full object-cover opacity-75 group-hover:opacity-90 transition-all duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/50" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-8 flex flex-col flex-1">
-                    {/* Icon */}
-                    <div className={`w-14 h-14 rounded-xl ${colors.bg} flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg transition-all duration-300`}>
-                      <service.icon className={`w-7 h-7 ${colors.icon}`} />
-                    </div>
-
-                    {/* Title */}
-                    <h3 className={`text-2xl lg:text-3xl font-bold text-slate-900 mb-3 ${colors.textHover} transition-colors duration-300`}>
-                      {service.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-slate-600 mb-7 leading-relaxed text-base flex-1">
-                      {service.desc}
-                    </p>
-
-                    {/* Features */}
-                    <ul className="space-y-3 mb-8">
-                      {service.features.map((feature, i) => (
-                        <motion.li
-                          key={i}
-                          initial={{ opacity: 0, x: -10 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.05 }}
-                          className="flex items-start gap-3"
-                        >
-                          <CheckCircle2 className={`w-5 h-5 ${colors.iconCheck} shrink-0 mt-0.5`} />
-                          <span className="text-slate-700 text-sm font-medium">{feature}</span>
-                        </motion.li>
-                      ))}
-                    </ul>
-
-                    {/* CTA Button */}
-                    <Link
-                      to={service.link}
-                      className={`inline-flex items-center gap-2 text-base font-semibold ${colors.text} hover:gap-3 transition-all duration-300 mt-auto group/btn`}
-                    >
-                      Browse Rentals
-                      <motion.span
-                        initial={{ x: 0 }}
-                        whileHover={{ x: 4 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <ArrowRight className="w-5 h-5" />
-                      </motion.span>
-                    </Link>
-                  </div>
-                </motion.div>
-              );
-            })()}
-          </div>
-        </div>
-      </section>
-
     </Layout>
   );
 };
