@@ -17,9 +17,9 @@
   --accent-white: #FFFFFF;
   --accent-red: #FF3333;
 
-  --text-primary: #F5F5F0;
-  --text-secondary: #A0A0A0;
-  --text-muted: #505050;
+  --text-primary: #FFFFFF;
+  --text-secondary: #C0C0C0;
+  --text-muted: #808080;
 
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -98,7 +98,13 @@ body {
 .section-label::after {
   content: '';
   @apply h-px flex-1;
-  background-color: rgba(255,255,255,0.05);
+  background-color: rgba(255,255,255,0.1);
+}
+
+.glass-bone {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Premium Buttons 2.0 */
