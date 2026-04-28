@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Github, Twitter, Linkedin, MessageSquare } from 'lucide-react';
+import { Github, Twitter, Linkedin, MessageSquare, Shield } from 'lucide-react';
 
 const footerLinks = {
   platform: [
@@ -30,46 +29,43 @@ const footerLinks = {
 
 export const Footer = () => {
   return (
-    <footer className="bg-slate-50 border-t border-slate-200 pt-20 pb-10">
-      <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-16">
-          <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-6 group">
-              <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center border border-blue-100 group-hover:bg-blue-100 transition-colors">
-                <img src="/visuals/viktronlogo.png" alt="Viktron logo" className="w-5 h-5 object-contain" />
+    <footer className="bg-[#050505] border-t border-white/5 pt-32 pb-16">
+      <div className="max-w-[1400px] mx-auto px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-16 mb-24">
+          <div className="lg:col-span-2 space-y-10">
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="w-10 h-10 obsidian-inset flex items-center justify-center border border-white/10 group-hover:border-primary transition-all duration-500">
+                <img src="/visuals/viktronlogo.png" alt="Viktron logo" className="w-6 h-6 object-contain grayscale group-hover:grayscale-0" />
               </div>
-              <span className="font-bold text-lg tracking-tight text-slate-900 font-mono">Viktron</span>
+              <span className="font-bold text-xl tracking-tighter text-white font-mono uppercase">Viktron</span>
             </Link>
-            <p className="text-slate-600 mb-6 max-w-sm leading-relaxed">
-              The control plane for autonomous agents. Ensure reliability, security, and compliance for your AI workforce.
+            
+            <p className="text-zinc-400 text-sm leading-relaxed max-w-sm">
+              The Enterprise Control Plane for autonomous agents. 
+              Implementing high-trust governance and infrastructure reliability 
+              for the agentic era.
             </p>
-            <div className="flex items-center gap-4">
-              <a href="#" className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-blue-50 text-slate-500 hover:text-blue-600 transition-all shadow-sm">
-                <Github size={18} />
-              </a>
-              <a href="#" className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-blue-50 text-slate-500 hover:text-blue-600 transition-all shadow-sm">
-                <Twitter size={18} />
-              </a>
-              <a href="#" className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-blue-50 text-slate-500 hover:text-blue-600 transition-all shadow-sm">
-                <Linkedin size={18} />
-              </a>
-              <a href="#" className="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-slate-200 hover:bg-blue-50 text-slate-500 hover:text-blue-600 transition-all shadow-sm">
-                <MessageSquare size={18} />
-              </a>
+
+            <div className="flex items-center gap-6">
+              {[Github, Twitter, Linkedin, MessageSquare].map((Icon, i) => (
+                <a key={i} href="#" className="text-zinc-600 hover:text-primary transition-colors duration-300">
+                  <Icon size={18} />
+                </a>
+              ))}
             </div>
           </div>
 
           <div>
-            <h4 className="font-semibold text-slate-900 mb-6">Services</h4>
-            <ul className="space-y-3">
+            <h4 className="font-mono text-[11px] uppercase tracking-[0.3em] text-primary mb-8 font-bold text-glow">Platform</h4>
+            <ul className="space-y-4">
               {footerLinks.platform.map((link) => (
                 <li key={link.name}>
                   {link.external ? (
-                    <a href={link.path} target="_blank" rel="noopener noreferrer" className="text-slate-600 hover:text-blue-600 transition-colors text-sm">
+                    <a href={link.path} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors text-xs font-mono uppercase tracking-widest">
                       {link.name}
                     </a>
                   ) : (
-                    <Link to={link.path} className="text-slate-600 hover:text-blue-600 transition-colors text-sm">
+                    <Link to={link.path} className="text-zinc-400 hover:text-white transition-colors text-xs font-mono uppercase tracking-widest">
                       {link.name}
                     </Link>
                   )}
@@ -79,11 +75,11 @@ export const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-semibold text-slate-900 mb-6">Resources</h4>
-            <ul className="space-y-3">
+            <h4 className="font-mono text-[11px] uppercase tracking-[0.3em] text-primary mb-8 font-bold text-glow">Resources</h4>
+            <ul className="space-y-4">
               {footerLinks.resources.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.path} className="text-slate-600 hover:text-blue-600 transition-colors text-sm">
+                  <Link to={link.path} className="text-zinc-400 hover:text-white transition-colors text-xs font-mono uppercase tracking-widest">
                     {link.name}
                   </Link>
                 </li>
@@ -92,11 +88,11 @@ export const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-semibold text-slate-900 mb-6">Company</h4>
-            <ul className="space-y-3">
+            <h4 className="font-mono text-[11px] uppercase tracking-[0.3em] text-primary mb-8 font-bold text-glow">Company</h4>
+            <ul className="space-y-4">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.path} className="text-slate-600 hover:text-blue-600 transition-colors text-sm">
+                  <Link to={link.path} className="text-zinc-400 hover:text-white transition-colors text-xs font-mono uppercase tracking-widest">
                     {link.name}
                   </Link>
                 </li>
@@ -105,11 +101,11 @@ export const Footer = () => {
           </div>
           
            <div>
-            <h4 className="font-semibold text-slate-900 mb-6">Legal</h4>
-            <ul className="space-y-3">
+            <h4 className="font-mono text-[11px] uppercase tracking-[0.3em] text-primary mb-8 font-bold text-glow">Legal</h4>
+            <ul className="space-y-4">
               {footerLinks.legal.map((link) => (
                 <li key={link.name}>
-                  <Link to={link.path} className="text-slate-600 hover:text-blue-600 transition-colors text-sm">
+                  <Link to={link.path} className="text-zinc-400 hover:text-white transition-colors text-xs font-mono uppercase tracking-widest">
                     {link.name}
                   </Link>
                 </li>
@@ -118,18 +114,16 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-slate-500 text-sm">
-            © {new Date().getFullYear()} Viktron Inc. All rights reserved. | <a href="https://seojuice.com" target="_blank" rel="noopener noreferrer" className="hover:text-slate-700 transition-colors">Powered by SEOJuice</a>
+        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
+          <p className="text-zinc-600 text-[10px] font-mono uppercase tracking-widest">
+            © {new Date().getFullYear()} Viktron Inc. [GLOBAL_HQ] | <a href="https://seojuice.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">v2.2_INSTITUTIONAL</a>
           </p>
-          <div className="flex items-center gap-2 text-sm text-slate-500">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            All systems operational
+          <div className="flex items-center gap-3 text-[10px] font-mono text-primary font-bold tracking-widest">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(204,255,0,0.8)]"></span>
+            SYSTEMS_OPERATIONAL // VERIFIED
           </div>
         </div>
       </div>
     </footer>
   );
 };
-
-

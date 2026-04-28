@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, User, LogOut } from 'lucide-react';
-import { BrandIcon } from '../../constants';
+import { Menu, X, ChevronDown, User, LogOut, Shield } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ServicesPopup } from '../ServicesPopup';
 import { AboutPopup } from '../AboutPopup';
@@ -11,7 +10,7 @@ const navItems: { name: string; path: string; isPopup?: 'services' | 'about'; ex
   { name: 'Home', path: '/' },
   { name: 'AgentIRL', path: '/services/agentirl' },
   { name: 'Trust Fabric', path: '/services/trust-fabric' },
-  { name: 'Analytics', path: '/analytics' },
+  { name: 'Analytics', path: 'https://analytics.viktron.ai', external: 'https://analytics.viktron.ai' },
   { name: 'Enterprise', path: '/enterprise' },
   { name: 'About', path: '/about', isPopup: 'about' },
 ];
@@ -29,337 +28,162 @@ export const Navbar: React.FC = () => {
   const { isAuthenticated, user, logout, setShowAuthModal, setAuthModalMode } = useAuth();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [location]);
-
   return (
     <>
       <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.4, 0.25, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-[#060810]/90 border-b border-white/[0.06] backdrop-blur-xl'
-            : 'bg-transparent border-b border-transparent'
+            ? 'bg-[#050505]/80 border-b border-white/5 backdrop-blur-xl py-4'
+            : 'bg-transparent border-b border-transparent py-6'
         }`}
       >
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
+        <div className="max-w-[1400px] mx-auto px-6">
+          <div className="flex items-center justify-between">
             {/* Logo */}
-            {isRentSubdomain ? (
-              <a href="https://viktron.ai" className="flex items-center gap-2 group">
-                <div className="text-indigo-400"><BrandIcon className="h-8 w-8" /></div>
-                <span className="text-lg font-bold text-white">Viktron</span>
-              </a>
-            ) : (
-              <Link to="/" className="flex items-center gap-2 group">
-                <div className="text-indigo-400"><BrandIcon className="h-8 w-8" /></div>
-                <span className="text-lg font-bold text-white font-jakarta">Viktron</span>
-              </Link>
-            )}
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="w-9 h-9 obsidian-inset flex items-center justify-center border border-white/10 group-hover:border-primary transition-all duration-500">
+                <img src="/visuals/viktronlogo.png" alt="Viktron" className="w-5 h-5 object-contain grayscale group-hover:grayscale-0" />
+              </div>
+              <span className="font-mono text-sm font-bold uppercase tracking-[0.2em] text-white">Viktron</span>
+            </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-6">
-              {navItems.map((item) => {
-                // On rent subdomain: popup items become plain anchor links to main domain
-                if (item.isPopup && isRentSubdomain) {
-                  return (
-                    <a
-                      key={item.path}
-                      href={`https://viktron.ai${item.path}`}
-                      className="text-sm font-medium transition-colors flex items-center gap-1 text-white/60 hover:text-white"
+            <div className="hidden lg:flex items-center gap-10">
+              {navItems.map((item) => (
+                <div key={item.path} className="relative group/item">
+                  {item.external ? (
+                    <a 
+                      href={item.external} 
+                      className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-primary transition-colors"
                     >
                       {item.name}
-                      <ChevronDown className="w-3 h-3" />
                     </a>
-                  );
-                }
-                // Normal popup items (not on rent subdomain)
-                if (item.isPopup) {
-                  return (
-                    <div
-                      key={item.path}
-                      className="relative"
-                      onMouseEnter={() => {
-                        if (item.isPopup === 'services') setIsServicesOpen(true);
-                        if (item.isPopup === 'about') setIsAboutOpen(true);
-                      }}
-                      onMouseLeave={() => {
-                        if (item.isPopup === 'services') setIsServicesOpen(false);
-                        if (item.isPopup === 'about') setIsAboutOpen(false);
-                      }}
+                  ) : item.isPopup ? (
+                    <div 
+                      onMouseEnter={() => setIsAboutOpen(true)}
+                      onMouseLeave={() => setIsAboutOpen(false)}
+                      className="flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-primary transition-colors cursor-pointer"
                     >
-                      <button
-                        onClick={() => {
-                          if (item.isPopup === 'services') setIsServicesOpen(!isServicesOpen);
-                          if (item.isPopup === 'about') setIsAboutOpen(!isAboutOpen);
-                        }}
-                        className={`text-sm font-medium transition-colors flex items-center gap-1 cursor-pointer text-white/60 hover:text-white ${
-                          location.pathname.startsWith(item.path) && item.path !== '/' ? 'text-indigo-400' : ''
-                        }`}
-                      >
-                        {item.name}
-                        <ChevronDown className={`w-3 h-3 transition-transform ${
-                          (item.isPopup === 'services' && isServicesOpen) || (item.isPopup === 'about' && isAboutOpen) ? 'rotate-180' : ''
-                        }`} />
-                      </button>
-                      {item.isPopup === 'services' && (
-                        <ServicesPopup isOpen={isServicesOpen} onClose={() => setIsServicesOpen(false)} />
-                      )}
-                      {item.isPopup === 'about' && (
-                        <AboutPopup isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
-                      )}
+                      {item.name} <ChevronDown size={10} />
+                      <AboutPopup isOpen={isAboutOpen} onClose={() => setIsAboutOpen(false)} />
                     </div>
-                  );
-                }
-                // Rent Agents pill — always external to rent.viktron.ai
-                if (item.external) {
-                  return (
-                    <a
-                      key={item.path}
-                      href={item.external}
-                      className={`flex items-center gap-1.5 text-sm font-medium px-3 py-1 rounded-full border transition-colors ${
-                        isRentSubdomain
-                          ? 'bg-blue-600 border-blue-600 text-white'
-                          : 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100'
+                  ) : (
+                    <Link 
+                      to={item.path} 
+                      className={`text-[10px] font-mono font-bold uppercase tracking-[0.2em] transition-colors ${
+                        location.pathname === item.path ? 'text-primary' : 'text-zinc-400 hover:text-primary'
                       }`}
                     >
                       {item.name}
-                    </a>
-                  );
-                }
-                // On rent subdomain: all other links go to main domain
-                if (isRentSubdomain) {
-                  return (
-                    <a
-                      key={item.path}
-                      href={item.path === '/' ? 'https://viktron.ai' : `https://viktron.ai${item.path}`}
-                      className="text-sm font-medium transition-colors text-slate-600 hover:text-slate-900"
-                    >
-                      {item.name}
-                    </a>
-                  );
-                }
-                // Normal React Router link
-                return (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={`text-sm font-medium transition-colors text-white/60 hover:text-white ${
-                      location.pathname === item.path ? 'text-indigo-400' : ''
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                );
-              })}
+                    </Link>
+                  )}
+                  <div className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-500 ${
+                    location.pathname === item.path ? 'w-full' : 'w-0 group-hover/item:w-full'
+                  }`} />
+                </div>
+              ))}
             </div>
 
-            {/* CTA Button */}
-            <div className="hidden md:flex items-center gap-3">
+            {/* CTA / Auth */}
+            <div className="hidden lg:flex items-center gap-8">
               {isAuthenticated ? (
                 <div className="relative">
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/[0.05] transition-colors"
+                    className="flex items-center gap-3 text-zinc-400 hover:text-white transition-colors"
                   >
-                    <div className="w-8 h-8 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center">
-                      <User className="h-4 w-4 text-indigo-400" />
+                    <div className="w-8 h-8 rounded-full obsidian-inset flex items-center justify-center border border-white/10 group-hover:border-primary">
+                      <User size={14} className="text-zinc-500" />
                     </div>
-                    <span className="text-sm font-medium text-white/80">
-                      {user?.fullName?.split(' ')[0] || 'Account'}
-                    </span>
-                    <ChevronDown className={`h-4 w-4 text-white/40 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest">{user?.fullName?.split(' ')[0]}</span>
+                    <ChevronDown size={12} className={`transition-transform duration-300 ${showUserMenu ? 'rotate-180' : ''}`} />
                   </button>
-
                   <AnimatePresence>
                     {showUserMenu && (
                       <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        className="absolute right-0 mt-2 w-48 py-2 bg-[#0d0f1a] border border-white/[0.08] rounded-xl shadow-2xl backdrop-blur-xl"
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        className="absolute right-0 mt-4 w-56 glass-bone p-2 overflow-hidden z-[100]"
                       >
-                        <div className="px-4 py-2 border-b border-white/[0.06]">
-                          <p className="text-sm font-medium text-white truncate">{user?.fullName}</p>
-                          <p className="text-xs text-white/40 truncate">{user?.email}</p>
+                        <div className="px-4 py-3 border-b border-white/5 mb-2">
+                           <div className="text-[10px] font-mono text-zinc-500 truncate">{user?.email}</div>
                         </div>
                         <button
-                          onClick={() => {
-                            logout();
-                            setShowUserMenu(false);
-                          }}
-                          className="w-full flex items-center gap-2 px-4 py-2 text-sm text-white/60 hover:text-white hover:bg-white/[0.04] transition-colors"
+                          onClick={() => { logout(); setShowUserMenu(false); }}
+                          className="w-full flex items-center gap-3 px-4 py-3 text-[10px] font-mono uppercase tracking-widest text-zinc-400 hover:text-white hover:bg-white/5 transition-all"
                         >
-                          <LogOut className="h-4 w-4" />
-                          Sign Out
+                          <LogOut size={12} /> Sign Out
                         </button>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
               ) : (
-                <button
-                  onClick={() => {
-                    setAuthModalMode('login');
-                    setShowAuthModal(true);
-                  }}
-                  className="text-sm font-medium text-white/60 hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-white/[0.04]"
-                >
-                  Sign In
-                </button>
-              )}
-              {isAuthenticated ? (
-                <Link
-                  to="/contact"
-                  className="text-sm font-semibold px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white transition-colors shadow-lg shadow-indigo-500/20"
-                >
-                  Get Started
-                </Link>
-              ) : (
-                <button
-                  onClick={() => {
-                    setAuthModalMode('signup');
-                    setShowAuthModal(true);
-                    navigate('/signup');
-                  }}
-                  className="text-sm font-semibold px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white transition-colors shadow-lg shadow-indigo-500/20"
-                >
-                  Book Demo
-                </button>
+                <div className="flex items-center gap-6">
+                   <button
+                    onClick={() => { setAuthModalMode('login'); setShowAuthModal(true); }}
+                    className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors"
+                  >
+                    Login
+                  </button>
+                  <button
+                    onClick={() => { setAuthModalMode('signup'); setShowAuthModal(true); }}
+                    className="btn-acid !px-6 !py-2.5 !text-[9px]"
+                  >
+                    Deploy Agents
+                  </button>
+                </div>
               )}
             </div>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-white/60 hover:text-white transition-colors"
+              className="lg:hidden text-zinc-400 hover:text-primary transition-colors"
             >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
-      </motion.nav>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 md:hidden"
-          >
-            <div className="absolute inset-0 bg-[#060810]/95 backdrop-blur-xl" />
-            <div className="relative pt-24 px-6">
-              <div className="flex flex-col gap-2">
-                {navItems.map((item, index) => (
-                  <motion.div
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed inset-0 top-0 left-0 right-0 h-screen bg-[#050505] z-40 p-6 flex flex-col pt-32"
+            >
+              <div className="flex flex-col gap-8">
+                {navItems.map((item) => (
+                  <Link
                     key={item.path}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
+                    to={item.path}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-2xl font-mono uppercase tracking-widest text-white hover:text-primary transition-colors"
                   >
-                    {item.external ? (
-                      <a
-                        href={item.external}
-                        className="block px-4 py-3 text-lg font-medium rounded-xl transition-colors text-blue-400 hover:text-blue-300 hover:bg-white/5 border border-blue-500/20"
-                      >
-                        {item.name}
-                      </a>
-                    ) : isRentSubdomain ? (
-                      <a
-                        href={item.path === '/' ? 'https://viktron.ai' : `https://viktron.ai${item.path}`}
-                        className="block px-4 py-3 text-lg font-medium rounded-xl transition-colors text-white/70 hover:text-white hover:bg-white/5 border border-transparent"
-                      >
-                        {item.name}
-                      </a>
-                    ) : item.isPopup ? (
-                      <Link
-                        to={item.path}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="block w-full text-left px-4 py-3 text-lg font-medium rounded-xl transition-colors text-white/70 hover:text-white hover:bg-white/5 border border-transparent"
-                      >
-                        {item.name}
-                      </Link>
-                    ) : (
-                      <Link
-                        to={item.path}
-                        className={`block px-4 py-3 text-lg font-medium rounded-xl transition-colors ${
-                          location.pathname === item.path
-                            ? 'bg-white/10 text-white border border-white/10'
-                            : 'text-white/70 hover:text-white hover:bg-white/5 border border-transparent'
-                        }`}
-                      >
-                        {item.name}
-                      </Link>
-                    )}
-                  </motion.div>
+                    {item.name}
+                  </Link>
                 ))}
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: navItems.length * 0.1 }}
-                  className="mt-4 space-y-3"
-                >
-                  {isAuthenticated ? (
-                    <>
-                      <div className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl">
-                        <p className="text-sm font-medium text-white">{user?.fullName}</p>
-                        <p className="text-xs text-white/50">{user?.email}</p>
-                      </div>
-                      <button
-                        onClick={() => {
-                          logout();
-                          setIsMobileMenuOpen(false);
-                        }}
-                        className="w-full flex items-center justify-center gap-2 px-4 py-3 text-lg font-medium text-white/70 hover:text-white border border-white/10 rounded-xl bg-slate-800"
-                      >
-                        <LogOut className="h-5 w-5" />
-                        Sign Out
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => {
-                          setIsMobileMenuOpen(false);
-                          setAuthModalMode('login');
-                          setShowAuthModal(true);
-                        }}
-                        className="w-full px-4 py-3 text-center text-lg font-medium text-white/70 hover:text-white border border-white/10 rounded-xl bg-slate-800"
-                      >
-                        Sign In
-                      </button>
-                      <button
-                        onClick={() => {
-                          setIsMobileMenuOpen(false);
-                          setAuthModalMode('signup');
-                          setShowAuthModal(true);
-                          navigate('/signup');
-                        }}
-                        className="block w-full px-4 py-3 text-center text-lg font-semibold text-slate-950 bg-white rounded-xl"
-                      >
-                        Get Started
-                      </button>
-                    </>
-                  )}
-                </motion.div>
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <div className="mt-auto space-y-4">
+                 <button className="w-full btn-acid py-5">Request Access</button>
+                 <button className="w-full btn-obsidian py-5">Documentation</button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
     </>
   );
 };

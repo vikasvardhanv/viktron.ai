@@ -47,7 +47,7 @@ export const TrustFabric: React.FC = () => (
         <div className="grid lg:grid-cols-[1.2fr_1fr] gap-20 items-center">
           <div className="space-y-12">
             <FU d={0}>
-              <div className="flex items-center gap-3 font-mono text-[10px] text-primary tracking-[0.3em] uppercase font-bold">
+              <div className="flex items-center gap-3 font-mono text-[10px] text-primary tracking-[0.3em] uppercase font-bold text-glow">
                 <div className="w-12 h-px bg-primary" />
                 SECURITY_ARCHITECTURE // LAYER_06
               </div>
@@ -139,7 +139,7 @@ export const TrustFabric: React.FC = () => (
              </FU>
              <FU d={0.2} className="obsidian-panel p-16 bg-[#050505] relative shimmer">
                 <div className="scan-line opacity-20" />
-                <h4 className="font-mono text-[10px] text-zinc-600 mb-10 tracking-[0.3em] uppercase font-bold">// PROVENANCE_STREAM</h4>
+                <h4 className="font-mono text-[10px] text-primary mb-10 tracking-[0.3em] uppercase font-bold text-glow">// PROVENANCE_STREAM</h4>
                 <div className="space-y-6 font-mono text-[11px]">
                    {[
                      { l: 'IDENTITY_TOKEN_VERIFIED', s: 'text-primary' },

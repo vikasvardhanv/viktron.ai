@@ -64,7 +64,7 @@ export const Landing: React.FC = () => {
             
             <div className="space-y-12">
               <FU d={0}>
-                <div className="flex items-center gap-3 font-mono text-[10px] text-primary tracking-[0.3em] uppercase font-bold">
+                <div className="flex items-center gap-3 font-mono text-[10px] text-primary tracking-[0.3em] uppercase font-bold text-glow">
                   <div className="w-12 h-px bg-primary" />
                   VIKTRON SYSTEM_STATUS // ACTIVE
                 </div>
@@ -73,7 +73,7 @@ export const Landing: React.FC = () => {
               <FU d={0.1}>
                 <h1 className="heading-precision text-7xl md:text-8xl lg:text-[130px] text-white leading-[0.85] tracking-[-0.05em]">
                   AGENT<br />
-                  <span className="text-zinc-700">CONTROL.</span>
+                  <span className="text-zinc-400">CONTROL.</span>
                 </h1>
                 <p className="heading-editorial text-3xl md:text-4xl text-zinc-300 mt-8 max-w-xl">
                   The definitive infrastructure layer for autonomous enterprise intelligence.
@@ -91,7 +91,7 @@ export const Landing: React.FC = () => {
               <FU d={0.3}>
                 <div className="flex flex-wrap items-center gap-6">
                   <Link to="/contact" className="btn-acid px-10 py-5">Request Technical Access</Link>
-                  <Link to="/services/agentirl" className="btn-obsidian px-10 py-5">System Architecture</Link>
+                  <Link to="/services/agentirl" className="btn-obsidian px-10 py-5 !text-white hover:!text-primary">System Architecture</Link>
                 </div>
               </FU>
             </div>
@@ -104,11 +104,11 @@ export const Landing: React.FC = () => {
                 
                 {/* Floating Meta HUD */}
                 <div className="absolute top-8 right-8 p-4 glass-bone font-mono text-[10px] space-y-2">
-                   <div className="flex justify-between gap-8 text-primary">
+                   <div className="flex justify-between gap-8 text-primary font-bold">
                       <span>LATENCY</span>
                       <span>2ms</span>
                    </div>
-                   <div className="flex justify-between gap-8 text-zinc-500">
+                   <div className="flex justify-between gap-8 text-zinc-300">
                       <span>CLUSTER</span>
                       <span>[V-PRD-01]</span>
                    </div>
@@ -117,7 +117,7 @@ export const Landing: React.FC = () => {
               
               {/* Offset Detail Card */}
               <div className="absolute -bottom-10 -left-10 p-10 glass-bone max-w-[280px] hidden xl:block">
-                 <div className="font-mono text-[10px] text-primary mb-4 tracking-widest uppercase font-bold">// GOVERNANCE_ACTIVE</div>
+                 <div className="font-mono text-[10px] text-primary mb-4 tracking-widest uppercase font-bold text-glow">// GOVERNANCE_ACTIVE</div>
                  <p className="text-[11px] text-zinc-400 leading-relaxed mb-6">
                     Every tool call is intercepted and validated against corporate policy before execution.
                  </p>

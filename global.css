@@ -19,7 +19,7 @@
 
   --text-primary: #FFFFFF;
   --text-secondary: #E0E0E0;
-  --text-muted: #888888;
+  --text-muted: #A0A0A0;
 
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -123,7 +123,11 @@ body::before {
 .section-label {
   @apply font-mono text-[10px] uppercase tracking-[0.4em] mb-4 flex items-center gap-4;
   color: var(--primary);
-  opacity: 0.8;
+  font-weight: 700;
+}
+
+.text-glow {
+  text-shadow: 0 0 10px var(--primary-glow);
 }
 
 .section-label::after {

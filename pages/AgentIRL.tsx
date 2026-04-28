@@ -49,7 +49,7 @@ export const AgentIRL: React.FC = () => (
         <div className="grid lg:grid-cols-[1fr_0.8fr] gap-20 items-center">
           <div className="space-y-12">
             <FU d={0}>
-              <div className="flex items-center gap-3 font-mono text-[10px] text-primary tracking-[0.3em] uppercase font-bold">
+              <div className="flex items-center gap-3 font-mono text-[10px] text-primary tracking-[0.3em] uppercase font-bold text-glow">
                 <div className="w-12 h-px bg-primary" />
                 GOVERNANCE_AS_CODE // v2.2
               </div>
@@ -134,7 +134,7 @@ export const AgentIRL: React.FC = () => (
              <FU d={0.2} className="obsidian-panel p-12 bg-[#050505] relative shimmer">
                 <div className="scan-line" />
                 <div className="w-full space-y-6">
-                   <div className="flex justify-between font-mono text-[10px] text-primary font-bold">
+                   <div className="flex justify-between font-mono text-[10px] text-primary font-bold text-glow">
                       <span>INTERCEPTION_ACTIVE</span>
                       <span>SHA-256_SECURE</span>
                    </div>
