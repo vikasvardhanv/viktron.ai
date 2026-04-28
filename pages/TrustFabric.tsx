@@ -161,8 +161,8 @@ export const TrustFabric: React.FC = () => {
   return (
     <Layout>
       <ServiceSEO
-        title="Trust Fabric - Agent Governance & Control"
-        description="Enterprise-grade governance layer for AI agents. Cryptographic identity, policy enforcement, delegation tokens, audit trails, and compliance automation."
+        serviceName="Trust Fabric - Agent Governance & Control"
+        serviceDescription="Enterprise-grade governance layer for AI agents. Cryptographic identity, policy enforcement, delegation tokens, audit trails, and compliance automation."
       />
 
       {/* ─── Hero ─────────────────────────────────────────────────────────────── */}
