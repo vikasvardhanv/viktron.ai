@@ -335,7 +335,7 @@ function App() {
         <CookieConsentProvider>
           <ScrollToTop />
           <GoogleSignInWarmup />
-          <div className="w-full min-h-screen bg-white text-slate-900">
+          <div className="w-full min-h-screen bg-[#050505] text-white overflow-x-hidden">
             <Suspense fallback={<LoadingSpinner />}>
               <AnimatedRoutes />
             </Suspense>

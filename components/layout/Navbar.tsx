@@ -80,9 +80,9 @@ export const Navbar: React.FC = () => {
                       <div className="relative">
                         <Link 
                           to={item.path}
-                          className={`px-6 py-3 flex items-center gap-2 text-[10px] font-mono font-bold uppercase tracking-[0.3em] transition-all duration-300 border border-transparent ${
+                          className={`px-6 py-3 flex items-center gap-2 text-[10px] font-mono font-black uppercase tracking-[0.3em] transition-all duration-300 border border-transparent ${
                             isActive 
-                              ? 'bg-primary text-black shadow-[0_0_25px_rgba(204,255,0,0.5)] border-primary/50' 
+                              ? 'bg-primary text-black shadow-[0_0_30px_rgba(204,255,0,0.6)] border-primary' 
                               : 'text-zinc-500 hover:text-white'
                           }`}
                         >
@@ -94,9 +94,9 @@ export const Navbar: React.FC = () => {
                     ) : (
                       <Link 
                         to={item.path} 
-                        className={`px-6 py-3 text-[10px] font-mono font-bold uppercase tracking-[0.3em] transition-all duration-300 border border-transparent block ${
+                        className={`px-6 py-3 text-[10px] font-mono font-black uppercase tracking-[0.3em] transition-all duration-300 border border-transparent block ${
                           isActive 
-                            ? 'bg-primary text-black shadow-[0_0_25px_rgba(204,255,0,0.5)] border-primary/50' 
+                            ? 'bg-primary text-black shadow-[0_0_30px_rgba(204,255,0,0.6)] border-primary' 
                             : 'text-zinc-500 hover:text-white'
                         }`}
                       >

@@ -1,140 +1,76 @@
+/**
+ * Viktron AI — Cookie Policy
+ * Obsidian Precision v2.2 Synchronization
+ */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Cookie, Mail, Settings, Shield } from 'lucide-react';
+import { Database, Cookie, ArrowLeft } from 'lucide-react';
 import { Layout } from '../../components/layout/Layout';
 import { SEO } from '../../components/ui/SEO';
-import { AnimatedSection } from '../../components/ui/AnimatedSection';
-import { Button } from '../../components/ui/Button';
-import { useCookieConsent } from '../../context/CookieConsentContext';
+import { motion } from 'framer-motion';
 
-const categories = [
-  {
-    title: 'Necessary',
-    badge: 'Always active',
-    description: 'Required for login, security, and essential site behavior.',
-  },
-  {
-    title: 'Analytics',
-    badge: 'Optional',
-    description: 'Helps us understand usage patterns and improve product experience.',
-  },
-  {
-    title: 'Marketing',
-    badge: 'Optional',
-    description: 'Supports campaign attribution and relevance across channels.',
-  },
-  {
-    title: 'Preferences',
-    badge: 'Optional',
-    description: 'Stores language and UI preferences for a smoother experience.',
-  },
-];
+const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.ReactNode; className?: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.8, delay: d, ease: [0.16, 1, 0.3, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
 
-const cookieRows = [
-  { name: 'viktron_auth_token', purpose: 'Authentication', duration: '7 days', provider: 'Viktron' },
-  { name: 'viktron_user', purpose: 'Session profile', duration: '7 days', provider: 'Viktron' },
-  { name: 'viktron_cookie_consent', purpose: 'Consent settings', duration: '1 year', provider: 'Viktron' },
-  { name: '_ga', purpose: 'Analytics visitor ID', duration: '2 years', provider: 'Google Analytics' },
-  { name: '_gid', purpose: 'Analytics session', duration: '24 hours', provider: 'Google Analytics' },
+const sections = [
+  {
+    title: '01 // ESSENTIAL_BLOCKS',
+    body: 'These are strictly necessary to provide you with services available through our website and to use some of its features, such as access to secure areas like the AgentIRL Console.',
+  },
+  {
+    title: '02 // PERFORMANCE_VECTORS',
+    body: 'These cookies collect information that is used either in aggregate form to help us understand how our website is being used or how effective our marketing campaigns are.',
+  },
+  {
+    title: '03 // FUNCTIONAL_ASSETS',
+    body: 'These are used to recognize you when you return to our website. This enables us to personalize our content for you and remember your institutional preferences.',
+  },
 ];
 
 export const CookiePolicy: React.FC = () => {
-  const { openPreferences } = useCookieConsent();
-  const lastUpdated = 'February 12, 2026';
-
   return (
-    <Layout>
-      <SEO title="Cookie Policy | Viktron" description="Cookie usage and preference controls for Viktron services." url="/cookies" canonicalUrl="https://viktron.ai/cookies" />
+    <Layout showBackground={false}>
+      <SEO title="Cookie Policy — Viktron AI Governance" description="How we use data blocks to optimize the institutional agentic experience." />
 
-      <section className="pt-32 pb-14 px-4">
-        <div className="container-custom max-w-4xl">
-          <AnimatedSection>
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50">
-              <Cookie className="h-6 w-6 text-blue-600" />
-            </div>
-            <h1 className="mt-5 text-4xl sm:text-5xl font-semibold tracking-tight text-slate-900">Cookie Policy</h1>
-            <p className="mt-2 text-slate-600">Last updated: {lastUpdated}</p>
-            <div className="mt-5">
-              <Button variant="secondary" icon={<Settings className="h-4 w-4" />} onClick={openPreferences}>
-                Manage Cookie Preferences
-              </Button>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
+      <section className="pt-40 pb-20 bg-[#050505] min-h-screen relative overflow-hidden">
+        <div className="absolute inset-0 grid-paper opacity-[0.05] pointer-events-none" />
+        <div className="max-w-4xl mx-auto px-6 relative z-10">
+          
+          <FU d={0}>
+             <Link to="/" className="inline-flex items-center gap-2 text-zinc-500 hover:text-primary transition-colors font-mono text-[10px] uppercase tracking-widest mb-12">
+                <ArrowLeft size={12} /> Return_to_Base
+             </Link>
+             <div className="section-label">LEGAL_RESOURCES // COOKIES_v2.2</div>
+             <h1 className="heading-precision text-6xl md:text-8xl text-white uppercase tracking-tighter mt-10 mb-6">Cookie<br /><span className="text-zinc-700">Policy.</span></h1>
+             <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.3em] mb-20">LAST_UPDATE: FEB_18_2026 // VERIFIED</p>
+          </FU>
 
-      <section className="pb-20 px-4">
-        <div className="container-custom max-w-4xl">
-          <AnimatedSection>
-            <article className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 space-y-6">
-              <section>
-                <h2 className="text-2xl font-semibold text-slate-900">How we use cookies</h2>
-                <p className="mt-3 text-slate-600 leading-relaxed">
-                  Cookies are small browser files used to keep the site secure, remember preferences, and improve performance.
-                </p>
-              </section>
+          <div className="space-y-16">
+             {sections.map((s, i) => (
+               <FU key={i} d={0.1 + i * 0.05} className="obsidian-panel p-12 group hover:border-primary/30 transition-all">
+                  <h2 className="text-primary font-mono text-[11px] font-bold uppercase tracking-[0.3em] mb-6">{s.title}</h2>
+                  <p className="text-zinc-400 text-base leading-relaxed">{s.body}</p>
+               </FU>
+             ))}
+          </div>
 
-              <section className="grid gap-3 sm:grid-cols-2">
-                {categories.map((category) => (
-                  <div key={category.title} className="rounded-2xl border border-slate-200 bg-white p-4">
-                    <div className="flex items-center justify-between gap-2">
-                      <h3 className="text-lg font-semibold text-slate-700">{category.title}</h3>
-                      <span className="rounded-full bg-blue-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-blue-700">
-                        {category.badge}
-                      </span>
-                    </div>
-                    <p className="mt-2 text-sm text-slate-600">{category.description}</p>
-                  </div>
-                ))}
-              </section>
-
-              <section>
-                <h2 className="text-2xl font-semibold text-slate-900">Common cookies</h2>
-                <div className="mt-3 overflow-x-auto rounded-2xl border border-slate-200">
-                  <table className="min-w-full text-sm">
-                    <thead className="bg-white">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-slate-600">Name</th>
-                        <th className="px-4 py-3 text-left text-slate-600">Purpose</th>
-                        <th className="px-4 py-3 text-left text-slate-600">Duration</th>
-                        <th className="px-4 py-3 text-left text-slate-600">Provider</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {cookieRows.map((row) => (
-                        <tr key={row.name} className="border-t border-blue-100">
-                          <td className="px-4 py-3 font-mono text-xs text-slate-700">{row.name}</td>
-                          <td className="px-4 py-3 text-slate-600">{row.purpose}</td>
-                          <td className="px-4 py-3 text-slate-600">{row.duration}</td>
-                          <td className="px-4 py-3 text-slate-600">{row.provider}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+          <FU d={0.5} className="mt-20 obsidian-inset p-12 border border-white/5 space-y-8">
+             <h3 className="text-white font-bold text-lg uppercase tracking-tight">Data Governance</h3>
+             <div className="flex items-center gap-4 text-zinc-400 group">
+                <div className="w-10 h-10 obsidian-inset flex items-center justify-center border border-white/5 transition-all">
+                   <Database size={16} />
                 </div>
-              </section>
-
-              <section className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h2 className="text-xl font-semibold text-slate-900">Related policies</h2>
-                <p className="mt-2 text-slate-600">
-                  See our <Link to="/privacy" className="text-slate-700 font-semibold">Privacy Policy</Link> and{' '}
-                  <Link to="/terms" className="text-slate-700 font-semibold">Terms of Service</Link>.
-                </p>
-              </section>
-
-              <section className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h2 className="text-xl font-semibold text-slate-900">Contact</h2>
-                <a href="mailto:privacy@viktron.ai" className="mt-2 inline-flex items-center gap-2 text-slate-700 font-semibold">
-                  <Mail className="h-4 w-4" />
-                  privacy@viktron.ai
-                </a>
-                <p className="mt-2 inline-flex items-center gap-2 text-sm text-slate-600">
-                  <Shield className="h-4 w-4 text-blue-600" />
-                  We honor cookie consent preferences in real time.
-                </p>
-              </section>
-            </article>
-          </AnimatedSection>
+                <span className="font-mono text-[11px] uppercase tracking-widest">SYSTEM: OTLP_NATIVE // COMPLIANT</span>
+             </div>
+          </FU>
         </div>
       </section>
     </Layout>

@@ -1,125 +1,88 @@
+/**
+ * Viktron AI — Privacy Policy
+ * Obsidian Precision v2.2 Synchronization
+ */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, MapPin, Shield } from 'lucide-react';
+import { Mail, MapPin, Shield, ArrowLeft } from 'lucide-react';
 import { Layout } from '../../components/layout/Layout';
 import { SEO } from '../../components/ui/SEO';
-import { AnimatedSection } from '../../components/ui/AnimatedSection';
+import { motion } from 'framer-motion';
+
+const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.ReactNode; className?: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.8, delay: d, ease: [0.16, 1, 0.3, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
 
 const sections = [
   {
-    title: '1. Information We Collect',
-    body: [
-      'We collect information you provide directly, such as name, email, company details, and support messages.',
-      'We also collect technical data like browser type, IP address, pages visited, and service interaction data.',
-    ],
+    title: '01 // DATA_COLLECTION',
+    body: 'We collect information you provide directly, such as name, email, company details, and support messages. We also collect technical telemetry like browser type, IP address, and service interaction vectors.',
   },
   {
-    title: '2. How We Use Information',
-    body: [
-      'We use data to deliver services, respond to requests, improve product performance, and maintain security.',
-      'With consent, we may use contact information for updates, product announcements, and relevant offers.',
-    ],
+    title: '02 // UTILIZATION_PROTOCOL',
+    body: 'We use data to deliver services, respond to requests, improve product performance, and maintain security. With consent, we may use contact information for system updates and technical announcements.',
   },
   {
-    title: '3. Cookies and Tracking',
-    body: [
-      'We use essential cookies for authentication and core functionality.',
-      'Optional analytics and marketing cookies are controlled through your cookie preferences.',
-    ],
+    title: '03 // COOKIES & TRACKING',
+    body: 'We use essential cookies for authentication and core functionality. Optional analytics and marketing cookies are controlled through your institutional preference panel.',
   },
   {
-    title: '4. Sharing and Disclosure',
-    body: [
-      'We do not sell personal data.',
-      'We may share information with infrastructure, analytics, and payment providers to operate our services.',
-      'We may disclose data when required by law or to protect legitimate rights and security.',
-    ],
-  },
-  {
-    title: '5. Data Retention and Security',
-    body: [
-      'We retain data only as long as necessary for service delivery, legal obligations, and security needs.',
-      'We apply technical and organizational controls to protect data, including restricted access and encryption where applicable.',
-    ],
-  },
-  {
-    title: '6. Your Rights',
-    body: [
-      'Depending on your jurisdiction, you may request access, correction, deletion, or export of personal data.',
-      'You may also object to certain processing or withdraw consent where processing relies on consent.',
-    ],
-  },
-  {
-    title: '7. Policy Updates',
-    body: ['We may update this policy as our products and legal requirements evolve. Updated versions are published on this page.'],
+    title: '04 // DISCLOSURE_LIMITS',
+    body: 'We do not sell personal data. We may share information with infrastructure, analytics, and payment providers to operate our services under strict SOC 2 compliance.',
   },
 ];
 
 export const PrivacyPolicy: React.FC = () => {
-  const lastUpdated = 'February 12, 2026';
-
   return (
-    <Layout>
-      <SEO
-        title="Privacy Policy | Viktron"
-        description="How Viktron collects, uses, and protects personal information."
-        url="/privacy"
-        canonicalUrl="https://viktron.ai/privacy"
-      />
+    <Layout showBackground={false}>
+      <SEO title="Privacy Policy — Viktron AI Governance" description="How Viktron handles personal information under the Trust Fabric framework." />
 
-      <section className="pt-32 pb-14 px-4">
-        <div className="container-custom max-w-4xl">
-          <AnimatedSection>
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 border border-primary/20">
-              <Shield className="h-6 w-6 text-primary" />
-            </div>
-            <h1 className="mt-5 text-4xl sm:text-5xl font-semibold tracking-tight text-slate-900">Privacy Policy</h1>
-            <p className="mt-2 text-slate-500">Last updated: {lastUpdated}</p>
-            <p className="mt-4 text-slate-600 leading-relaxed">
-              This policy explains how Viktron handles personal information across our website and services.
-            </p>
-          </AnimatedSection>
-        </div>
-      </section>
+      <section className="pt-40 pb-20 bg-[#050505] min-h-screen relative overflow-hidden">
+        <div className="absolute inset-0 grid-paper opacity-[0.05] pointer-events-none" />
+        <div className="max-w-4xl mx-auto px-6 relative z-10">
+          
+          <FU d={0}>
+             <Link to="/" className="inline-flex items-center gap-2 text-zinc-500 hover:text-primary transition-colors font-mono text-[10px] uppercase tracking-widest mb-12">
+                <ArrowLeft size={12} /> Return_to_Base
+             </Link>
+             <div className="section-label">LEGAL_RESOURCES // PRIVACY_v2.2</div>
+             <h1 className="heading-precision text-6xl md:text-8xl text-white uppercase tracking-tighter mt-10 mb-6">Privacy<br /><span className="text-zinc-700">Policy.</span></h1>
+             <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.3em] mb-20">LAST_UPDATE: FEB_12_2026 // VERIFIED</p>
+          </FU>
 
-      <section className="pb-20 px-4">
-        <div className="container-custom max-w-4xl">
-          <AnimatedSection>
-            <article className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 space-y-6">
-              {sections.map((section) => (
-                <section key={section.title}>
-                  <h2 className="text-2xl font-semibold text-slate-900">{section.title}</h2>
-                  <div className="mt-3 space-y-2">
-                    {section.body.map((text) => (
-                      <p key={text} className="text-slate-600 leading-relaxed">{text}</p>
-                    ))}
-                  </div>
-                </section>
-              ))}
+          <div className="space-y-16">
+             {sections.map((s, i) => (
+               <FU key={i} d={0.1 + i * 0.05} className="obsidian-panel p-12 group hover:border-primary/30 transition-all">
+                  <h2 className="text-primary font-mono text-[11px] font-bold uppercase tracking-[0.3em] mb-6">{s.title}</h2>
+                  <p className="text-zinc-400 text-base leading-relaxed">{s.body}</p>
+               </FU>
+             ))}
+          </div>
 
-              <section className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                <h2 className="text-xl font-semibold text-slate-900">Related policies</h2>
-                <p className="mt-2 text-slate-600">
-                  Review our <Link to="/cookies" className="text-primary font-semibold">Cookie Policy</Link> and{' '}
-                  <Link to="/terms" className="text-primary font-semibold">Terms of Service</Link>.
-                </p>
-              </section>
-
-              <section className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                <h2 className="text-xl font-semibold text-slate-900">Contact</h2>
-                <div className="mt-3 space-y-2 text-sm">
-                  <a href="mailto:privacy@viktron.ai" className="inline-flex items-center gap-2 text-primary font-semibold">
-                    <Mail className="h-4 w-4" />
-                    privacy@viktron.ai
-                  </a>
-                  <p className="inline-flex items-center gap-2 text-slate-600">
-                    <MapPin className="h-4 w-4 text-primary" />
-                    Viktron, United States
-                  </p>
+          <FU d={0.5} className="mt-20 obsidian-inset p-12 border border-white/5 space-y-8">
+             <h3 className="text-white font-bold text-lg uppercase tracking-tight">Institutional Contact</h3>
+             <div className="grid md:grid-cols-2 gap-8">
+                <a href="mailto:privacy@viktron.ai" className="flex items-center gap-4 text-zinc-400 hover:text-primary transition-colors group">
+                   <div className="w-10 h-10 obsidian-inset flex items-center justify-center border border-white/5 group-hover:border-primary/20 transition-all">
+                      <Mail size={16} />
+                   </div>
+                   <span className="font-mono text-[11px] uppercase tracking-widest">privacy@viktron.ai</span>
+                </a>
+                <div className="flex items-center gap-4 text-zinc-400 group">
+                   <div className="w-10 h-10 obsidian-inset flex items-center justify-center border border-white/5 transition-all">
+                      <MapPin size={16} />
+                   </div>
+                   <span className="font-mono text-[11px] uppercase tracking-widest">UNITED_STATES [GLOBAL_HQ]</span>
                 </div>
-              </section>
-            </article>
-          </AnimatedSection>
+             </div>
+          </FU>
         </div>
       </section>
     </Layout>

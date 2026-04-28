@@ -1,823 +1,257 @@
+/**
+ * Viktron AI — Institutional Analytics Platform
+ * "The Command Center for Autonomous Intelligence."
+ */
 import React, { useEffect, useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Activity,
-  ArrowRight,
-  ArrowUpRight,
-  BadgeDollarSign,
-  BarChart3,
-  Brain,
-  CheckCircle2,
-  CreditCard,
-  Database,
-  Flame,
-  Funnel,
-  Globe,
-  LineChart,
-  Loader2,
-  MessagesSquare,
-  PlugZap,
-  Radar,
-  RefreshCw,
-  Search,
-  Shield,
-  ShieldCheck,
-  Sparkles,
-  Terminal,
-  TrendingUp,
-  Unplug,
-  Users,
-  Zap,
+  Activity, ArrowRight, ArrowUpRight, BadgeDollarSign, BarChart3, Brain, CheckCircle2,
+  Database, Globe, LineChart, Loader2, MessagesSquare, PlugZap, Radar, RefreshCw,
+  Search, Shield, ShieldCheck, Sparkles, Terminal, TrendingUp, Unplug, Users, Zap,
+  LayoutDashboard, Settings, ChevronRight, Download, Calendar
 } from 'lucide-react';
-import { getAuthToken, useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
-type Trend = 'up' | 'down' | 'flat';
-
-type KPI = {
-  label: string;
-  value: string | number;
-  delta: string;
-  trend: Trend;
-};
-
-type FunnelStep = {
-  step: string;
-  users: number;
-  rate: number;
-};
-
-type CohortRow = {
-  cohort: string;
-  w0: number | null;
-  w1: number | null;
-  w2: number | null;
-  w3: number | null;
-  w4: number | null;
-};
-
-type Segment = {
-  name: string;
-  count: number;
-  share: number;
-};
-
-type FeatureAdoption = {
-  feature: string;
-  adoption: number;
-};
-
-type OverviewPayload = {
-  product: {
-    name: string;
-    positioning: string;
-    category: string;
-  };
-  kpis: KPI[];
-  time_series: {
-    labels: string[];
-    active_users: number[];
-    sessions: number[];
-    conversions: number[];
-  };
-  funnel: FunnelStep[];
-  cohort: CohortRow[];
-  engagement: {
-    top_segments: Segment[];
-    nps: number;
-    feature_adoption: FeatureAdoption[];
-  };
-  reddit_agent: {
-    tracked_subreddits: number;
-    posts_processed_7d: number;
-    pre_viral_signals: number;
-    avg_alert_lead_time_days: number;
-  };
-  updated_at: string;
-};
-
-type CheckoutResponse = {
-  session_id: string;
-  plan_id: string;
-  billing_cycle: 'monthly' | 'yearly';
-  seats: number;
-  total: number;
-  checkout_url: string;
-  message: string;
-};
-
-type RedditResponse = {
-  summary: string;
-  insights: Array<{ title: string; confidence: number; evidence: string }>;
-  top_posts: Array<{ subreddit: string; title: string; score: number; comments: number }>;
-  recommended_actions: string[];
-  run_id: string;
-  ran_at: string;
-};
-
-type SourceConnector = {
-  provider: string;
-  label: string;
-  category: string;
-  auth_mode: 'oauth' | 'api_key' | 'webhook';
-  status: 'connected' | 'available';
-  supports: string[];
-  connected_workspace: string | null;
-  last_sync_at: string | null;
-};
-
-type SourceListResponse = {
-  sources: SourceConnector[];
-  summary: {
-    total: number;
-    connected: number;
-    available: number;
-  };
-  message: string;
-};
-
-const ENV = (import.meta as any).env || {};
-
-const toApiBase = (value?: string): string | null => {
-  if (!value) return null;
-  const trimmed = String(value).trim().replace(/\/$/, '');
-  if (!trimmed) return null;
-  if (trimmed.endsWith('/api')) return trimmed;
-  return `${trimmed}/api`;
-};
-
-const getCanonicalAgentApiBase = (): string | null => {
-  if (typeof window === 'undefined') return null;
-  const host = window.location.hostname.replace(/^www\./, '');
-  if (/localhost|127\.0\.0\.1/.test(host)) return '/api';
-  if (host === 'viktron.ai' || host.endsWith('.viktron.ai')) {
-    return 'https://api.viktron.ai/api';
-  }
-  return `https://api.${host}/api`;
-};
-
-const API_BASES = [
-  getCanonicalAgentApiBase(),
-  toApiBase(ENV.VITE_SAAS_API_BASE),
-  toApiBase(ENV.VITE_AGENT_API_URL),
-].filter(Boolean) as string[];
-
-const TOKEN_KEY = 'viktron_auth_token';
-const USER_KEY = 'viktron_user';
-
-const apiFetch = async (path: string, init?: RequestInit): Promise<Response> => {
-  let lastError: unknown = null;
-  const token = getAuthToken();
-  const mergedHeaders = {
-    ...(init?.headers || {}),
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
-  for (const base of API_BASES) {
-    const url = `${base}${path}`;
-    try {
-      const res = await fetch(url, {
-        ...init,
-        headers: mergedHeaders,
-      });
-      if (res.ok) return res;
-      if (res.status === 401 || res.status === 403) return res;
-      lastError = new Error(`Request failed with status ${res.status} for ${url}`);
-    } catch (err) {
-      lastError = err;
-    }
-  }
-  throw lastError || new Error('All API base URLs failed');
-};
-
-
-type OnboardingStage = 'url' | 'analyzing' | 'blueprint' | 'logs';
-
-type BusinessBlueprint = {
-  product_name: string;
-  category: string;
-  icp: string;
-  value_proposition: string;
-  conversion_pathway: string[];
-  competitors: string[];
-};
-
-type OnboardingQuestion = {
-  id: string;
-  question: string;
-  type: 'choice' | 'text';
-  options?: string[];
-};
-
-type View = 'overview' | 'product' | 'engagement' | 'sources' | 'reddit' | 'pricing';
-
-const fallbackOverview: OverviewPayload = {
-  product: {
-    name: 'Viktron Intelligence Cloud',
-    positioning: 'Analytics for your AI-powered business',
-    category: 'Amplitude-grade product analytics + Reddit intelligence',
-  },
-  kpis: [
-    { label: 'Tracked Events', value: '1,824,220', delta: '+28.4%', trend: 'up' },
-    { label: 'WAU', value: '82,440', delta: '+16.1%', trend: 'up' },
-    { label: 'Activation Rate', value: '42.8%', delta: '+5.2 pts', trend: 'up' },
-    { label: 'Revenue Influenced', value: '$1.24M', delta: '+22.0%', trend: 'up' },
-  ],
-  time_series: {
-    labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'W10', 'W11', 'W12'],
-    active_users: [5200, 5710, 6090, 6488, 6760, 7020, 7340, 7614, 7880, 8120, 8365, 8670],
-    sessions: [12800, 13600, 14510, 15220, 16080, 16740, 17420, 18200, 19140, 19920, 20700, 21680],
-    conversions: [180, 204, 216, 238, 244, 252, 266, 281, 294, 302, 316, 338],
-  },
-  funnel: [
-    { step: 'Visited Pricing', users: 18420, rate: 100 },
-    { step: 'Clicked Start Trial', users: 8220, rate: 44.6 },
-    { step: 'Connected Data Source', users: 5210, rate: 28.3 },
-    { step: 'Activated Dashboard', users: 3920, rate: 21.3 },
-    { step: 'Paid Conversion', users: 2140, rate: 11.6 },
-  ],
-  cohort: [
-    { cohort: 'Jan', w0: 100, w1: 74, w2: 63, w3: 56, w4: 50 },
-    { cohort: 'Feb', w0: 100, w1: 78, w2: 67, w3: 58, w4: 52 },
-    { cohort: 'Mar', w0: 100, w1: 81, w2: 70, w3: 61, w4: null },
-    { cohort: 'Apr', w0: 100, w1: 79, w2: 69, w3: null, w4: null },
-  ],
-  engagement: {
-    top_segments: [
-      { name: 'Power Users (10+ dashboards)', count: 1480, share: 19.2 },
-      { name: 'Agencies', count: 930, share: 12.1 },
-      { name: 'B2B SaaS founders', count: 2620, share: 34.1 },
-      { name: 'Product teams', count: 2650, share: 34.6 },
-    ],
-    nps: 52,
-    feature_adoption: [
-      { feature: 'Funnel Explorer', adoption: 68 },
-      { feature: 'Pathfinder', adoption: 47 },
-      { feature: 'Cohort Retention', adoption: 59 },
-      { feature: 'Reddit Signal Alerts', adoption: 43 },
-    ],
-  },
-  reddit_agent: {
-    tracked_subreddits: 18,
-    posts_processed_7d: 894,
-    pre_viral_signals: 14,
-    avg_alert_lead_time_days: 11,
-  },
-  updated_at: new Date().toISOString(),
-};
-
-const fallbackSources: SourceConnector[] = [
-  {
-    provider: 'slack',
-    label: 'Slack',
-    category: 'communication',
-    auth_mode: 'oauth',
-    status: 'available',
-    supports: ['threads', 'mentions', 'channel_events', 'scheduled_reports'],
-    connected_workspace: null,
-    last_sync_at: null,
-  },
-  {
-    provider: 'posthog',
-    label: 'PostHog',
-    category: 'analytics',
-    auth_mode: 'api_key',
-    status: 'available',
-    supports: ['events', 'funnels', 'retention', 'feature_flags'],
-    connected_workspace: null,
-    last_sync_at: null,
-  },
-  {
-    provider: 'ga4',
-    label: 'Google Analytics 4',
-    category: 'analytics',
-    auth_mode: 'oauth',
-    status: 'available',
-    supports: ['sessions', 'acquisition', 'attribution'],
-    connected_workspace: null,
-    last_sync_at: null,
-  },
-];
-
-const format = (n: number): string => n.toLocaleString('en-US');
-
-const TrendChip: React.FC<{ delta: string; trend: Trend }> = ({ delta, trend }) => {
-  const cls = trend === 'up' ? 'text-emerald-300 bg-emerald-500/15 border-emerald-500/30' : 'text-slate-300 bg-white/5 border-white/10';
-  return (
-    <span className={`text-[11px] font-mono border px-2 py-0.5 rounded-full ${cls}`}>
-      {trend === 'up' ? '+' : ''}
-      {delta}
-    </span>
-  );
-};
-
-const Bars: React.FC<{ values: number[]; labels: string[]; color: string }> = ({ values, labels, color }) => {
-  const max = Math.max(...values, 1);
-  return (
-    <div className="space-y-3">
-      <div className="h-40 flex items-end gap-1">
-        {values.map((v, idx) => (
-          <motion.div
-            key={`${labels[idx]}-${v}`}
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            transition={{ delay: idx * 0.03 }}
-            className="flex-1 rounded-t-md origin-bottom"
-            style={{
-              height: `${(v / max) * 100}%`,
-              background: `linear-gradient(to top, ${color}, rgba(255,255,255,0.16))`,
-            }}
-            title={`${labels[idx]}: ${format(v)}`}
-          />
-        ))}
-      </div>
-      <div className="flex justify-between text-[10px] text-slate-500 font-mono">
-        <span>{labels[0]}</span>
-        <span>{labels[labels.length - 1]}</span>
-      </div>
-    </div>
-  );
-};
-
-const PlanCard: React.FC<{
-  name: string;
-  price: string;
-  desc: string;
-  highlighted?: boolean;
-  points: string[];
-  onClick: () => void;
-  loading: boolean;
-}> = ({ name, price, desc, points, onClick, loading, highlighted }) => (
-  <div
-    className={`rounded-2xl border p-5 ${
-      highlighted ? 'border-emerald-500/40 bg-gradient-to-b from-emerald-500/10 to-[#0a0f15]' : 'border-white/10 bg-[#0d131b]'
-    }`}
+const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.ReactNode; className?: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: d, ease: [0.16, 1, 0.3, 1] }}
+    className={className}
   >
-    <p className="text-lg font-semibold text-white">{name}</p>
-    <p className="text-slate-400 text-xs mt-1">{desc}</p>
-    <p className="text-4xl font-bold text-white mt-5">{price}</p>
-    <div className="space-y-2 mt-5">
-      {points.map((p) => (
-        <div key={p} className="text-xs text-slate-300 flex items-start gap-2">
-          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 mt-0.5 shrink-0" />
-          <span>{p}</span>
-        </div>
-      ))}
+    {children}
+  </motion.div>
+);
+
+const ObsidianCard = ({ children, className = '', title = '' }: { children: React.ReactNode; className?: string; title?: string }) => (
+  <div className={`obsidian-panel p-6 relative overflow-hidden group border-white/5 hover:border-primary/20 transition-all ${className}`}>
+    <div className="absolute top-0 right-0 p-2 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+       <div className="w-16 h-16 border-r border-t border-white" />
     </div>
-    <button
-      onClick={onClick}
-      disabled={loading}
-      className="mt-6 w-full rounded-lg bg-emerald-500 hover:bg-emerald-400 disabled:opacity-70 text-white text-xs font-semibold px-4 py-2.5 transition-colors"
-    >
-      {loading ? 'Preparing Checkout...' : 'Start Subscription'}
-    </button>
+    {title && (
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+        <span className="text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-[0.2em]">{title}</span>
+      </div>
+    )}
+    {children}
   </div>
 );
 
 export const AnalyticsApp: React.FC = () => {
   const { user } = useAuth();
-  const workspaceId = user?.id ? `ws-${user.id}` : null;
+  const [activeTab, setActiveTab] = useState('overview');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const [view, setView] = useState<View>('overview');
-  const [overview, setOverview] = useState<OverviewPayload>(fallbackOverview);
-  const [loadingOverview, setLoadingOverview] = useState(true);
-  const [checkoutMessage, setCheckoutMessage] = useState('');
-  const [checkoutLoadingPlan, setCheckoutLoadingPlan] = useState<string>('');
-  const [redditQuery, setRedditQuery] = useState('What analytics features are B2B AI buyers asking for this month?');
-  const [redditLoading, setRedditLoading] = useState(false);
-  const [redditResult, setRedditResult] = useState<RedditResponse | null>(null);
-  const [sources, setSources] = useState<SourceConnector[]>([]);
-  const [sourcesMessage, setSourcesMessage] = useState('');
-  const [sourceLoading, setSourceLoading] = useState<string>('');
-  const [needsAuth, setNeedsAuth] = useState(false);
-  const [isSetupComplete, setIsSetupComplete] = useState(false);
-  const [websiteUrl, setWebsiteUrl] = useState('');
-  const [businessType, setBusinessType] = useState('saas');
-  const [onboardingStage, setOnboardingStage] = useState<OnboardingStage>('url');
-  const [blueprint, setBlueprint] = useState<BusinessBlueprint | null>(null);
-  const [questions, setQuestions] = useState<OnboardingQuestion[]>([]);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [isProvisioning, setIsProvisioning] = useState(false);
+  const kpis = [
+    { label: 'Active Agents', value: '1,284', trend: '+12.4%', color: 'text-primary' },
+    { label: 'Decision Reliability', value: '99.98%', trend: '+0.02%', color: 'text-primary' },
+    { label: 'Token Efficiency', value: '+42.5%', trend: '+4.1%', color: 'text-primary' },
+    { label: 'Governed Spends', value: '$284,102', trend: '+18.2%', color: 'text-primary' },
+  ];
 
-  const [isImportingSession, setIsImportingSession] = useState(false);
+  const sidebarItems = [
+    { id: 'overview', label: 'Command Center', icon: Radar },
+    { id: 'telemetry', label: 'Live Telemetry', icon: Activity },
+    { id: 'reasoning', label: 'Reasoning Logs', icon: Brain },
+    { id: 'infrastructure', label: 'Node Status', icon: Database },
+    { id: 'governance', label: 'Policy Engine', icon: ShieldCheck },
+    { id: 'settings', label: 'System Settings', icon: Settings },
+  ];
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const hash = window.location.hash.startsWith('#') ? window.location.hash.slice(1) : window.location.hash;
-    if (!hash) return;
-
-    const params = new URLSearchParams(hash);
-    const incomingToken = params.get('viktronToken');
-    const incomingUser = params.get('viktronUser');
-    if (!incomingToken || !incomingUser) return;
-
-    try {
-      const user = JSON.parse(decodeURIComponent(incomingUser));
-      localStorage.setItem(TOKEN_KEY, incomingToken);
-      localStorage.setItem(USER_KEY, JSON.stringify(user));
-      setNeedsAuth(false);
-      setSourcesMessage('Session linked from viktron.ai.');
-    } catch {
-      setSourcesMessage('Could not parse linked session. Please sign in again.');
-    } finally {
-      window.history.replaceState(null, '', window.location.pathname + window.location.search);
-    }
-  }, []);
-
-  const nav = useMemo(
-    () => [
-      { id: 'overview' as const, label: 'SaaS Overview', icon: Radar },
-      { id: 'product' as const, label: 'Product Analytics', icon: LineChart },
-      { id: 'engagement' as const, label: 'Engagement', icon: Users },
-      { id: 'sources' as const, label: 'Data Sources', icon: PlugZap },
-      { id: 'reddit' as const, label: 'Reddit Agent API', icon: MessagesSquare },
-      { id: 'pricing' as const, label: 'Plans & Checkout', icon: CreditCard },
-    ],
-    []
-  );
-
-  const loadOverview = async () => {
-    if (!workspaceId) return;
-    setLoadingOverview(true);
-    try {
-      const res = await apiFetch(`/saas/overview?workspace_id=${encodeURIComponent(workspaceId)}`);
-      const data = await res.json();
-      setOverview(data as OverviewPayload);
-    } catch {
-      setOverview(fallbackOverview);
-    } finally {
-      setLoadingOverview(false);
-    }
-  };
-
-  useEffect(() => {
-    if (!workspaceId) return;
-    void loadOverview();
-    void loadSources();
-  }, [workspaceId]);
-
-  const loadSources = async () => {
-    if (!workspaceId) return;
-    try {
-      const res = await apiFetch(`/saas/sources?workspace_id=${encodeURIComponent(workspaceId)}`);
-      if (res.status === 401) {
-        setSources(fallbackSources);
-        setSourcesMessage('Please log in first. Showing available connectors.');
-        setNeedsAuth(true);
-        return;
-      }
-      if (!res.ok) {
-        throw new Error(`Sources API failed (${res.status})`);
-      }
-
-      const data = (await res.json()) as SourceListResponse;
-      const nextSources = data.sources?.length ? data.sources : fallbackSources;
-      setSources(nextSources);
-      setSourcesMessage(data.message || (data.sources?.length ? '' : 'Showing available connectors.'));
-      setNeedsAuth(false);
-    } catch {
-      setSourcesMessage('Sources API unavailable. Backend contract is present and ready for OAuth wiring.');
-      setSources(fallbackSources);
-    }
-  };
-
-  const importSessionFromMainDomain = async () => {
-    setIsImportingSession(true);
-    setSourcesMessage('Redirecting to viktron.ai to link your session...');
-    const target = `${window.location.origin}${window.location.pathname}${window.location.search}`;
-    window.location.href = `https://viktron.ai/auth-bridge.html?target=${encodeURIComponent(target)}`;
-  };
-
-  const connectSource = async (provider: string) => {
-    setSourceLoading(provider);
-    try {
-      const res = await apiFetch(`/saas/sources/${provider}/connect`);
-      if (res.ok) {
-        setSourcesMessage(`Connected ${provider}. Refreshing sources...`);
-        void loadSources();
-      }
-    } catch {
-      setSourcesMessage(`Failed to connect ${provider}. Check credentials.`);
-    } finally {
-      setSourceLoading('');
-    }
-  };
-
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-[#081019] text-white flex items-center justify-center">
-        <div className="text-center max-w-sm px-6">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-400 to-emerald-500 flex items-center justify-center mx-auto mb-5">
-            <BarChart3 className="w-7 h-7 text-[#062330]" />
-          </div>
-          <h2 className="text-xl font-bold mb-2">Sign in to access Analytics</h2>
-          <p className="text-slate-400 text-sm mb-6">Your analytics workspace is tied to your account. Please sign in to view your data.</p>
-          <a href="/login?redirect=/analytics" className="inline-flex items-center justify-center gap-2 rounded-xl h-11 px-6 text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-white transition-colors">
-            Sign in
-          </a>
+  return (
+    <div className="min-h-screen bg-[#050505] text-white flex overflow-hidden font-sans">
+      {/* ─── SIDEBAR ─── */}
+      <aside className={`${isSidebarOpen ? 'w-72' : 'w-20'} border-r border-white/5 flex flex-col transition-all duration-500 bg-[#080808]/50 backdrop-blur-2xl z-50`}>
+        <div className="p-8 mb-8">
+           <div className="flex items-center gap-3">
+              <div className="w-10 h-10 obsidian-inset flex items-center justify-center border border-primary/20">
+                 <img src="/visuals/viktronlogo.png" alt="Logo" className="w-6 h-6 grayscale hover:grayscale-0 transition-all" />
+              </div>
+              {isSidebarOpen && <span className="font-mono font-black uppercase tracking-[0.3em] text-sm">Viktron</span>}
+           </div>
         </div>
-      </div>
-    );
-  }
 
+        <nav className="flex-1 px-4 space-y-2">
+           {sidebarItems.map((item) => (
+             <button
+               key={item.id}
+               onClick={() => setActiveTab(item.id)}
+               className={`w-full flex items-center gap-4 px-4 py-4 transition-all group ${
+                 activeTab === item.id 
+                   ? 'bg-primary text-black font-black' 
+                   : 'text-zinc-500 hover:text-white hover:bg-white/5'
+               }`}
+             >
+               <item.icon size={18} className={activeTab === item.id ? 'text-black' : 'group-hover:text-primary transition-colors'} />
+               {isSidebarOpen && <span className="text-[10px] font-mono uppercase tracking-widest">{item.label}</span>}
+               {activeTab === item.id && isSidebarOpen && <ChevronRight size={14} className="ml-auto" />}
+             </button>
+           ))}
+        </nav>
 
-  const handleStartAnalysis = async () => {
-    if (!websiteUrl) return;
-    setOnboardingStage('analyzing');
-    try {
-      const res = await apiFetch('/saas/setup/analyze', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ workspace_id: workspaceId, website_url: websiteUrl })
-      });
-      const data = await res.json();
-      if (data.success) {
-        setBlueprint(data.blueprint);
-        setQuestions(data.questions);
-        setOnboardingStage('blueprint');
-      } else {
-        throw new Error(data.detail);
-      }
-    } catch (err) {
-      console.error('Analysis failed:', err);
-      // Fallback
-      setBlueprint({
-        product_name: 'Custom Product',
-        category: 'SaaS',
-        icp: 'Enterprise Teams',
-        value_proposition: 'AI-powered optimization',
-        conversion_pathway: ['Landing', 'Pricing', 'Sign Up'],
-        competitors: []
-      });
-      setQuestions([{ id: 'q1', question: 'What is your main conversion goal?', type: 'choice', options: ['Sales', 'Demos'] }]);
-      setOnboardingStage('blueprint');
-    }
-  };
+        <div className="p-6 border-t border-white/5">
+           <div className="flex items-center gap-4">
+              <div className="w-8 h-8 rounded-full obsidian-inset border border-white/10" />
+              {isSidebarOpen && (
+                <div className="flex-1 min-w-0">
+                   <p className="text-[10px] font-bold truncate uppercase">{user?.fullName || 'Institutional User'}</p>
+                   <p className="text-[9px] text-zinc-600 truncate uppercase font-mono">Verified_Node</p>
+                </div>
+              )}
+           </div>
+        </div>
+      </aside>
 
-  const handleFinalizeOnboarding = async () => {
-    setIsProvisioning(true);
-    try {
-      await apiFetch('/saas/setup/finalize', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          workspace_id: workspaceId,
-          answers,
-          blueprint
-        })
-      });
-      setIsSetupComplete(true);
-      void loadOverview();
-    } catch (err) {
-      console.error('Finalization failed:', err);
-      setIsSetupComplete(true); // Fallback for demo
-    } finally {
-      setIsProvisioning(false);
-    }
-  };
-
-  const handleSetup = async () => {
-    if (!websiteUrl) {
-      setSourcesMessage('Please enter your website URL to begin intelligence ingestion.');
-      return;
-    }
-    try {
-      const res = await apiFetch('/saas/setup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          workspace_id: workspaceId,
-          website_url: websiteUrl,
-          business_type: businessType
-        })
-      });
-      if (res.ok) {
-        setIsSetupComplete(true);
-        setSourcesMessage('Viktron Intelligence Layer provisioned for ' + websiteUrl + '. Scanning market signals...');
-        void loadOverview();
-      } else {
-        throw new Error('Provisioning failed');
-      }
-    } catch {
-      // Fallback for demo
-      setIsSetupComplete(true);
-      setSourcesMessage('Infrastructure provisioned (fallback mode). Starting signal ingestion.');
-    }
-  };
-
-  
-  if (!isSetupComplete && user) {
-    return (
-      <div className="min-h-screen bg-[#040d16] text-white flex items-center justify-center p-4">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="max-w-xl w-full bg-[#0d131b] border border-white/10 rounded-[32px] p-10 shadow-2xl relative overflow-hidden"
-        >
-          {/* Background Glow */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-[80px] -mr-32 -mt-32" />
-          
-          {onboardingStage === 'url' && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative z-10">
-              <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400 mb-8 border border-blue-500/20">
-                <Globe className="w-7 h-7" />
+      {/* ─── MAIN CONTENT ─── */}
+      <main className="flex-1 flex flex-col h-screen overflow-hidden">
+        {/* Header */}
+        <header className="h-20 border-b border-white/5 px-8 flex items-center justify-between bg-[#050505]/50 backdrop-blur-xl">
+           <div className="flex items-center gap-6">
+              <div className="flex items-center gap-3">
+                 <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(204,255,0,0.8)]" />
+                 <span className="text-[10px] font-mono text-primary font-bold uppercase tracking-[0.2em]">SYSTEMS_OPERATIONAL // VERIFIED</span>
               </div>
-              <h2 className="text-3xl font-bold mb-3 tracking-tight">Initialize Intelligence</h2>
-              <p className="text-slate-400 text-base mb-10 leading-relaxed">
-                Enter your website URL. Our Intelligence Layer will scrape and audit your business context to provision your environment.
-              </p>
+              <div className="w-px h-6 bg-white/5" />
+              <div className="flex items-center gap-4 text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
+                 <Calendar size={12} /> MAR 28, 2026
+              </div>
+           </div>
+           
+           <div className="flex items-center gap-4">
+              <button className="obsidian-inset p-2.5 text-zinc-500 hover:text-primary transition-colors">
+                 <RefreshCw size={16} />
+              </button>
+              <button className="btn-acid !px-6 !py-2.5 !text-[9px]">Generate Intelligence Report</button>
+           </div>
+        </header>
 
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-3 ml-1">Platform Domain</label>
-                  <div className="relative">
-                    <input 
-                      type="text" 
-                      placeholder="https://your-product.com"
-                      value={websiteUrl}
-                      onChange={(e) => setWebsiteUrl(e.target.value)}
-                      className="w-full bg-black/40 border border-white/10 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:border-blue-500/50 transition-all placeholder:text-slate-700"
-                    />
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600">
-                      <Sparkles className="w-4 h-4" />
+        {/* Dashboard Scrollable Area */}
+        <div className="flex-1 overflow-y-auto p-10 space-y-10 custom-scrollbar">
+           {/* KPI Grid */}
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {kpis.map((kpi, i) => (
+                <FU key={i} d={i * 0.05}>
+                   <ObsidianCard title={kpi.label}>
+                      <div className="flex items-end justify-between">
+                         <span className="text-4xl font-black tracking-tighter text-white">{kpi.value}</span>
+                         <span className="text-[10px] font-mono text-primary font-bold">{kpi.trend}</span>
+                      </div>
+                   </ObsidianCard>
+                </FU>
+              ))}
+           </div>
+
+           {/* Main Visualization Grid */}
+           <div className="grid lg:grid-cols-[1.5fr_1fr] gap-8">
+              <FU d={0.2}>
+                 <ObsidianCard title="AGENTIC_TRAFFIC_TELEMETRY" className="h-full">
+                    <div className="mt-10 h-64 flex items-end gap-2 px-4 relative">
+                       {/* Mock Chart Grid Lines */}
+                       <div className="absolute inset-0 border-b border-white/5 flex flex-col justify-between">
+                          <div className="w-full h-px bg-white/5" />
+                          <div className="w-full h-px bg-white/5" />
+                          <div className="w-full h-px bg-white/5" />
+                          <div className="w-full h-px bg-white/5" />
+                       </div>
+                       {[60, 45, 80, 55, 90, 70, 85, 40, 95, 65, 75, 88].map((h, i) => (
+                         <motion.div 
+                           key={i}
+                           initial={{ scaleY: 0 }}
+                           animate={{ scaleY: 1 }}
+                           transition={{ duration: 1, delay: i * 0.05 }}
+                           className="flex-1 bg-primary/20 border-t border-primary/40 relative group cursor-pointer"
+                           style={{ height: `${h}%` }}
+                         >
+                            <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-20 transition-opacity" />
+                            <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all text-[9px] font-mono text-primary bg-black border border-primary/20 px-2 py-1 z-10">
+                               {h * 124}_events
+                            </div>
+                         </motion.div>
+                       ))}
                     </div>
-                  </div>
-                </div>
+                    <div className="mt-6 flex justify-between font-mono text-[9px] text-zinc-600 uppercase tracking-widest px-4">
+                       <span>T-12H</span>
+                       <span>T-6H</span>
+                       <span>T-0H</span>
+                    </div>
+                 </ObsidianCard>
+              </FU>
 
-                <button 
-                  onClick={handleStartAnalysis}
-                  disabled={!websiteUrl}
-                  className="w-full py-5 bg-white text-black hover:bg-slate-100 disabled:opacity-50 rounded-2xl font-bold text-sm shadow-xl transition-all mt-4 flex items-center justify-center gap-2 group"
-                >
-                  Start Context Discovery
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            </motion.div>
-          )}
+              <FU d={0.3}>
+                 <ObsidianCard title="POLICY_GATEWAY_INTERCEPTS" className="h-full">
+                    <div className="space-y-6 mt-6">
+                       {[
+                         { l: 'IDENTITY_VIOLATION', v: 4, t: 'LOW' },
+                         { l: 'BUDGET_THRESHOLD', v: 12, t: 'MID' },
+                         { l: 'SENSITIVE_DATA_SCAN', v: 84, t: 'HIGH' },
+                         { l: 'OUT_OF_SCOPE_ACTION', v: 2, t: 'LOW' },
+                       ].map((item, i) => (
+                         <div key={i} className="space-y-2">
+                            <div className="flex justify-between text-[9px] font-mono uppercase tracking-widest">
+                               <span className="text-zinc-400">{item.l}</span>
+                               <span className="text-primary">{item.v}</span>
+                            </div>
+                            <div className="h-1.5 obsidian-inset relative overflow-hidden">
+                               <motion.div 
+                                 initial={{ width: 0 }}
+                                 animate={{ width: `${(item.v / 100) * 100}%` }}
+                                 className="absolute inset-y-0 left-0 bg-primary shadow-[0_0_10px_rgba(204,255,0,0.4)]" 
+                               />
+                            </div>
+                         </div>
+                       ))}
+                    </div>
+                    <div className="mt-12 p-6 glass-bone border-primary/10 border italic text-[10px] text-zinc-500 leading-relaxed font-mono">
+                       "Policy gateway successfully neutralized 12 potentially non-compliant agent actions in the last 60 minutes."
+                    </div>
+                 </ObsidianCard>
+              </FU>
+           </div>
 
-          {onboardingStage === 'analyzing' && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-10 relative z-10">
-              <div className="relative w-24 h-24 mx-auto mb-10">
-                <div className="absolute inset-0 border-4 border-blue-500/10 rounded-full" />
-                <motion.div 
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                  className="absolute inset-0 border-4 border-t-blue-400 rounded-full"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Radar className="w-8 h-8 text-blue-400 animate-pulse" />
-                </div>
-              </div>
-              <h2 className="text-2xl font-bold mb-4">Analyzing Business Logic</h2>
-              <div className="space-y-3 max-w-xs mx-auto">
-                <motion.p 
-                  animate={{ opacity: [0.4, 1, 0.4] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                  className="text-sm text-blue-400 font-mono"
-                >
-                  [Scraping {websiteUrl}]
-                </motion.p>
-                <p className="text-slate-400 text-xs leading-relaxed">
-                  Extracting product ICP, conversion pathways, and market positioning...
-                </p>
-              </div>
-            </motion.div>
-          )}
-
-          {onboardingStage === 'blueprint' && blueprint && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative z-10">
-              <div className="flex items-center justify-between mb-8">
-                <div>
-                  <h2 className="text-2xl font-bold mb-1">Business Blueprint</h2>
-                  <p className="text-xs text-slate-500">Intelligence layer findings for {websiteUrl}</p>
-                </div>
-                <div className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono text-emerald-400">
-                  AUDIT COMPLETE
-                </div>
-              </div>
-
-              <div className="bg-black/40 border border-white/5 rounded-2xl p-6 mb-8 space-y-5">
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-[9px] font-mono uppercase tracking-wider text-slate-600 mb-1">Product</label>
-                    <p className="text-sm font-semibold">{blueprint.product_name}</p>
-                  </div>
-                  <div>
-                    <label className="block text-[9px] font-mono uppercase tracking-wider text-slate-600 mb-1">Category</label>
-                    <p className="text-sm font-semibold">{blueprint.category}</p>
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-[9px] font-mono uppercase tracking-wider text-slate-600 mb-1">Detected ICP</label>
-                  <p className="text-xs text-slate-300 leading-relaxed">{blueprint.icp}</p>
-                </div>
-                <div>
-                  <label className="block text-[9px] font-mono uppercase tracking-wider text-slate-600 mb-1">Conversion Pathway</label>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {blueprint.conversion_pathway.map((step, i) => (
-                      <div key={i} className="flex items-center gap-2">
-                        <span className="text-[10px] bg-white/5 px-2 py-1 rounded-lg border border-white/10 text-slate-400">{step}</span>
-                        {i < blueprint.conversion_pathway.length - 1 && <ArrowRight className="w-3 h-3 text-slate-700" />}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-6 mb-10">
-                <h3 className="text-sm font-bold text-slate-200">Refining Intelligence (Q&A)</h3>
-                {questions.map((q) => (
-                  <div key={q.id}>
-                    <label className="block text-xs text-slate-400 mb-3">{q.question}</label>
-                    {q.type === 'choice' ? (
-                      <div className="grid grid-cols-2 gap-3">
-                        {q.options?.map((opt) => (
-                          <button
-                            key={opt}
-                            onClick={() => setAnswers({ ...answers, [q.id]: opt })}
-                            className={`px-4 py-3 rounded-xl border text-[11px] font-medium transition-all ${
-                              answers[q.id] === opt 
-                                ? 'bg-blue-600 border-blue-500 text-white' 
-                                : 'bg-white/5 border-white/10 text-slate-400 hover:border-white/20'
-                            }`}
-                          >
-                            {opt}
-                          </button>
-                        ))}
-                      </div>
-                    ) : (
-                      <input 
-                        type="text"
-                        onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}
-                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500/50"
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              <button 
-                onClick={() => setOnboardingStage('logs')}
-                className="w-full py-5 bg-blue-600 hover:bg-blue-500 rounded-2xl font-bold text-sm shadow-xl transition-all flex items-center justify-center gap-2"
-              >
-                Verify & Continue
-              </button>
-            </motion.div>
-          )}
-
-          {onboardingStage === 'logs' && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="relative z-10">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-8 border border-emerald-500/20">
-                <Activity className="w-7 h-7" />
-              </div>
-              <h2 className="text-3xl font-bold mb-3 tracking-tight">Connect Live Data</h2>
-              <p className="text-slate-400 text-base mb-10 leading-relaxed">
-                Final step: expose your application logs. We'll map your raw events to the business blueprint we just verified.
-              </p>
-
-              <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-2xl p-6 mb-10 flex items-start gap-4">
-                <Shield className="w-5 h-5 text-emerald-400 mt-1 shrink-0" />
-                <p className="text-xs text-emerald-100/70 leading-relaxed">
-                  Viktron uses PII redaction by default. Your logs are scrubbed before they hit our storage, ensuring SOC2 and GDPR compliance out of the box.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 mb-10">
-                <button className="flex flex-col items-center gap-3 p-6 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors group">
-                  <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
-                    <Terminal className="w-5 h-5" />
-                  </div>
-                  <span className="text-[11px] font-bold">API Logs</span>
-                </button>
-                <button className="flex flex-col items-center gap-3 p-6 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors group">
-                  <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
-                    <Database className="w-5 h-5" />
-                  </div>
-                  <span className="text-[11px] font-bold">PostgreSQL Sync</span>
-                </button>
-              </div>
-
-              <button 
-                onClick={handleFinalizeOnboarding}
-                disabled={isProvisioning}
-                className="w-full py-5 bg-white text-black hover:bg-slate-100 disabled:opacity-50 rounded-2xl font-bold text-sm shadow-xl transition-all flex items-center justify-center gap-2"
-              >
-                {isProvisioning ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Provisioning Cloud...
-                  </>
-                ) : (
-                  'Complete & Launch Profound Intelligence'
-                )}
-              </button>
-            </motion.div>
-          )}
-        </motion.div>
-      </div>
-    );
-  }
-
-  return null;
+           {/* Live Feed Table */}
+           <FU d={0.4}>
+              <ObsidianCard title="LIVE_REASONING_CHAIN_PROVENANCE">
+                 <div className="mt-8 overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                       <thead>
+                          <tr className="border-b border-white/5">
+                             <th className="pb-4 text-[9px] font-mono text-zinc-600 uppercase tracking-[0.2em]">AGENT_ID</th>
+                             <th className="pb-4 text-[9px] font-mono text-zinc-600 uppercase tracking-[0.2em]">ACTION_VECTOR</th>
+                             <th className="pb-4 text-[9px] font-mono text-zinc-600 uppercase tracking-[0.2em]">TRUST_SCORE</th>
+                             <th className="pb-4 text-[9px] font-mono text-zinc-600 uppercase tracking-[0.2em]">PROVENANCE_HASH</th>
+                             <th className="pb-4 text-[9px] font-mono text-zinc-600 uppercase tracking-[0.2em]">STATUS</th>
+                          </tr>
+                       </thead>
+                       <tbody className="text-[11px] font-mono">
+                          {[
+                            { id: 'AG-284', action: 'DB_QUERY_REASONING', score: '0.998', hash: '8x2b...4f9a', status: 'VERIFIED' },
+                            { id: 'AG-102', action: 'EXT_API_CALL_INTERCEPT', score: '0.942', hash: '1m9d...k2l0', status: 'SCANNED' },
+                            { id: 'AG-331', action: 'KNOWLEDGE_RETRIEVAL', score: '0.999', hash: '5s8w...9p3e', status: 'VERIFIED' },
+                            { id: 'AG-042', action: 'SYNTHESIS_GATEWAY', score: '0.884', hash: '2z7q...8n1c', status: 'CAUTION' },
+                          ].map((row, i) => (
+                            <tr key={i} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
+                               <td className="py-5 text-white font-bold">{row.id}</td>
+                               <td className="py-5 text-zinc-400">{row.action}</td>
+                               <td className="py-5 text-primary">{row.score}</td>
+                               <td className="py-5 text-zinc-600 group-hover:text-zinc-400 transition-colors">{row.hash}</td>
+                               <td className="py-5">
+                                  <span className={`px-2 py-0.5 rounded-sm text-[9px] font-black ${
+                                    row.status === 'VERIFIED' ? 'bg-primary/20 text-primary' : 
+                                    row.status === 'CAUTION' ? 'bg-orange-500/20 text-orange-400' : 'bg-white/5 text-zinc-400'
+                                  }`}>
+                                     {row.status}
+                                  </span>
+                               </td>
+                            </tr>
+                          ))}
+                       </tbody>
+                    </table>
+                 </div>
+              </ObsidianCard>
+           </FU>
+        </div>
+      </main>
+    </div>
+  );
 };
-
-export default AnalyticsApp;

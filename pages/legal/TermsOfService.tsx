@@ -1,131 +1,80 @@
+/**
+ * Viktron AI — Terms of Service
+ * Obsidian Precision v2.2 Synchronization
+ */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, Mail, MapPin } from 'lucide-react';
+import { Mail, MapPin, Gavel, ArrowLeft } from 'lucide-react';
 import { Layout } from '../../components/layout/Layout';
 import { SEO } from '../../components/ui/SEO';
-import { AnimatedSection } from '../../components/ui/AnimatedSection';
+import { motion } from 'framer-motion';
+
+const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.ReactNode; className?: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.8, delay: d, ease: [0.16, 1, 0.3, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
 
 const sections = [
   {
-    title: '1. Acceptance',
-    points: [
-      'By accessing Viktron services, you agree to these Terms and associated policies.',
-      'If you do not agree, do not use the services.',
-    ],
+    title: '01 // AGREEMENT_TERMS',
+    body: 'By accessing Viktron services, you agree to be bound by these institutional terms of service and all applicable laws and regulations. If you do not agree, you are prohibited from utilizing the AgentIRL platform.',
   },
   {
-    title: '2. Service Scope',
-    points: [
-      'Viktron provides AI agents, automation systems, and related implementation services.',
-      'Specific deliverables, timelines, and pricing are defined in project agreements.',
-    ],
+    title: '02 // USE_LICENSE',
+    body: 'Permission is granted to temporarily deploy autonomous agents through the Viktron interface for personal or commercial transitory viewing only. This is the grant of a license, not a transfer of title.',
   },
   {
-    title: '3. Account Responsibility',
-    points: [
-      'You are responsible for account credentials and activity under your account.',
-      'Provide accurate information and notify us of unauthorized access.',
-    ],
+    title: '03 // AGENT_GOVERNANCE',
+    body: 'Users are responsible for all actions taken by agents spawned under their cryptographic identity. You must ensure all agent behavior complies with the Trust Fabric policy gateway.',
   },
   {
-    title: '4. Acceptable Use',
-    points: [
-      'Do not use services for unlawful, harmful, fraudulent, or abusive activity.',
-      'Do not attempt unauthorized access, data extraction, or service disruption.',
-    ],
-  },
-  {
-    title: '5. Payments and Billing',
-    points: [
-      'Payment terms are defined in proposals, contracts, or checkout flows.',
-      'Late or failed payments may pause service delivery.',
-    ],
-  },
-  {
-    title: '6. IP and Content',
-    points: [
-      'Viktron retains rights to proprietary platform components and implementation methods.',
-      'You retain rights to your submitted data and business content.',
-    ],
-  },
-  {
-    title: '7. Liability and Warranty',
-    points: [
-      'Services are provided on an as-available basis unless otherwise specified in writing.',
-      'To the extent permitted by law, liability is limited as described in contractual terms.',
-    ],
-  },
-  {
-    title: '8. Termination',
-    points: [
-      'Either party may terminate according to contract terms or for material breach.',
-      'On termination, access and data handling follow agreed retention and export procedures.',
-    ],
-  },
-  {
-    title: '9. Governing Law',
-    points: ['These terms are governed by the applicable laws specified in your agreement with Viktron.'],
+    title: '04 // LIMITATIONS',
+    body: 'In no event shall Viktron or its suppliers be liable for any damages arising out of the use or inability to use the materials on Viktron\'s website or services.',
   },
 ];
 
 export const TermsOfService: React.FC = () => {
-  const lastUpdated = 'February 12, 2026';
-
   return (
-    <Layout>
-      <SEO title="Terms of Service | Viktron" description="Terms governing use of Viktron services and website." url="/terms" canonicalUrl="https://viktron.ai/terms" />
+    <Layout showBackground={false}>
+      <SEO title="Terms of Service — Viktron AI Governance" description="Institutional terms for the deployment and management of autonomous agents." />
 
-      <section className="pt-32 pb-14 px-4">
-        <div className="container-custom max-w-4xl">
-          <AnimatedSection>
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 border border-primary/20">
-              <FileText className="h-6 w-6 text-primary" />
-            </div>
-            <h1 className="mt-5 text-4xl sm:text-5xl font-semibold tracking-tight text-slate-900">Terms of Service</h1>
-            <p className="mt-2 text-slate-500">Last updated: {lastUpdated}</p>
-          </AnimatedSection>
-        </div>
-      </section>
+      <section className="pt-40 pb-20 bg-[#050505] min-h-screen relative overflow-hidden">
+        <div className="absolute inset-0 grid-paper opacity-[0.05] pointer-events-none" />
+        <div className="max-w-4xl mx-auto px-6 relative z-10">
+          
+          <FU d={0}>
+             <Link to="/" className="inline-flex items-center gap-2 text-zinc-500 hover:text-primary transition-colors font-mono text-[10px] uppercase tracking-widest mb-12">
+                <ArrowLeft size={12} /> Return_to_Base
+             </Link>
+             <div className="section-label">LEGAL_RESOURCES // TERMS_v2.2</div>
+             <h1 className="heading-precision text-6xl md:text-8xl text-white uppercase tracking-tighter mt-10 mb-6">Terms of<br /><span className="text-zinc-700">Service.</span></h1>
+             <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.3em] mb-20">LAST_UPDATE: FEB_15_2026 // VERIFIED</p>
+          </FU>
 
-      <section className="pb-20 px-4">
-        <div className="container-custom max-w-4xl">
-          <AnimatedSection>
-            <article className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 space-y-6">
-              {sections.map((section) => (
-                <section key={section.title}>
-                  <h2 className="text-2xl font-semibold text-slate-900">{section.title}</h2>
-                  <ul className="mt-3 space-y-2">
-                    {section.points.map((point) => (
-                      <li key={point} className="text-slate-600 leading-relaxed list-disc ml-5">
-                        {point}
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              ))}
+          <div className="space-y-16">
+             {sections.map((s, i) => (
+               <FU key={i} d={0.1 + i * 0.05} className="obsidian-panel p-12 group hover:border-primary/30 transition-all">
+                  <h2 className="text-primary font-mono text-[11px] font-bold uppercase tracking-[0.3em] mb-6">{s.title}</h2>
+                  <p className="text-zinc-400 text-base leading-relaxed">{s.body}</p>
+               </FU>
+             ))}
+          </div>
 
-              <section className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                <p className="text-slate-600">
-                  Also review our <Link to="/privacy" className="text-primary font-semibold">Privacy Policy</Link> and{' '}
-                  <Link to="/cookies" className="text-primary font-semibold">Cookie Policy</Link>.
-                </p>
-              </section>
-
-              <section className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                <h2 className="text-xl font-semibold text-slate-900">Contact</h2>
-                <div className="mt-3 space-y-2 text-sm">
-                  <a href="mailto:legal@viktron.ai" className="inline-flex items-center gap-2 text-primary font-semibold">
-                    <Mail className="h-4 w-4" />
-                    legal@viktron.ai
-                  </a>
-                  <p className="inline-flex items-center gap-2 text-slate-600">
-                    <MapPin className="h-4 w-4 text-primary" />
-                    Viktron, United States
-                  </p>
+          <FU d={0.5} className="mt-20 obsidian-inset p-12 border border-white/5 space-y-8">
+             <h3 className="text-white font-bold text-lg uppercase tracking-tight">Legal Governance</h3>
+             <div className="flex items-center gap-4 text-zinc-400 group">
+                <div className="w-10 h-10 obsidian-inset flex items-center justify-center border border-white/5 transition-all">
+                   <Gavel size={16} />
                 </div>
-              </section>
-            </article>
-          </AnimatedSection>
+                <span className="font-mono text-[11px] uppercase tracking-widest">ENFORCED_BY: VIKTRON_LEGAL // DELAWARE_USA</span>
+             </div>
+          </FU>
         </div>
       </section>
     </Layout>
