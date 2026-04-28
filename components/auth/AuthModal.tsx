@@ -14,6 +14,7 @@ import {
   X, Mail, Lock, User, Building2, Phone, ArrowRight, Eye, EyeOff,
   AlertCircle, CheckCircle2, Loader2, ArrowLeft, Home, Check, Shield
 } from 'lucide-react';
+import { useAnalytics } from '../../utils/analytics';
 
 // Google Icon
 const GoogleIcon = () => (
@@ -156,7 +157,10 @@ export const AuthModal: React.FC = () => {
     };
   }, [showAuthModal, setShowAuthModal]);
 
+  const { trackAuth, trackEvent } = useAnalytics();
+
   const handleSuccess = (isSignup: boolean = false) => {
+    trackAuth(isSignup ? 'signup' : 'login', 'email');
     setTimeout(() => {
       setShowAuthModal(false);
       // After signup, redirect to onboarding
@@ -182,6 +186,7 @@ export const AuthModal: React.FC = () => {
     const returnTo = encodeURIComponent(rawReturnTo);
     const apiUrl = toApiBase(import.meta.env.VITE_API_URL);
     
+    trackAuth(isSignUp ? 'signup' : 'login', 'google');
     // Redirect to server endpoint which will redirect to Google
     window.location.href = `${apiUrl}/auth/google?returnTo=${returnTo}`;
   };

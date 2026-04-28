@@ -4,6 +4,7 @@ import { MessageSquare, X, Send, Loader2, Calendar } from 'lucide-react';
 import { GoogleGenAI } from '@google/genai';
 import { BrandIcon } from '../constants';
 import { SchedulingModal } from './SchedulingModal';
+import { useAnalytics } from '../utils/analytics';
 
 interface Message {
   id: string;
@@ -73,8 +74,16 @@ export const GlobalChatbot: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showBookingButton, setShowBookingButton] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { trackEvent } = useAnalytics();
+
+  useEffect(() => {
+    if (isOpen) {
+      trackEvent('chatbot_opened', { path: window.location.pathname });
+    }
+  }, [isOpen]);
 
   const handleBookConsultation = () => {
+    trackEvent('chatbot_booking_triggered');
     setIsSchedulingOpen(true);
     const bookingMessage: Message = {
       id: Date.now().toString(),
@@ -108,6 +117,11 @@ export const GlobalChatbot: React.FC = () => {
     setMessages((prev) => [...prev, userMessage]);
     setInputValue('');
     setIsLoading(true);
+    
+    trackEvent('chatbot_message_sent', { 
+      length: userMessage.text.length,
+      path: window.location.pathname
+    });
 
     try {
       const apiKey = import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || process.env.API_KEY;

@@ -1,6 +1,8 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
+import { useLocation } from 'react-router-dom';
+import { useAnalytics } from '../../utils/analytics';
 
 // Lazy load heavy components for better initial load
 const GlobalChatbot = lazy(() => import('../GlobalChatbot').then(m => ({ default: m.GlobalChatbot })));
@@ -20,6 +22,37 @@ export const Layout: React.FC<LayoutProps> = ({
   showBackground = true
 }) => {
   const [isMobile, setIsMobile] = useState(false);
+
+  const location = useLocation();
+  const { trackPageView, trackClick } = useAnalytics();
+
+  // Page view tracking
+  useEffect(() => {
+    trackPageView(location.pathname);
+  }, [location.pathname]);
+
+  // Global click tracking
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const clickable = target.closest('button, a, [role="button"]');
+      
+      if (clickable) {
+        const text = clickable.textContent?.trim().substring(0, 50) || '';
+        const id = clickable.id || '';
+        const type = clickable.tagName.toLowerCase();
+        
+        trackClick(id || 'anonymous_element', text, {
+          element_type: type,
+          href: (clickable as HTMLAnchorElement).href || undefined,
+          path: location.pathname
+        });
+      }
+    };
+
+    document.addEventListener('click', handleGlobalClick);
+    return () => document.removeEventListener('click', handleGlobalClick);
+  }, [location.pathname, trackClick]);
 
   useEffect(() => {
     const checkMobile = () => {
