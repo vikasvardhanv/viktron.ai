@@ -52,7 +52,7 @@ export const Navbar: React.FC = () => {
               <div className="w-10 h-10 obsidian-inset flex items-center justify-center border border-white/10 group-hover:border-primary transition-all duration-500">
                 <img src="/visuals/viktronlogo.png" alt="Viktron" className="w-6 h-6 object-contain grayscale group-hover:grayscale-0" />
               </div>
-              <span className="font-mono text-sm font-bold uppercase tracking-[0.2em] text-white">Viktron</span>
+              <span className="heading-precision text-xl uppercase tracking-tighter text-white">Viktron</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -80,9 +80,9 @@ export const Navbar: React.FC = () => {
                       <div className="relative">
                         <Link 
                           to={item.path}
-                          className={`px-5 py-2 flex items-center gap-2 text-[10px] font-mono font-black uppercase tracking-[0.3em] transition-all duration-300 border ${
+                          className={`px-6 py-2.5 flex items-center gap-2 text-[10px] font-mono font-black uppercase tracking-[0.3em] transition-all duration-500 ${
                             isActive 
-                              ? 'bg-primary text-black border-primary shadow-[0_0_20px_rgba(204,255,0,0.3)]' 
+                              ? 'bg-primary text-black shadow-[0_0_25px_rgba(204,255,0,0.4)]' 
                               : 'text-zinc-500 hover:text-white border-transparent'
                           }`}
                         >

@@ -278,11 +278,13 @@ export const AuthModal: React.FC = () => {
           className="relative w-full max-w-md max-h-[90vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xl">
+          <div className="obsidian-panel p-10 relative overflow-hidden group">
+            <div className="scan-line opacity-10" />
+            
             {/* Close button */}
             <button
               onClick={() => setShowAuthModal(false)}
-              className="absolute top-4 right-4 p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600"
+              className="absolute top-6 right-6 p-2 rounded-none hover:bg-white/5 transition-colors text-zinc-500 hover:text-primary z-10"
             >
               <X className="h-5 w-5" />
             </button>
@@ -291,39 +293,44 @@ export const AuthModal: React.FC = () => {
             {view !== 'options' && (
               <button
                 onClick={() => setView('options')}
-                className="absolute top-4 left-4 p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600"
+                className="absolute top-6 left-6 p-2 rounded-none hover:bg-white/5 transition-colors text-zinc-500 hover:text-primary z-10"
               >
                 <ArrowLeft className="h-5 w-5" />
               </button>
             )}
 
             {/* Header */}
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">
+            <div className="text-center mb-10">
+              <div className="flex justify-center mb-6">
+                <div className="w-12 h-12 obsidian-inset flex items-center justify-center border border-white/10 text-primary">
+                  <img src="/visuals/viktronlogo.png" alt="Viktron" className="w-6 h-6 grayscale hover:grayscale-0 transition-all" />
+                </div>
+              </div>
+              <h2 className="text-3xl font-bold text-white uppercase tracking-tighter mb-2">
                 {view === 'options'
-                  ? (isSignUp ? 'Create Account' : 'Welcome Back')
+                  ? (isSignUp ? 'Spawn Agent' : 'System Access')
                   : view === 'email-login'
-                    ? 'Sign in with Email'
-                    : 'Sign up with Email'
+                    ? 'Email Authentication'
+                    : 'Initialize Identity'
                 }
               </h2>
-              <p className="text-slate-500 text-sm">
+              <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.3em]">
                 {view === 'options'
-                  ? (isSignUp ? 'Choose how to create your account' : 'Choose how to sign in')
-                  : (view === 'email-login' ? 'Enter your email and password' : 'Fill in your details')
+                  ? (isSignUp ? 'Select provisioning method' : 'Verify institutional credentials')
+                  : (view === 'email-login' ? 'Enter encrypted credentials' : 'Define institutional parameters')
                 }
               </p>
             </div>
 
             {/* Error/Success Messages */}
             {error && (
-              <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 flex items-center gap-2 text-red-600 text-sm">
+              <div className="mb-6 p-4 obsidian-inset border border-red-900/30 flex items-center gap-3 text-red-500 font-mono text-[10px] uppercase tracking-widest">
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 {error}
               </div>
             )}
             {success && (
-              <div className="mb-4 p-3 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center gap-2 text-emerald-600 text-sm">
+              <div className="mb-6 p-4 obsidian-inset border border-primary/30 flex items-center gap-3 text-primary font-mono text-[10px] uppercase tracking-widest">
                 <CheckCircle2 className="h-4 w-4 shrink-0" />
                 {success}
               </div>
@@ -331,22 +338,22 @@ export const AuthModal: React.FC = () => {
 
             {/* Options View */}
             {view === 'options' && (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {/* Google Sign-In Button */}
                 <button
                   onClick={handleGoogleSignIn}
                   disabled={oauthLoading !== null}
-                  className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors border border-slate-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full btn-obsidian flex items-center justify-center gap-4 !py-5"
                 >
                   {oauthLoading === 'google' ? (
                     <>
-                      <Loader2 className="h-5 w-5 animate-spin text-slate-400" />
-                      <span>Redirecting to Google...</span>
+                      <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                      <span>Authenticating...</span>
                     </>
                   ) : (
                     <>
                       <GoogleIcon />
-                      <span>Continue with Google</span>
+                      <span>Sync via Google</span>
                     </>
                   )}
                 </button>
@@ -355,28 +362,28 @@ export const AuthModal: React.FC = () => {
                 <button
                   onClick={handleAppleSignIn}
                   disabled={oauthLoading !== null}
-                  className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-slate-900 text-white font-medium rounded-xl hover:bg-slate-800 transition-colors border border-slate-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full btn-obsidian flex items-center justify-center gap-4 !py-5"
                 >
                   {oauthLoading === 'apple' ? (
                     <>
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                      <span>Signing in...</span>
+                      <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                      <span>Verifying...</span>
                     </>
                   ) : (
                     <>
                       <AppleIcon />
-                      <span>Continue with Apple</span>
+                      <span>Sync via Apple</span>
                     </>
                   )}
                 </button>
 
                 {/* Divider */}
-                <div className="relative my-6">
+                <div className="relative my-10">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-slate-200" />
+                    <div className="w-full border-t border-white/5" />
                   </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-4 bg-white text-slate-400">or</span>
+                  <div className="relative flex justify-center">
+                    <span className="px-4 bg-[#080808] text-zinc-700 font-mono text-[9px] uppercase tracking-[0.4em]">OR_PROTOCOL</span>
                   </div>
                 </div>
 
@@ -384,33 +391,33 @@ export const AuthModal: React.FC = () => {
                 <button
                   onClick={() => setView(isSignUp ? 'email-signup' : 'email-login')}
                   disabled={oauthLoading !== null}
-                  className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-slate-50 text-slate-700 font-medium rounded-xl hover:bg-slate-100 transition-colors border border-slate-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full btn-obsidian flex items-center justify-center gap-4 !py-5"
                 >
-                  <Mail className="h-5 w-5" />
-                  <span>Continue with Email</span>
+                  <Mail className="h-4 w-4" />
+                  <span>Manual Authentication</span>
                 </button>
 
                 {/* Terms notice */}
-                <p className="text-xs text-slate-400 text-center mt-6">
-                  By continuing, you agree to our{' '}
-                  <Link to="/terms" onClick={() => setShowAuthModal(false)} className="text-blue-600 hover:underline">
-                    Terms of Service
+                <p className="text-[9px] font-mono uppercase tracking-[0.2em] text-zinc-600 text-center mt-10 leading-relaxed">
+                  By accessing the Control Plane, you agree to the{' '}
+                  <Link to="/terms" onClick={() => setShowAuthModal(false)} className="text-primary hover:underline">
+                    Terms_of_Service
                   </Link>{' '}
                   and{' '}
-                  <Link to="/privacy" onClick={() => setShowAuthModal(false)} className="text-blue-600 hover:underline">
-                    Privacy Policy
+                  <Link to="/privacy" onClick={() => setShowAuthModal(false)} className="text-primary hover:underline">
+                    Privacy_Protocol
                   </Link>
                 </p>
 
                 {/* Go to Home link */}
-                <div className="text-center mt-4 pt-4 border-t border-slate-100">
+                <div className="text-center mt-8 pt-8 border-t border-white/5">
                   <Link
                     to="/"
                     onClick={() => setShowAuthModal(false)}
-                    className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-slate-600 transition-colors"
+                    className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-zinc-500 hover:text-white transition-colors"
                   >
-                    <Home className="h-4 w-4" />
-                    Go to Home
+                    <Home className="h-3 w-3" />
+                    Return_to_Base
                   </Link>
                 </div>
               </div>
@@ -418,64 +425,64 @@ export const AuthModal: React.FC = () => {
 
             {/* Email Login Form */}
             {view === 'email-login' && (
-              <form onSubmit={handleEmailSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Email</label>
+              <form onSubmit={handleEmailSubmit} className="space-y-6">
+                <div className="space-y-3">
+                  <label className="block font-mono text-[10px] uppercase tracking-widest text-zinc-500">Institutional Email</label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-700" />
                     <input
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
-                      placeholder="you@company.com"
+                      className="w-full obsidian-inset border border-white/10 py-4 pl-12 pr-4 text-white font-mono text-xs uppercase tracking-widest focus:border-primary focus:outline-none transition-all placeholder:text-zinc-800"
+                      placeholder="USER@DOMAIN.COM"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Password</label>
+                <div className="space-y-3">
+                  <label className="block font-mono text-[10px] uppercase tracking-widest text-zinc-500">Access Key</label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-700" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-12 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
+                      className="w-full obsidian-inset border border-white/10 py-4 pl-12 pr-12 text-white font-mono text-xs tracking-widest focus:border-primary focus:outline-none transition-all placeholder:text-zinc-800"
                       placeholder="••••••••"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-700 hover:text-primary transition-colors"
                     >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>
 
-                <Button
-                  className="w-full mt-6"
-                  size="lg"
+                <button
+                  type="submit"
                   disabled={isLoading}
-                  icon={isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <ArrowRight className="h-5 w-5" />}
+                  className="btn-acid w-full !py-5 flex items-center justify-center gap-4"
                 >
-                  {isLoading ? 'Signing in...' : 'Sign In'}
-                </Button>
+                  {isLoading ? 'Verifying...' : 'Initialize Session'}
+                  {!isLoading && <ArrowRight className="h-4 w-4" />}
+                </button>
 
-                <p className="text-center text-sm text-slate-500 mt-4">
-                  Don't have an account?{' '}
+                <p className="text-center font-mono text-[10px] uppercase tracking-widest text-zinc-500 mt-6">
+                  Unauthorized?{' '}
                   <button
                     type="button"
                     onClick={() => {
                       setAuthModalMode('signup');
                       setView('email-signup');
                     }}
-                    className="text-blue-600 hover:text-blue-700 font-medium"
+                    className="text-primary hover:underline font-bold"
                   >
-                    Sign up
+                    Register_ID
                   </button>
                 </p>
               </form>
@@ -483,139 +490,135 @@ export const AuthModal: React.FC = () => {
 
             {/* Email Signup Form */}
             {view === 'email-signup' && (
-              <form onSubmit={handleEmailSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Full Name *</label>
+              <form onSubmit={handleEmailSubmit} className="space-y-5">
+                <div className="space-y-2">
+                  <label className="block font-mono text-[10px] uppercase tracking-widest text-zinc-500">Operator Name *</label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-700" />
                     <input
                       type="text"
                       required
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
-                      placeholder="John Doe"
+                      className="w-full obsidian-inset border border-white/10 py-4 pl-12 pr-4 text-white font-mono text-xs uppercase tracking-widest focus:border-primary focus:outline-none transition-all placeholder:text-zinc-800"
+                      placeholder="OPERATOR_NAME"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Email *</label>
+                <div className="space-y-2">
+                  <label className="block font-mono text-[10px] uppercase tracking-widest text-zinc-500">Institutional Email *</label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-700" />
                     <input
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
-                      placeholder="you@company.com"
+                      className="w-full obsidian-inset border border-white/10 py-4 pl-12 pr-4 text-white font-mono text-xs uppercase tracking-widest focus:border-primary focus:outline-none transition-all placeholder:text-zinc-800"
+                      placeholder="USER@ORGANIZATION.COM"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Password *</label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-12 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
-                      placeholder="••••••••"
-                      minLength={8}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                    >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                    </button>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="block font-mono text-[10px] uppercase tracking-widest text-zinc-500">Access Key *</label>
+                    <div className="relative">
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-700" />
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="w-full obsidian-inset border border-white/10 py-4 pl-12 pr-4 text-white font-mono text-xs tracking-widest focus:border-primary focus:outline-none transition-all placeholder:text-zinc-800"
+                        placeholder="••••••••"
+                        minLength={8}
+                      />
+                    </div>
                   </div>
-                  <p className="text-xs text-slate-400 mt-1">Minimum 8 characters</p>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Confirm Password *</label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      required
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
-                      placeholder="••••••••"
-                    />
+                  <div className="space-y-2">
+                    <label className="block font-mono text-[10px] uppercase tracking-widest text-zinc-500">Confirm Key *</label>
+                    <div className="relative">
+                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-700" />
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        required
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        className="w-full obsidian-inset border border-white/10 py-4 pl-12 pr-4 text-white font-mono text-xs tracking-widest focus:border-primary focus:outline-none transition-all placeholder:text-zinc-800"
+                        placeholder="••••••••"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Company (Optional)</label>
+                <div className="space-y-2">
+                  <label className="block font-mono text-[10px] uppercase tracking-widest text-zinc-500">Organization (Optional)</label>
                   <div className="relative">
-                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                    <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-700" />
                     <input
                       type="text"
                       value={company}
                       onChange={(e) => setCompany(e.target.value)}
-                      className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400/20"
-                      placeholder="Your company"
+                      className="w-full obsidian-inset border border-white/10 py-4 pl-12 pr-4 text-white font-mono text-xs uppercase tracking-widest focus:border-primary focus:outline-none transition-all placeholder:text-zinc-800"
+                      placeholder="INSTITUTION_NAME"
                     />
                   </div>
                 </div>
 
                 {/* Terms checkbox */}
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={agreeToTerms}
-                    onChange={(e) => setAgreeToTerms(e.target.checked)}
-                    className="mt-1 h-4 w-4 rounded border-slate-300 bg-white text-blue-600 focus:ring-blue-500/50"
-                  />
-                  <span className="text-sm text-slate-500">
-                    I agree to the{' '}
-                    <Link to="/terms" onClick={() => setShowAuthModal(false)} className="text-blue-600 hover:underline">
-                      Terms of Service
+                <label className="flex items-start gap-4 cursor-pointer group pt-2">
+                  <div className="relative flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={agreeToTerms}
+                      onChange={(e) => setAgreeToTerms(e.target.checked)}
+                      className="peer h-5 w-5 appearance-none border border-white/10 obsidian-inset checked:border-primary transition-all cursor-pointer"
+                    />
+                    <Check className="absolute left-0.5 top-0.5 h-4 w-4 text-primary opacity-0 peer-checked:opacity-100 transition-opacity" />
+                  </div>
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 group-hover:text-zinc-300 transition-colors">
+                    Confirm agreement to the{' '}
+                    <Link to="/terms" onClick={() => setShowAuthModal(false)} className="text-primary hover:underline">
+                      Terms_of_Service
                     </Link>{' '}
                     and{' '}
-                    <Link to="/privacy" onClick={() => setShowAuthModal(false)} className="text-blue-600 hover:underline">
-                      Privacy Policy
+                    <Link to="/privacy" onClick={() => setShowAuthModal(false)} className="text-primary hover:underline">
+                      Privacy_Protocol
                     </Link>
                   </span>
                 </label>
 
-                <Button
-                  className="w-full mt-4"
-                  size="lg"
+                <button
+                  type="submit"
                   disabled={isLoading}
-                  icon={isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <ArrowRight className="h-5 w-5" />}
+                  className="btn-acid w-full !py-5 flex items-center justify-center gap-4 mt-4"
                 >
-                  {isLoading ? 'Creating account...' : 'Create Account'}
-                </Button>
+                  {isLoading ? 'Initializing...' : 'Provision Account'}
+                  {!isLoading && <ArrowRight className="h-4 w-4" />}
+                </button>
 
-                <p className="text-center text-sm text-slate-500 mt-4">
-                  Already have an account?{' '}
+                <p className="text-center font-mono text-[10px] uppercase tracking-widest text-zinc-500 mt-6">
+                  Existing Identity?{' '}
                   <button
                     type="button"
                     onClick={() => {
                       setAuthModalMode('login');
                       setView('email-login');
                     }}
-                    className="text-blue-600 hover:text-blue-700 font-medium"
+                    className="text-primary hover:underline font-bold"
                   >
-                    Sign in
+                    Authenticate
                   </button>
                 </p>
               </form>
             )}
 
             {/* Security note */}
-            <div className="flex items-center justify-center gap-2 text-xs text-slate-400 mt-6">
-              <Lock className="h-3 w-3" />
-              <span>256-bit SSL Encrypted</span>
+            <div className="flex items-center justify-center gap-3 text-[9px] font-mono uppercase tracking-[0.2em] text-zinc-700 mt-10">
+              <Shield className="h-3.5 w-3.5" />
+              <span>AES-256_ENCRYPTED_SESSION</span>
             </div>
           </div>
         </motion.div>

@@ -41,33 +41,42 @@ const sections = [
 
 export const PrivacyPolicy: React.FC = () => {
   return (
-    <Layout showBackground={false}>
+    <Layout showBackground={true}>
       <SEO title="Privacy Policy — Viktron AI Governance" description="How Viktron handles personal information under the Trust Fabric framework." />
 
-      <section className="pt-40 pb-20 bg-[#050505] min-h-screen relative overflow-hidden">
-        <div className="absolute inset-0 grid-paper opacity-[0.05] pointer-events-none" />
+      <section className="pt-48 pb-32 bg-[#050505] min-h-screen relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-6 relative z-10">
           
           <FU d={0}>
-             <Link to="/" className="inline-flex items-center gap-2 text-zinc-500 hover:text-primary transition-colors font-mono text-[10px] uppercase tracking-widest mb-12">
-                <ArrowLeft size={12} /> Return_to_Base
+             <Link to="/" className="inline-flex items-center gap-2 text-zinc-500 hover:text-primary transition-colors font-mono text-[10px] uppercase tracking-widest mb-16">
+                <ArrowLeft size={12} /> [RETURN_TO_BASE]
              </Link>
-             <div className="section-label">LEGAL_RESOURCES // PRIVACY_v2.2</div>
-             <h1 className="heading-precision text-6xl md:text-8xl text-white uppercase tracking-tighter mt-10 mb-6">Privacy<br /><span className="text-zinc-700">Policy.</span></h1>
-             <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.3em] mb-20">LAST_UPDATE: FEB_12_2026 // VERIFIED</p>
+             <div className="section-label">SYSTEM_GOVERNANCE // PRIVACY_v2.2</div>
+             <h1 className="heading-precision text-6xl md:text-8xl text-white uppercase tracking-tighter mt-10 mb-8 leading-[0.85]">
+                Privacy<br />
+                <span className="text-primary text-glow">Policy.</span>
+             </h1>
+             <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.3em] mb-24">DOCUMENT_STATUS: VERIFIED // LAST_UPDATE: FEB_12_2026</p>
           </FU>
 
-          <div className="space-y-16">
+          <div className="space-y-12">
              {sections.map((s, i) => (
-               <FU key={i} d={0.1 + i * 0.05} className="obsidian-panel p-12 group hover:border-primary/30 transition-all">
-                  <h2 className="text-primary font-mono text-[11px] font-bold uppercase tracking-[0.3em] mb-6">{s.title}</h2>
-                  <p className="text-zinc-400 text-base leading-relaxed">{s.body}</p>
+               <FU key={i} d={0.1 + i * 0.05} className="obsidian-panel p-10 md:p-16 relative overflow-hidden group">
+                  <div className="scan-line opacity-5" />
+                  <h2 className="text-primary font-mono text-[11px] font-bold uppercase tracking-[0.3em] mb-8 flex items-center gap-4">
+                    <span className="w-8 h-px bg-primary/30" />
+                    {s.title}
+                  </h2>
+                  <p className="text-zinc-400 text-lg leading-relaxed font-light">{s.body}</p>
                </FU>
              ))}
           </div>
 
-          <FU d={0.5} className="mt-20 obsidian-inset p-12 border border-white/5 space-y-8">
-             <h3 className="text-white font-bold text-lg uppercase tracking-tight">Institutional Contact</h3>
+          <FU d={0.5} className="mt-24 obsidian-inset p-12 border border-white/5 space-y-8 relative overflow-hidden">
+             <div className="absolute top-0 right-0 p-8 opacity-10 text-primary">
+                <Shield size={80} />
+             </div>
+             <h3 className="text-white font-bold text-xl uppercase tracking-tighter">Institutional Contact</h3>
              <div className="grid md:grid-cols-2 gap-8">
                 <a href="mailto:privacy@viktron.ai" className="flex items-center gap-4 text-zinc-400 hover:text-primary transition-colors group">
                    <div className="w-10 h-10 obsidian-inset flex items-center justify-center border border-white/5 group-hover:border-primary/20 transition-all">
@@ -82,6 +91,9 @@ export const PrivacyPolicy: React.FC = () => {
                    <span className="font-mono text-[11px] uppercase tracking-widest">UNITED_STATES [GLOBAL_HQ]</span>
                 </div>
              </div>
+             <p className="text-zinc-600 text-[10px] font-mono uppercase tracking-widest leading-relaxed pt-8 border-t border-white/5">
+                © 2026 VIKTRON AI. ALL DATA PROCESSING IS GOVERNED BY THE TRUST FABRIC POLICY GATEWAY.
+             </p>
           </FU>
         </div>
       </section>

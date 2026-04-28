@@ -41,39 +41,59 @@ const sections = [
 
 export const TermsOfService: React.FC = () => {
   return (
-    <Layout showBackground={false}>
+    <Layout showBackground={true}>
       <SEO title="Terms of Service — Viktron AI Governance" description="Institutional terms for the deployment and management of autonomous agents." />
 
-      <section className="pt-40 pb-20 bg-[#050505] min-h-screen relative overflow-hidden">
-        <div className="absolute inset-0 grid-paper opacity-[0.05] pointer-events-none" />
+      <section className="pt-48 pb-32 bg-[#050505] min-h-screen relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-6 relative z-10">
           
           <FU d={0}>
-             <Link to="/" className="inline-flex items-center gap-2 text-zinc-500 hover:text-primary transition-colors font-mono text-[10px] uppercase tracking-widest mb-12">
-                <ArrowLeft size={12} /> Return_to_Base
+             <Link to="/" className="inline-flex items-center gap-2 text-zinc-500 hover:text-primary transition-colors font-mono text-[10px] uppercase tracking-widest mb-16">
+                <ArrowLeft size={12} /> [RETURN_TO_BASE]
              </Link>
-             <div className="section-label">LEGAL_RESOURCES // TERMS_v2.2</div>
-             <h1 className="heading-precision text-6xl md:text-8xl text-white uppercase tracking-tighter mt-10 mb-6">Terms of<br /><span className="text-zinc-700">Service.</span></h1>
-             <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.3em] mb-20">LAST_UPDATE: FEB_15_2026 // VERIFIED</p>
+             <div className="section-label">SYSTEM_GOVERNANCE // TERMS_v2.2</div>
+             <h1 className="heading-precision text-6xl md:text-8xl text-white uppercase tracking-tighter mt-10 mb-8 leading-[0.85]">
+                Terms of<br />
+                <span className="text-primary text-glow">Service.</span>
+             </h1>
+             <p className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.3em] mb-24">DOCUMENT_STATUS: VERIFIED // LAST_UPDATE: FEB_15_2026</p>
           </FU>
 
-          <div className="space-y-16">
+          <div className="space-y-12">
              {sections.map((s, i) => (
-               <FU key={i} d={0.1 + i * 0.05} className="obsidian-panel p-12 group hover:border-primary/30 transition-all">
-                  <h2 className="text-primary font-mono text-[11px] font-bold uppercase tracking-[0.3em] mb-6">{s.title}</h2>
-                  <p className="text-zinc-400 text-base leading-relaxed">{s.body}</p>
+               <FU key={i} d={0.1 + i * 0.05} className="obsidian-panel p-10 md:p-16 relative overflow-hidden group">
+                  <div className="scan-line opacity-5" />
+                  <h2 className="text-primary font-mono text-[11px] font-bold uppercase tracking-[0.3em] mb-8 flex items-center gap-4">
+                    <span className="w-8 h-px bg-primary/30" />
+                    {s.title}
+                  </h2>
+                  <p className="text-zinc-400 text-lg leading-relaxed font-light">{s.body}</p>
                </FU>
              ))}
           </div>
 
-          <FU d={0.5} className="mt-20 obsidian-inset p-12 border border-white/5 space-y-8">
-             <h3 className="text-white font-bold text-lg uppercase tracking-tight">Legal Governance</h3>
-             <div className="flex items-center gap-4 text-zinc-400 group">
-                <div className="w-10 h-10 obsidian-inset flex items-center justify-center border border-white/5 transition-all">
-                   <Gavel size={16} />
-                </div>
-                <span className="font-mono text-[11px] uppercase tracking-widest">ENFORCED_BY: VIKTRON_LEGAL // DELAWARE_USA</span>
+          <FU d={0.5} className="mt-24 obsidian-inset p-12 border border-white/5 space-y-8 relative overflow-hidden">
+             <div className="absolute top-0 right-0 p-8 opacity-10 text-primary">
+                <Gavel size={80} />
              </div>
+             <h3 className="text-white font-bold text-xl uppercase tracking-tighter">Institutional Compliance</h3>
+             <div className="flex flex-col md:flex-row md:items-center gap-8">
+                <div className="flex items-center gap-4 text-zinc-400">
+                   <div className="w-10 h-10 obsidian-inset flex items-center justify-center border border-white/5 text-primary">
+                      <Shield size={16} className="text-glow" />
+                   </div>
+                   <span className="font-mono text-[11px] uppercase tracking-widest">VIKTRON_LEGAL_ENFORCEMENT</span>
+                </div>
+                <div className="flex items-center gap-4 text-zinc-400">
+                   <div className="w-10 h-10 obsidian-inset flex items-center justify-center border border-white/5 text-primary">
+                      <MapPin size={16} />
+                   </div>
+                   <span className="font-mono text-[11px] uppercase tracking-widest">DELAWARE_USA // GLOBAL_JURISDICTION</span>
+                </div>
+             </div>
+             <p className="text-zinc-600 text-[10px] font-mono uppercase tracking-widest leading-relaxed pt-8 border-t border-white/5">
+                © 2026 VIKTRON AI. ALL AGENTIC DEPLOYMENTS ARE SUBJECT TO TRUST FABRIC GOVERNANCE PROTOCOLS.
+             </p>
           </FU>
         </div>
       </section>
