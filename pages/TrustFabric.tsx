@@ -87,53 +87,52 @@ export const TrustFabric: React.FC = () => (
     <section className="py-40 bg-[#050505] border-t border-white/5 relative">
       <div className="max-w-7xl mx-auto px-6">
         <Label>01 // ENFORCEMENT PILLARS</Label>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-20">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-20">
           {[
             { 
-              icon: Fingerprint, 
-              name: 'IDENTITY', 
-              desc: 'Verified cryptographic identity bound to every action token.',
+              name: 'IDENTITY BINDING', 
+              desc: 'Every agent has a unique cryptographic fingerprint.',
+              img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/trust_identity_fingerprint_1777384752838.png',
               active: true 
             },
             { 
-              icon: Key, 
-              name: 'DELEGATION', 
-              desc: 'Scoped JWTs that restrict permissions as tasks evolve.' 
+              name: 'RUNTIME POLICY', 
+              desc: 'Enforce tool permissions before they execute.',
+              img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/trust_policy_shield_1777384781574.png'
             },
             { 
-              icon: Shield, 
-              name: 'POLICY GATE', 
-              desc: 'Sub-50ms interception of tool calls against corporate rules.' 
+              name: 'BUDGET GUARDS', 
+              desc: 'Hard stops on LLM costs and API spend per task.',
+              img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/trust_budget_guards_1777384808400.png'
             },
             { 
-              icon: Activity, 
-              name: 'BUDGET', 
-              desc: 'Per-agent token and API spend cap enforcement.' 
+              name: 'AUDIT LEDGER', 
+              desc: 'Immutable provenance for compliance and debugging.',
+              img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/trust_audit_ledger_1777384830915.png'
             },
             { 
-              icon: Lock, 
-              name: 'SECRETS', 
-              desc: 'Zero-trust injection of API keys at tool-call runtime.' 
+              name: 'ZERO-TRUST VAULT', 
+              desc: 'Credential injection at the moment of execution.',
+              img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/trust_zero_trust_vault_1777384863756.png'
             },
             { 
-              icon: FileCheck, 
-              name: 'PROVENANCE', 
-              desc: 'Immutable chain of every decision, reason, and action.' 
+              name: 'SMART ADAPTERS', 
+              desc: 'Normalize API data for 94% token efficiency.',
+              img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/trust_smart_adapters_1777384888857.png'
             },
-          ].map((l, i) => {
-            const Icon = l.icon;
-            return (
-              <FU key={i} d={i * 0.05} className={`obsidian-panel p-12 space-y-8 group hover:scale-[1.02] transition-all duration-500 ${l.active ? 'border-primary/20 bg-primary/[0.02]' : ''}`}>
-                 <div className={`w-12 h-12 obsidian-inset flex items-center justify-center transition-colors ${l.active ? 'text-primary' : 'text-zinc-600 group-hover:text-primary'}`}>
-                    <Icon size={20} className={l.active ? 'text-glow' : ''} />
-                 </div>
-                 <div className="space-y-4">
-                   <h4 className="text-white font-bold text-lg uppercase tracking-tight">{l.name}</h4>
-                   <p className="text-zinc-500 text-sm leading-relaxed font-light">{l.desc}</p>
-                 </div>
-              </FU>
-            );
-          })}
+          ].map((l, i) => (
+            <FU key={i} d={i * 0.05} className={`obsidian-panel p-0 overflow-hidden group hover:scale-[1.02] transition-all duration-500 ${l.active ? 'border-primary/20 bg-primary/[0.01]' : ''}`}>
+               <div className="aspect-[4/3] overflow-hidden relative border-b border-white/5">
+                  <img src={l.img} alt={l.name} className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-40" />
+                  {l.active && <div className="absolute top-4 right-4 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full text-primary font-mono text-[8px] uppercase tracking-widest animate-pulse">Active_Layer</div>}
+               </div>
+               <div className="p-8 space-y-4">
+                 <h4 className="text-white font-bold text-lg uppercase tracking-tight group-hover:text-primary transition-colors">{l.name}</h4>
+                 <p className="text-zinc-500 text-sm leading-relaxed font-light">{l.desc}</p>
+               </div>
+            </FU>
+          ))}
         </div>
       </div>
     </section>
