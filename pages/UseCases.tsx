@@ -97,6 +97,26 @@ const USE_CASES = [
     ],
     link: '/contact',
   },
+  {
+    title: 'SaaS Platform — Growth Intelligence',
+    segment: 'STARTUP',
+    industry: 'Software',
+    icon: BrainCircuit,
+    desc: 'Integrated SaaS Analytics and Product Intelligence to identify and fix churn bottlenecks automatically.',
+    agents: ['Analytics Brain', 'Retention Optimizer'],
+    results: [
+      { metric: '22%', label: 'Churn Reduction' },
+      { metric: '1M+', label: 'Events Tracked' },
+      { metric: 'Auto', label: 'Optimization' },
+    ],
+    demo: [
+      { agent: 'ANALYTICS', msg: 'SaaS Engine: Detected 45% drop-off at Step 3 of onboarding.' },
+      { agent: 'BRAIN', msg: 'Intelligence: Step 3 has too many form fields. Recommending simplification.' },
+      { agent: 'OPTIMIZE', msg: 'Auto-Task: Generated new low-friction UI proposal. A/B test active.' },
+      { agent: 'REPORT', msg: 'Insight: Retention projected to increase by 12%.' },
+    ],
+    link: '/analytics',
+  },
 ];
 
 export const UseCases: React.FC = () => {
@@ -222,6 +242,83 @@ export const UseCases: React.FC = () => {
                </FU>
              );
            })}
+        </div>
+      </section>
+
+      {/* ══════════════════ LAYMAN'S GUIDE: WHERE & HOW ══════════════════ */}
+      <section className="py-40 bg-[#080808] border-y border-white/5 relative overflow-hidden">
+        <div className="absolute inset-0 grid-paper opacity-[0.03] pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-6">
+          <Label>SIMPLE_DEPLOYMENT_GUIDE</Label>
+          <h2 className="heading-precision text-6xl text-white mb-20 uppercase tracking-tighter">How to use<br />Viktron AI.</h2>
+          
+          <div className="grid lg:grid-cols-2 gap-12">
+            {/* Agent IRL: For Everyone */}
+            <FU d={0} className="obsidian-panel p-12 space-y-8 group">
+              <div className="flex items-center gap-6">
+                <div className="w-16 h-16 obsidian-inset flex items-center justify-center text-primary">
+                  <Bot size={32} className="text-glow" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white uppercase tracking-tighter">Agent IRL</h3>
+                  <p className="text-zinc-500 text-xs font-mono uppercase tracking-widest">Your Autonomous Workforce</p>
+                </div>
+              </div>
+              
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-primary font-mono text-[10px] uppercase tracking-[0.2em] mb-2 font-bold">// WHERE_TO_USE</h4>
+                  <p className="text-zinc-400 text-sm leading-relaxed">
+                    Use it anywhere you have repetitive computer work. Customer support, finding leads on LinkedIn, booking appointments, or organizing thousands of files.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-primary font-mono text-[10px] uppercase tracking-[0.2em] mb-2 font-bold">// HOW_TO_USE</h4>
+                  <p className="text-zinc-400 text-sm leading-relaxed">
+                    Simply give it a mission in plain English. For example: "Find 10 lawyers in London and send them a personalized email." It handles the browsing and typing for you.
+                  </p>
+                </div>
+              </div>
+            </FU>
+
+            {/* Analytics: For Everyone */}
+            <FU d={0.1} className="obsidian-panel p-12 space-y-8 group">
+              <div className="flex items-center gap-6">
+                <div className="w-16 h-16 obsidian-inset flex items-center justify-center text-primary">
+                  <BrainCircuit size={32} className="text-glow" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white uppercase tracking-tighter">Dual Intelligence</h3>
+                  <p className="text-zinc-500 text-xs font-mono uppercase tracking-widest">Analytics & Insights</p>
+                </div>
+              </div>
+              
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-primary font-mono text-[10px] uppercase tracking-[0.2em] mb-2 font-bold">// WHERE_TO_USE</h4>
+                  <p className="text-zinc-400 text-sm leading-relaxed">
+                    Use it on your website or app to see exactly what users are doing. It's like having a camera on your business performance 24/7.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-primary font-mono text-[10px] uppercase tracking-[0.2em] mb-2 font-bold">// HOW_TO_USE</h4>
+                  <p className="text-zinc-400 text-sm leading-relaxed">
+                    Our **SaaS Analytics** tracks every click automatically. Then, our **Product Intelligence** "brain" reads that data and tells you exactly how to make more money or keep more users.
+                  </p>
+                </div>
+              </div>
+            </FU>
+          </div>
+
+          <FU d={0.2} className="mt-20 obsidian-panel p-10 border-primary/30 flex flex-col md:flex-row items-center justify-between gap-10">
+            <div className="space-y-2">
+              <h4 className="text-white font-bold text-xl uppercase tracking-tighter">Ready to start?</h4>
+              <p className="text-zinc-500 text-sm">Join the 100+ businesses automating their future today.</p>
+            </div>
+            <Link to="/onboarding" className="btn-acid !px-12 whitespace-nowrap">
+              Start Onboarding Now
+            </Link>
+          </FU>
         </div>
       </section>
 
