@@ -1,103 +1,174 @@
+/**
+ * Viktron AI — Developer Documentation
+ * "API Architecture & Infrastructure Hooks."
+ */
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Code, Terminal, Server, Key, BookOpen, Layers, Shield } from 'lucide-react';
+import { 
+  Code, Terminal, Server, Key, BookOpen, Layers, Shield, 
+  ArrowRight, Activity, Globe, Cpu, Check 
+} from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { SEO } from '../components/ui/SEO';
 
+const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.ReactNode; className?: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5, delay: d, ease: [0.16, 1, 0.3, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
+
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <div className="section-label">{children}</div>
+);
+
 export const Docs = () => {
   return (
-    <Layout>
+    <Layout showBackground={false}>
       <SEO 
-        title="Developer Docs | Viktron AI" 
-        description="API documentation for the Viktron Intelligent Layer. Integrate AgentIRL orchestration, governance, and audit logging into your applications."
+        title="Developer Docs — Viktron AI Agent Infrastructure" 
+        description="API documentation for the Viktron Intelligent Layer. Integrate AgentIRL orchestration, governance, and audit logging."
       />
       
-      <div className="bg-slate-900 pt-32 pb-20 min-h-screen text-slate-300">
-        <div className="container-custom max-w-5xl">
-          <div className="mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-mono text-blue-400 mb-6">
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-              API v1.2.0 LIVE
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">Developer Documentation</h1>
-            <p className="text-xl text-slate-400 max-w-3xl">
-              Embed production-ready AI agents into your product with the Viktron API. 
-              Get full access to the AgentIRL engine, governance hooks, and the immutable trust ledger.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <div className="md:col-span-1 space-y-2">
-              <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
-                <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Getting Started</h3>
-                <ul className="space-y-3 text-sm">
-                  <li><a href="#" className="text-blue-400 hover:text-blue-300">Authentication</a></li>
-                  <li><a href="#" className="text-slate-400 hover:text-slate-200">Rate Limits</a></li>
-                  <li><a href="#" className="text-slate-400 hover:text-slate-200">SDKs (Python/Node)</a></li>
-                </ul>
-              </div>
-              <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
-                <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Core Endpoints</h3>
-                <ul className="space-y-3 text-sm">
-                  <li><a href="#" className="text-slate-400 hover:text-slate-200">/api/agentirl/missions</a></li>
-                  <li><a href="#" className="text-slate-400 hover:text-slate-200">/api/platform/overview</a></li>
-                  <li><a href="#" className="text-slate-400 hover:text-slate-200">/api/trust-report/teams</a></li>
-                  <li><a href="#" className="text-slate-400 hover:text-slate-200">/api/developers/webhooks</a></li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="md:col-span-2 space-y-6">
-              <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800">
-                <div className="flex items-center gap-3 mb-6 pb-6 border-b border-slate-800">
-                  <Terminal className="w-6 h-6 text-emerald-400" />
-                  <h2 className="text-xl font-semibold text-white">Initialize AgentIRL Mission</h2>
-                </div>
-                <p className="text-slate-400 mb-4 text-sm">
-                  Trigger an autonomous workflow with a specific policy tier attached.
-                </p>
-                <div className="bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
-                  <div className="text-slate-500 mb-2">POST https://api.viktron.ai/api/agentirl/missions</div>
-                  <div className="text-blue-300">curl <span className="text-white">-X POST</span> https://api.viktron.ai/api/agentirl/missions \</div>
-                  <div className="text-blue-300 pl-4">-H <span className="text-yellow-300">"Authorization: Bearer vk_live_xxxx"</span> \</div>
-                  <div className="text-blue-300 pl-4">-H <span className="text-yellow-300">"Content-Type: application/json"</span> \</div>
-                  <div className="text-blue-300 pl-4">-d <span className="text-yellow-300">'{'{'}</span></div>
-                  <div className="text-green-300 pl-8">"goal": <span className="text-yellow-300">"Process Q3 enterprise invoices"</span>,</div>
-                  <div className="text-green-300 pl-8">"governance_policy": <span className="text-yellow-300">"pol-001-strict"</span>,</div>
-                  <div className="text-green-300 pl-8">"audit_level": <span className="text-yellow-300">"comprehensive"</span></div>
-                  <div className="text-blue-300 pl-4"><span className="text-yellow-300">{"'}'"}</span></div>
-                </div>
-              </div>
-
-              <div className="bg-slate-950 p-6 rounded-2xl border border-slate-800">
-                <div className="flex items-center gap-3 mb-6 pb-6 border-b border-slate-800">
-                  <Shield className="w-6 h-6 text-indigo-400" />
-                  <h2 className="text-xl font-semibold text-white">Verify Trust Report (Audit)</h2>
-                </div>
-                <p className="text-slate-400 mb-4 text-sm">
-                  Fetch a cryptographically signed audit log of all agent decisions for compliance verification.
-                </p>
-                <div className="bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
-                  <div className="text-slate-500 mb-2">GET https://api.viktron.ai/api/trust-report/teams/{'{team_id}'}</div>
-                  <div className="text-white">{'{'}</div>
-                  <div className="text-green-300 pl-4">"team_id": <span className="text-yellow-300">"123e4567-e89b-12d3-a456-426614174000"</span>,</div>
-                  <div className="text-green-300 pl-4">"period_days": <span className="text-blue-400">30</span>,</div>
-                  <div className="text-green-300 pl-4">"summary": {'{'}</div>
-                  <div className="text-green-300 pl-8">"human_approved": <span className="text-blue-400">14</span>,</div>
-                  <div className="text-green-300 pl-8">"destructive_ops_blocked": <span className="text-blue-400">2</span></div>
-                  <div className="text-green-300 pl-4">{'}'},</div>
-                  <div className="text-green-300 pl-4">"signature": {'{'}</div>
-                  <div className="text-green-300 pl-8">"algorithm": <span className="text-yellow-300">"SHA-256"</span>,</div>
-                  <div className="text-green-300 pl-8">"digest": <span className="text-yellow-300">"a3f9e..."</span></div>
-                  <div className="text-green-300 pl-4">{'}'}</div>
-                  <div className="text-white">{'}'}</div>
-                </div>
-              </div>
-
-            </div>
-          </div>
+      {/* ─── HERO ─── */}
+      <section className="relative pt-40 pb-20 bg-[#050505] overflow-hidden">
+        <div className="absolute inset-0 grid-paper opacity-[0.05] pointer-events-none" />
+        <div className="max-w-[1400px] mx-auto px-6 relative z-10">
+           <FU d={0}>
+              <Label>SYSTEM_ARCHITECTURE // API_v2.2</Label>
+              <h1 className="heading-precision text-7xl md:text-[140px] text-white leading-[0.8] tracking-[-0.05em] uppercase font-black mt-10">
+                 CORE<br />
+                 <span className="text-zinc-700">PROTOCOLS.</span>
+              </h1>
+              <p className="heading-editorial text-2xl text-zinc-300 mt-12 max-w-3xl">
+                 Embed production-ready AI agents into your product with the Viktron API. 
+                 Get full access to the AgentIRL engine and the immutable trust ledger.
+              </p>
+           </FU>
         </div>
-      </div>
+      </section>
+
+      {/* ─── CONTENT ─── */}
+      <section className="py-20 bg-[#050505] relative border-t border-white/5">
+         <div className="max-w-[1400px] mx-auto px-6">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+               
+               {/* Sidebar Nav */}
+               <div className="lg:col-span-1 space-y-6">
+                  <FU d={0.1}>
+                    <div className="obsidian-panel p-8 space-y-8">
+                       <div>
+                          <h3 className="text-zinc-600 font-mono text-[9px] uppercase tracking-[0.2em] mb-6 font-bold">GETTING_STARTED</h3>
+                          <ul className="space-y-4">
+                             {['Authentication', 'Rate Limits', 'SDKs (Python/Node)', 'Error Codes'].map(item => (
+                               <li key={item}>
+                                  <a href="#" className="text-[11px] font-mono text-zinc-400 hover:text-primary transition-colors uppercase tracking-widest">{item}</a>
+                               </li>
+                             ))}
+                          </ul>
+                       </div>
+                       <div className="pt-8 border-t border-white/5">
+                          <h3 className="text-zinc-600 font-mono text-[9px] uppercase tracking-[0.2em] mb-6 font-bold">RESOURCES</h3>
+                          <ul className="space-y-4">
+                             {['Postman Collection', 'Swagger UI', 'Github Examples'].map(item => (
+                               <li key={item}>
+                                  <a href="#" className="text-[11px] font-mono text-zinc-400 hover:text-primary transition-colors uppercase tracking-widest">{item}</a>
+                               </li>
+                             ))}
+                          </ul>
+                       </div>
+                    </div>
+                  </FU>
+               </div>
+
+               {/* Main Content */}
+               <div className="lg:col-span-3 space-y-12">
+                  
+                  {/* Endpoint 1 */}
+                  <FU d={0.2}>
+                    <div className="obsidian-panel p-12 space-y-8 relative overflow-hidden">
+                       <div className="scan-line opacity-10" />
+                       <div className="flex items-center gap-6 mb-4">
+                          <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-primary">
+                             <Terminal size={20} />
+                          </div>
+                          <h2 className="text-white font-bold text-3xl uppercase tracking-tighter">Initialize_Mission</h2>
+                       </div>
+                       <p className="text-zinc-500 text-lg leading-relaxed max-w-2xl">
+                          Trigger an autonomous workflow with a specific governance policy attached to the AgentIRL instance.
+                       </p>
+                       <div className="obsidian-inset p-8 font-mono text-[11px] space-y-4 relative overflow-hidden">
+                          <div className="flex justify-between text-zinc-600 mb-6 uppercase tracking-widest font-bold">
+                             <span>POST /api/agentirl/missions</span>
+                             <span>vk_auth_v2.2</span>
+                          </div>
+                          <div className="text-zinc-400">
+                             <span className="text-primary">curl</span> -X POST https://api.viktron.ai/api/missions \<br />
+                             &nbsp;&nbsp;-H <span className="text-white">"Authorization: Bearer vk_live_xxxx"</span> \<br />
+                             &nbsp;&nbsp;-d <span className="text-white">'{'{'}</span><br />
+                             &nbsp;&nbsp;&nbsp;&nbsp;"goal": "Q3_INVOICE_PROCESSING",<br />
+                             &nbsp;&nbsp;&nbsp;&nbsp;"policy": "STR_001_COMPLY"<br />
+                             &nbsp;&nbsp;<span className="text-white">{'}'}'</span>
+                          </div>
+                       </div>
+                    </div>
+                  </FU>
+
+                  {/* Endpoint 2 */}
+                  <FU d={0.3}>
+                    <div className="obsidian-panel p-12 space-y-8 relative overflow-hidden">
+                       <div className="scan-line opacity-10" />
+                       <div className="flex items-center gap-6 mb-4">
+                          <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-primary">
+                             <Shield size={20} />
+                          </div>
+                          <h2 className="text-white font-bold text-3xl uppercase tracking-tighter">Verify_Audit_Signature</h2>
+                       </div>
+                       <p className="text-zinc-500 text-lg leading-relaxed max-w-2xl">
+                          Fetch a cryptographically signed audit log for compliance verification across any mission runtime.
+                       </p>
+                       <div className="obsidian-inset p-8 font-mono text-[11px] space-y-4 relative overflow-hidden">
+                          <div className="flex justify-between text-zinc-600 mb-6 uppercase tracking-widest font-bold">
+                             <span>GET /api/trust/verify/{'{mission_id}'}</span>
+                             <span>SHA-256</span>
+                          </div>
+                          <div className="text-zinc-400">
+                             <span className="text-white">{'{'}</span><br />
+                             &nbsp;&nbsp;"status": "VERIFIED",<br />
+                             &nbsp;&nbsp;"signature": "a3f9e...88b2c",<br />
+                             &nbsp;&nbsp;"decision_count": 142,<br />
+                             &nbsp;&nbsp;"destructive_blocks": 3<br />
+                             <span className="text-white">{'}'}</span>
+                          </div>
+                       </div>
+                    </div>
+                  </FU>
+
+               </div>
+            </div>
+         </div>
+      </section>
+
+      {/* ─── CTA ─── */}
+      <section className="py-60 bg-[#080808] border-t border-white/5 text-center relative overflow-hidden">
+         <div className="max-w-4xl mx-auto px-6 relative z-10">
+            <FU d={0}>
+               <h2 className="heading-precision text-7xl md:text-[140px] text-white mb-16 uppercase tracking-tighter font-black leading-[0.8]">
+                  AUTHORIZE<br />
+                  <span className="text-zinc-700">CODE.</span>
+               </h2>
+               <div className="flex flex-wrap justify-center gap-6">
+                  <a href="#" className="btn-acid px-16 py-6">Request API Access</a>
+                  <Link to="/contact" className="btn-obsidian px-16 py-6">Consult an Architect</Link>
+               </div>
+            </FU>
+         </div>
+      </section>
     </Layout>
   );
 };
