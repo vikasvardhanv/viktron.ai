@@ -185,6 +185,81 @@ export const AgentIRL: React.FC = () => (
        </div>
     </section>
 
+    {/* ══════════════════ 04: CORE AGENTS ══════════════════ */}
+    <section className="py-40 bg-[#050505] border-t border-white/5 relative">
+      <div className="max-w-7xl mx-auto px-6">
+        <Label>04 // CORE AGENT TYPES</Label>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-20">
+          {[
+            {
+              name: 'CEO Agent',
+              color: 'from-purple-500 to-violet-600',
+              desc: 'Strategic orchestration and delegation. Breaks complex goals into task DAGs.',
+              tasks: ['Goal planning', 'Resource allocation', 'Team coordination']
+            },
+            {
+              name: 'Project Manager',
+              color: 'from-emerald-400 to-teal-600',
+              desc: 'Task decomposition and progress tracking. Enforces quality gates.',
+              tasks: ['Task ledger', 'Milestone tracking', 'Progress reporting']
+            },
+            {
+              name: 'Developer',
+              color: 'from-cyan-400 to-blue-600',
+              desc: 'Code generation, file operations, and system interactions.',
+              tasks: ['Code generation', 'File operations', 'System commands']
+            },
+            {
+              name: 'QA Agent',
+              color: 'from-yellow-400 to-orange-600',
+              desc: 'Test discovery, execution, and validation of outputs.',
+              tasks: ['Test generation', 'Bug detection', 'Validation']
+            },
+            {
+              name: 'Sales Assistant',
+              color: 'from-rose-400 to-pink-600',
+              desc: 'Lead qualification and outreach automation.',
+              tasks: ['Lead scoring', 'Email outreach', 'Follow-up sequencing']
+            },
+            {
+              name: 'Support Agent',
+              color: 'from-indigo-400 to-purple-600',
+              desc: 'Customer service and ticket resolution.',
+              tasks: ['Ticket triage', 'Knowledge lookup', 'Response generation']
+            },
+            {
+              name: 'Content Generator',
+              color: 'from-green-400 to-emerald-600',
+              desc: 'Marketing content and documentation creation.',
+              tasks: ['Blog posts', 'Email campaigns', 'Documentation']
+            },
+            {
+              name: 'Specialized Agents',
+              color: 'from-slate-400 to-zinc-600',
+              desc: 'Industry-specific roles (legal, finance, HR, operations).',
+              tasks: ['Domain expertise', 'Compliance checks', 'Workflow automation']
+            },
+          ].map((a, i) => (
+            <FU key={i} d={i * 0.1} className="obsidian-panel p-8 group hover:border-primary/40 transition-all">
+              <div className="w-14 h-14 rounded-xl mb-6 flex items-center justify-center bg-gradient-to-br ${a.color} group-hover:scale-110 transition-transform">
+                <div className="w-8 h-8 bg-black/40 rounded-lg" />
+              </div>
+              <h4 className="text-white font-bold text-lg mb-2 tracking-tight">{a.name}</h4>
+              <p className="text-zinc-400 text-sm leading-relaxed mb-4">{a.desc}</p>
+              <div className="space-y-1.5">
+                {a.tasks.map((t, j) => (
+                  <div key={j} className="flex items-center gap-2 text-[11px] text-zinc-500">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary/50" />
+                    {t}
+                  </div>
+                ))}
+              </div>
+            </FU>
+          ))}
+        </div>
+      </div>
+    </section>
+
     {/* ══════════════════ CTA ══════════════════ */}
     <section className="py-60 bg-[#050505] relative overflow-hidden text-center">
        <div className="max-w-5xl mx-auto px-6 relative z-10">
