@@ -52,6 +52,14 @@ const LINE_COLORS: Record<LogLine['kind'], string> = {
   info: 'text-zinc-500',
 };
 
+// ─── ASSETS (Generated) ─────────────────────────────────────────────────────
+const ASSETS = {
+  hero: "/Users/vikashvardhan/.gemini/antigravity/brain/1f2ef31e-d578-4028-8c95-618a85eba259/viktron_control_plane_hero_1777348938163.png",
+  shield: "/Users/vikashvardhan/.gemini/antigravity/brain/1f2ef31e-d578-4028-8c95-618a85eba259/agentirl_trust_shield_1777348951595.png",
+  analytics: "/Users/vikashvardhan/.gemini/antigravity/brain/1f2ef31e-d578-4028-8c95-618a85eba259/ai_analytics_observability_1777348963779.png",
+  ledger: "/Users/vikashvardhan/.gemini/antigravity/brain/1f2ef31e-d578-4028-8c95-618a85eba259/provenance_ledger_abstract_1777348980017.png",
+};
+
 // ─── SHARED COMPONENTS ────────────────────────────────────────────────────────
 
 const Tag = ({ children, color = 'zinc' }: { children: React.ReactNode; color?: string }) => {
@@ -86,6 +94,7 @@ const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.R
 const TrustFabricVisual: React.FC = () => {
   const [visible, setVisible] = useState(0);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (visible >= SCRIPT.length) {
@@ -98,7 +107,13 @@ const TrustFabricVisual: React.FC = () => {
   }, [visible]);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Prevent layout shift by only scrolling inside the fixed-height container
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: containerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }, [visible]);
 
   return (
@@ -122,8 +137,11 @@ const TrustFabricVisual: React.FC = () => {
           </div>
         </div>
 
-        {/* Console Body */}
-        <div className="p-6 h-80 overflow-y-auto font-mono text-[11px] leading-relaxed space-y-1 no-scrollbar bg-[#08090E]/50">
+        {/* Console Body - Strictly fixed height to prevent "moving up and down" */}
+        <div 
+          ref={containerRef}
+          className="p-6 h-[320px] overflow-y-auto font-mono text-[11px] leading-relaxed space-y-1 no-scrollbar bg-[#08090E]/50 overflow-anchor-none"
+        >
           <AnimatePresence initial={false}>
             {SCRIPT.slice(0, visible).map((line, i) => (
               <motion.div
@@ -145,7 +163,6 @@ const TrustFabricVisual: React.FC = () => {
               className="inline-block w-1.5 h-3 bg-violet-500/80 ml-1 translate-y-0.5" 
             />
           )}
-          <div ref={bottomRef} />
         </div>
 
         {/* Status Bar */}
@@ -210,13 +227,9 @@ const ExecutionShield: React.FC = () => {
   );
 };
 
-// ─── SECTIONS ─────────────────────────────────────────────────────────────────
+// ─── MAIN PAGE ───────────────────────────────────────────────────────────────
 
 export const Landing: React.FC = () => {
-  const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
-
   const [mouse, setMouse] = useState({ x: 50, y: 50 });
   useEffect(() => {
     const handle = (e: MouseEvent) => {
@@ -233,17 +246,21 @@ export const Landing: React.FC = () => {
     <Layout showBackground={false}>
       <SEO
         title="Viktron AI — The Enterprise Control Plane for AI Agents"
-        description="Viktron's AgentIRL Trust Fabric provides the governance infrastructure to run autonomous AI agents safely at scale. SOC 2 ready, SHA-256 provenance."
+        description="Viktron's AgentIRL Trust Fabric provides the governance infrastructure to run autonomous AI agents safely at scale."
       />
 
       {/* ═══════════════════════════ HERO ═══════════════════════════ */}
       <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#08090E] pt-20">
-        {/* Background Layer */}
         <div className="absolute inset-0 hero-glow-main pointer-events-none" />
         <div 
           className="grid-rays pointer-events-none" 
           style={{ '--mouse-x': `${mouse.x}%`, '--mouse-y': `${mouse.y}%` } as any} 
         />
+
+        {/* Hero Image Background (Subtle) */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+          <img src={ASSETS.hero} alt="" className="w-full h-full object-cover grayscale" />
+        </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
           <FU d={0}>
@@ -291,7 +308,7 @@ export const Landing: React.FC = () => {
             </div>
           </FU>
 
-          {/* Visual Hook */}
+          {/* Visual Hook - Fixed height terminal to stop layout shifts */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
@@ -355,57 +372,24 @@ export const Landing: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                <Link to="/services/agentirl" className="inline-flex items-center gap-2 text-violet-400 font-bold text-sm hover:gap-3 transition-all">
-                  Deep-dive into AgentIRL Architecture <ArrowRight size={14} />
-                </Link>
               </FU>
             </div>
 
-            <div className="relative">
+            <div className="relative group">
               <FU d={0.2}>
-                <div className="rounded-3xl border border-white/5 bg-white/[0.02] p-8 space-y-8 relative overflow-hidden group">
-                  <div className="absolute inset-0 bg-violet-600/5 opacity-0 group-hover:opacity-100 transition-remotion duration-1000" />
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-8">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400">
-                          <Activity size={20} />
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold text-white">Trust Score HUD</div>
-                          <div className="text-[10px] text-zinc-500 font-mono">Real-time Telemetry</div>
-                        </div>
-                      </div>
-                      <Tag color="emerald">Autonomous</Tag>
-                    </div>
-
-                    <div className="space-y-6">
-                      {[
-                        { l: 'Identity Provenance', v: 100, c: 'bg-emerald-500' },
-                        { l: 'Policy Adherence', v: 94, c: 'bg-violet-500' },
-                        { l: 'Budget Guardrails', v: 88, c: 'bg-blue-500' },
-                      ].map(stat => (
-                        <div key={stat.l}>
-                          <div className="flex justify-between text-[10px] font-mono text-zinc-500 mb-2 uppercase tracking-widest">
-                            <span>{stat.l}</span>
-                            <span>{stat.v}%</span>
-                          </div>
-                          <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              whileInView={{ width: `${stat.v}%` }}
-                              transition={{ duration: 1, delay: 0.5 }}
-                              className={`h-full ${stat.c} rounded-full`}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-10 pt-8 border-t border-white/[0.06] flex items-center justify-between">
-                      <div className="text-3xl font-bold text-white font-mono tracking-tighter">97.4</div>
-                      <div className="text-[10px] font-mono text-zinc-500 uppercase">Aggregated Trust Rank</div>
-                    </div>
+                <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-[#0C0D12] aspect-square flex items-center justify-center p-8">
+                   <img src={ASSETS.shield} alt="AgentIRL Trust Shield" className="relative z-10 w-full h-full object-contain animate-float" />
+                   <div className="absolute inset-0 bg-gradient-to-t from-violet-600/20 to-transparent pointer-events-none" />
+                </div>
+                {/* Floating Meta-Card */}
+                <div className="absolute -bottom-6 -left-6 p-6 rounded-2xl border border-white/10 bg-black/80 backdrop-blur-xl shadow-2xl z-20 max-w-[200px]">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Activity size={14} className="text-violet-400" />
+                    <span className="text-[10px] font-bold text-white uppercase">Live Trust Rank</span>
+                  </div>
+                  <div className="text-2xl font-bold text-white mb-1">97.4%</div>
+                  <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+                    <div className="h-full w-[97%] bg-emerald-500" />
                   </div>
                 </div>
               </FU>
@@ -422,10 +406,6 @@ export const Landing: React.FC = () => {
             <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mt-6 mb-6">
               The 6-Layer Execution Shield.
             </h2>
-            <p className="text-zinc-500 text-lg max-w-2xl">
-              Every action an agent takes is validated across six independent governance layers
-              before a single byte is sent to a tool or API. No exceptions.
-            </p>
           </FU>
           <ExecutionShield />
         </div>
@@ -434,54 +414,51 @@ export const Landing: React.FC = () => {
       {/* ══════════════════ PRODUCT TRIPTYCH ══════════════════ */}
       <section className="py-32 border-t border-white/[0.06] bg-[#08090E]">
         <div className="max-w-7xl mx-auto px-6">
-          <FU d={0} className="mb-16">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-6">
-              One Platform. Three Engines.
-            </h2>
-          </FU>
-
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
                 name: 'AgentIRL',
                 sub: 'Governance Engine',
-                desc: 'The "Heart" of the platform. Intercepts, validates, and chains every agent action at the runtime level.',
+                img: ASSETS.shield,
+                desc: 'Intercepts, validates, and chains every agent action at the runtime level.',
                 icon: Shield,
                 color: 'text-violet-400',
-                glow: 'group-hover:bg-violet-500/10',
               },
               {
                 name: 'Viktron Cloud',
                 sub: 'Orchestration Engine',
-                desc: 'Scale agents across 100+ integrations with auto-scaling task queues and smart LLM cost routing.',
+                img: ASSETS.hero,
+                desc: 'Scale agents across 100+ integrations with auto-scaling task queues.',
                 icon: Server,
                 color: 'text-blue-400',
-                glow: 'group-hover:bg-blue-500/10',
               },
               {
                 name: 'AI Analytics',
                 sub: 'Observability Engine',
-                desc: 'Full-fidelity session replay and OTLP telemetry. See what agents saw and why they chose their actions.',
+                img: ASSETS.analytics,
+                desc: 'Full-fidelity session replay and OTLP telemetry. See what agents saw.',
                 icon: BarChart3,
                 color: 'text-emerald-400',
-                glow: 'group-hover:bg-emerald-500/10',
               },
             ].map((p, i) => {
               const Icon = p.icon;
               return (
                 <FU key={i} d={i * 0.1}>
-                  <div className="group bento-card-base h-full flex flex-col justify-between">
-                    <div className={`absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-0 transition-remotion duration-700 ${p.glow}`} />
-                    <div className="relative z-10">
-                      <div className={`w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mb-8 ${p.color}`}>
-                        <Icon size={24} />
-                      </div>
-                      <div className="text-xs font-bold text-zinc-500 mb-2 uppercase tracking-widest">{p.sub}</div>
-                      <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">{p.name}</h3>
-                      <p className="text-zinc-500 text-sm leading-relaxed mb-8">{p.desc}</p>
+                  <div className="group bento-card-base h-full flex flex-col">
+                    <div className="relative h-48 mb-8 rounded-2xl overflow-hidden bg-[#0C0D12] border border-white/5">
+                      <img src={p.img} alt={p.name} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0C0D12] to-transparent" />
                     </div>
-                    <Link to="/enterprise" className="relative z-10 inline-flex items-center gap-2 text-white font-bold text-xs group-hover:gap-3 transition-all">
-                      Explore Product <ArrowRight size={14} />
+                    <div className="relative z-10 flex-1">
+                      <div className={`w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center mb-6 ${p.color}`}>
+                        <Icon size={20} />
+                      </div>
+                      <div className="text-[10px] font-bold text-zinc-500 mb-2 uppercase tracking-widest">{p.sub}</div>
+                      <h3 className="text-xl font-bold text-white mb-4 tracking-tight">{p.name}</h3>
+                      <p className="text-zinc-500 text-xs leading-relaxed mb-8">{p.desc}</p>
+                    </div>
+                    <Link to="/enterprise" className="relative z-10 inline-flex items-center gap-2 text-white font-bold text-[11px] group-hover:gap-3 transition-all">
+                      Explore <ArrowRight size={14} />
                     </Link>
                   </div>
                 </FU>
@@ -493,73 +470,53 @@ export const Landing: React.FC = () => {
 
       {/* ══════════════════ DIFFERENTIATOR ══════════════════ */}
       <section className="py-32 border-t border-white/[0.06] bg-[#0A0B10]">
-        <div className="max-w-5xl mx-auto px-6">
-          <FU d={0} className="text-center mb-20">
-            <Tag color="amber">Why Viktron?</Tag>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mt-6">
-              Infrastructure, Not Just Code.
-            </h2>
-          </FU>
-
-          <div className="grid md:grid-cols-2 gap-12">
-            <FU d={0.1}>
-              <div className="space-y-6">
-                <div className="text-xs font-bold text-zinc-500 uppercase tracking-widest">The Framework Problem</div>
-                <h3 className="text-2xl font-bold text-white leading-snug">
-                  LangChain & CrewAI live in your repo.
-                </h3>
-                <p className="text-zinc-500 leading-relaxed">
-                  They are libraries. If an agent goes rogue, the library can't stop it.
-                  Compliance teams block them because there's no centralized control or audit.
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+             <FU d={0}>
+                <Tag color="amber">Why Viktron?</Tag>
+                <h2 className="text-4xl font-extrabold text-white tracking-tight mt-6 mb-8">
+                  Immutable Provenance.<br />
+                  Permanent Accountability.
+                </h2>
+                <p className="text-zinc-500 leading-relaxed mb-10">
+                  Frameworks like LangChain can't stop a rogue agent. AgentIRL lives in the
+                  execution path, providing a SHA-256 hash-chained ledger of every decision,
+                  every tool call, and every memory modification.
                 </p>
-                <div className="p-6 rounded-2xl border border-red-500/10 bg-red-500/5">
-                  <div className="flex items-center gap-3 text-red-400 font-bold text-xs mb-3">
-                    <AlertTriangle size={14} /> The Risk
+                <img src={ASSETS.ledger} alt="Provenance Ledger" className="rounded-3xl border border-white/10 opacity-80" />
+             </FU>
+             
+             <div className="space-y-12">
+                <FU d={0.1}>
+                  <div className="p-8 rounded-3xl border border-white/5 bg-white/[0.02]">
+                    <h3 className="text-xl font-bold text-white mb-4">Framework Agnostic</h3>
+                    <p className="text-zinc-500 text-sm leading-relaxed">
+                      Deploy agents built in CrewAI, AutoGen, or custom Python scripts. 
+                      Viktron wraps them all in the same high-trust execution shell.
+                    </p>
                   </div>
-                  <p className="text-zinc-500 text-xs leading-relaxed">
-                    Unchecked tool calls, data leakage, and runaway token spend leading to security breaches and financial loss.
-                  </p>
-                </div>
-              </div>
-            </FU>
-
-            <FU d={0.2}>
-              <div className="space-y-6">
-                <div className="text-xs font-bold text-violet-400 uppercase tracking-widest">The Viktron Solution</div>
-                <h3 className="text-2xl font-bold text-white leading-snug">
-                  AgentIRL lives in the execution path.
-                </h3>
-                <p className="text-zinc-500 leading-relaxed">
-                  We are infrastructure. We wrap your framework in a secure control plane
-                  that enforces rules in real-time, providing SOC 2 proof for every action.
-                </p>
-                <div className="p-6 rounded-2xl border border-emerald-500/10 bg-emerald-500/5">
-                  <div className="flex items-center gap-3 text-emerald-400 font-bold text-xs mb-3">
-                    <Shield size={14} /> The Moat
+                </FU>
+                <FU d={0.2}>
+                  <div className="p-8 rounded-3xl border border-white/5 bg-white/[0.02]">
+                    <h3 className="text-xl font-bold text-white mb-4">Zero-Trust Secrets</h3>
+                    <p className="text-zinc-500 text-sm leading-relaxed">
+                      Your LLMs never see your production API keys. Viktron injects scoped
+                      credentials at the moment of tool execution, then revokes them instantly.
+                    </p>
                   </div>
-                  <p className="text-zinc-500 text-xs leading-relaxed">
-                    Cryptographic provenance, task-scoped JWT tokens, and runtime policy enforcement that makes agents safe for production.
-                  </p>
-                </div>
-              </div>
-            </FU>
+                </FU>
+             </div>
           </div>
         </div>
       </section>
 
       {/* ══════════════════════ CTA ══════════════════════ */}
       <section className="py-40 bg-[#08090E] border-t border-white/[0.06] relative overflow-hidden">
-        <div className="absolute inset-0 bg-violet-600/5 opacity-50 blur-[120px] translate-y-1/2 pointer-events-none" />
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
           <FU d={0}>
             <h2 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-8">
-              Your agents are ready.<br />
-              Is your infrastructure?
+              Is your infrastructure ready?
             </h2>
-            <p className="text-zinc-400 text-xl mb-12 max-w-2xl mx-auto">
-              Join the future of governed autonomous operations. Deploy Viktron's
-              Trust Fabric and start running production agents with confidence.
-            </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link
                 to="/contact"
@@ -569,15 +526,10 @@ export const Landing: React.FC = () => {
               </Link>
               <Link
                 to="/rent-agent"
-                className="px-8 py-4 rounded-2xl bg-white/[0.03] border border-white/10 text-white font-bold text-sm transition-remotion hover:bg-white/[0.06] hover:border-white/20 active:scale-95"
+                className="px-8 py-4 rounded-2xl bg-white/[0.03] border border-white/10 text-white font-bold text-sm transition-remotion hover:bg-white/[0.06] active:scale-95"
               >
                 Rent an Agent
               </Link>
-            </div>
-            <div className="mt-16 flex flex-wrap justify-center gap-8 text-[10px] font-bold text-zinc-600 uppercase tracking-widest">
-              <span className="flex items-center gap-2"><Shield size={12} /> SOC 2 Ready</span>
-              <span className="flex items-center gap-2"><Lock size={12} /> Zero-Trust Vault</span>
-              <span className="flex items-center gap-2"><Activity size={12} /> OTLP Native</span>
             </div>
           </FU>
         </div>
