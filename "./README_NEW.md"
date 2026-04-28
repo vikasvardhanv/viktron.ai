@@ -240,7 +240,6 @@ Viktron provides a unified platform combining:
 - ✅ Stale task recovery
 - ✅ Retry logic with exponential backoff
 - ✅ Slack notifications on completion/failure
-- ✅ Local bridge for file access
 
 ### Frontend (React 19 + TypeScript)
 
@@ -413,7 +412,7 @@ Viktron integrates battle-tested patterns from leading agent frameworks:
 ### Backend Stack
 
 ```
-API Layer: Express.js (Node.js)
+API Layer: FastAPI / Express.js
   ├─ RESTful endpoints with OpenAPI docs
   ├─ WebSocket support for real-time
   └─ GraphQL optional
@@ -524,32 +523,40 @@ git clone <repository-url>
 cd viktron-ai
 
 # Install dependencies
-npm install                    # Frontend & backend Node deps
-pip install -r requirements.txt # Python agent dependencies
+npm install           # Frontend & backend Node deps
+pip install -r requirements.txt  # Python agent dependencies
 
 # Environment setup
 cp .env.example .env
-# Edit .env with your configuration
+# Edit .env with your configuration:
+# - DATABASE_URL
+# - OPENAI_API_KEY (or ANTHROPIC_API_KEY)
+# - REDIS_URL
+# - JWT_SECRET
+# - etc.
 ```
 
 ### Running Locally
 
 **Terminal 1: Database & Infrastructure**
 ```bash
+# Start PostgreSQL and Redis
 docker-compose up -d postgres redis
+
+# Run migrations
 alembic upgrade head
 ```
 
 **Terminal 2: Backend API**
 ```bash
 npm run dev:server
-# Server: http://localhost:5000
+# Server running on http://localhost:5000
 ```
 
 **Terminal 3: Frontend**
 ```bash
 npm run dev
-# App: http://localhost:3000
+# App running on http://localhost:3000
 ```
 
 **Terminal 4: Worker (Optional)**
@@ -571,6 +578,8 @@ npm run start:server
 npm run start:worker
 ```
 
+For Docker deployment, see `Dockerfile` and `docker-compose.yml`.
+
 ---
 
 ## 📁 Project Structure
@@ -578,7 +587,7 @@ npm run start:worker
 ```
 viktron-ai/
 ├── server/
-│   ├── config/          # Configuration
+│   ├── config/          # Configuration files
 │   ├── controllers/     # Route controllers
 │   ├── middleware/      # Custom middleware
 │   ├── models/          # Database models
@@ -587,6 +596,7 @@ viktron-ai/
 │   ├── skills/          # Agent skill definitions
 │   ├── tests/           # Integration tests
 │   ├── utils/           # Core utilities
+│   │   ├── agentExecutor.js    # Task execution
 │   │   ├── ceoAgent.js         # CEO agent logic
 │   │   ├── taskQueue.js        # Queue management
 │   │   ├── orchestrator.js     # Agent orchestration
@@ -601,15 +611,20 @@ viktron-ai/
 │   ├── ui/             # UI library
 │   ├── auth/           # Auth components
 │   ├── agents/         # Agent showcases
-│   └── ...
+│   ├── landing/        # Landing page sections
+│   └── dashboard/      # Dashboard surfaces
+│
 ├── context/            # React contexts
+├── design/             # Design system documents
 ├── docs/               # Documentation
 ├── public/             # Static assets
 ├── types.ts            # TypeScript types
 ├── constants.tsx       # App constants
+├── storeWorkflows.ts   # Workflow definitions
 ├── App.tsx             # Main application
 ├── index.tsx           # Entry point
 ├── tailwind.config.js  # Tailwind CSS config
+├── vite.config.ts      # Vite configuration
 ├── package.json        # Dependencies
 ├── requirements.txt    # Python dependencies
 └── README.md           # This file
@@ -636,9 +651,26 @@ REDIS_URL=redis://localhost:6379/0
 
 # Authentication
 JWT_SECRET=your-secret-key
+JWT_EXPIRES_IN=7d
+
+# Email (Nodemailer)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=user@gmail.com
+SMTP_PASS=app-password
+
+# Twilio (SMS/WhatsApp)
+TWILIO_ACCOUNT_SID=AC...
+TWILIO_AUTH_TOKEN=...
+TWILIO_PHONE_NUMBER=+18446608065
 
 # Frontend
 VITE_API_URL=http://localhost:5000/api
+VITE_WS_URL=ws://localhost:5000
+
+# CORS
+FRONTEND_URL=http://localhost:3000
+ALLOWED_ORIGINS=https://viktron.ai,https://www.viktron.ai
 ```
 
 ---
@@ -680,3 +712,5 @@ VITE_API_URL=http://localhost:5000/api
 Proprietary - Viktron AI Inc.
 
 Contact: info@viktron.ai
+
+---

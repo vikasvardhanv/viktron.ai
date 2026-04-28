@@ -214,6 +214,7 @@ export const CookiePreferences: React.FC = () => {
                   Save Preferences
                 </button>
               </div>
+            </div>
           </motion.div>
         </motion.div>
       )}

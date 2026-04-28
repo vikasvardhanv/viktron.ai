@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, MapPin, Gavel, ArrowLeft } from 'lucide-react';
+import { Mail, MapPin, Gavel, ArrowLeft, Shield } from 'lucide-react';
 import { Layout } from '../../components/layout/Layout';
 import { SEO } from '../../components/ui/SEO';
 import { motion } from 'framer-motion';

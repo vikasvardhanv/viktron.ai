@@ -3,6 +3,7 @@
  * "API Architecture & Infrastructure Hooks."
  */
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   Code, Terminal, Server, Key, BookOpen, Layers, Shield, 

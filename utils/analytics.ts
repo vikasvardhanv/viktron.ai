@@ -1,8 +1,6 @@
 // Viktron Analytics Engine
 // Sends telemetry to both Google Analytics and internal Viktron Intelligence Brain
 
-import { v4 as uuidv4 } from 'uuid';
-
 declare global {
   interface Window {
     gtag: (...args: any[]) => void;
@@ -14,10 +12,24 @@ const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID || '';
 const API_URL = import.meta.env.VITE_API_URL || '';
 
 let isInitialized = false;
+
+// Generate session ID using crypto API
+function generateSessionId(): string {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  // Fallback for environments without crypto.randomUUID
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 let sessionId = sessionStorage.getItem('viktron_session_id');
 
 if (!sessionId) {
-  sessionId = uuidv4();
+  sessionId = generateSessionId();
   sessionStorage.setItem('viktron_session_id', sessionId);
 }
 
