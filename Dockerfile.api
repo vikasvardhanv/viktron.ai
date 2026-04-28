@@ -13,6 +13,10 @@ ENV VIKTRON_WORKSPACES_ROOT=/workspaces
 RUN npm run build
 RUN mkdir -p /workspaces
 
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD wget -qO- http://localhost:5000/api/teams || exit 1
+
 EXPOSE 5000
 
 CMD ["npm", "run", "start:server"]
