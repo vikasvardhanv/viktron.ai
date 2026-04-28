@@ -10,7 +10,7 @@ import { AboutPopup } from '../AboutPopup';
 const navItems: { name: string; path: string; isPopup?: 'services' | 'about'; external?: string }[] = [
   { name: 'Home', path: '/' },
   { name: 'AgentIRL', path: '/services/agentirl' },
-  { name: 'Trust Fabric', path: '/services/agentirl' },
+  { name: 'Trust Fabric', path: '/services/trust-fabric' },
   { name: 'Analytics', path: '/analytics' },
   { name: 'Enterprise', path: '/enterprise' },
   { name: 'About', path: '/about', isPopup: 'about' },

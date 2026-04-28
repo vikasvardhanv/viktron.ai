@@ -1,1082 +1,330 @@
+/**
+ * Viktron AI — AgentIRL Page  /services/agentirl
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, type Variants, type Transition } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
-  ArrowRight,
-  CheckCircle2,
-  Database,
-  Layers,
-  GitBranch,
-  Lock,
-  BarChart3,
-  Shield,
-  RefreshCw,
-  Zap,
-  Users,
-  BrainCircuit,
-  Globe,
-  TrendingUp,
-  Cpu,
-  Sparkles,
-  MessageSquare,
-  Activity,
-  Fingerprint,
-  KeyRound,
-  FileCheck,
-  Gauge,
+  ArrowRight, CheckCircle2, Shield, Activity, Cpu,
+  ChevronRight, Lock, Zap, Users, RefreshCw, Database,
+  Network, Layers, GitBranch, Globe, BrainCircuit, TrendingUp,
 } from 'lucide-react';
 import { Layout } from '../components/layout/Layout';
 import { ServiceSEO } from '../components/ui/SEO';
 
-const fadeUpTransition: Transition = { duration: 0.55, ease: 'easeOut' };
+const ease = [0.22, 1, 0.36, 1] as [number, number, number, number];
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: fadeUpTransition },
-};
+const FU = ({ d = 0, children, className = '' }: { d?: number; children: React.ReactNode; className?: string }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 18 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: '-50px' }}
+    transition={{ duration: 0.6, delay: d, ease }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
 
-const stagger: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-
-// ─── Capabilities ────────────────────────────────────────────────────────────
-const capabilities = [
-  { icon: Database,    title: 'Smart Tool Adapters',      desc: 'Structured feedback eliminates token-bloat from raw API dumps. Every tool call returns clean, bounded output.' },
-  { icon: Layers,      title: 'Framework-Agnostic',       desc: 'Switch between LangChain, CrewAI, LangGraph, AutoGen, and more without re-engineering your workflow.' },
-  { icon: GitBranch,   title: 'Workflow Decomposition',   desc: 'Break complex tasks into bounded operations with pre- and post-condition checks at every node.' },
-  { icon: Lock,        title: 'Unified Security Layer',   desc: 'Consistent auth, secrets management, and access-control enforced across every agent and tool call.' },
-  { icon: BarChart3,   title: 'Deep Observability',       desc: 'Full trace logs, latency histograms, and per-node cost attribution so you know exactly what\'s happening.' },
-  { icon: Shield,      title: 'Adaptive Policy Engine',   desc: 'Dynamic governance rules applied at runtime — rate limits, content filters, and approval gates without code changes.' },
-  { icon: RefreshCw,   title: 'Error Auto-Recovery',      desc: 'Circuit breakers, intelligent retries, and fallback chains maintain uptime through partial failures.' },
-  { icon: Zap,         title: 'Cost Optimization',        desc: 'Prompt caching, model routing, and token budgets reduce LLM spend by up to 60% without sacrificing quality.' },
-  { icon: Users,       title: 'Human-in-the-Loop',        desc: 'Approval gates positioned at actual failure points — not everywhere — so humans stay in control without slowing things down.' },
-  { icon: BrainCircuit,title: 'State Management',         desc: 'Durable workflow state survives crashes, retries, and long-running pauses — no lost progress.' },
-  { icon: Globe,       title: 'Enterprise Integrations',  desc: '100+ pre-built adapters for Salesforce, SAP, Slack, databases, and every major SaaS platform.' },
-  { icon: TrendingUp,  title: 'Continuous Improvement',   desc: 'Run-time analytics feed back into workflow tuning, automatically improving reliability over time.' },
-];
-
-// ─── How-it-works steps ───────────────────────────────────────────────────────
-const steps = [
-  {
-    num: '01',
-    title: 'Connect Your Systems',
-    desc: 'Point AgentIRL at your APIs, databases, and SaaS tools. Smart adapters normalise every response into structured, token-efficient payloads agents can actually use.',
-  },
-  {
-    num: '02',
-    title: 'Define Agent Workflows',
-    desc: 'Describe your tasks as directed acyclic graphs. AgentIRL decomposes high-level goals into bounded operations with pre- and post-condition checks at every node.',
-  },
-  {
-    num: '03',
-    title: 'Set Governance Rules',
-    desc: 'Apply rate limits, content policies, approval gates, and cost budgets through the policy engine — no code changes needed when rules evolve.',
-  },
-  {
-    num: '04',
-    title: 'Deploy Across Frameworks',
-    desc: 'Run your workflows on LangChain, CrewAI, LangGraph, AutoGen, or OpenAI Agents SDK. Swap frameworks without touching orchestration logic.',
-  },
-  {
-    num: '05',
-    title: 'Monitor, Recover, Improve',
-    desc: 'Full-trace observability, auto-recovery loops, and runtime analytics give you production confidence and continuous workflow improvement.',
-  },
-];
-
-// ─── Use cases ────────────────────────────────────────────────────────────────
-const useCases = [
-  {
-    icon: Cpu,
-    title: 'Enterprise AI Teams',
-    desc: 'Ship internal automation agents that survive real enterprise chaos — legacy APIs, compliance requirements, and 99.99% uptime SLAs all covered.',
-  },
-  {
-    icon: Users,
-    title: 'Customer-Facing SaaS',
-    desc: 'Power AI features your users trust. AgentIRL handles the reliability and cost engineering so your product team ships fast without firefighting.',
-  },
-  {
-    icon: Shield,
-    title: 'Regulated Industries',
-    desc: 'Finance, healthcare, and legal teams get policy-safe execution with full audit trails and human-in-the-loop controls at every critical step.',
-  },
-  {
-    icon: Sparkles,
-    title: 'AI Agencies',
-    desc: 'Deliver production-grade agent systems to clients without rebuilding reliability infrastructure from scratch on every project.',
-  },
-];
-
-// ─── Metrics ─────────────────────────────────────────────────────────────────
-const metrics = [
-  { value: '99.99%',  label: 'Uptime SLA' },
-  { value: '5+',      label: 'Frameworks' },
-  { value: '<150ms',  label: 'Coordination latency' },
-  { value: '92%',     label: 'Error auto-recovery' },
-  { value: '100+',    label: 'Tool adapters' },
-  { value: '60%',     label: 'Token cost reduction' },
-];
-
-const frameworks = ['LangChain', 'CrewAI', 'LangGraph', 'AutoGen', 'OpenAI Agents', 'Anthropic MCP'];
-
-// ═════════════════════════════════════════════════════════════════════════════
-export const AgentIRL: React.FC = () => {
-  const [activeStep, setActiveStep] = useState(0);
-  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-    stepRefs.current.forEach((el, i) => {
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) setActiveStep(i);
-          });
-        },
-        { threshold: 0.5 }
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
-
+const Tag = ({ children, color = 'zinc' }: { children: React.ReactNode; color?: 'zinc' | 'violet' | 'emerald' | 'amber' | 'blue' }) => {
+  const c: Record<string, string> = {
+    zinc:    'bg-white/5 border-white/10 text-zinc-400',
+    violet:  'bg-violet-500/10 border-violet-500/25 text-violet-400',
+    emerald: 'bg-emerald-500/10 border-emerald-500/25 text-emerald-400',
+    amber:   'bg-amber-500/10 border-amber-500/25 text-amber-400',
+    blue:    'bg-blue-500/10 border-blue-500/25 text-blue-400',
+  };
   return (
-    <Layout>
-      {/* 1 ── SEO */}
-      <ServiceSEO
-        serviceName="AgentIRL — Multi-Agent Orchestration Platform"
-        serviceDescription="AgentIRL is the middleware layer for production AI agents. Framework-agnostic orchestration, smart tool adapters, auto-recovery, policy enforcement, and OTLP observability. 99.99% uptime SLA, <150ms latency."
-      />
-
-      {/* 2 ── HERO */}
-      <section className="relative overflow-hidden bg-[#060810] pt-28 pb-20">
-        <div className="bg-grid absolute inset-0" />
-        <div
-          className="pointer-events-none absolute -top-40 -left-40 h-[600px] w-[600px] rounded-full opacity-20"
-          style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 70%)' }}
-        />
-        <div
-          className="pointer-events-none absolute -bottom-40 -right-20 h-[500px] w-[500px] rounded-full opacity-15"
-          style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.3) 0%, transparent 70%)' }}
-        />
-
-        <div className="relative mx-auto max-w-7xl px-6">
-          <div className="grid items-center gap-16" style={{ gridTemplateColumns: '1.1fr 0.9fr' }}>
-            {/* Left */}
-            <motion.div
-              variants={stagger}
-              initial="hidden"
-              animate="visible"
-              className="flex flex-col gap-6"
-            >
-              <motion.div variants={fadeUp}>
-                <div className="moat-badge inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono mb-2">
-                  <Shield className="h-3 w-3 text-purple-400" />
-                  <span className="text-purple-300 uppercase tracking-widest">AgentIRL Trust Fabric — Our Moat</span>
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
-                </div>
-              </motion.div>
-
-              <motion.h1
-                variants={fadeUp}
-                className="font-jakarta text-5xl font-extrabold leading-tight tracking-tight text-white lg:text-6xl"
-              >
-                The trust fabric for <span className="shimmer-text">autonomous agents.</span>
-              </motion.h1>
-
-              <motion.p variants={fadeUp} className="max-w-xl text-lg text-white/60 leading-relaxed">
-                AgentIRL is the governance layer between your AI models and your business systems.
-                Cryptographic identity, dynamic trust scoring, policy enforcement, and tamper-evident
-                provenance — so your agents run autonomously with enterprise confidence.
-              </motion.p>
-
-              {/* Metric chips */}
-              <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
-                {[
-                  '99.99% Uptime SLA',
-                  '60% Token cost reduction',
-                  '92% Error auto-recovery',
-                ].map((chip) => (
-                  <span
-                    key={chip}
-                    className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-4 py-1.5 text-sm font-medium text-white/60"
-                  >
-                    <CheckCircle2 className="h-3 w-3 text-emerald-400" />
-                    {chip}
-                  </span>
-                ))}
-              </motion.div>
-
-              {/* CTAs */}
-              <motion.div variants={fadeUp} className="flex flex-wrap gap-4 pt-2">
-                <Link
-                  to="/contact"
-                  className="btn-premium btn-primary-glow inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white"
-                >
-                  Book a Demo <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  to="/contact"
-                  className="btn-premium inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold"
-                >
-                  Talk to Engineering
-                </Link>
-              </motion.div>
-            </motion.div>
-
-            {/* Right — video demo */}
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.65, ease: 'easeOut', delay: 0.15 }}
-              className="flex flex-col gap-4"
-            >
-              <div className="rounded-[2rem] bg-slate-900/90 backdrop-blur-md shadow-2xl overflow-hidden border border-slate-700">
-                <div className="flex items-center justify-between px-4 py-2.5 bg-slate-800/50 border-b border-slate-700">
-                  <div className="flex items-center gap-2">
-                    <div className="flex gap-1.5">
-                      <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
-                    </div>
-                    <span className="text-[10px] text-slate-400 font-mono ml-2">AgentIRL Console</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-[10px] text-emerald-400 font-mono">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> LIVE
-                  </div>
-                </div>
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  className="w-full aspect-[16/10] object-cover"
-                  src="/AI_Agents_Orchestrated_into_a_System.mp4"
-                />
-                {/* Overlay captions */}
-                <div className="absolute inset-x-0 bottom-0 px-4 py-3 bg-gradient-to-t from-slate-900/90 to-transparent">
-                  <div className="flex items-center justify-between text-[10px] text-slate-300 font-mono">
-                    <span>Multi-agent coordination</span>
-                    <span className="text-emerald-400">&lt;150ms latency</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-center">
-                <span className="rounded-full bg-emerald-100 px-4 py-1.5 text-xs font-semibold text-emerald-700 text-center">
-                  Task DAG orchestration · Policy engine · Auto-recovery · 100+ tool adapters
-                </span>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2.5 ── ARCHITECTURE DIAGRAM */}
-      <section className="py-16 bg-[#060810] border-y border-white/[0.06]">
-        <div className="mx-auto max-w-7xl px-6">
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/20 bg-blue-500/10 text-blue-400 text-xs font-mono uppercase tracking-widest mb-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-              Technical Architecture
-            </motion.div>
-            <motion.h2
-              variants={fadeUp}
-              className="mt-4 font-jakarta text-3xl font-extrabold tracking-tight text-white"
-            >
-              How AgentIRL fits in your stack
-            </motion.h2>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="relative"
-          >
-            {/* Architecture diagram image */}
-            <div className="rounded-2xl overflow-hidden border border-white/[0.08] shadow-2xl bg-[#0d0f1a]">
-              <img
-                src="/images/agent-orchestration.svg"
-                alt="AgentIRL Architecture Diagram"
-                className="w-full h-auto"
-              />
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Flow indicator bar */}
-      <section className="py-8 bg-[#060810] border-b border-white/[0.06]">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex items-center justify-center gap-4 text-sm text-white/50">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>Agent Frameworks</span>
-            </div>
-            <ArrowRight className="w-4 h-4 text-white/30" />
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>AgentIRL Runtime</span>
-            </div>
-            <ArrowRight className="w-4 h-4 text-white/30" />
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>Business Systems</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Trust Fabric Deep Dive ── */}
-      <section className="py-24 bg-gradient-to-b from-[#0F172A] to-slate-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-sky-500/8 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-sky-600/5 rounded-full blur-3xl" />
-        </div>
-        <div className="mx-auto max-w-7xl px-6 relative z-10">
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-14"
-          >
-            <motion.span
-              variants={fadeUp}
-              className="inline-block rounded-full bg-sky-500/15 px-4 py-1.5 text-sm font-semibold text-sky-300 tracking-wide"
-            >
-              Trust Fabric
-            </motion.span>
-            <motion.h2
-              variants={fadeUp}
-              className="mt-4 text-3xl md:text-4xl font-extrabold tracking-tight"
-            >
-              Four pillars of agent trust
-            </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              className="mt-4 max-w-2xl mx-auto text-slate-400 text-lg"
-            >
-              AgentIRL doesn&apos;t hope agents behave. It proves they did.
-            </motion.p>
-          </motion.div>
-
-          {/* 4 interactive cards */}
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid md:grid-cols-2 gap-6 mb-12"
-          >
-            {[
-              {
-                icon: Fingerprint,
-                title: 'Cryptographic Identity',
-                desc: 'Every agent gets a verifiable identity with role, tools, and domain limits. Not a username — a credential that can be validated, audited, and revoked.',
-                badge: 'Identity',
-                color: 'sky',
-              },
-              {
-                icon: KeyRound,
-                title: 'Delegation Tokens',
-                desc: 'Task-scoped JWT tokens with scope attenuation. Parent → child → tool. Each token can only narrow permissions, never widen them. Revocation cascades to all descendants.',
-                badge: 'Delegation',
-                color: 'violet',
-              },
-              {
-                icon: Shield,
-                title: 'Policy Gates',
-                desc: 'Pre-action checks before every tool call, API request, data write, or spend action. Three effects: allow, deny, require_approval. Denied actions never execute.',
-                badge: 'Policy',
-                color: 'amber',
-              },
-              {
-                icon: FileCheck,
-                title: 'Provenance Ledger',
-                desc: 'Immutable SHA-256 hash-chained trail answering 5 questions: who authorized, what goal, what agent saw, why it chose that action, what changed. Tamper-evident by design.',
-                badge: 'Provenance',
-                color: 'emerald',
-              },
-            ].map((pillar) => (
-              <motion.div
-                key={pillar.title}
-                variants={fadeUp}
-                className="group rounded-2xl bg-slate-800/50 border border-slate-700/50 p-8 hover:border-sky-500/30 transition-all"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-10 h-10 rounded-xl bg-${pillar.color}-500/20 flex items-center justify-center`}>
-                    <pillar.icon className={`w-5 h-5 text-${pillar.color}-400`} />
-                  </div>
-                  <span className={`text-xs font-mono font-bold text-${pillar.color}-400 uppercase tracking-wider`}>{pillar.badge}</span>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-3">{pillar.title}</h3>
-                <p className="text-slate-400 leading-relaxed text-sm">{pillar.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Trust scoring visual */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="rounded-2xl border border-slate-700/50 bg-slate-800/30 p-8 md:p-12"
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-              <div>
-                <span className="inline-block rounded-full bg-sky-500/15 px-4 py-1.5 text-sm font-semibold text-sky-300 tracking-wide mb-4">
-                  Dynamic Trust Scoring
-                </span>
-                <h3 className="text-2xl font-bold mb-4">Agents earn autonomy — they don&apos;t start with it</h3>
-                <p className="text-slate-400 leading-relaxed mb-6 text-sm">
-                  Trust scores update in real-time based on mission success rate (40%), human override frequency (25%),
-                  error recovery (20%), and latency (15%). Low-trust agents need approval. High-trust agents operate autonomously.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <span className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-medium">&lt;40 Observation</span>
-                    <span className="text-slate-500 text-xs">Requires approval for all actions</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-300 text-xs font-medium">40-70 Supervised</span>
-                    <span className="text-slate-500 text-xs">Approval for high-risk actions only</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-medium">&gt;70 Autonomous</span>
-                    <span className="text-slate-500 text-xs">Full autonomy with provenance tracking</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-6">
-                {/* Trust score gauge */}
-                <div className="relative w-48 h-48">
-                  <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-                    <circle cx="50" cy="50" r="42" fill="none" stroke="#334155" strokeWidth="8" />
-                    <circle cx="50" cy="50" r="42" fill="none" stroke="url(#agentTrustGrad)" strokeWidth="8" strokeDasharray={`${0.87 * 264} ${264}`} strokeLinecap="round" />
-                    <defs>
-                      <linearGradient id="agentTrustGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#f59e0b" />
-                        <stop offset="50%" stopColor="#38bdf8" />
-                        <stop offset="100%" stopColor="#10b981" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-4xl font-bold font-mono">87</span>
-                    <span className="text-xs text-emerald-400 font-medium uppercase tracking-wider">Autonomous</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-6 text-xs text-slate-500">
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-2 h-2 rounded-full bg-amber-400" />
-                    <span>Success 40%</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-2 h-2 rounded-full bg-sky-400" />
-                    <span>Override 25%</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span>Recovery 20%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Compliance callout */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="mt-8 rounded-2xl border border-slate-700/50 bg-slate-800/20 p-6 md:p-8"
-          >
-            <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
-              <div className="flex-1">
-                <h4 className="text-lg font-bold mb-2">Compliance & Audit</h4>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  Every action produces a signed provenance record. Export full audit trails for any mission, any agent, any time range.
-                  AgentIRL is built for SOC 2 Type II, GDPR, and HIPAA-ready environments.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-300 text-sm border border-emerald-500/20">
-                  <Shield className="w-3.5 h-3.5" /> SOC 2 Type II
-                </span>
-                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-300 text-sm border border-emerald-500/20">
-                  <Lock className="w-3.5 h-3.5" /> GDPR Ready
-                </span>
-                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-300 text-sm border border-emerald-500/20">
-                  <FileCheck className="w-3.5 h-3.5" /> Full Audit Trail
-                </span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Capabilities section */}
-      <section className="py-24 bg-[#060810]">
-        <div className="mx-auto max-w-7xl px-6">
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-14"
-          >
-            <motion.span
-              variants={fadeUp}
-              className="inline-block rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-semibold text-emerald-700 tracking-wide"
-            >
-              Platform Capabilities
-            </motion.span>
-            <motion.h2
-              variants={fadeUp}
-              className="mt-4 text-3xl font-extrabold tracking-tight text-white"
-            >
-              Everything you need for production agents
-            </motion.h2>
-          </motion.div>
-
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {capabilities.map((c) => (
-              <motion.div
-                key={c.title}
-                variants={fadeUp}
-                className="rounded-2xl border border-white/[0.08] bg-[#060810] p-6 hover:border-emerald-200 hover:shadow-lg transition-all"
-              >
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center mb-4">
-                  <c.icon className="w-5 h-5 text-emerald-600" />
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">{c.title}</h3>
-                <p className="text-sm text-white/55 leading-relaxed">{c.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Metrics strip */}
-      <section className="py-16 bg-slate-900 text-white">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
-            {metrics.map((m) => (
-              <motion.div
-                key={m.label}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.05 }}
-              >
-                <p className="text-3xl font-bold text-white mb-1">{m.value}</p>
-                <p className="text-xs text-slate-400">{m.label}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How it works */}
-      <section className="py-24 bg-gradient-to-b from-white via-emerald-50/30 to-white">
-        <div className="mx-auto max-w-7xl px-6">
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-14"
-          >
-            <motion.span
-              variants={fadeUp}
-              className="inline-block rounded-full bg-emerald-100 px-4 py-1.5 text-sm font-semibold text-emerald-700 tracking-wide"
-            >
-              How It Works
-            </motion.span>
-            <motion.h2
-              variants={fadeUp}
-              className="mt-4 text-3xl font-extrabold tracking-tight text-white"
-            >
-              Five steps to production AI
-            </motion.h2>
-          </motion.div>
-
-          <div className="relative">
-            {/* Connection line */}
-            <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-emerald-500 via-emerald-500 to-transparent" />
-
-            <div className="space-y-8">
-              {steps.map((step, idx) => (
-                <motion.div
-                  key={step.num}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="relative pl-20"
-                >
-                  {/* Step number badge */}
-                  <div className="absolute left-0 top-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/25">
-                    <span className="text-2xl font-bold text-white">{step.num}</span>
-                  </div>
-
-                  <div className="pt-2">
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">{step.title}</h3>
-                    <p className="text-white/55 leading-relaxed">{step.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Use cases */}
-      <section className="py-24 bg-[#060810]">
-        <div className="mx-auto max-w-7xl px-6">
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="text-center mb-14"
-          >
-            <motion.span
-              variants={fadeUp}
-              className="inline-block rounded-full bg-blue-100 px-4 py-1.5 text-sm font-semibold text-blue-700 tracking-wide"
-            >
-              Use Cases
-            </motion.span>
-            <motion.h2
-              variants={fadeUp}
-              className="mt-4 text-3xl font-extrabold tracking-tight text-white"
-            >
-              Built for production environments
-            </motion.h2>
-          </motion.div>
-
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
-          >
-            {useCases.map((u) => (
-              <motion.div
-                key={u.title}
-                variants={fadeUp}
-                className="rounded-2xl border border-white/[0.08] bg-[#060810] p-6 hover:border-blue-200 hover:shadow-lg transition-all"
-              >
-                <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center mb-4">
-                  <u.icon className="w-5 h-5 text-blue-600" />
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">{u.title}</h3>
-                <p className="text-sm text-white/55 leading-relaxed">{u.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Framework support */}
-      <section className="py-16 bg-[#060810] border-t border-white/[0.08]">
-        <div className="mx-auto max-w-7xl px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Framework Agnostic</p>
-            <h2 className="text-2xl font-bold text-white">Works with your existing stack</h2>
-          </motion.div>
-
-          <div className="flex flex-wrap justify-center gap-4">
-            {frameworks.map((fw) => (
-              <motion.div
-                key={fw}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="px-6 py-3 rounded-full bg-white/[0.04] border border-white/[0.08] shadow-sm text-white/75 font-medium"
-              >
-                {fw}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 3 ── PROBLEM */}
-      <section className="py-24">
-        <div className="mx-auto max-w-7xl px-6">
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="flex flex-col items-center gap-5 text-center"
-          >
-            <motion.span
-              variants={fadeUp}
-              className="inline-block rounded-full bg-amber-100 px-4 py-1.5 text-sm font-semibold text-amber-700"
-            >
-              The Production Problem
-            </motion.span>
-            <motion.h2 variants={fadeUp} className="max-w-2xl text-4xl font-extrabold tracking-tight text-white">
-              Why 95% of AI agent projects never reach production
-            </motion.h2>
-            <motion.p variants={fadeUp} className="max-w-xl text-slate-500 text-lg">
-              Demo environments are forgiving. Production is not. The gap between a working prototype
-              and a reliable system is where most teams get stuck — permanently.
-            </motion.p>
-          </motion.div>
-
-          {/* Stat cards */}
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="mt-14 grid gap-6 sm:grid-cols-3"
-          >
-            {[
-              {
-                value: '36%',
-                color: 'text-red-500',
-                bg: 'bg-red-50 border-red-100',
-                title: 'Success rate on 20-step workflows',
-                desc: 'In multi-step chains, every node compounds failure probability. A 95%-reliable agent fails 64% of 20-step tasks.',
-              },
-              {
-                value: '68%',
-                color: 'text-amber-500',
-                bg: 'bg-amber-50 border-amber-100',
-                title: 'Agents hit a wall before step 10',
-                desc: 'Integration complexity — inconsistent APIs, context limits, and schema mismatches — stops most agents in their tracks.',
-              },
-              {
-                value: '10x',
-                color: 'text-blue-500',
-                bg: 'bg-blue-50 border-blue-100',
-                title: 'Cost overrun vs demo estimates',
-                desc: 'Raw API responses, unoptimised prompts, and infinite retry loops turn a $50 demo into a $500 production bill.',
-              },
-            ].map((s) => (
-              <motion.div
-                key={s.value}
-                variants={fadeUp}
-                className={`rounded-2xl border p-8 ${s.bg}`}
-              >
-                <p className={`text-5xl font-extrabold ${s.color}`}>{s.value}</p>
-                <p className="mt-3 font-semibold text-slate-800">{s.title}</p>
-                <p className="mt-2 text-sm text-slate-500 leading-relaxed">{s.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Fix box */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.55 }}
-            className="mt-10 rounded-2xl bg-slate-950 p-10 text-white"
-          >
-            <p className="mb-6 text-lg font-bold text-emerald-400">AgentIRL fixes this</p>
-            <ul className="space-y-4">
-              {[
-                'Workflow decomposition breaks tasks into bounded operations with pre/post-condition checks',
-                'Smart tool adapters with structured feedback eliminate token-bloat from raw API dumps',
-                'Circuit breakers, intelligent retries, and fallback chains maintain uptime through failures',
-                'Human-in-the-loop gates positioned at actual failure points — not everywhere',
-                'Framework-agnostic: switch between LangChain, CrewAI, LangGraph without re-engineering',
-              ].map((point) => (
-                <li key={point} className="flex items-start gap-3 text-slate-300">
-                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* 4 ── HOW IT WORKS — sticky scroll */}
-      <section className="bg-[#060810] py-24">
-        <div className="mx-auto max-w-7xl px-6">
-          {/* Section header */}
-          <div className="mb-16 flex flex-col items-center gap-4 text-center">
-            <span className="font-mono text-sm font-semibold uppercase tracking-widest text-emerald-600">
-              How AgentIRL Works
-            </span>
-            <h2 className="max-w-xl text-4xl font-extrabold tracking-tight text-white">
-              From raw instruction to completed task — reliably.
-            </h2>
-          </div>
-
-          <div className="grid gap-12 lg:grid-cols-2">
-            {/* Scrolling steps */}
-            <div className="flex flex-col gap-6">
-              {steps.map((step, i) => (
-                <div
-                  key={step.num}
-                  ref={(el) => { stepRefs.current[i] = el; }}
-                  className={`rounded-2xl border p-8 transition-all duration-300 ${
-                    activeStep === i
-                      ? 'border-emerald-500 bg-white/[0.06] shadow-lg'
-                      : 'border-transparent bg-slate-100'
-                  }`}
-                >
-                  <p
-                    className={`font-mono text-sm font-bold tracking-widest ${
-                      activeStep === i ? 'text-emerald-600' : 'text-slate-400'
-                    }`}
-                  >
-                    {step.num}
-                  </p>
-                  <p className="mt-2 text-lg font-bold text-white">{step.title}</p>
-                  <p className="mt-2 text-slate-500 leading-relaxed">{step.desc}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Sticky video */}
-            <div className="hidden lg:block">
-              <div className="sticky top-28 flex flex-col gap-4">
-                <div className="overflow-hidden rounded-2xl bg-slate-950 shadow-2xl">
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    className="w-full aspect-[16/10] object-cover opacity-90"
-                    src="/AI_Agents_Orchestrated_into_a_System.mp4"
-                  />
-                </div>
-                {/* Progress dots */}
-                <div className="flex justify-center gap-2 pt-1">
-                  {steps.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveStep(i)}
-                      className={`h-2 rounded-full transition-all duration-300 ${
-                        activeStep === i ? 'w-8 bg-emerald-500' : 'w-2 bg-slate-300'
-                      }`}
-                      aria-label={`Go to step ${i + 1}`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5 ── CAPABILITIES GRID */}
-      <section className="py-24">
-        <div className="mx-auto max-w-7xl px-6">
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="mb-14 flex flex-col items-center gap-4 text-center"
-          >
-            <motion.h2 variants={fadeUp} className="text-4xl font-extrabold tracking-tight text-white">
-              Every capability you need in production
-            </motion.h2>
-            <motion.p variants={fadeUp} className="max-w-xl text-slate-500 text-lg">
-              AgentIRL ships with everything required to move from prototype to production-grade
-              multi-agent systems.
-            </motion.p>
-          </motion.div>
-
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            {capabilities.map((cap) => {
-              const Icon = cap.icon;
-              return (
-                <motion.div
-                  key={cap.title}
-                  variants={fadeUp}
-                  className="rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 shadow-sm transition hover:shadow-md"
-                >
-                  <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50">
-                    <Icon className="h-5 w-5 text-emerald-600" />
-                  </div>
-                  <p className="mb-2 font-bold text-white">{cap.title}</p>
-                  <p className="text-sm text-slate-500 leading-relaxed">{cap.desc}</p>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-
-          {/* Framework compatibility */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="mt-12 rounded-2xl border border-white/[0.08] bg-[#060810] p-8"
-          >
-            <p className="mb-5 text-center text-sm font-semibold text-white/55 uppercase tracking-widest">
-              Works with every major framework
-            </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              {frameworks.map((fw) => (
-                <span
-                  key={fw}
-                  className="rounded-full border border-white/[0.08] bg-white/[0.04] px-5 py-2 text-sm font-medium text-white/75 shadow-sm"
-                >
-                  {fw}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* 6 ── METRICS BAR */}
-      <section className="bg-slate-950 py-16 text-white">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:grid-cols-6">
-            {metrics.map((m) => (
-              <div key={m.label} className="flex flex-col items-center gap-1 text-center">
-                <p className="text-3xl font-extrabold text-emerald-400">{m.value}</p>
-                <p className="text-xs font-medium text-slate-400 uppercase tracking-wide">{m.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 7 ── USE CASES */}
-      <section className="py-24">
-        <div className="mx-auto max-w-7xl px-6">
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="mb-14 flex flex-col items-center gap-4 text-center"
-          >
-            <motion.h2 variants={fadeUp} className="text-4xl font-extrabold tracking-tight text-white">
-              Built for every team shipping agents
-            </motion.h2>
-            <motion.p variants={fadeUp} className="max-w-xl text-slate-500 text-lg">
-              Whether you're an enterprise AI team, a SaaS product, or a regulated industry — AgentIRL
-              gives you the reliability infrastructure to ship with confidence.
-            </motion.p>
-          </motion.div>
-
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
-          >
-            {useCases.map((uc) => {
-              const Icon = uc.icon;
-              return (
-                <motion.div
-                  key={uc.title}
-                  variants={fadeUp}
-                  className="rounded-2xl border border-slate-100 p-7 shadow-sm transition hover:shadow-md"
-                >
-                  <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-slate-900">
-                    <Icon className="h-5 w-5 text-emerald-400" />
-                  </div>
-                  <p className="mb-2 font-bold text-white">{uc.title}</p>
-                  <p className="text-sm text-slate-500 leading-relaxed">{uc.desc}</p>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* 8 ── FINAL CTA */}
-      <section className="bg-slate-950 py-28 text-white">
-        <div className="mx-auto max-w-3xl px-6 text-center">
-          <motion.div
-            variants={stagger}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="flex flex-col items-center gap-6"
-          >
-            <motion.div variants={fadeUp}>
-              <span className="inline-flex items-center gap-2 rounded-full bg-emerald-900/60 px-4 py-1.5 text-sm font-semibold text-emerald-300">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                </span>
-                Now accepting enterprise pilots
-              </span>
-            </motion.div>
-
-            <motion.h2
-              variants={fadeUp}
-              className="text-4xl font-extrabold tracking-tight sm:text-5xl"
-            >
-              Ready to ship agents that actually work?
-            </motion.h2>
-
-            <motion.p variants={fadeUp} className="max-w-xl text-slate-400 text-lg leading-relaxed">
-              Join the teams using AgentIRL to move from fragile demos to production systems with
-              99.99% uptime, real cost control, and full observability.
-            </motion.p>
-
-            <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-4 pt-2">
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-7 py-3.5 text-sm font-bold text-white shadow transition hover:bg-emerald-400"
-              >
-                Book Engineering Call <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to="/services"
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-600 px-7 py-3.5 text-sm font-bold text-white transition hover:border-slate-400"
-              >
-                View All Services
-              </Link>
-            </motion.div>
-
-            <motion.p variants={fadeUp} className="text-sm text-slate-500">
-              Pilot pricing available for qualified teams. Enterprise SLA guaranteed from day one.
-            </motion.p>
-          </motion.div>
-        </div>
-      </section>
-    </Layout>
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-semibold tracking-wide uppercase ${c[color]}`}>
+      {children}
+    </span>
   );
 };
+
+type CLine = { ts: string; agent: string; event: string; status: 'ok' | 'warn' | 'running' | 'info'; msg: string };
+
+const SCRIPT: CLine[] = [
+  { ts: '10:02:01', agent: 'ceo-agent',       event: 'TASK_RECEIVED', status: 'info',    msg: 'Goal: Generate Q4 pipeline report and notify stakeholders' },
+  { ts: '10:02:01', agent: 'ceo-agent',       event: 'DECOMPOSE',     status: 'running', msg: 'Breaking goal into 3 sub-tasks via DAG decomposition' },
+  { ts: '10:02:02', agent: 'ceo-agent',       event: 'DISPATCH',      status: 'ok',      msg: 'Delegating to sales-agent (crm.query) and analytics-agent (report)' },
+  { ts: '10:02:02', agent: 'sales-agent',     event: 'TOOL_CALL',     status: 'running', msg: 'salesforce.query(pipeline_stage=qualified, limit=500)' },
+  { ts: '10:02:03', agent: 'sales-agent',     event: 'ADAPTER',       status: 'ok',      msg: 'Smart adapter: raw API response normalized (94% token reduction)' },
+  { ts: '10:02:04', agent: 'analytics-agent', event: 'TOOL_CALL',     status: 'running', msg: 'Generating pipeline report from 12 qualified opportunities' },
+  { ts: '10:02:05', agent: 'analytics-agent', event: 'RECOVERY',      status: 'warn',    msg: 'Chart render timeout — retry 1/3 (circuit breaker: open)' },
+  { ts: '10:02:06', agent: 'analytics-agent', event: 'RECOVERY',      status: 'ok',      msg: 'Retry succeeded. Chart rendered in 1.2s' },
+  { ts: '10:02:07', agent: 'ceo-agent',       event: 'AGGREGATE',     status: 'running', msg: 'Aggregating results from 2 completed sub-agents' },
+  { ts: '10:02:08', agent: 'ceo-agent',       event: 'TASK_COMPLETE', status: 'ok',      msg: 'Report ready. Notifying slack:#exec-team' },
+];
+
+const sStyle: Record<string, string> = {
+  ok: 'text-emerald-400', warn: 'text-amber-400', running: 'text-blue-400', info: 'text-zinc-500',
+};
+
+const AgentConsole: React.FC = () => {
+  const [visible, setVisible] = useState(0);
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (visible >= SCRIPT.length) {
+      const t = setTimeout(() => setVisible(0), 4000);
+      return () => clearTimeout(t);
+    }
+    const delay = visible === 0 ? 600 : 350 + Math.random() * 250;
+    const t = setTimeout(() => setVisible(v => v + 1), delay);
+    return () => clearTimeout(t);
+  }, [visible]);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, [visible]);
+
+  return (
+    <div className="relative">
+      <div className="absolute -inset-6 bg-blue-500/6 rounded-3xl blur-3xl pointer-events-none" />
+      <div className="relative rounded-2xl border border-white/[0.08] bg-[#0C0C0F] overflow-hidden shadow-2xl">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.06] bg-white/[0.02]">
+          <div className="flex gap-1.5">
+            <div className="w-3 h-3 rounded-full bg-white/10" />
+            <div className="w-3 h-3 rounded-full bg-white/10" />
+            <div className="w-3 h-3 rounded-full bg-white/10" />
+          </div>
+          <span className="text-[10px] font-mono text-zinc-600">agentirl / orchestration / live</span>
+          <div className="flex items-center gap-1.5 text-[10px] font-mono text-blue-500">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />ORCHESTRATING
+          </div>
+        </div>
+        <div className="grid grid-cols-[68px_96px_120px_64px_1fr] gap-2 px-5 py-2 border-b border-white/[0.04] text-[9px] font-mono text-zinc-700 uppercase tracking-widest">
+          <span>Time</span><span>Agent</span><span>Event</span><span>Status</span><span>Message</span>
+        </div>
+        <div className="h-56 overflow-y-auto p-4 space-y-1.5 no-scrollbar">
+          {SCRIPT.slice(0, visible).map((line, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -4 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}
+              className="grid grid-cols-[68px_96px_120px_64px_1fr] gap-2 text-[11px] font-mono items-start">
+              <span className="text-zinc-700">{line.ts}</span>
+              <span className="text-violet-400 truncate">{line.agent}</span>
+              <span className="text-zinc-600 truncate">{line.event}</span>
+              <span className={`${sStyle[line.status]} uppercase text-[9px] font-bold`}>{line.status}</span>
+              <span className="text-zinc-500 leading-relaxed">{line.msg}</span>
+            </motion.div>
+          ))}
+          {visible < SCRIPT.length && (
+            <div className="flex items-center gap-1 text-zinc-700 mt-1">
+              <span>❯</span><span className="w-2 h-[13px] bg-blue-500/50 animate-pulse" />
+            </div>
+          )}
+          <div ref={bottomRef} />
+        </div>
+        <div className="border-t border-white/[0.05] px-5 py-2.5 flex items-center justify-between text-[10px] font-mono bg-white/[0.01]">
+          <div className="flex gap-4 text-zinc-700"><span>agents: 3 active</span><span>tasks: 7 complete</span><span>latency: &lt;150ms</span></div>
+          <div className="flex items-center gap-1.5 text-blue-500"><Activity size={10} />AGENTIRL RUNTIME</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CAPS = [
+  { icon: Database,     color: 'text-blue-400',    name: 'Smart Tool Adapters',       desc: 'Raw API responses normalized into structured, token-efficient payloads. Reduces token costs by up to 94% per tool call.' },
+  { icon: Layers,       color: 'text-violet-400',   name: 'Framework Agnostic',        desc: 'Wrap LangChain, CrewAI, LangGraph, AutoGen, or OpenAI Agents SDK without changing your orchestration logic.' },
+  { icon: GitBranch,    color: 'text-blue-400',     name: 'DAG Workflow Decomposition', desc: 'Break complex goals into directed acyclic graphs with pre/post-condition checks at every node.' },
+  { icon: RefreshCw,    color: 'text-emerald-400',  name: 'Auto-Recovery',             desc: 'Circuit breakers, exponential backoff, and fallback chains. 92% of errors self-recover without human intervention.' },
+  { icon: Zap,          color: 'text-amber-400',    name: 'Cost Optimization',         desc: 'Prompt caching, semantic dedup, model routing reduce LLM spend 60%. Hard budget stops per agent — not post-hoc alerts.' },
+  { icon: BrainCircuit, color: 'text-violet-400',   name: 'Durable State',             desc: 'Workflow checkpointed after every node. Crashes and retries resume exactly where the agent stopped.' },
+  { icon: Globe,        color: 'text-blue-400',     name: '100+ Integrations',         desc: 'Pre-built adapters for Salesforce, SAP, Slack, HubSpot, Jira, GitHub, Postgres. Point, configure, delegate.' },
+  { icon: Activity,     color: 'text-emerald-400',  name: 'OTLP Observability',        desc: 'Full distributed traces and per-node cost attribution via OTLP. Works with Grafana, Datadog, New Relic.' },
+  { icon: Users,        color: 'text-amber-400',    name: 'Human-in-Loop (Risk-Aware)', desc: 'Approval gates at actual failure points — not everywhere. Humans stay in control without blocking every action.' },
+  { icon: Network,      color: 'text-violet-400',   name: 'Multi-Agent Coordination',  desc: 'CEO delegates to Sales, Dev, Support — each with its own trust scope and budget envelope.' },
+  { icon: TrendingUp,   color: 'text-blue-400',     name: 'Continuous Improvement',    desc: 'Runtime analytics feed back into trust scoring. Agents that perform well earn more autonomy automatically.' },
+  { icon: Lock,         color: 'text-emerald-400',  name: 'Zero-Trust Credentials',    desc: 'Agents never see raw secrets. Scoped credentials injected at execution time, auto-rotated, logged in provenance.' },
+];
+
+const FRAMEWORKS = ['LangChain', 'CrewAI', 'LangGraph', 'AutoGen', 'OpenAI Agents', 'Anthropic MCP'];
+
+const STEPS = [
+  { n: '01', c: 'text-violet-400', t: 'Wrap your agents with the AgentIRL runtime',    b: 'Install the SDK and point it at your existing agent code — LangChain, CrewAI, custom. No rewrite. The runtime intercepts all tool calls, LLM invocations, and state transitions.' },
+  { n: '02', c: 'text-blue-400',   t: 'Define your workflows as task DAGs',             b: 'Describe complex goals as directed acyclic graphs. AgentIRL decomposes high-level objectives into bounded operations with pre/post-condition checks, error recovery paths, and fallback chains.' },
+  { n: '03', c: 'text-amber-400',  t: 'Trust Fabric enforces governance at every step', b: 'Before any action executes, Trust Fabric checks identity, evaluates policy, validates budget, injects credentials, and records provenance. Autonomous execution with enterprise oversight.' },
+  { n: '04', c: 'text-emerald-400',t: 'Analytics closes the feedback loop',             b: 'Every session is traced, every tool call measured, every trust score updated based on outcomes. Your agents improve over time — with data, not guesswork.' },
+];
+
+export const AgentIRL: React.FC = () => (
+  <Layout showBackground={false}>
+    <ServiceSEO
+      serviceName="AgentIRL — Multi-Agent Orchestration & Runtime"
+      serviceDescription="AgentIRL is the production runtime for autonomous AI agents. Framework-agnostic orchestration, smart tool adapters, auto-recovery, cost optimization, and OTLP observability — with AgentIRL Trust Fabric governance built in."
+    />
+
+    {/* HERO */}
+    <section className="relative bg-[#08090E] pt-32 pb-20 overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(59,130,246,0.1)_0%,transparent_60%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:80px_80px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_30%,black_0%,transparent_100%)]" />
+      </div>
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-8">
+        <div className="grid lg:grid-cols-[1fr_1.15fr] gap-16 lg:gap-20 items-center">
+          <div>
+            <FU d={0} className="flex flex-wrap gap-2 mb-8">
+              <Tag color="blue"><Cpu size={10} />AgentIRL Runtime</Tag>
+              <Tag color="zinc">Framework Agnostic</Tag>
+              <Tag color="emerald">&lt;150ms coordination latency</Tag>
+            </FU>
+            <FU d={0.05}>
+              <h1 className="font-jakarta text-5xl lg:text-[60px] font-extrabold text-white tracking-[-0.03em] leading-[1.05] mb-6">
+                The production runtime<br />for autonomous agents.
+              </h1>
+            </FU>
+            <FU d={0.1}>
+              <p className="text-zinc-400 text-lg leading-relaxed mb-8 max-w-xl">
+                AgentIRL is the middleware layer between your AI models and your business systems.
+                Orchestration, reliability engineering, smart tool adapters, cost optimization —
+                so your agents actually finish their jobs in production.
+              </p>
+            </FU>
+            <FU d={0.14} className="flex flex-wrap gap-3 mb-10">
+              {['99.99% uptime SLA', '92% error auto-recovery', '60% token cost reduction', '100+ integrations'].map(t => (
+                <span key={t} className="flex items-center gap-1.5 text-sm text-zinc-400 bg-white/[0.03] border border-white/[0.07] px-3 py-1.5 rounded-full">
+                  <CheckCircle2 size={12} className="text-emerald-500" />{t}
+                </span>
+              ))}
+            </FU>
+            <FU d={0.18} className="flex flex-wrap gap-3">
+              <Link to="/contact" className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-semibold text-sm transition-all duration-200 shadow-[0_0_28px_rgba(139,92,246,0.3)]">
+                Book a demo<ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+              <Link to="/services/trust-fabric" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.08] hover:border-white/15 text-zinc-300 hover:text-white font-semibold text-sm transition-all duration-200">
+                <Shield size={14} className="text-violet-400" />See Trust Fabric
+              </Link>
+            </FU>
+            <FU d={0.22} className="mt-10 pt-8 border-t border-white/[0.06]">
+              <div className="text-[11px] font-mono text-zinc-600 uppercase tracking-widest mb-3">Works with</div>
+              <div className="flex flex-wrap gap-2">
+                {FRAMEWORKS.map(f => <span key={f} className="px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.07] text-xs text-zinc-500">{f}</span>)}
+              </div>
+            </FU>
+          </div>
+          <motion.div initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}>
+            <AgentConsole />
+          </motion.div>
+        </div>
+      </div>
+    </section>
+
+    {/* METRICS */}
+    <div className="border-t border-white/[0.06] bg-[#08090E]">
+      <div className="max-w-5xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
+        {[{ n:'99.99%',l:'Uptime SLA'},{n:'92%',l:'Error auto-recovery'},{n:'<150ms',l:'Coordination latency'},{n:'60%',l:'LLM cost reduction'}].map((s,i)=>(
+          <FU key={i} d={i*0.05} className="text-center">
+            <div className="font-jakarta text-3xl font-bold text-white mb-1">{s.n}</div>
+            <div className="text-sm text-zinc-500">{s.l}</div>
+          </FU>
+        ))}
+      </div>
+    </div>
+
+    {/* HOW IT WORKS */}
+    <section className="bg-[#08090E] border-t border-white/[0.06] py-24">
+      <div className="max-w-4xl mx-auto px-6">
+        <FU d={0} className="mb-14">
+          <Tag color="zinc">How it works</Tag>
+          <h2 className="font-jakarta text-4xl font-extrabold text-white tracking-tight mt-4 mb-4">From installation to autonomous production in four steps.</h2>
+          <p className="text-zinc-500 text-lg max-w-2xl">AgentIRL wraps your existing agents without requiring a rewrite. Governance, reliability, and observability are added as layers — not replacements.</p>
+        </FU>
+        <div className="space-y-px">
+          {STEPS.map((step,i)=>(
+            <FU key={i} d={i*0.08}>
+              <div className="flex gap-8 py-10 border-b border-white/[0.06] last:border-0">
+                <div className={`text-5xl font-bold font-mono tabular-nums shrink-0 w-14 opacity-25 pt-1 ${step.c}`}>{step.n}</div>
+                <div>
+                  <h3 className="font-jakarta text-xl font-semibold text-white mb-3">{step.t}</h3>
+                  <p className="text-zinc-400 leading-relaxed">{step.b}</p>
+                </div>
+              </div>
+            </FU>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* CAPABILITIES */}
+    <section className="bg-[#08090E] border-t border-white/[0.06] py-24">
+      <div className="max-w-6xl mx-auto px-6">
+        <FU d={0} className="mb-14">
+          <Tag color="blue">Platform capabilities</Tag>
+          <h2 className="font-jakarta text-4xl font-extrabold text-white tracking-tight mt-4 mb-4">Everything the infrastructure team won't have to build.</h2>
+          <p className="text-zinc-500 text-lg max-w-2xl">Each capability is production-grade. Building even one in-house takes months. AgentIRL ships all twelve, integrated and governed.</p>
+        </FU>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {CAPS.map((cap,i)=>{ const Icon=cap.icon; return (
+            <FU key={i} d={i*0.04}>
+              <div className="h-full rounded-2xl border border-white/[0.07] bg-[#0C0C0F] p-6 hover:border-white/[0.12] hover:-translate-y-0.5 transition-all duration-300">
+                <Icon size={18} className={`${cap.color} mb-4`} />
+                <h3 className="font-jakarta font-semibold text-white text-sm mb-2">{cap.name}</h3>
+                <p className="text-zinc-500 text-sm leading-relaxed">{cap.desc}</p>
+              </div>
+            </FU>
+          );})}
+        </div>
+      </div>
+    </section>
+
+    {/* BUILD VS BUY */}
+    <section className="bg-[#08090E] border-t border-white/[0.06] py-24">
+      <div className="max-w-5xl mx-auto px-6">
+        <FU d={0} className="text-center mb-14">
+          <Tag color="zinc">Build vs. buy</Tag>
+          <h2 className="font-jakarta text-4xl font-extrabold text-white tracking-tight mt-4 mb-4">The cost of building this yourself.</h2>
+          <p className="text-zinc-500 text-lg max-w-xl mx-auto">We've seen what it takes. Here's the honest accounting.</p>
+        </FU>
+        <div className="grid md:grid-cols-2 gap-px rounded-2xl overflow-hidden border border-white/[0.07] bg-white/[0.07]">
+          <div className="bg-[#0C0C0F] p-10">
+            <Tag color="zinc">Build in-house</Tag>
+            <h3 className="font-jakarta text-2xl font-bold text-white mt-5 mb-4">6–18 months. Ongoing maintenance forever.</h3>
+            <p className="text-zinc-500 text-sm leading-relaxed mb-7">Building production-grade agent infrastructure is not a side project. Every capability requires design, build, testing, ops, and iteration.</p>
+            <div className="space-y-2">
+              {['Tool adapter normalization layer','DAG-based workflow engine','Circuit breaker + retry framework','Token budget enforcement','Secrets management integration','OTLP trace pipeline','Trust scoring system','Policy evaluation engine','Hash-chained audit ledger','Multi-agent coordination protocol'].map(item=>(
+                <div key={item} className="flex items-start gap-2.5 text-sm text-zinc-500">
+                  <div className="w-1.5 h-1.5 rounded-full bg-zinc-700 mt-1.5 shrink-0" />{item}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="bg-[#0C0C0F] p-10 relative">
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/40 to-transparent" />
+            <Tag color="violet">With AgentIRL</Tag>
+            <h3 className="font-jakarta text-2xl font-bold text-white mt-5 mb-4">Deploy in days. Scale to enterprise.</h3>
+            <p className="text-zinc-500 text-sm leading-relaxed mb-7">Every capability ships with AgentIRL — battle-tested, integrated, and maintained. Your team focuses on agents that create business value.</p>
+            <div className="space-y-2">
+              {['All 12 capabilities, production-ready','Trust Fabric governance included','SOC 2 audit trail out of the box','SDK wraps your existing agents','No framework migration required','On-prem or SaaS deployment','Enterprise SLAs and support','Regular capability updates','100+ pre-built integrations','Dedicated integration engineering'].map(item=>(
+                <div key={item} className="flex items-start gap-2.5 text-sm text-zinc-400">
+                  <CheckCircle2 size={14} className="text-emerald-500 mt-0.5 shrink-0" />{item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* CTA */}
+    <section className="bg-[#08090E] border-t border-white/[0.06]">
+      <div className="max-w-3xl mx-auto px-6 py-32 text-center">
+        <FU d={0} className="flex justify-center mb-5"><Tag color="blue"><Cpu size={10} />AgentIRL Runtime</Tag></FU>
+        <FU d={0.06}><h2 className="font-jakarta text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-5">Ship agents that stay shipped.</h2></FU>
+        <FU d={0.1}><p className="text-zinc-500 text-lg mb-10 max-w-xl mx-auto">See AgentIRL running with your agents in your environment. Our engineering team walks you through every layer.</p></FU>
+        <FU d={0.14} className="flex flex-wrap gap-4 justify-center">
+          <Link to="/contact" className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold transition-all duration-200 shadow-[0_0_28px_rgba(139,92,246,0.3)]">
+            Book a demo<ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
+          </Link>
+          <Link to="/services/trust-fabric" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-white/[0.04] hover:bg-white/[0.07] border border-white/[0.08] hover:border-white/15 text-zinc-300 hover:text-white font-bold transition-all duration-200">
+            <Shield size={16} className="text-violet-400" />See Trust Fabric
+          </Link>
+        </FU>
+        <FU d={0.2} className="mt-10 flex flex-wrap justify-center gap-6 text-xs text-zinc-700">
+          {['Framework agnostic','No rewrite required','On-prem or SaaS','Enterprise SLAs','SOC 2 compliant'].map(t=>(
+            <span key={t} className="flex items-center gap-1.5"><CheckCircle2 size={11} className="text-emerald-700" />{t}</span>
+          ))}
+        </FU>
+      </div>
+    </section>
+  </Layout>
+);
