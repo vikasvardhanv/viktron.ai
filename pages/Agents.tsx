@@ -460,7 +460,9 @@ export const Agents: React.FC = () => {
                    );
                  })}
               </div>
-           </div>
+            </div>
+         </section>
+
         {/* Integrations Section */}
         <section className="py-32 bg-white border-t border-slate-100 overflow-hidden">
            <div className="container-custom">
