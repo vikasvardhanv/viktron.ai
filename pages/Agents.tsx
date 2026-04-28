@@ -110,17 +110,15 @@ export const Agents: React.FC = () => {
             { "@type": "Question", "name": "Which industries can use Viktron AI agents?", "acceptedAnswer": { "@type": "Answer", "text": "Viktron AI agents serve restaurants, healthcare clinics, salons, automotive dealerships, construction, real estate, legal firms, e-commerce, education, and recruitment — with industry-specific training and compliance built in." } }
           ]
         }}
-      />
-
-      <div className="relative overflow-hidden bg-white">
+      />      <div className="relative overflow-hidden bg-[#050505]">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100/50 blur-[120px] rounded-full pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-100/50 blur-[120px] rounded-full pointer-events-none" />
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
           <div
-            className="absolute inset-0 opacity-[0.4]"
+            className="absolute inset-0 opacity-[0.03]"
             style={{
               backgroundImage:
-                'linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px)',
+                'linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)',
               backgroundSize: '40px 40px',
               maskImage: 'linear-gradient(to bottom, black, transparent 90%)',
             }}
@@ -130,12 +128,15 @@ export const Agents: React.FC = () => {
         <section className="relative pt-24 sm:pt-28 px-4">
           <div className="container-custom">
             <AnimatedSection>
-              <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-blue-600">
-                <Sparkles className="h-4 w-4 text-blue-600" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-primary text-glow">
+                <Sparkles className="h-4 w-4" />
                 Workforce Rental // Layer_02
               </div>
-              <h1 className="mt-5 text-4xl sm:text-6xl font-semibold tracking-tight text-slate-900">Agent Framework & Orchestration</h1>
-              <p className="mt-3 max-w-3xl text-base sm:text-lg leading-relaxed text-slate-600">
+              <h1 className="mt-5 text-4xl sm:text-6xl font-semibold tracking-tight text-white uppercase leading-[0.9]">
+                Agent Framework &<br />
+                <span className="text-zinc-700">Orchestration.</span>
+              </h1>
+              <p className="mt-8 max-w-3xl text-base sm:text-lg leading-relaxed text-zinc-400 font-light">
                 Viktron is an active combination of **LangChain, CrewAI, AutoGen, and MCP**. 
                 Our infrastructure dynamically coordinates specialized agents across 3,000+ tools.
               </p>
@@ -143,23 +144,28 @@ export const Agents: React.FC = () => {
               <motion.div 
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                className="mt-12 rounded-3xl overflow-hidden border border-slate-200 shadow-2xl relative group"
+                className="mt-16 rounded-3xl overflow-hidden border border-white/5 shadow-2xl relative group bg-[#080808]"
               >
-                 <img src="/assets/images/agents/coordination.png" alt="Agents Coordinating" className="w-full aspect-[21/9] object-cover" />
-                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent flex items-end p-12">
-                    <div className="text-white max-w-xl">
-                       <h3 className="text-2xl font-bold mb-2">Neural Sync™</h3>
-                       <p className="text-white/80 text-sm">Real-time collaborative intelligence across multiple agentic nodes.</p>
-                    </div>
-                 </div>
+                  <div className="scan-line opacity-20" />
+                  <img src="/assets/images/agents/coordination.png" alt="Agents Coordinating" className="w-full aspect-[21/9] object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent flex items-end p-12">
+                     <div className="text-white max-w-xl">
+                        <div className="flex items-center gap-3 font-mono text-[10px] text-primary mb-4 tracking-[0.3em] uppercase font-bold text-glow">
+                           <div className="w-8 h-px bg-primary" />
+                           NEURAL_SYNC_ACTIVE
+                        </div>
+                        <h3 className="text-3xl font-bold mb-2 uppercase tracking-tighter">Real-time collaborative intelligence.</h3>
+                        <p className="text-zinc-400 text-sm font-light">Distributed agentic nodes synchronized across the global Trust Fabric.</p>
+                     </div>
+                  </div>
               </motion.div>
             </AnimatedSection>
           </div>
         </section>
 
-        <section className="relative px-4 pb-12 pt-6">
+        <section className="relative px-4 pb-12 pt-6 mt-20">
           <div className="container-custom text-center mb-16">
-            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-400 mb-6">Connect to our infrastructure via</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600 mb-6 font-mono">Infrastructure_Connectivity</p>
             <div className="flex flex-wrap justify-center gap-4">
               {[
                 { name: 'Slack', icon: MessageSquare, link: '/contact?channel=slack' },
@@ -170,16 +176,16 @@ export const Agents: React.FC = () => {
                 <a 
                   key={ch.name}
                   href={ch.link}
-                  className="flex items-center gap-3 px-8 py-4 rounded-2xl border border-slate-200 bg-white shadow-sm hover:border-blue-400 hover:text-blue-600 transition-all group"
+                  className="flex items-center gap-3 px-8 py-4 rounded-2xl border border-white/5 bg-[#080808] text-zinc-400 hover:border-primary/40 hover:text-primary transition-all group shadow-2xl"
                 >
-                  <ch.icon size={18} className="text-slate-400 group-hover:text-blue-600" />
-                  <span className="text-xs font-black uppercase tracking-widest">Connect on {ch.name}</span>
+                  <ch.icon size={18} className="text-zinc-600 group-hover:text-primary transition-colors" />
+                  <span className="text-xs font-black uppercase tracking-widest font-mono">Connect_{ch.name}</span>
                 </a>
               ))}
             </div>
           </div>
 
-          <div className="container-custom">
+          <div className="container-custom py-20">
             <div className="mx-auto" style={{ height: `${sceneHeight * sceneScale}px` }}>
               <div
                 className="relative left-1/2"
@@ -191,7 +197,7 @@ export const Agents: React.FC = () => {
                 }}
               >
                 <motion.div
-                  className="absolute inset-0 rounded-[36px] border border-slate-200 bg-gradient-to-b from-white to-slate-50 shadow-sm"
+                  className="absolute inset-0 rounded-[36px] border border-white/5 bg-[#080808] shadow-2xl"
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.42 }}
@@ -205,14 +211,12 @@ export const Agents: React.FC = () => {
                         const endX = center.x + pos.x;
                         const endY = center.y + pos.y;
                         const startX = center.x;
-                        const startY = center.y + 70; // Start below the main orb
+                        const startY = center.y + 70;
 
-                        // Create a "curly" organic path using Cubic Bezier
-                        // The control points create a flow that goes down first, then curves to the target
                         const cp1X = startX;
-                        const cp1Y = startY + 120; // Go down vertically first
+                        const cp1Y = startY + 120;
                         const cp2X = endX;
-                        const cp2Y = endY - 100; // Then curve into the node from top
+                        const cp2Y = endY - 100;
 
                         const d = `M${startX} ${startY} C${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
 
@@ -234,8 +238,8 @@ export const Agents: React.FC = () => {
                   </AnimatePresence>
                   <defs>
                     <linearGradient id="agent-line-gradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.8" />
-                      <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.2" />
+                      <stop offset="0%" stopColor="#CCFF00" stopOpacity="0.8" />
+                      <stop offset="100%" stopColor="#CCFF00" stopOpacity="0.1" />
                     </linearGradient>
                   </defs>
                 </svg>
@@ -247,34 +251,32 @@ export const Agents: React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                     {/* Outer pulsing glow */}
-                    <div className="absolute inset-[-20px] rounded-full bg-blue-100/30 blur-2xl animate-pulse" />
+                    <div className="absolute inset-[-20px] rounded-full bg-primary/5 blur-2xl animate-pulse" />
                     
                     <motion.div
-                      className="absolute inset-0 rounded-full"
+                      className="absolute inset-0 rounded-full border border-white/5"
                       style={{
-                        background: 'linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%)',
-                        boxShadow: 'inset 0 4px 20px rgba(255,255,255,0.8), 0 10px 40px -10px rgba(59,130,246,0.3)'
+                        background: 'linear-gradient(135deg, #080808 0%, #050505 100%)',
+                        boxShadow: 'inset 0 4px 20px rgba(255,255,255,0.02), 0 10px 40px -10px rgba(204,255,0,0.1)'
                       }}
                     />
                     
-                    {/* Animated Ring */}
                     <motion.div
-                       className="absolute inset-[10px] rounded-full border-[1px] border-blue-200/50"
+                       className="absolute inset-[10px] rounded-full border-[1px] border-primary/20"
                        animate={{ rotate: 360 }}
                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                     >
-                       <div className="absolute top-0 left-1/2 w-3 h-3 bg-blue-400 rounded-full blur-[2px] -translate-x-1/2 -translate-y-1/2" />
+                       <div className="absolute top-0 left-1/2 w-2 h-2 bg-primary rounded-full blur-[2px] -translate-x-1/2 -translate-y-1/2 shadow-[0_0_10px_#CCFF00]" />
                     </motion.div>
 
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-                       <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-blue-600 mb-1 ring-1 ring-blue-100">
-                          {expanded ? <Sparkles size={24} /> : <ArrowRight size={24} />}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4">
+                       <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-primary mb-1 border border-primary/20">
+                          {expanded ? <Sparkles size={24} className="text-glow" /> : <ArrowRight size={24} />}
                        </div>
-                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-400">
-                        {expanded ? 'Collapse' : 'Initialize'}
+                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary font-mono text-glow">
+                        {expanded ? 'SYSTEM_RUNNING' : 'INITIALIZE'}
                       </span>
-                      <span className="text-xl font-bold text-slate-800 tracking-tight text-center">Orchestration Engine</span>
+                      <span className="text-xl font-bold text-white tracking-tight text-center uppercase leading-tight">Orchestration<br />Engine</span>
                     </div>
                   </motion.button>
                 </div>
@@ -299,22 +301,21 @@ export const Agents: React.FC = () => {
                         >
                           <div className={`relative flex h-[72px] w-[72px] items-center justify-center rounded-2xl border transition-all duration-300 ${
                               isSelected
-                                ? 'border-blue-500/50 bg-white shadow-xl shadow-blue-500/20 scale-110'
-                                : 'border-slate-200 bg-white hover:border-blue-300 hover:shadow-lg hover:shadow-blue-500/10'
+                                ? 'border-primary/50 bg-[#080808] shadow-2xl shadow-primary/20 scale-110'
+                                : 'border-white/5 bg-[#050505] hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10'
                             }`}
                           >
-                            <span className={`transition-colors duration-300 ${isSelected ? 'text-blue-600' : 'text-slate-500 group-hover:text-blue-500'}`}>
-                               {/* Clone icon with larger size */}
+                            <span className={`transition-colors duration-300 ${isSelected ? 'text-primary text-glow' : 'text-zinc-600 group-hover:text-primary'}`}>
                                {React.isValidElement(agent.icon) ? React.cloneElement(agent.icon as any, { className: "w-8 h-8" }) : agent.icon}
                             </span>
                           </div>
                           
-                          <div className={`absolute top-[84px] left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1.5 rounded-lg border transition-all duration-300 ${
+                          <div className={`absolute top-[84px] left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1.5 rounded-lg border transition-all duration-300 font-mono ${
                               isSelected 
-                                ? 'bg-slate-900 text-white border-slate-900' 
-                                : 'bg-white text-slate-500 border-slate-200 group-hover:border-blue-200 group-hover:text-blue-600'
+                                ? 'bg-primary text-black border-primary' 
+                                : 'bg-[#080808] text-zinc-500 border-white/10 group-hover:border-primary/40 group-hover:text-primary'
                           }`}>
-                            <span className="text-[11px] font-bold uppercase tracking-wider">
+                            <span className="text-[10px] font-bold uppercase tracking-wider">
                               {shortLabel(agent.name)}
                             </span>
                           </div>
@@ -324,10 +325,10 @@ export const Agents: React.FC = () => {
                 </AnimatePresence>
 
                 {!expanded ? (
-                  <div className="absolute top-[380px] left-1/2 z-20 -translate-x-1/2 flex flex-col items-center gap-2">
-                     <span className="w-px h-16 bg-gradient-to-b from-blue-200 to-transparent"></span>
-                     <div className="rounded-full border border-blue-100 bg-white px-6 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-blue-600 shadow-sm animate-bounce">
-                        Tap Engine to Preview Nodes
+                  <div className="absolute top-[380px] left-1/2 z-20 -translate-x-1/2 flex flex-col items-center gap-4">
+                     <span className="w-px h-16 bg-gradient-to-b from-primary/40 to-transparent"></span>
+                     <div className="rounded-full border border-primary/20 bg-primary/10 px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary shadow-2xl animate-bounce font-mono text-glow">
+                        // TAP_ENGINE_TO_PREVIEW_NODES
                      </div>
                   </div>
                 ) : null}
@@ -341,18 +342,22 @@ export const Agents: React.FC = () => {
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 18 }}
-                  className="mx-auto mt-3 w-full max-w-4xl rounded-2xl border border-slate-200 bg-white p-5 shadow-lg"
+                  className="mx-auto mt-12 w-full max-w-4xl obsidian-panel p-12 bg-[#080808]/80 backdrop-blur-xl border-white/5 shadow-2xl relative overflow-hidden"
                 >
-                  <div className="flex flex-wrap items-start justify-between gap-4">
-                    <div className="min-w-0">
-                      <p className="text-xs uppercase tracking-[0.14em] text-slate-500">Framework Archetype</p>
-                      <h2 className="mt-1 text-2xl font-semibold text-slate-900">{selectedAgent.name}</h2>
-                      <p className="mt-2 max-w-2xl text-sm text-slate-600">{selectedAgent.description}</p>
-                      <div className="mt-3 flex flex-wrap gap-2">
+                  <div className="scan-line opacity-10" />
+                  <div className="flex flex-wrap items-start justify-between gap-8 relative z-10">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-3 font-mono text-[9px] text-primary mb-4 tracking-[0.3em] uppercase font-bold">
+                         <div className="w-6 h-px bg-primary" />
+                         FRAMEWORK_ARCHETYPE
+                      </div>
+                      <h2 className="text-4xl font-bold text-white uppercase tracking-tight">{selectedAgent.name}</h2>
+                      <p className="mt-6 max-w-2xl text-base text-zinc-400 font-light leading-relaxed">{selectedAgent.description}</p>
+                      <div className="mt-8 flex flex-wrap gap-3">
                         {selectedAgent.features.slice(0, 4).map((feature) => (
                           <span
                             key={`${selectedAgent.id}-${feature}`}
-                            className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] text-slate-500"
+                            className="rounded-full border border-white/5 bg-white/5 px-4 py-1.5 text-[10px] font-mono text-zinc-400 uppercase tracking-widest"
                           >
                             {feature}
                           </span>
@@ -360,32 +365,30 @@ export const Agents: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-col gap-3 min-w-[200px]">
                       <button
                         onClick={() => launchAgent(selectedAgent.id)}
-                        className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-xs font-semibold text-white hover:bg-blue-700"
+                        className="btn-acid !py-4 w-full"
                       >
-                        Automate Deployment
-                        <ArrowRight className="h-3.5 w-3.5" />
+                        Launch Deployment
                       </button>
                       <button
                         onClick={() => navigate('/demo-form')}
-                        className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-800 hover:bg-blue-50"
+                        className="btn-obsidian !py-4 w-full"
                       >
                         Architecture Brief
                       </button>
                     </div>
                   </div>
 
-                  {/* Channel Selection */}
-                  <div className="mt-6 pt-6 border-t border-slate-100">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">Provisioning Channels</p>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="mt-12 pt-12 border-t border-white/5 relative z-10">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600 mb-8 font-mono">Provisioning_Channels</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                       {[
-                        { name: 'Slack', icon: MessageSquare, color: 'hover:border-[#4A154B] hover:text-[#4A154B]', link: '/contact?channel=slack' },
-                        { name: 'Teams', icon: Users, color: 'hover:border-[#4B53BC] hover:text-[#4B53BC]', link: '/contact?channel=teams' },
-                        { name: 'WhatsApp', icon: Phone, color: 'hover:border-[#25D366] hover:text-[#25D366]', link: 'https://wa.me/447441443734' },
-                        { name: 'Telegram', icon: Sparkles, color: 'hover:border-[#0088cc] hover:text-[#0088cc]', link: '/contact?channel=telegram' },
+                        { name: 'Slack', icon: MessageSquare, link: '/contact?channel=slack' },
+                        { name: 'Teams', icon: Users, link: '/contact?channel=teams' },
+                        { name: 'WhatsApp', icon: Phone, link: 'https://wa.me/447441443734' },
+                        { name: 'Telegram', icon: Sparkles, link: '/contact?channel=telegram' },
                       ].map((ch) => {
                         const ChIcon = ch.icon;
                         return (
@@ -394,12 +397,12 @@ export const Agents: React.FC = () => {
                             href={ch.link}
                             target={ch.link.startsWith('http') ? '_blank' : '_self'}
                             rel="noopener noreferrer"
-                            className={`flex items-center gap-3 p-3 rounded-xl border border-slate-100 bg-slate-50/50 transition-all ${ch.color} group`}
+                            className="flex items-center gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:border-primary/40 hover:bg-primary/[0.05] transition-all group"
                           >
-                            <div className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center transition-transform group-hover:scale-110">
-                              <ChIcon size={16} />
+                            <div className="w-10 h-10 obsidian-inset flex items-center justify-center text-zinc-500 group-hover:text-primary transition-all group-hover:scale-110">
+                              <ChIcon size={18} />
                             </div>
-                            <span className="text-xs font-bold text-slate-700">{ch.name}</span>
+                            <span className="text-xs font-bold text-zinc-300 font-mono tracking-wider">{ch.name}</span>
                           </a>
                         );
                       })}
@@ -412,16 +415,20 @@ export const Agents: React.FC = () => {
         </section>
 
         {/* Orchestration Flow Section */}
-        <section className="py-24 bg-slate-50 border-t border-slate-100">
+        <section className="py-40 bg-[#050505] border-t border-white/5">
            <div className="container-custom">
-              <div className="max-w-3xl">
-                 <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-6">How Orchestration Works</h2>
-                 <p className="text-lg text-slate-600 mb-12 leading-relaxed text-zinc-500">
-                    Viktron doesn't just run static scripts. We provide a dynamic infrastructure that reacts to business triggers in real-time.
+              <div className="max-w-3xl mb-24">
+                 <Label>02 // ORCHESTRATION_FLOW</Label>
+                 <h2 className="text-5xl font-bold tracking-tight text-white mt-10 uppercase leading-[0.9]">
+                    Infrastructure that<br />
+                    <span className="text-zinc-700">reacts in real-time.</span>
+                 </h2>
+                 <p className="text-xl text-zinc-400 mt-8 font-light leading-relaxed">
+                    Viktron doesn't just run static scripts. We provide a dynamic infrastructure that reacts to business triggers with autonomous judgment.
                  </p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-3 gap-10">
                  {[
                    { 
                      title: '01 // Input Trigger', 
@@ -431,32 +438,32 @@ export const Agents: React.FC = () => {
                    },
                    { 
                      title: '02 // Orchestration', 
-                     desc: 'The Orchestration Engine selects the best framework (CrewAI for team workflows, AutoGen for multi-agent conversations) based on task complexity.',
+                     desc: 'The Orchestration Engine selects the best framework based on task complexity.',
                      icon: Sparkles,
                      img: '/assets/images/agents/engine.png'
                    },
                    { 
                      title: '03 // Provisioning', 
-                     desc: 'Specialized agent nodes are spun up instantly, execute the mission across your tools, and return structured results.',
+                     desc: 'Specialized agent nodes are spun up instantly, execute the mission, and return results.',
                      icon: Bot,
                      img: '/assets/images/agents/provisioning.png'
                    },
                  ].map((step, i) => {
                    const StepIcon = step.icon;
                    return (
-                     <div key={i} className="group overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500">
-                        <div className="aspect-video overflow-hidden border-b border-slate-100 relative">
-                           <img src={step.img} alt={step.title} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
-                           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-60" />
+                     <FU key={i} d={i * 0.1} className="group obsidian-panel p-0 overflow-hidden border-white/5 hover:border-primary/20 transition-all duration-700">
+                        <div className="aspect-video overflow-hidden border-b border-white/5 relative">
+                           <img src={step.img} alt={step.title} className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000" />
+                           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-60" />
                         </div>
-                        <div className="p-8">
-                          <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-500">
+                        <div className="p-10">
+                          <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-600 mb-8 group-hover:text-primary transition-colors duration-500">
                              <StepIcon size={24} />
                           </div>
-                          <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-blue-500 mb-4">{step.title}</h4>
-                          <p className="text-slate-600 text-sm leading-relaxed">{step.desc}</p>
+                          <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-primary mb-4 font-mono text-glow">{step.title}</h4>
+                          <p className="text-zinc-400 text-sm leading-relaxed font-light">{step.desc}</p>
                         </div>
-                     </div>
+                     </FU>
                    );
                  })}
               </div>
@@ -464,43 +471,47 @@ export const Agents: React.FC = () => {
          </section>
 
         {/* Integrations Section */}
-        <section className="py-32 bg-white border-t border-slate-100 overflow-hidden">
+        <section className="py-40 bg-[#080808] border-t border-white/5 overflow-hidden">
            <div className="container-custom">
-              <div className="grid lg:grid-cols-2 gap-20 items-center">
+              <div className="grid lg:grid-cols-2 gap-24 items-center">
                  <div>
-                    <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 mb-8">3,000+ Integrations. Infinite Possibilities.</h2>
-                    <p className="text-lg text-slate-600 mb-10 leading-relaxed">
-                       Our agents don't work in isolation. They integrate directly with your existing stack — from enterprise ERPs and CRMs to specialized engineering tools and marketing platforms.
+                    <Label>03 // CONNECTIVITY_FABRIC</Label>
+                    <h2 className="text-5xl md:text-6xl font-bold tracking-tight text-white mt-10 uppercase leading-[0.85]">
+                       3,000+ Integrations.<br />
+                       <span className="text-zinc-700">Infinite Potential.</span>
+                    </h2>
+                    <p className="text-xl text-zinc-400 mt-10 leading-relaxed font-light">
+                       Our agents don't work in isolation. They integrate directly with your existing stack — from enterprise ERPs and CRMs to specialized engineering tools.
                     </p>
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid grid-cols-2 gap-10 mt-16">
                        {[
                          { label: 'Enterprise', desc: 'SAP, Oracle, Salesforce' },
                          { label: 'Engineering', desc: 'GitHub, Jira, AWS' },
                          { label: 'Marketing', desc: 'HubSpot, Meta, Google' },
                          { label: 'Productivity', desc: 'Notion, Slack, Teams' },
                        ].map((item, i) => (
-                         <div key={i} className="border-l-2 border-blue-100 pl-6">
-                            <h4 className="text-sm font-bold text-slate-900 mb-1">{item.label}</h4>
-                            <p className="text-xs text-slate-500 uppercase tracking-wider">{item.desc}</p>
+                         <div key={i} className="border-l border-primary/20 pl-8">
+                            <h4 className="text-xs font-mono font-bold text-primary mb-2 uppercase tracking-widest">{item.label}</h4>
+                            <p className="text-sm text-zinc-500 font-light leading-relaxed">{item.desc}</p>
                          </div>
                        ))}
                     </div>
-                    <button className="mt-12 btn-acid !px-10 py-4">View All Integrations</button>
+                    <button className="mt-16 btn-acid !px-12 !py-5">View Integration Directory</button>
                  </div>
                  
                  <div className="relative">
-                    <div className="grid grid-cols-3 gap-4 opacity-[0.4] grayscale group-hover:grayscale-0 transition-all duration-700">
+                    <div className="grid grid-cols-3 gap-4 opacity-[0.2] grayscale group-hover:grayscale-0 transition-all duration-1000">
                        {[...Array(9)].map((_, i) => (
-                         <div key={i} className="aspect-square rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center p-6">
-                            <div className="w-full h-full bg-slate-200 rounded-lg animate-pulse" />
+                         <div key={i} className="aspect-square rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-center p-6">
+                            <div className="w-full h-full bg-white/[0.05] rounded-lg animate-pulse" />
                          </div>
                        ))}
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-[100px]" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-[100px]" />
                     <div className="absolute inset-0 flex items-center justify-center">
-                       <div className="obsidian-panel p-12 text-center bg-white/80 backdrop-blur-md">
-                          <div className="text-6xl font-black text-slate-900 mb-2">3,000+</div>
-                          <div className="text-xs font-mono font-bold uppercase tracking-[0.4em] text-blue-600">Active Connectors</div>
+                       <div className="obsidian-panel p-16 text-center bg-[#050505]/80 backdrop-blur-2xl border-primary/20 shadow-[0_0_50px_rgba(204,255,0,0.1)]">
+                          <div className="text-7xl font-black text-white mb-2 tracking-tighter">3,000+</div>
+                          <div className="text-[10px] font-mono font-bold uppercase tracking-[0.5em] text-primary text-glow">Active_Connectors</div>
                        </div>
                     </div>
                  </div>
@@ -508,6 +519,7 @@ export const Agents: React.FC = () => {
            </div>
         </section>
       </div>
+/div>
     </Layout>
   );
 };

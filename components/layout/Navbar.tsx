@@ -18,9 +18,23 @@ export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activePopup, setActivePopup] = useState<'product' | 'about' | null>(null);
+  const [mobileExpandedItem, setMobileExpandedItem] = useState<'product' | 'about' | null>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const location = useLocation();
   const { isAuthenticated, user, logout, setShowAuthModal, setAuthModalMode } = useAuth();
+
+  const PRODUCT_LINKS = [
+    { label: 'Agent IRL', path: '/services/agentirl', desc: 'The reliability & governance layer.' },
+    { label: 'AI Analytics', path: '/analytics', desc: 'Full-length intelligence & telemetry.' },
+    { label: 'AI Agents', path: '/agents', desc: 'Specialized autonomous workforce.' },
+  ];
+
+  const ABOUT_LINKS = [
+    { label: 'Mission', path: '/about', desc: 'The Viktron story and our infrastructure goals.' },
+    { label: 'Rent an Agent', path: '/rent', desc: 'Browse and deploy our specialized digital workforce.' },
+    { label: 'Careers', path: '/careers', desc: 'Join the infrastructure revolution.' },
+    { label: 'Blog', path: '/blog', desc: 'Intelligence reports and engineering logs.' },
+  ];
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
@@ -31,6 +45,7 @@ export const Navbar: React.FC = () => {
   // Close popups on navigation
   useEffect(() => {
     setActivePopup(null);
+    setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
   return (
@@ -170,23 +185,64 @@ export const Navbar: React.FC = () => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: '100%', opacity: 0 }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed inset-0 top-0 left-0 right-0 h-screen bg-[#050505] z-[100] p-8 flex flex-col pt-32"
+              className="fixed inset-0 top-0 left-0 right-0 h-screen bg-[#050505] z-[100] p-8 flex flex-col pt-24 overflow-y-auto"
             >
                <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-8 right-8 text-zinc-500"><X size={24} /></button>
-              <div className="flex flex-col gap-8">
-                 {navItems.map((item) => (
-                   <Link
-                     key={item.path}
-                     to={item.path}
-                     onClick={() => setIsMobileMenuOpen(false)}
-                     className={`text-4xl font-black uppercase tracking-tighter transition-all ${location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path.split('?')[0])) ? 'text-lime-400 bg-lime-400/10 border-l-4 border-lime-400 pl-6' : 'text-white hover:text-lime-400 hover:bg-white/5'}`}
-                   >
-                     {item.name}
-                   </Link>
-                 ))}
+              <div className="flex flex-col gap-4 mt-8">
+                 {navItems.map((item) => {
+                   const hasPopup = !!item.isPopup;
+                   const isExpanded = mobileExpandedItem === item.isPopup;
+                   
+                   return (
+                     <div key={item.path} className="flex flex-col">
+                        <div className="flex items-center justify-between">
+                          <Link
+                            to={item.path}
+                            onClick={() => !hasPopup && setIsMobileMenuOpen(false)}
+                            className={`text-4xl font-black uppercase tracking-tighter transition-all flex-1 py-2 ${location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path.split('?')[0])) ? 'text-lime-400' : 'text-white'}`}
+                          >
+                            {item.name}
+                          </Link>
+                          {hasPopup && (
+                            <button 
+                              onClick={() => setMobileExpandedItem(isExpanded ? null : item.isPopup)}
+                              className="p-4 text-zinc-500 hover:text-primary transition-colors"
+                            >
+                              <ChevronDown size={24} className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+                            </button>
+                          )}
+                        </div>
 
+                        {/* Mobile Sub-menu */}
+                        <AnimatePresence>
+                          {hasPopup && isExpanded && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: 'auto', opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              className="overflow-hidden bg-white/5 rounded-2xl mt-2 px-4"
+                            >
+                              <div className="py-4 space-y-6">
+                                {(item.isPopup === 'product' ? PRODUCT_LINKS : ABOUT_LINKS).map((sub) => (
+                                  <Link
+                                    key={sub.path}
+                                    to={sub.path}
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="block group"
+                                  >
+                                    <div className="text-lg font-bold text-white uppercase tracking-tight group-hover:text-primary transition-colors">{sub.label}</div>
+                                    <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mt-1">{sub.desc}</div>
+                                  </Link>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                     </div>
+                   );
+                 })}
               </div>
-              <div className="mt-auto space-y-4">
+              <div className="mt-12 mb-8 space-y-4">
                  <button className="w-full btn-acid py-6 uppercase font-mono text-[11px] tracking-widest font-black">Request Access</button>
                  <button className="w-full btn-obsidian py-6 uppercase font-mono text-[11px] tracking-widest font-black">System Status</button>
               </div>
