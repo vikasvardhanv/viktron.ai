@@ -52,7 +52,11 @@ export const Careers: React.FC = () => {
 
   return (
     <Layout showBackground={false}>
-      <SEO title="Careers — Join the Autonomous Infrastructure Revolution" description="Build the production layer for AI agents at Viktron." />
+      <SEO
+        title="Careers — Build the Future of AI Agent Infrastructure — Viktron"
+        description="Join Viktron to build production-grade AI agent infrastructure. We're hiring engineers, ML researchers, and enterprise sales for AgentIRL orchestration, Trust Fabric governance, and AI automation. Based in Chicago, IL. Remote-friendly."
+        keywords="AI careers, AI jobs, agent infrastructure jobs, ML engineer jobs, enterprise AI careers, Viktron careers, Chicago AI jobs"
+      />
 
       {/* ═══════════════════════════ HERO ═══════════════════════════ */}
       <section className="relative min-h-[70vh] bg-[#050505] flex flex-col justify-center pt-40 pb-20 overflow-hidden">

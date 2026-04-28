@@ -280,8 +280,8 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="twitter:title" content={siteTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={finalImage} />
-      <meta name="twitter:site" content="@viktron" />
-      <meta name="twitter:creator" content="@viktron" />
+      <meta name="twitter:site" content="@viktronai" />
+      <meta name="twitter:creator" content="@viktronai" />
 
       {/* Article specific meta tags */}
       {article && (

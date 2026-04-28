@@ -38,8 +38,9 @@ const Label = ({ children }: { children: React.ReactNode }) => (
 export const AgentIRL: React.FC = () => (
   <Layout showBackground={false}>
     <ServiceSEO
-      serviceName="AgentIRL — Governance & Runtime Interception"
-      serviceDescription="The production runtime for autonomous agents. Intercept tool calls, enforce policies, and record provenance without rewriting your code."
+      serviceName="AgentIRL — Multi-Agent Orchestration Platform"
+      serviceDescription="AgentIRL is Viktron's production runtime for autonomous AI agents. Intercept tool calls, enforce policies, record provenance, coordinate multi-agent teams, and export telemetry via OTLP — without rewriting your code. 99.9% uptime SLA."
+      serviceId="agentirl"
     />
 
     {/* ═══════════════════════════ HERO ═══════════════════════════ */}

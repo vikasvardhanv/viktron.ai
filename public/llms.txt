@@ -1,30 +1,45 @@
-# Viktron.ai — Enterprise AI Agent Teams Platform
+# Viktron.ai — Enterprise AI Agent Infrastructure Platform
 
-> Viktron AI deploys autonomous AI agent teams for sales, support, and operations. Powered by AgentIRL, our orchestration platform enables enterprises to run coordinated AI employees 24/7. Enterprise-grade. From $199/mo.
+> Viktron is the missing infrastructure layer for autonomous AI agents. Production-grade orchestration (AgentIRL™), enterprise governance (Trust Fabric), real-time observability (Analytics Suite), and an AI agent marketplace — all in one platform. Plans from $199/month. Serving 500+ businesses.
 
 ## What We Do
 
-Viktron.ai is a leading AI automation agency specializing in custom AI agents, chatbots, voice automation, and intelligent business process automation. We serve 500+ businesses across multiple industries.
+Viktron.ai provides two complementary offerings:
+
+1. **AI Infrastructure Platform** — The technical foundation for running autonomous AI agents at enterprise scale, with multi-agent orchestration, SOC 2 governance, and real-time performance analytics.
+
+2. **AI Automation Agency** — End-to-end deployment of custom AI agent teams for sales, support, content, and operations across 10+ industries.
 
 **Core products:**
-- AI Agent Teams (Sales, Support, Content, Operations agents working together)
-- AgentIRL Platform (multi-agent orchestration, monitoring, policy enforcement)
-- Analytics Suite (AI performance analytics and insights)
-- Agent Rentals (on-demand AI agents for specific tasks)
+- **AgentIRL Platform** — Multi-agent orchestration runtime with real-time coordination, policy enforcement, OTLP telemetry export, and 99.9% uptime SLA
+- **Trust Fabric** — Enterprise AI governance: agent identity, delegation tokens, policy gateway, provenance ledger, memory governance. SOC 2-aligned.
+- **Analytics Suite** — Real-time AI agent performance dashboards, cost attribution, and observability for production agent deployments
+- **Agent Marketplace** — Pre-trained, industry-specific AI agents for immediate deployment or on-demand rental
 
 ## Key Pages
 
-- [Homepage](https://viktron.ai/): Overview of the platform and enterprise AI agent teams
-- [Services](https://viktron.ai/services): Full service catalog — AI Agents, AgentIRL, Analytics, Rentals
-- [Agents](https://viktron.ai/agents): Industry-specific AI agents (restaurant, clinic, salon, legal, e-commerce, etc.)
-- [Pricing](https://viktron.ai/pricing): Plans starting at $199/mo
-- [Case Studies](https://viktron.ai/case-studies): Real customer results — 99.9% reliability, 92% cost reduction
-- [Contact](https://viktron.ai/contact): Book a demo or reach us at info@viktron.ai
-- [Demos](https://viktron.ai/demos): Live capabilities overview
+- [Homepage](https://viktron.ai/): Platform overview and enterprise AI agent infrastructure
+- [Services](https://viktron.ai/services): Full product catalog — AgentIRL, Trust Fabric, Analytics, Agent Rentals
+- [AgentIRL Platform](https://viktron.ai/services/agentirl): Multi-agent orchestration platform details
+- [Trust Fabric](https://viktron.ai/services/trust-fabric): Enterprise AI governance and compliance layer
+- [Pricing](https://viktron.ai/pricing): Plans from $199/month with transparent feature breakdown
+- [Enterprise](https://viktron.ai/enterprise): Enterprise governance, SOC 2, and custom deployments
+- [Case Studies](https://viktron.ai/case-studies): Customer results — 99.9% reliability, up to 92% cost reduction
+- [Demos](https://viktron.ai/demos): Live AI agent demonstrations across industries
+- [Agent Rentals](https://viktron.ai/rent): On-demand AI agents from $49/agent/week
+- [Docs](https://viktron.ai/docs): Developer documentation and API reference
+- [Blog](https://viktron.ai/blog): Engineering logs and AI intelligence reports
+- [Contact](https://viktron.ai/contact): Book a demo or reach info@viktron.ai
 
 ## Pricing (Machine-Readable)
 
-See [/pricing.md](https://viktron.ai/pricing.md) for structured pricing data.
+See [/pricing.md](https://viktron.ai/pricing.md) for full structured pricing data.
+
+- **Starter:** $199/month — 2 agents, 10,000 interactions/month
+- **Pro:** $499/month — 5 agents, 50,000 interactions/month
+- **Enterprise:** Custom — unlimited agents, SOC 2 SLA, dedicated support
+- **Agent Rentals:** From $49/agent/week — no long-term commitment
+- Annual billing: 20% discount on Starter and Pro
 
 ## Company
 
@@ -32,8 +47,12 @@ See [/pricing.md](https://viktron.ai/pricing.md) for structured pricing data.
 - **Location:** Chicago, IL, USA
 - **Email:** info@viktron.ai
 - **Phone:** +1 (844) 660-8065
+- **WhatsApp:** https://wa.me/+18446608065
 - **Industries served:** Restaurant, Healthcare, Salon, Automotive, Construction, Real Estate, Legal, E-commerce, Education, Recruitment
+- **Clients:** 500+ businesses worldwide
 
 ## AI Crawlers
 
 All major AI search crawlers are explicitly allowed in robots.txt including GPTBot, ClaudeBot, PerplexityBot, Google-Extended, and Bingbot.
+
+Last updated: 2026-04-28

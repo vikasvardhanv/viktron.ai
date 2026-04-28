@@ -7,7 +7,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://viktron.ai/</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -15,77 +15,120 @@
   <!-- Core Product Pages -->
   <url>
     <loc>https://viktron.ai/enterprise</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
   </url>
 
   <url>
     <loc>https://viktron.ai/services</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://viktron.ai/agents</loc>
-    <lastmod>2026-04-19</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://viktron.ai/services/agentirl</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://viktron.ai/services/trust-fabric</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://viktron.ai/pricing</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://viktron.ai/marketing</loc>
-    <lastmod>2026-04-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
     <loc>https://viktron.ai/demos</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://viktron.ai/case-studies</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://viktron.ai/marketing</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://viktron.ai/white-label</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://viktron.ai/rent</loc>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://viktron.ai/contact</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
+  <!-- Information Pages -->
   <url>
     <loc>https://viktron.ai/about</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://viktron.ai/use-cases</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://viktron.ai/blog</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://viktron.ai/docs</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://viktron.ai/careers</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://viktron.ai/pretrained</loc>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -93,21 +136,21 @@
   <!-- Service Detail Pages -->
   <url>
     <loc>https://viktron.ai/services/chatbot</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://viktron.ai/services/industry_agents</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
     <loc>https://viktron.ai/services/marketing_hub</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -115,21 +158,21 @@
   <!-- Legal Pages -->
   <url>
     <loc>https://viktron.ai/privacy</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
 
   <url>
     <loc>https://viktron.ai/terms</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
 
   <url>
     <loc>https://viktron.ai/cookies</loc>
-    <lastmod>2026-04-19</lastmod>
+    <lastmod>2026-04-28</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>

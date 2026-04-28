@@ -4,22 +4,32 @@
 
 # Company Information
 Name: Viktron.ai
-Type: AI Agency / Technology Company
-Industry: Artificial Intelligence, Business Automation, SaaS
+Type: AI Infrastructure Platform / AI Automation Agency
+Industry: Artificial Intelligence, Enterprise Software, SaaS
 
 # Description
-Description: Viktron.ai is a leading AI automation agency that helps businesses transform their operations with custom AI solutions. We specialize in developing AI agents, chatbots, marketing automation tools, voice AI, and enterprise LLM integration.
+Description: Viktron.ai is an enterprise AI agent infrastructure platform that builds governance, orchestration, and observability tooling for autonomous AI agents. The platform includes AgentIRL (multi-agent orchestration), Trust Fabric (enterprise governance, audit trails, SOC 2), Analytics Suite (real-time agent performance observability), and an Agent Marketplace. Viktron also operates as an AI automation agency deploying custom AI agents for sales, support, and operations across 10+ industries.
+
+# Core Products
+Products:
+- AgentIRL: Multi-agent orchestration platform with real-time coordination, policy enforcement, and OTLP export
+- Trust Fabric: Enterprise governance layer — agent identity, delegation tokens, policy gateway, provenance ledger, memory governance
+- Analytics Suite: Real-time AI agent performance analytics and observability dashboard
+- Agent Marketplace: Pre-trained industry-specific AI agents available for deployment or rental
+- AI Automation Agency: Custom AI agent development for restaurants, clinics, salons, dealerships, construction, legal, e-commerce, education, and recruitment
 
 # Services Offered
 Services:
-- Custom AI Agents for various industries
-- Chatbot Development (WhatsApp, Web, Voice)
-- Marketing Automation (Content, Social Media, Email)
+- AI Agent Teams (sales, support, content, operations agents working in coordination)
+- AgentIRL Orchestration Platform (multi-agent coordination, monitoring, policy enforcement)
+- Trust Fabric (SOC 2 compliance, audit trails, human-in-the-loop approvals)
+- AI Analytics & Observability
 - Voice AI Agents
-- Business Planning AI Tools
-- Enterprise LLM Integration
-- Workflow Automation
-- Data Analytics AI
+- WhatsApp & SMS Automation
+- Custom AI Chatbots
+- Business Process Automation
+- AI Consulting & Strategy
+- Agent Rentals (on-demand, no long-term commitment)
 
 # Industries Served
 Industries:
@@ -36,29 +46,44 @@ Industries:
 
 # Contact Information
 Email: info@viktron.ai
-Phone: +1 (320) 361-6525
-WhatsApp: +1 (630) 703-3569
+Phone: +1 (844) 660-8065
+WhatsApp: https://wa.me/+18446608065
 Website: https://viktron.ai
 
 # Social Media
-Twitter: @viktronai
+Twitter/X: @viktronai
 LinkedIn: /company/viktronai
+Instagram: @viktron.ai
+TikTok: @viktron
+YouTube: @viktron
 
-# Key Features
-Features:
-- 24/7 AI Availability
-- 98% Client Satisfaction
-- 500+ Projects Delivered
-- 50+ Industries Served
+# Key Metrics
+Founded: 2023
+Location: Chicago, IL, USA
+Clients Served: 500+
+Uptime SLA: 99.9%
+Cost Reduction: Up to 92% vs. traditional staffing
 
 # Technology Stack
-Technologies: React, TypeScript, Node.js, Python, OpenAI, Google AI, LangChain, Vector Databases
+Technologies: React, TypeScript, Node.js, Python, OpenAI, Anthropic Claude, Google AI, LangChain, Vector Databases, OTLP, SOC 2 compliance infrastructure
 
 # Pricing
-PriceRange: $$
+Starter: $199/month — up to 2 agents, 10,000 interactions/month
+Pro: $499/month — up to 5 agents, 50,000 interactions/month
+Enterprise: Custom — unlimited agents, SOC 2, SLA guarantee
+Agent Rentals: From $49/agent/week (no long-term commitment)
+See full pricing: https://viktron.ai/pricing.md
 
-# Location
-Location: United States (Remote-first company, serving clients worldwide)
+# Key Pages
+Homepage: https://viktron.ai
+Services: https://viktron.ai/services
+AgentIRL Platform: https://viktron.ai/services/agentirl
+Trust Fabric: https://viktron.ai/services/trust-fabric
+Pricing: https://viktron.ai/pricing
+Case Studies: https://viktron.ai/case-studies
+Enterprise: https://viktron.ai/enterprise
+Docs: https://viktron.ai/docs
+Contact: https://viktron.ai/contact
 
 # Last Updated
-LastUpdated: 2024-12-24
+LastUpdated: 2026-04-28

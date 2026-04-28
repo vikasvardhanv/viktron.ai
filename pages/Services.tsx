@@ -66,7 +66,11 @@ const SERVICES = [
 export const Services: React.FC = () => {
   return (
     <Layout showBackground={false}>
-      <SEO title="Services — The Viktron AI Institutional Ecosystem" description="Explore our 4 core products: Agent, AgentIRL, Analytics, and Rentals." />
+      <SEO
+        title="AI Agent Infrastructure Services — Viktron"
+        description="Viktron's 4 core products: AgentIRL (multi-agent orchestration runtime), Trust Fabric (SOC 2 AI governance), Analytics Suite (real-time agent observability), and Agent Marketplace (pre-trained industry agents). Enterprise-grade. Plans from $199/month."
+        keywords="AI agent services, multi-agent orchestration, AI governance, AgentIRL platform, Trust Fabric, AI observability, enterprise AI infrastructure, AI automation services"
+      />
 
       {/* ─── HERO ─── */}
       <section className="relative pt-40 pb-20 bg-[#050505] overflow-hidden">

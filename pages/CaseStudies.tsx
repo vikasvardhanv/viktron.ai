@@ -67,7 +67,11 @@ const studies = [
 export const CaseStudies = () => {
   return (
     <Layout showBackground={false}>
-      <SEO title="Enterprise AI Agent Case Studies — Viktron AI" description="Institutional performance proofs of Viktron's AI agents achieving 99.9% reliability and significant cost reduction." />
+      <SEO
+        title="AI Agent Case Studies — 99.9% Reliability, 92% Cost Reduction — Viktron"
+        description="Real-world results from Viktron AI agent deployments: 99.9% uptime reliability, up to 92% cost reduction vs. traditional staffing, 24/7 autonomous operation. See how restaurants, clinics, law firms, and e-commerce businesses deploy AI agent teams."
+        keywords="AI agent case studies, AI automation results, AI agent ROI, enterprise AI examples, Viktron case studies, AI cost reduction, business AI results"
+      />
 
       {/* ─── HERO ─── */}
       <section className="relative pt-40 pb-20 bg-[#050505] overflow-hidden">

@@ -55,7 +55,11 @@ const ARTICLES = [
 export const Blog: React.FC = () => {
   return (
     <Layout showBackground={false}>
-      <SEO title="Engineering Blog — Viktron AI Intelligence Reports" description="Engineering logs, architecture deep-dives, and intelligence reports on autonomous systems." />
+      <SEO
+        title="Engineering Blog — AI Agent Infrastructure — Viktron"
+        description="Viktron engineering blog: architecture deep-dives on multi-agent orchestration, AI governance, production AI observability, and enterprise AI deployment. Intelligence reports from the team building AgentIRL and Trust Fabric."
+        keywords="AI engineering blog, multi-agent systems, AI agent architecture, AI governance engineering, AgentIRL blog, enterprise AI blog, AI orchestration"
+      />
 
       {/* ═══════════════════════════ HERO ═══════════════════════════ */}
       <section className="relative min-h-[60vh] bg-[#050505] flex flex-col justify-center pt-40 pb-20 overflow-hidden">

@@ -69,7 +69,11 @@ export const Pricing: React.FC = () => {
 
   return (
     <Layout showBackground={false}>
-      <SEO title="Pricing — Viktron AI Agent Infrastructure" description="Transparent pricing for specialized AI agent teams and AgentIRL infrastructure." />
+      <SEO
+        title="Pricing — Viktron AI Agent Infrastructure"
+        description="Viktron AI plans: Starter $199/month (2 agents, 10k interactions), Pro $499/month (5 agents, 50k interactions), Enterprise custom (unlimited agents, SOC 2 SLA). Agent Rentals from $49/agent/week. 14-day free trial. No setup fees."
+        keywords="AI agent pricing, AgentIRL cost, multi-agent platform pricing, enterprise AI subscription, Viktron plans, AI automation cost"
+      />
 
       {/* ═══════════════════════════ HERO ═══════════════════════════ */}
       <section className="relative min-h-[60vh] bg-[#050505] flex flex-col justify-center pt-40 pb-20 overflow-hidden">
