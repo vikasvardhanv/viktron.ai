@@ -2,7 +2,7 @@
 # This configures the build process for Vite frontend + Express backend
 
 [phases.setup]
-nixPkgs = ["nodejs_22"]
+# nixPkgs = ["nodejs_22"]
 
 [phases.install]
 cmds = ["npm ci --legacy-peer-deps"]
