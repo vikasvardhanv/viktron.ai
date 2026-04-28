@@ -391,27 +391,36 @@ export const Agents: React.FC = () => {
                    { 
                      title: '01 // Input Trigger', 
                      desc: 'A message arrives via Slack, an email is received, or a webhook is fired from your CRM.',
-                     icon: MessageSquare 
+                     icon: MessageSquare,
+                     img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/orchestration_trigger_abstract_1777366708531.png'
                    },
                    { 
                      title: '02 // Orchestration', 
                      desc: 'The Orchestration Engine selects the best framework (CrewAI for team workflows, AutoGen for multi-agent conversations) based on task complexity.',
-                     icon: Sparkles 
+                     icon: Sparkles,
+                     img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/orchestration_engine_abstract_1777366723532.png'
                    },
                    { 
                      title: '03 // Provisioning', 
                      desc: 'Specialized agent nodes are spun up instantly, execute the mission across your tools, and return structured results.',
-                     icon: Bot 
+                     icon: Bot,
+                     img: '/brain/5a73abb5-a7ec-4efd-bec0-2a7ea665f30d/orchestration_provisioning_abstract_1777366736216.png'
                    },
                  ].map((step, i) => {
                    const StepIcon = step.icon;
                    return (
-                     <div key={i} className="p-8 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-                        <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 mb-6">
-                           <StepIcon size={24} />
+                     <div key={i} className="group overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500">
+                        <div className="aspect-video overflow-hidden border-b border-slate-100 relative">
+                           <img src={step.img} alt={step.title} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
+                           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent opacity-60" />
                         </div>
-                        <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-blue-500 mb-4">{step.title}</h4>
-                        <p className="text-slate-600 text-sm leading-relaxed">{step.desc}</p>
+                        <div className="p-8">
+                          <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-500">
+                             <StepIcon size={24} />
+                          </div>
+                          <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-blue-500 mb-4">{step.title}</h4>
+                          <p className="text-slate-600 text-sm leading-relaxed">{step.desc}</p>
+                        </div>
                      </div>
                    );
                  })}
