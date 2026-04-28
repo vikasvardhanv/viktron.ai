@@ -132,9 +132,9 @@ export const Agents: React.FC = () => {
             <AnimatedSection>
               <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-blue-600">
                 <Sparkles className="h-4 w-4 text-blue-600" />
-                Infrastructure // Layer_02
+                Workforce Rental // Layer_02
               </div>
-              <h1 className="mt-5 text-4xl sm:text-6xl font-semibold tracking-tight text-slate-900">Multi-Framework Agent Orchestration</h1>
+              <h1 className="mt-5 text-4xl sm:text-6xl font-semibold tracking-tight text-slate-900">Rent an Agent: Multi-Framework Orchestration</h1>
               <p className="mt-3 max-w-3xl text-base sm:text-lg leading-relaxed text-slate-600">
                 Viktron is an active combination of **LangChain, CrewAI, AutoGen, and MCP**. 
                 When a trigger arrives via Slack, Teams, or WhatsApp, our infrastructure dynamically spins up the required agentic framework to execute the mission.

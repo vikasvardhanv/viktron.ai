@@ -17,9 +17,9 @@ const ABOUT_LINKS = [
   },
   {
     icon: Bot,
-    label: 'Agents',
-    desc: 'Meet our core autonomous team members.',
-    path: '/use-cases',
+    label: 'Rent an Agent',
+    desc: 'Browse and deploy our specialized digital workforce.',
+    path: '/agents',
   },
   {
     icon: Briefcase,
