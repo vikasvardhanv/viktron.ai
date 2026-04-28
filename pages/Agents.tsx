@@ -519,7 +519,6 @@ export const Agents: React.FC = () => {
            </div>
         </section>
       </div>
-/div>
     </Layout>
   );
 };
