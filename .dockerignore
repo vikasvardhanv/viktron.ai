@@ -38,3 +38,11 @@ coverage
 .env.local
 .env.development
 .env.test
+
+# Large Assets (Not needed in build context)
+*.mp4
+*.pdf
+.nixpacks
+.kilocode
+dist
+node_modules
