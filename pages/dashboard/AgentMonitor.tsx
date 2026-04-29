@@ -10,7 +10,7 @@ import { DashboardLayout } from './DashboardLayout';
 import { useAuth } from '../../context/AuthContext';
 import {
   fetchUserTeams, fetchDashboardOverview, createDashboardWebSocket, sendTeamMessage, fetchAgentSkills,
-  fetchAgentTranscript,
+  fetchAgentTranscript, fetchAgentIRLMissions,
   type AgentOverview, type DashboardOverview, type AgentTranscript, type TranscriptTask,
 } from '../../services/dashboardApi';
 
@@ -75,80 +75,6 @@ interface AgentError {
   resolved: boolean;
 }
 
-const MOCK_MISSIONS: Mission[] = [
-  {
-    id: 'm1',
-    title: 'Q4 Sales Pipeline Optimization',
-    status: 'executing',
-    created_at: new Date(Date.now() - 3600000).toISOString(),
-    updated_at: new Date(Date.now() - 600000).toISOString(),
-    assigned_agent_role: 'sales',
-    executive_summary: 'Analyzing sales data and optimizing lead scoring algorithm'
-  },
-  {
-    id: 'm2',
-    title: 'Content Calendar Planning',
-    status: 'pending_approval',
-    created_at: new Date(Date.now() - 7200000).toISOString(),
-    updated_at: new Date(Date.now() - 1800000).toISOString(),
-    assigned_agent_role: 'content',
-    executive_summary: 'Drafting social media content strategy for next quarter'
-  },
-  {
-    id: 'm3',
-    title: 'API Integration Testing',
-    status: 'complete',
-    created_at: new Date(Date.now() - 86400000).toISOString(),
-    updated_at: new Date(Date.now() - 3600000).toISOString(),
-    assigned_agent_role: 'developer',
-    executive_summary: 'Successfully integrated Stripe payment processing'
-  }
-];
-
-const MOCK_STREAMS: StreamHealth[] = [
-  {
-    stream_id: 's1',
-    mission_id: 'm1',
-    last_heartbeat: new Date().toISOString(),
-    sequence_number: 15,
-    total_chunks: 15,
-    total_errors: 0,
-    status: 'healthy',
-    meta: { source: 'sales_agent', agent_role: 'sales' }
-  },
-  {
-    stream_id: 's2',
-    mission_id: 'm2',
-    last_heartbeat: new Date(Date.now() - 45000).toISOString(),
-    sequence_number: 8,
-    total_chunks: 8,
-    total_errors: 1,
-    status: 'degraded',
-    meta: { source: 'content_agent', agent_role: 'content' }
-  }
-];
-
-const MOCK_ERRORS: AgentError[] = [
-  {
-    id: 'e1',
-    timestamp: new Date(Date.now() - 300000).toISOString(),
-    mission_id: 'm2',
-    stream_id: 's2',
-    category: 'provider',
-    message: 'OpenAI API rate limit exceeded',
-    recovery: 'retry',
-    resolved: false
-  },
-  {
-    id: 'e2',
-    timestamp: new Date(Date.now() - 900000).toISOString(),
-    mission_id: 'm1',
-    category: 'validation',
-    message: 'Invalid email format in lead data',
-    recovery: 'fallback',
-    resolved: true
-  }
-];
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
@@ -749,6 +675,20 @@ export const AgentMonitor: React.FC = () => {
     const poll = setInterval(loadOverview, 15_000);
     return () => clearInterval(poll);
   }, [loadOverview]);
+
+  // Load AgentIRL missions — real data from /api/agentirl/missions
+  useEffect(() => {
+    if (!teamId) return;
+    fetchAgentIRLMissions(teamId)
+      .then(res => setMissions(((res.data as unknown) as { missions: Mission[] }).missions ?? []))
+      .catch(() => setMissions([]));
+    const poll = setInterval(() => {
+      fetchAgentIRLMissions(teamId)
+        .then(res => setMissions(((res.data as unknown) as { missions: Mission[] }).missions ?? []))
+        .catch(() => {});
+    }, 30_000);
+    return () => clearInterval(poll);
+  }, [teamId]);
 
   useEffect(() => {
     fetchAgentSkills()
