@@ -16,52 +16,6 @@ interface LayoutProps {
 // Loading fallback for lazy components
 const ChatbotFallback = () => null;
 
-export const Layout: React.FC<LayoutProps> = ({
-  children,
-  showFooter = true,
-  showBackground = true
-}) => {
-  const [isMobile, setIsMobile] = useState(false);
-
-  const location = useLocation();
-  const { trackPageView, trackClick } = useAnalytics();
-
-  // Page view tracking
-  useEffect(() => {
-    trackPageView(location.pathname);
-  }, [location.pathname]);
-
-  // Global click tracking
-  useEffect(() => {
-    const handleGlobalClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const clickable = target.closest('button, a, [role="button"]');
-      
-      if (clickable) {
-        const text = clickable.textContent?.trim().substring(0, 50) || '';
-        const id = clickable.id || '';
-        const type = clickable.tagName.toLowerCase();
-        
-        trackClick(id || 'anonymous_element', text, {
-          element_type: type,
-          href: (clickable as HTMLAnchorElement).href || undefined,
-          path: location.pathname
-        });
-      }
-    };
-
-    document.addEventListener('click', handleGlobalClick);
-    return () => document.removeEventListener('click', handleGlobalClick);
-  }, [location.pathname, trackClick]);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
 // Memoized background component to prevent expensive re-renders
 const InfrastructureBackground = React.memo(({ isMobile }: { isMobile: boolean }) => (
