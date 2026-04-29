@@ -132,19 +132,17 @@ app.use('/api/sms', smsRoutes);
 app.use('/api/demo-link', demoLinkRoutes);
 app.use('/api/channels/slack', slackRoutes);
 app.use('/api/agent', agentRoutes);
-app.use('/api', compatRoutes);
 
-// FastAPI proxy — forwards routes not handled by Node.js to the Python backend.
-// Covers: /api/analytics/*, /api/saas/*, /api/agentirl/*, /api/onboard/*,
-//         /api/teams, /api/dashboard/*, /api/agents/*, /api/health/live, /api/health/ready
+// FastAPI proxy — MUST run before compatRoutes so real FastAPI data wins over
+// compat.js stubs. Covers all routes served by the Python backend.
 const FASTAPI_BASE = (process.env.FASTAPI_BASE_URL || 'https://api.viktron.ai').replace(/\/$/, '');
 const FASTAPI_PREFIXES = [
   '/api/analytics/',
   '/api/saas/',
   '/api/agentirl/',
   '/api/onboard',
-  '/api/teams',
-  '/api/dashboard/',
+  '/api/teams',       // real teams from FastAPI, not compat.js stub
+  '/api/dashboard/',  // real agents from FastAPI, not compat.js Math.random()
   '/api/agents/',
   '/api/health/live',
   '/api/health/ready',
@@ -182,6 +180,10 @@ app.use('/api', async (req, res, next) => {
     res.status(502).json({ success: false, message: 'Upstream service unavailable' });
   }
 });
+
+// compatRoutes handles /api/skills (local skill store) and POST /api/teams/:id/message
+// as a fallback only — proxy already handles teams/dashboard for real FastAPI clients.
+app.use('/api', compatRoutes);
 
 // 404 handler for API routes
 app.use('/api/*', (req, res) => {

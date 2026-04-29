@@ -139,9 +139,9 @@ const AgentCard: React.FC<AgentCardProps> = ({ agent, isRunning, delay = 0, onVi
 
   const statusColor = agent.status === 'error' ? C.red : isRunning ? C.accent : C.green;
   const statusLabel = agent.status === 'error' ? 'Error' : isRunning ? 'Running' : 'Idle';
-  const trustScore = agent.trust_score ?? Math.floor(70 + Math.random() * 30);
-  const trustColor = trustScore >= 85 ? C.green : trustScore >= 70 ? C.yellow : C.red;
-  const trustLabel = trustScore >= 85 ? 'High Trust' : trustScore >= 70 ? 'Medium' : 'Low';
+  const trustScore = agent.trust_score ?? null;
+  const trustColor = trustScore !== null ? (trustScore >= 85 ? C.green : trustScore >= 70 ? C.yellow : C.red) : C.muted;
+  const trustLabel = trustScore !== null ? (trustScore >= 85 ? 'High Trust' : trustScore >= 70 ? 'Medium' : 'Low') : 'No score';
 
   const budgetPct = agent.monthly_budget > 0
     ? Math.min(100, (agent.current_spend / agent.monthly_budget) * 100) : 0;
@@ -167,22 +167,24 @@ const AgentCard: React.FC<AgentCardProps> = ({ agent, isRunning, delay = 0, onVi
           <Icon size={18} />
         </div>
         <div className="flex items-center gap-2">
-          {/* Trust Score Badge */}
-          <div className="flex flex-col items-center">
-            <div className="relative w-8 h-8">
-              <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                  fill="none" stroke={`${C.muted}20`} strokeWidth="3" />
-                <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                  fill="none" stroke={trustColor} strokeWidth="3"
-                  strokeDasharray={`${trustScore}, 100`} />
-              </svg>
-              <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white">
-                {trustScore}
-              </span>
+          {/* Trust Score Badge — only shown when real score from AgentIRL */}
+          {trustScore !== null && (
+            <div className="flex flex-col items-center">
+              <div className="relative w-8 h-8">
+                <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                  <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    fill="none" stroke={`${C.muted}20`} strokeWidth="3" />
+                  <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    fill="none" stroke={trustColor} strokeWidth="3"
+                    strokeDasharray={`${trustScore}, 100`} />
+                </svg>
+                <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white">
+                  {trustScore}
+                </span>
+              </div>
+              <span className="text-[9px] mt-0.5 font-medium" style={{ color: trustColor }}>{trustLabel}</span>
             </div>
-            <span className="text-[9px] mt-0.5 font-medium" style={{ color: trustColor }}>{trustLabel}</span>
-          </div>
+          )}
           <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full border text-[10px] font-medium uppercase tracking-wide"
             style={{
               background: `${statusColor}10`,
