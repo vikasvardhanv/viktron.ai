@@ -71,7 +71,7 @@ export const AgentIRL: React.FC = () => (
               </p>
             </FU>
             <FU d={0.3} className="flex gap-6">
-              <Link to="/contact" className="btn-acid">Request SDK Access</Link>
+              <Link to="/signup?redirect=/onboarding" className="btn-acid">Get Started Free</Link>
               <Link to="/enterprise" className="btn-obsidian">Compliance Matrix</Link>
             </FU>
           </div>
@@ -290,7 +290,7 @@ export const AgentIRL: React.FC = () => (
              <h2 className="heading-precision text-7xl md:text-[140px] text-white mb-16 uppercase tracking-tighter font-black">
                 SECURE<br />WORKFORCE.
              </h2>
-             <Link to="/contact" className="btn-acid px-16 py-6">Request Technical Specs</Link>
+             <Link to="/signup?redirect=/onboarding" className="btn-acid px-16 py-6">Deploy Your Workforce</Link>
           </FU>
        </div>
     </section>
