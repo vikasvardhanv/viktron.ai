@@ -141,44 +141,47 @@ export const Agents: React.FC = () => {
           />
         </div>
 
-        <section className="relative pt-24 sm:pt-28 px-4">
+        <section className="relative pt-32 sm:pt-40 px-4">
           <div className="container-custom">
             <AnimatedSection>
-              <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-primary text-glow">
-                <Sparkles className="h-4 w-4" />
-                Workforce Rental // Layer_02
+              <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
+                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-primary text-glow mb-8 font-mono">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Workforce_Rental // Layer_02
+                </div>
+                <h1 className="text-5xl sm:text-8xl font-semibold tracking-tighter text-white uppercase leading-[0.85]">
+                  Agentic<br />
+                  <span className="text-zinc-800">Orchestration.</span>
+                </h1>
+                <p className="mt-10 text-lg sm:text-xl leading-relaxed text-zinc-500 font-light max-w-2xl">
+                  Deploy a dynamic infrastructure of specialized autonomous nodes. 
+                  Synchronized across 3,000+ tools via the <span className="text-white font-medium">Viktron Trust Fabric</span>.
+                </p>
               </div>
-              <h1 className="mt-5 text-4xl sm:text-6xl font-semibold tracking-tight text-white uppercase leading-[0.9]">
-                Agent Framework &<br />
-                <span className="text-zinc-700">Orchestration.</span>
-              </h1>
-              <p className="mt-8 max-w-3xl text-base sm:text-lg leading-relaxed text-zinc-400 font-light">
-                Viktron is an active combination of **LangChain, CrewAI, AutoGen, and MCP**. 
-                Our infrastructure dynamically coordinates specialized agents across 3,000+ tools.
-              </p>
               
               <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                className="mt-16 rounded-3xl overflow-hidden border border-white/5 shadow-2xl relative group bg-[#080808]"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                className="mt-24 rounded-[40px] overflow-hidden border border-white/5 shadow-2xl relative group bg-[#080808]"
               >
                   <div className="scan-line opacity-20" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(204,255,0,0.05),transparent_50%)]" />
                   <img 
                     src="/assets/images/agents/coordination.png" 
                     alt="Agents Coordinating" 
                     width={1920}
                     height={822}
                     loading="lazy"
-                    className="w-full aspect-[21/9] object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000" 
+                    className="w-full aspect-[21/9] object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000 scale-105 group-hover:scale-100" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent flex items-end p-12">
-                     <div className="text-white max-w-xl">
-                        <div className="flex items-center gap-3 font-mono text-[10px] text-primary mb-4 tracking-[0.3em] uppercase font-bold text-glow">
-                           <div className="w-8 h-px bg-primary" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent flex items-end p-8 sm:p-20">
+                     <div className="text-white max-w-2xl">
+                        <div className="flex items-center gap-3 font-mono text-[10px] text-primary mb-6 tracking-[0.4em] uppercase font-black text-glow">
+                           <div className="w-10 h-px bg-primary" />
                            NEURAL_SYNC_ACTIVE
                         </div>
-                        <h3 className="text-3xl font-bold mb-2 uppercase tracking-tighter">Real-time collaborative intelligence.</h3>
-                        <p className="text-zinc-400 text-sm font-light">Distributed agentic nodes synchronized across the global Trust Fabric.</p>
+                        <h3 className="text-3xl sm:text-5xl font-black mb-4 uppercase tracking-tighter leading-none">Real-time<br />Collaborative Intelligence.</h3>
+                        <p className="text-zinc-500 text-base font-light">Distributed agentic nodes synchronized across high-latency environments with deterministic judgment.</p>
                      </div>
                   </div>
               </motion.div>
@@ -186,10 +189,10 @@ export const Agents: React.FC = () => {
           </div>
         </section>
 
-        <section className="relative px-4 pb-12 pt-6 mt-20">
-          <div className="container-custom text-center mb-16">
-            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600 mb-6 font-mono">Infrastructure_Connectivity</p>
-            <div className="flex flex-wrap justify-center gap-4">
+        <section className="relative px-4 pb-32 pt-20 overflow-hidden">
+          <div className="container-custom text-center mb-32">
+            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-700 mb-8 font-mono">Infrastructure_Connectivity</p>
+            <div className="flex flex-wrap justify-center gap-6">
               {[
                 { name: 'Slack', icon: MessageSquare, link: '/contact?channel=slack' },
                 { name: 'Teams', icon: Users, link: '/contact?channel=teams' },
@@ -199,17 +202,19 @@ export const Agents: React.FC = () => {
                 <a 
                   key={ch.name}
                   href={ch.link}
-                  className="flex items-center gap-3 px-8 py-4 rounded-2xl border border-white/5 bg-[#080808] text-zinc-400 hover:border-primary/40 hover:text-primary transition-all group shadow-2xl"
+                  className="flex items-center gap-4 px-10 py-5 rounded-full border border-white/5 bg-[#080808]/50 backdrop-blur-md text-zinc-500 hover:border-primary/40 hover:text-primary transition-all group shadow-2xl font-mono text-[10px] font-black uppercase tracking-widest"
                 >
-                  <ch.icon size={18} className="text-zinc-600 group-hover:text-primary transition-colors" />
-                  <span className="text-xs font-black uppercase tracking-widest font-mono">Connect_{ch.name}</span>
+                  <ch.icon size={16} className="text-zinc-700 group-hover:text-primary transition-colors" />
+                  Connect_{ch.name}
                 </a>
               ))}
             </div>
           </div>
 
-          <div className="container-custom py-20">
-            <div className="mx-auto" style={{ height: `${sceneHeight * sceneScale}px` }}>
+          <div className="container-custom py-20 relative">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 blur-[150px] rounded-full pointer-events-none" />
+            
+            <div className="mx-auto relative z-10" style={{ height: `${sceneHeight * sceneScale}px` }}>
               <div
                 className="relative left-1/2"
                 style={{
@@ -220,11 +225,13 @@ export const Agents: React.FC = () => {
                 }}
               >
                 <motion.div
-                  className="absolute inset-0 rounded-[36px] border border-white/5 bg-[#080808] shadow-2xl"
+                  className="absolute inset-0 rounded-[60px] border border-white/5 bg-[#080808]/40 backdrop-blur-xl shadow-2xl overflow-hidden"
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.42 }}
-                />
+                >
+                   <div className="absolute inset-0 grid-paper opacity-[0.03]" />
+                </motion.div>
 
                 <svg className="absolute inset-0 z-10" viewBox={`0 0 ${sceneWidth} ${sceneHeight}`} fill="none">
                   <AnimatePresence>
@@ -234,12 +241,12 @@ export const Agents: React.FC = () => {
                         const endX = center.x + pos.x;
                         const endY = center.y + pos.y;
                         const startX = center.x;
-                        const startY = center.y + 70;
+                        const startY = center.y + 80;
 
                         const cp1X = startX;
-                        const cp1Y = startY + 120;
+                        const cp1Y = startY + 150;
                         const cp2X = endX;
-                        const cp2Y = endY - 100;
+                        const cp2Y = endY - 120;
 
                         const d = `M${startX} ${startY} C${cp1X} ${cp1Y}, ${cp2X} ${cp2Y}, ${endX} ${endY}`;
 
@@ -248,21 +255,21 @@ export const Agents: React.FC = () => {
                             key={`line-${agent.id}`}
                             d={d}
                             stroke="url(#agent-line-gradient)"
-                            strokeWidth="2"
+                            strokeWidth="1.5"
                             strokeLinecap="round"
                             fill="none"
                             initial={{ pathLength: 0, opacity: 0 }}
-                            animate={{ pathLength: 1, opacity: 0.4 }}
+                            animate={{ pathLength: 1, opacity: 0.3 }}
                             exit={{ pathLength: 0, opacity: 0 }}
-                            transition={{ duration: 0.8, ease: "easeInOut", delay: index * 0.05 }}
+                            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: index * 0.04 }}
                           />
                         );
                       })}
                   </AnimatePresence>
                   <defs>
                     <linearGradient id="agent-line-gradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#CCFF00" stopOpacity="0.8" />
-                      <stop offset="100%" stopColor="#CCFF00" stopOpacity="0.1" />
+                      <stop offset="0%" stopColor="#CCFF00" stopOpacity="0.6" />
+                      <stop offset="100%" stopColor="#CCFF00" stopOpacity="0" />
                     </linearGradient>
                   </defs>
                 </svg>
@@ -270,36 +277,36 @@ export const Agents: React.FC = () => {
                 <div className="absolute z-20" style={{ left: center.x, top: center.y, transform: 'translate(-50%, -50%)' }}>
                   <motion.button
                     onClick={() => setExpanded((prev) => !prev)}
-                    className="relative h-[200px] w-[200px] rounded-full group cursor-pointer"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    className="relative h-[240px] w-[240px] rounded-full group cursor-pointer"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
-                    <div className="absolute inset-[-20px] rounded-full bg-primary/5 blur-2xl animate-pulse" />
+                    <div className="absolute inset-[-40px] rounded-full bg-primary/5 blur-3xl animate-pulse" />
                     
                     <motion.div
-                      className="absolute inset-0 rounded-full border border-white/5"
+                      className="absolute inset-0 rounded-full border border-white/10"
                       style={{
-                        background: 'linear-gradient(135deg, #080808 0%, #050505 100%)',
-                        boxShadow: 'inset 0 4px 20px rgba(255,255,255,0.02), 0 10px 40px -10px rgba(204,255,0,0.1)'
+                        background: 'linear-gradient(135deg, #101010 0%, #050505 100%)',
+                        boxShadow: 'inset 0 4px 30px rgba(255,255,255,0.03), 0 20px 60px -10px rgba(0,0,0,0.5)'
                       }}
                     />
                     
                     <motion.div
-                       className="absolute inset-[10px] rounded-full border-[1px] border-primary/20"
+                       className="absolute inset-[15px] rounded-full border-[1px] border-primary/10"
                        animate={{ rotate: 360 }}
-                       transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                       transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
                     >
-                       <div className="absolute top-0 left-1/2 w-2 h-2 bg-primary rounded-full blur-[2px] -translate-x-1/2 -translate-y-1/2 shadow-[0_0_10px_#CCFF00]" />
+                       <div className="absolute top-0 left-1/2 w-1.5 h-1.5 bg-primary rounded-full blur-[1px] -translate-x-1/2 -translate-y-1/2 shadow-[0_0_15px_#CCFF00]" />
                     </motion.div>
 
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4">
-                       <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-primary mb-1 border border-primary/20">
-                          {expanded ? <Sparkles size={24} className="text-glow" /> : <ArrowRight size={24} />}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center">
+                       <div className="w-14 h-14 obsidian-inset flex items-center justify-center text-primary mb-2 border border-primary/20 bg-primary/5 rounded-2xl">
+                          {expanded ? <Sparkles size={28} className="text-glow" /> : <Bot size={28} />}
                        </div>
-                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary font-mono text-glow">
-                        {expanded ? 'SYSTEM_RUNNING' : 'INITIALIZE'}
+                      <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary font-mono text-glow">
+                        {expanded ? 'NODES_LIVE' : 'AUTO_START'}
                       </span>
-                      <span className="text-xl font-bold text-white tracking-tight text-center uppercase leading-tight">Orchestration<br />Engine</span>
+                      <span className="text-2xl font-black text-white tracking-tighter uppercase leading-[0.9]">Orchestration<br /><span className="text-zinc-600">Engine_V2</span></span>
                     </div>
                   </motion.button>
                 </div>
@@ -315,30 +322,30 @@ export const Agents: React.FC = () => {
                           initial={{ opacity: 0, scale: 0.4, x: center.x, y: center.y }}
                           animate={{ opacity: 1, scale: 1, x: center.x + pos.x, y: center.y + pos.y }}
                           exit={{ opacity: 0, scale: 0.45, x: center.x, y: center.y }}
-                          transition={{ type: 'spring', stiffness: 250, damping: 18, delay: index * 0.028 }}
+                          transition={{ type: 'spring', stiffness: 200, damping: 20, delay: index * 0.03 }}
                           onClick={() => setSelectedAgentId(agent.id)}
                           className="absolute z-30 group"
                           style={{ transform: 'translate(-50%, -50%)' }}
                           whileHover={{ scale: 1.1, zIndex: 40 }}
                           whileTap={{ scale: 0.95 }}
                         >
-                          <div className={`relative flex h-[72px] w-[72px] items-center justify-center rounded-2xl border transition-all duration-300 ${
+                          <div className={`relative flex h-[84px] w-[84px] items-center justify-center rounded-2xl border transition-all duration-500 ${
                               isSelected
-                                ? 'border-primary/50 bg-[#080808] shadow-2xl shadow-primary/20 scale-110'
-                                : 'border-white/5 bg-[#050505] hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10'
+                                ? 'border-primary bg-[#080808] shadow-[0_0_30px_rgba(204,255,0,0.15)] scale-110'
+                                : 'border-white/5 bg-[#050505]/80 backdrop-blur-md hover:border-primary/40 hover:shadow-2xl'
                             }`}
                           >
-                            <span className={`transition-colors duration-300 ${isSelected ? 'text-primary text-glow' : 'text-zinc-600 group-hover:text-primary'}`}>
-                               {React.isValidElement(agent.icon) ? React.cloneElement(agent.icon as any, { className: "w-8 h-8" }) : agent.icon}
+                            <span className={`transition-colors duration-300 ${isSelected ? 'text-primary text-glow' : 'text-zinc-700 group-hover:text-primary'}`}>
+                               {React.isValidElement(agent.icon) ? React.cloneElement(agent.icon as any, { size: 32 }) : agent.icon}
                             </span>
                           </div>
                           
-                          <div className={`absolute top-[84px] left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1.5 rounded-lg border transition-all duration-300 font-mono ${
+                          <div className={`absolute top-[96px] left-1/2 -translate-x-1/2 whitespace-nowrap px-4 py-2 rounded-full border transition-all duration-500 font-mono shadow-xl ${
                               isSelected 
-                                ? 'bg-primary text-black border-primary' 
-                                : 'bg-[#080808] text-zinc-500 border-white/10 group-hover:border-primary/40 group-hover:text-primary'
+                                ? 'bg-primary text-black border-primary scale-110' 
+                                : 'bg-[#080808] text-zinc-600 border-white/10 group-hover:border-primary/40 group-hover:text-primary'
                           }`}>
-                            <span className="text-[10px] font-bold uppercase tracking-wider">
+                            <span className="text-[10px] font-black uppercase tracking-widest">
                               {shortLabel(agent.name)}
                             </span>
                           </div>
@@ -348,10 +355,10 @@ export const Agents: React.FC = () => {
                 </AnimatePresence>
 
                 {!expanded ? (
-                  <div className="absolute top-[380px] left-1/2 z-20 -translate-x-1/2 flex flex-col items-center gap-4">
-                     <span className="w-px h-16 bg-gradient-to-b from-primary/40 to-transparent"></span>
-                     <div className="rounded-full border border-primary/20 bg-primary/10 px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary shadow-2xl animate-bounce font-mono text-glow">
-                        // TAP_ENGINE_TO_PREVIEW_NODES
+                  <div className="absolute top-[420px] left-1/2 z-20 -translate-x-1/2 flex flex-col items-center gap-6">
+                     <div className="w-px h-24 bg-gradient-to-b from-primary/40 via-primary/10 to-transparent"></div>
+                     <div className="rounded-full border border-primary/20 bg-primary/10 px-8 py-3 text-[10px] font-black uppercase tracking-[0.3em] text-primary shadow-2xl animate-pulse font-mono text-glow">
+                        // CLICK_ENGINE_TO_EXPAND_WORKFORCE
                      </div>
                   </div>
                 ) : null}
@@ -362,73 +369,75 @@ export const Agents: React.FC = () => {
               {expanded && selectedAgent ? (
                 <motion.div
                   key={selectedAgent.id}
-                  initial={{ opacity: 0, y: 18 }}
+                  initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 18 }}
-                  className="mx-auto mt-12 w-full max-w-4xl obsidian-panel p-12 bg-[#080808]/80 backdrop-blur-xl border-white/5 shadow-2xl relative overflow-hidden"
+                  exit={{ opacity: 0, y: 30 }}
+                  className="mx-auto mt-20 w-full max-w-5xl obsidian-panel p-1 sm:p-1 rounded-[48px] bg-gradient-to-br from-white/10 to-transparent shadow-2xl relative overflow-hidden"
                 >
-                  <div className="scan-line opacity-10" />
-                  <div className="flex flex-wrap items-start justify-between gap-8 relative z-10">
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-3 font-mono text-[9px] text-primary mb-4 tracking-[0.3em] uppercase font-bold">
-                         <div className="w-6 h-px bg-primary" />
-                         FRAMEWORK_ARCHETYPE
+                  <div className="bg-[#080808] rounded-[47px] p-8 sm:p-16 relative overflow-hidden">
+                    <div className="scan-line opacity-10" />
+                    <div className="flex flex-wrap items-start justify-between gap-12 relative z-10">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-3 font-mono text-[9px] text-primary mb-6 tracking-[0.4em] uppercase font-black">
+                           <div className="w-8 h-px bg-primary" />
+                           FRAMEWORK_ARCHETYPE_0{INDUSTRY_AGENTS.indexOf(selectedAgent) + 1}
+                        </div>
+                        <h2 className="text-4xl sm:text-6xl font-black text-white uppercase tracking-tighter leading-none">{selectedAgent.name}</h2>
+                        <p className="mt-8 max-w-2xl text-lg text-zinc-500 font-light leading-relaxed">{selectedAgent.description}</p>
+                        <div className="mt-10 flex flex-wrap gap-3">
+                          {selectedAgent.features.slice(0, 5).map((feature) => (
+                            <span
+                              key={`${selectedAgent.id}-${feature}`}
+                              className="rounded-full border border-white/5 bg-white/[0.03] px-5 py-2 text-[10px] font-mono text-zinc-400 uppercase tracking-widest font-bold"
+                            >
+                              {feature}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                      <h2 className="text-4xl font-bold text-white uppercase tracking-tight">{selectedAgent.name}</h2>
-                      <p className="mt-6 max-w-2xl text-base text-zinc-400 font-light leading-relaxed">{selectedAgent.description}</p>
-                      <div className="mt-8 flex flex-wrap gap-3">
-                        {selectedAgent.features.slice(0, 4).map((feature) => (
-                          <span
-                            key={`${selectedAgent.id}-${feature}`}
-                            className="rounded-full border border-white/5 bg-white/5 px-4 py-1.5 text-[10px] font-mono text-zinc-400 uppercase tracking-widest"
-                          >
-                            {feature}
-                          </span>
-                        ))}
+
+                      <div className="flex flex-col gap-4 min-w-[240px] w-full sm:w-auto">
+                        <button
+                          onClick={() => launchAgent(selectedAgent.id)}
+                          className="btn-acid !py-5 w-full text-xs"
+                        >
+                          Launch Node Deployment
+                        </button>
+                        <button
+                          onClick={() => navigate('/demo-form')}
+                          className="btn-obsidian !py-5 w-full text-xs"
+                        >
+                          Architecture Brief
+                        </button>
                       </div>
                     </div>
 
-                    <div className="flex flex-col gap-3 min-w-[200px]">
-                      <button
-                        onClick={() => launchAgent(selectedAgent.id)}
-                        className="btn-acid !py-4 w-full"
-                      >
-                        Launch Deployment
-                      </button>
-                      <button
-                        onClick={() => navigate('/demo-form')}
-                        className="btn-obsidian !py-4 w-full"
-                      >
-                        Architecture Brief
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="mt-12 pt-12 border-t border-white/5 relative z-10">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600 mb-8 font-mono">Provisioning_Channels</p>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                      {[
-                        { name: 'Slack', icon: MessageSquare, link: '/contact?channel=slack' },
-                        { name: 'Teams', icon: Users, link: '/contact?channel=teams' },
-                        { name: 'WhatsApp', icon: Phone, link: 'https://wa.me/447441443734' },
-                        { name: 'Telegram', icon: Sparkles, link: '/contact?channel=telegram' },
-                      ].map((ch) => {
-                        const ChIcon = ch.icon;
-                        return (
-                          <a
-                            key={ch.name}
-                            href={ch.link}
-                            target={ch.link.startsWith('http') ? '_blank' : '_self'}
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-4 p-4 rounded-xl border border-white/5 bg-white/[0.02] hover:border-primary/40 hover:bg-primary/[0.05] transition-all group"
-                          >
-                            <div className="w-10 h-10 obsidian-inset flex items-center justify-center text-zinc-500 group-hover:text-primary transition-all group-hover:scale-110">
-                              <ChIcon size={18} />
-                            </div>
-                            <span className="text-xs font-bold text-zinc-300 font-mono tracking-wider">{ch.name}</span>
-                          </a>
-                        );
-                      })}
+                    <div className="mt-16 pt-12 border-t border-white/5 relative z-10">
+                      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-700 mb-10 font-mono">Provisioning_Channels</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
+                        {[
+                          { name: 'Slack', icon: MessageSquare, link: '/contact?channel=slack' },
+                          { name: 'Teams', icon: Users, link: '/contact?channel=teams' },
+                          { name: 'WhatsApp', icon: Phone, link: 'https://wa.me/447441443734' },
+                          { name: 'Telegram', icon: Sparkles, link: '/contact?channel=telegram' },
+                        ].map((ch) => {
+                          const ChIcon = ch.icon;
+                          return (
+                            <a
+                              key={ch.name}
+                              href={ch.link}
+                              target={ch.link.startsWith('http') ? '_blank' : '_self'}
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-4 p-5 rounded-2xl border border-white/5 bg-white/[0.01] hover:border-primary/40 hover:bg-primary/[0.03] transition-all group shadow-xl"
+                            >
+                              <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-600 group-hover:text-primary transition-all group-hover:scale-110 bg-black rounded-xl border border-white/5">
+                                <ChIcon size={20} />
+                              </div>
+                              <span className="text-[11px] font-black text-zinc-400 font-mono tracking-widest uppercase group-hover:text-white transition-colors">{ch.name}</span>
+                            </a>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -438,60 +447,64 @@ export const Agents: React.FC = () => {
         </section>
 
         {/* Orchestration Flow Section */}
-        <section className="py-40 bg-[#050505] border-t border-white/5">
+        <section className="py-48 bg-[#050505] border-t border-white/5 relative overflow-hidden">
+           <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
            <div className="container-custom">
-              <div className="max-w-3xl mb-24">
-                 <Label>02 // ORCHESTRATION_FLOW</Label>
-                 <h2 className="text-5xl font-bold tracking-tight text-white mt-10 uppercase leading-[0.9]">
+              <div className="max-w-3xl mb-32">
+                 <div className="flex items-center gap-3 font-mono text-[10px] text-primary mb-8 tracking-[0.4em] uppercase font-black text-glow">
+                    <div className="w-10 h-px bg-primary" />
+                    SYSTEM_LOGIC // 02
+                 </div>
+                 <h2 className="text-5xl sm:text-7xl font-black tracking-tighter text-white uppercase leading-[0.85]">
                     Infrastructure that<br />
-                    <span className="text-zinc-700">reacts in real-time.</span>
+                    <span className="text-zinc-800">reacts in real-time.</span>
                  </h2>
-                 <p className="text-xl text-zinc-400 mt-8 font-light leading-relaxed">
-                    Viktron doesn't just run static scripts. We provide a dynamic infrastructure that reacts to business triggers with autonomous judgment.
+                 <p className="text-xl text-zinc-500 mt-10 font-light leading-relaxed">
+                    Viktron doesn't just run static scripts. We provide a dynamic infrastructure that reacts to business triggers with autonomous judgment and tool-use capabilities.
                  </p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-10">
+              <div className="grid md:grid-cols-3 gap-8">
                  {[
                    { 
-                     title: '01 // Input Trigger', 
-                     desc: 'A message arrives via Slack, an email is received, or a webhook is fired from your CRM.',
+                     title: 'Input_Trigger // 01', 
+                     desc: 'A message arrives via Slack, an email is received, or a webhook is fired from your enterprise stack.',
                      icon: MessageSquare,
                      img: '/assets/images/agents/trigger.png'
                    },
                    { 
-                     title: '02 // Orchestration', 
-                     desc: 'The Orchestration Engine selects the best framework based on task complexity.',
+                     title: 'Orchestration // 02', 
+                     desc: 'The Orchestration Engine selects the optimal agent framework based on task complexity and trust policies.',
                      icon: Sparkles,
                      img: '/assets/images/agents/engine.png'
                    },
                    { 
-                     title: '03 // Provisioning', 
-                     desc: 'Specialized agent nodes are spun up instantly, execute the mission, and return results.',
+                     title: 'Provisioning // 03', 
+                     desc: 'Specialized agent nodes are provisioned instantly, execute the mission, and return deterministic results.',
                      icon: Bot,
                      img: '/assets/images/agents/provisioning.png'
                    },
                  ].map((step, i) => {
                    const StepIcon = step.icon;
                    return (
-                     <FU key={i} d={i * 0.1} className="group obsidian-panel p-0 overflow-hidden border-white/5 hover:border-primary/20 transition-all duration-700">
-                        <div className="aspect-video overflow-hidden border-b border-white/5 relative">
+                     <FU key={i} d={i * 0.12} className="group obsidian-panel p-0 overflow-hidden border-white/5 hover:border-primary/20 transition-all duration-1000 bg-[#080808]/40">
+                        <div className="aspect-[4/3] overflow-hidden border-b border-white/5 relative">
                            <img 
                             src={step.img} 
                             alt={step.title} 
                             width={800}
-                            height={450}
+                            height={600}
                             loading="lazy"
-                            className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000" 
+                            className="w-full h-full object-cover grayscale opacity-30 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000" 
                            />
-                           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-60" />
+                           <div className="absolute inset-0 bg-gradient-to-t from-[#080808] to-transparent opacity-80" />
                         </div>
                         <div className="p-10">
-                          <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-600 mb-8 group-hover:text-primary transition-colors duration-500">
-                             <StepIcon size={24} />
+                          <div className="w-12 h-12 obsidian-inset flex items-center justify-center text-zinc-700 mb-8 group-hover:text-primary transition-all duration-700 bg-black border border-white/5 rounded-xl">
+                             <StepIcon size={20} />
                           </div>
-                          <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-primary mb-4 font-mono text-glow">{step.title}</h4>
-                          <p className="text-zinc-400 text-sm leading-relaxed font-light">{step.desc}</p>
+                          <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-primary mb-5 font-mono text-glow">{step.title}</h4>
+                          <p className="text-zinc-500 text-sm leading-relaxed font-light">{step.desc}</p>
                         </div>
                      </FU>
                    );
@@ -501,51 +514,81 @@ export const Agents: React.FC = () => {
          </section>
 
         {/* Integrations Section */}
-        <section className="py-40 bg-[#080808] border-t border-white/5 overflow-hidden">
-           <div className="container-custom">
-              <div className="grid lg:grid-cols-2 gap-24 items-center">
+        <section className="py-48 bg-[#080808] border-t border-white/5 overflow-hidden relative">
+           <div className="absolute inset-0 grid-paper opacity-[0.02]" />
+           <div className="container-custom relative z-10">
+              <div className="grid lg:grid-cols-2 gap-32 items-center">
                  <div>
-                    <Label>03 // CONNECTIVITY_FABRIC</Label>
-                    <h2 className="text-5xl md:text-6xl font-bold tracking-tight text-white mt-10 uppercase leading-[0.85]">
-                       3,000+ Integrations.<br />
-                       <span className="text-zinc-700">Infinite Potential.</span>
+                    <div className="flex items-center gap-3 font-mono text-[10px] text-primary mb-8 tracking-[0.4em] uppercase font-black text-glow">
+                       <div className="w-10 h-px bg-primary" />
+                       CONNECTIVITY_FABRIC // 03
+                    </div>
+                    <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-white uppercase leading-[0.8]">
+                       3,000+<br />
+                       <span className="text-zinc-800">Connectors.</span>
                     </h2>
-                    <p className="text-xl text-zinc-400 mt-10 leading-relaxed font-light">
-                       Our agents don't work in isolation. They integrate directly with your existing stack — from enterprise ERPs and CRMs to specialized engineering tools.
+                    <p className="text-xl text-zinc-500 mt-12 leading-relaxed font-light max-w-xl">
+                       Our agents don't work in isolation. They integrate directly with your existing stack — from enterprise ERPs and CRMs to specialized engineering toolchains.
                     </p>
-                    <div className="grid grid-cols-2 gap-10 mt-16">
+                    <div className="grid grid-cols-2 gap-x-12 gap-y-10 mt-16">
                        {[
                          { label: 'Enterprise', desc: 'SAP, Oracle, Salesforce' },
                          { label: 'Engineering', desc: 'GitHub, Jira, AWS' },
                          { label: 'Marketing', desc: 'HubSpot, Meta, Google' },
                          { label: 'Productivity', desc: 'Notion, Slack, Teams' },
                        ].map((item, i) => (
-                         <div key={i} className="border-l border-primary/20 pl-8">
-                            <h4 className="text-xs font-mono font-bold text-primary mb-2 uppercase tracking-widest">{item.label}</h4>
-                            <p className="text-sm text-zinc-500 font-light leading-relaxed">{item.desc}</p>
+                         <div key={i} className="border-l-2 border-primary/20 pl-8 group hover:border-primary transition-colors duration-500">
+                            <h4 className="text-[11px] font-mono font-black text-primary mb-3 uppercase tracking-widest text-glow">{item.label}</h4>
+                            <p className="text-sm text-zinc-600 font-light leading-relaxed">{item.desc}</p>
                          </div>
                        ))}
                     </div>
-                    <button className="mt-16 btn-acid !px-12 !py-5">View Integration Directory</button>
+                    <button onClick={() => navigate('/contact')} className="mt-20 btn-acid !px-14 !py-5 text-xs font-black">View Integration Directory</button>
                  </div>
                  
-                 <div className="relative">
-                    <div className="grid grid-cols-3 gap-4 opacity-[0.2] grayscale group-hover:grayscale-0 transition-all duration-1000">
+                 <div className="relative group">
+                    <div className="grid grid-cols-3 gap-6 opacity-20 group-hover:opacity-40 transition-all duration-1000 scale-95 group-hover:scale-100">
                        {[...Array(9)].map((_, i) => (
-                         <div key={i} className="aspect-square rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-center p-6">
-                            <div className="w-full h-full bg-white/[0.05] rounded-lg animate-pulse" />
+                         <div key={i} className="aspect-square rounded-[32px] bg-white/[0.03] border border-white/5 flex items-center justify-center p-8">
+                            <div className="w-full h-full bg-white/[0.05] rounded-xl animate-pulse" />
                          </div>
                        ))}
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-[100px]" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-[120px]" />
                     <div className="absolute inset-0 flex items-center justify-center">
-                       <div className="obsidian-panel p-16 text-center bg-[#050505]/80 backdrop-blur-2xl border-primary/20 shadow-[0_0_50px_rgba(204,255,0,0.1)]">
-                          <div className="text-7xl font-black text-white mb-2 tracking-tighter">3,000+</div>
-                          <div className="text-[10px] font-mono font-bold uppercase tracking-[0.5em] text-primary text-glow">Active_Connectors</div>
-                       </div>
+                       <motion.div 
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
+                        className="obsidian-panel p-16 sm:p-24 text-center bg-[#050505]/90 backdrop-blur-3xl border-primary/20 shadow-[0_0_80px_rgba(204,255,0,0.15)] rounded-[60px]"
+                       >
+                          <div className="text-7xl sm:text-9xl font-black text-white mb-4 tracking-tighter leading-none">3,000+</div>
+                          <div className="text-[11px] font-mono font-black uppercase tracking-[0.6em] text-primary text-glow">Active_Connectors</div>
+                       </motion.div>
                     </div>
                  </div>
               </div>
+           </div>
+        </section>
+
+        {/* Final CTA */}
+        <section className="py-48 bg-[#050505] border-t border-white/5 relative overflow-hidden">
+           <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-primary/5 blur-[150px] rounded-full pointer-events-none" />
+           <div className="container-custom text-center">
+              <FU>
+                <div className="inline-flex items-center gap-3 font-mono text-[10px] text-zinc-600 mb-10 tracking-[0.5em] uppercase font-black">
+                   <div className="w-12 h-px bg-zinc-800" />
+                   READY_FOR_DEPLOYMENT
+                   <div className="w-12 h-px bg-zinc-800" />
+                </div>
+                <h2 className="text-5xl sm:text-8xl font-black text-white uppercase tracking-tighter leading-[0.85] mb-12">
+                   Upgrade your<br />
+                   <span className="text-primary text-glow">Intelligence.</span>
+                </h2>
+                <div className="flex flex-wrap justify-center gap-6">
+                   <button onClick={() => navigate('/demo-form')} className="btn-acid !px-16 !py-6 text-[11px] font-black">Request Architecture Brief</button>
+                   <button onClick={() => navigate('/contact')} className="btn-obsidian !px-16 !py-6 text-[11px] font-black">Speak with a Strategist</button>
+                </div>
+              </FU>
            </div>
         </section>
       </div>

@@ -81,6 +81,18 @@ const OnboardStep1: React.FC<{ onNext: (url: string, mode: string, jobId: string
   const [mode, setMode] = useState<'product_intelligence' | 'ai_visibility'>('product_intelligence');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [infoMode, setInfoMode] = useState<'product_intelligence' | 'ai_visibility' | null>(null);
+
+  const definitions = {
+    product_intelligence: {
+      title: 'Product Intelligence',
+      desc: 'Deep-dive analytics focused on user behavior, conversion funnels, and feature retention. Use natural language to query your raw event data and get instant insights into user drop-offs and engagement drivers.'
+    },
+    ai_visibility: {
+      title: 'AI Visibility',
+      desc: 'Specialized tracking to measure how your brand is being cited within AI search engines and LLM-powered answer engines. Understand your "Share of Voice" in the age of generative search and optimize for AI discovery.'
+    }
+  };
 
   const submit = async () => {
     const trimmed = url.trim();
@@ -138,21 +150,64 @@ const OnboardStep1: React.FC<{ onNext: (url: string, mode: string, jobId: string
               <label className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest ml-1">ANALYTICS_MODE</label>
               <div className="grid grid-cols-2 gap-3">
                 {(['product_intelligence', 'ai_visibility'] as const).map(m => (
-                  <button
-                    key={m}
-                    onClick={() => setMode(m)}
-                    className={`p-4 border text-left transition-all ${mode === m ? 'border-primary bg-primary/5 text-white' : 'border-white/5 text-zinc-500 hover:border-white/20'}`}
-                  >
-                    <div className="font-mono text-[10px] uppercase tracking-widest font-bold mb-1">
-                      {m === 'product_intelligence' ? 'Product Intelligence' : 'AI Visibility'}
-                    </div>
-                    <div className="text-[9px] text-zinc-600 leading-relaxed">
-                      {m === 'product_intelligence' ? 'Events, funnels, retention, AI ask' : 'Track brand mentions in AI search engines'}
-                    </div>
-                  </button>
+                  <div key={m} className="relative group">
+                    <button
+                      onClick={() => setMode(m)}
+                      className={`w-full p-4 border text-left transition-all relative ${mode === m ? 'border-primary bg-primary/5 text-white' : 'border-white/5 text-zinc-500 hover:border-white/20'}`}
+                    >
+                      <div className="font-mono text-[10px] uppercase tracking-widest font-bold mb-1">
+                        {m === 'product_intelligence' ? 'Product Intelligence' : 'AI Visibility'}
+                      </div>
+                      <div className="text-[9px] text-zinc-600 leading-relaxed pr-6">
+                        {m === 'product_intelligence' ? 'Events, funnels, retention, AI ask' : 'Track brand mentions in AI search engines'}
+                      </div>
+                    </button>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setInfoMode(m); }}
+                      className="absolute top-3 right-3 p-1 text-zinc-700 hover:text-primary transition-colors"
+                      title="Learn more"
+                    >
+                      <AlertCircle size={12} />
+                    </button>
+                  </div>
                 ))}
               </div>
             </div>
+
+            <AnimatePresence>
+              {infoMode && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm"
+                  onClick={() => setInfoMode(null)}
+                >
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, y: 10 }}
+                    className="max-w-md w-full obsidian-panel p-8 border-primary/20 shadow-[0_0_50px_rgba(204,255,0,0.1)]"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div className="flex items-center gap-3 font-mono text-[10px] text-primary mb-4 tracking-[0.3em] uppercase font-bold">
+                       <div className="w-6 h-px bg-primary" />
+                       Mode_Definition
+                    </div>
+                    <h3 className="text-xl font-bold text-white uppercase tracking-tight mb-4">{definitions[infoMode].title}</h3>
+                    <p className="text-zinc-400 text-sm leading-relaxed font-light mb-8">
+                      {definitions[infoMode].desc}
+                    </p>
+                    <button 
+                      onClick={() => setInfoMode(null)}
+                      className="w-full btn-obsidian py-3 text-[10px] font-black uppercase tracking-widest"
+                    >
+                      Close Definition
+                    </button>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {error && (
               <div className="flex items-center gap-3 p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-mono">
