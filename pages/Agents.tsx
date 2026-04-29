@@ -163,7 +163,14 @@ export const Agents: React.FC = () => {
                 className="mt-16 rounded-3xl overflow-hidden border border-white/5 shadow-2xl relative group bg-[#080808]"
               >
                   <div className="scan-line opacity-20" />
-                  <img src="/assets/images/agents/coordination.png" alt="Agents Coordinating" className="w-full aspect-[21/9] object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000" />
+                  <img 
+                    src="/assets/images/agents/coordination.png" 
+                    alt="Agents Coordinating" 
+                    width={1920}
+                    height={822}
+                    loading="lazy"
+                    className="w-full aspect-[21/9] object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000" 
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent flex items-end p-12">
                      <div className="text-white max-w-xl">
                         <div className="flex items-center gap-3 font-mono text-[10px] text-primary mb-4 tracking-[0.3em] uppercase font-bold text-glow">
@@ -469,7 +476,14 @@ export const Agents: React.FC = () => {
                    return (
                      <FU key={i} d={i * 0.1} className="group obsidian-panel p-0 overflow-hidden border-white/5 hover:border-primary/20 transition-all duration-700">
                         <div className="aspect-video overflow-hidden border-b border-white/5 relative">
-                           <img src={step.img} alt={step.title} className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000" />
+                           <img 
+                            src={step.img} 
+                            alt={step.title} 
+                            width={800}
+                            height={450}
+                            loading="lazy"
+                            className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000" 
+                           />
                            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-60" />
                         </div>
                         <div className="p-10">

@@ -99,7 +99,14 @@ export const Landing: React.FC = () => {
             <FU d={0.4} className="relative group">
               <div className="obsidian-panel overflow-hidden aspect-[16/10] relative shimmer">
                 <div className="scan-line" />
-                <img src={ASSETS.hero} alt="Control Plane Interface" className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-[2000ms]" />
+                <img 
+                  src={ASSETS.hero} 
+                  alt="Control Plane Interface" 
+                  width={1200}
+                  height={750}
+                  loading="lazy"
+                  className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-[2000ms]" 
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-40" />
                 
                 {/* Floating Meta HUD */}
@@ -168,7 +175,14 @@ export const Landing: React.FC = () => {
 
             <FU d={0.2}>
               <div className="obsidian-panel p-3 relative group overflow-hidden shimmer">
-                <img src={ASSETS.moat} alt="Infrastructure" className="w-full h-full object-cover grayscale brightness-90 group-hover:brightness-110 transition-all duration-1000" />
+                <img 
+                  src={ASSETS.moat} 
+                  alt="Infrastructure" 
+                  width={800}
+                  height={600}
+                  loading="lazy"
+                  className="w-full h-full object-cover grayscale brightness-90 group-hover:brightness-110 transition-all duration-1000" 
+                />
                 <div className="absolute inset-0 acid-glow opacity-20 pointer-events-none" />
                 <div className="absolute top-6 left-6 font-mono text-[9px] text-primary/60 tracking-widest uppercase">// SECURE_CORE_v4.2</div>
               </div>
@@ -235,7 +249,14 @@ export const Landing: React.FC = () => {
                </FU>
                <FU d={0.1}>
                   <div className="obsidian-panel overflow-hidden border-primary/20 relative group shimmer">
-                     <img src={ASSETS.cloud} alt="Viktron Cloud" className="w-full h-[400px] object-cover grayscale brightness-50 group-hover:brightness-100 group-hover:grayscale-0 transition-all duration-1000" />
+                     <img 
+                      src={ASSETS.cloud} 
+                      alt="Viktron Cloud" 
+                      width={800}
+                      height={400}
+                      loading="lazy"
+                      className="w-full h-[400px] object-cover grayscale brightness-50 group-hover:brightness-100 group-hover:grayscale-0 transition-all duration-1000" 
+                     />
                      <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-60" />
                   </div>
                </FU>
@@ -245,7 +266,14 @@ export const Landing: React.FC = () => {
             <div className="grid lg:grid-cols-2 gap-24 items-center">
                <FU d={0} className="order-2 lg:order-1">
                   <div className="obsidian-panel overflow-hidden border-primary/20 shimmer">
-                     <img src={ASSETS.analytics} alt="Analytics" className="w-full h-[400px] object-cover" />
+                     <img 
+                      src={ASSETS.analytics} 
+                      alt="Analytics" 
+                      width={800}
+                      height={400}
+                      loading="lazy"
+                      className="w-full h-[400px] object-cover" 
+                     />
                   </div>
                </FU>
                <FU d={0.1} className="order-1 lg:order-2">
@@ -289,7 +317,14 @@ export const Landing: React.FC = () => {
               </div>
               <FU d={0.2}>
                  <div className="obsidian-panel overflow-hidden aspect-[16/10] shimmer group">
-                    <img src={ASSETS.marketplace} alt="Marketplace" className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-110 transition-all duration-1000" />
+                    <img 
+                      src={ASSETS.marketplace} 
+                      alt="Marketplace" 
+                      width={1000}
+                      height={625}
+                      loading="lazy"
+                      className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-110 transition-all duration-1000" 
+                    />
                  </div>
               </FU>
            </div>

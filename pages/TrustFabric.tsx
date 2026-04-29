@@ -123,7 +123,14 @@ export const TrustFabric: React.FC = () => (
           ].map((l, i) => (
             <FU key={i} d={i * 0.05} className={`obsidian-panel p-0 overflow-hidden group hover:scale-[1.02] transition-all duration-500 ${l.active ? 'border-primary/20 bg-primary/[0.01]' : ''}`}>
                <div className="aspect-[4/3] overflow-hidden relative border-b border-white/5">
-                  <img src={l.img} alt={l.name} className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" />
+                  <img 
+                    src={l.img} 
+                    alt={l.name} 
+                    width={600}
+                    height={450}
+                    loading="lazy"
+                    className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" 
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-40" />
                   {l.active && <div className="absolute top-4 right-4 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full text-primary font-mono text-[8px] uppercase tracking-widest animate-pulse">Active_Layer</div>}
                </div>

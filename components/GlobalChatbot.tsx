@@ -150,13 +150,14 @@ export const GlobalChatbot: React.FC = () => {
     });
 
     try {
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || process.env.API_KEY;
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
       
       if (!apiKey) {
-        throw new Error("API Key missing");
+        console.error("Viktron Agent Error: VITE_GEMINI_API_KEY is missing from environment.");
+        throw new Error("API Key configuration error");
       }
 
-      const client = new GoogleGenAI({ apiKey, apiVersion: 'v1beta' });
+      const client = new GoogleGenAI({ apiKey });
 
       const contents = messages.map(m => ({
         role: m.sender === 'user' ? 'user' : 'model',
@@ -168,16 +169,26 @@ export const GlobalChatbot: React.FC = () => {
         parts: [{ text: userMessage.text }]
       });
 
-      const response = await client.models.generateContent({
+      // Implement a race to handle potential long hangs
+      const responsePromise = client.models.generateContent({
         model: "gemini-1.5-flash",
         contents: contents,
         config: {
           systemInstruction: {
             parts: [{ text: personaForPath(window.location.pathname) }] 
+          },
+          generationConfig: {
+            maxOutputTokens: 500,
+            temperature: 0.7,
           }
         }
       });
 
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error("Response timeout")), 12000)
+      );
+
+      const response: any = await Promise.race([responsePromise, timeoutPromise]);
       const text = sanitizeAssistantText(response.text || '');
 
       const botMessage: Message = {
@@ -195,12 +206,14 @@ export const GlobalChatbot: React.FC = () => {
     } catch (error: any) {
       console.error("Chat error:", error);
       
-      let errorResponse = "I am having trouble connecting to the server right now. Please try again in a few moments.";
+      let errorResponse = "I am having trouble connecting to the Viktron Intelligence layer right now. Please try again in a few moments.";
       
-      if (error.message?.includes('503') || error.message?.includes('high demand')) {
-        errorResponse = "I am currently navigating a high-demand period in our orchestration layer. While I recalibrate, you can reach our human team directly at info@viktron.ai or try again in a few moments. We appreciate your patience as we scale our intelligence.";
+      if (error.message === "Response timeout") {
+        errorResponse = "The orchestration layer is currently experiencing high latency. I'm still processing your request, but you might want to try a shorter query or contact us at info@viktron.ai.";
+      } else if (error.message?.includes('503') || error.message?.includes('high demand')) {
+        errorResponse = "I am currently navigating a high-demand period in our orchestration layer. We appreciate your patience as we scale our intelligence.";
       } else if (error.message?.includes('429')) {
-        errorResponse = "Our rate-limiting gateway has paused our conversation briefly. Please wait a moment while I reset my connection parameters, or contact info@viktron.ai for urgent inquiries.";
+        errorResponse = "Our rate-limiting gateway has paused our conversation briefly. Please wait a moment while I reset my connection parameters.";
       }
 
       const errorMessage: Message = {
