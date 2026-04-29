@@ -134,6 +134,55 @@ app.use('/api/channels/slack', slackRoutes);
 app.use('/api/agent', agentRoutes);
 app.use('/api', compatRoutes);
 
+// FastAPI proxy — forwards routes not handled by Node.js to the Python backend.
+// Covers: /api/analytics/*, /api/saas/*, /api/agentirl/*, /api/onboard/*,
+//         /api/teams, /api/dashboard/*, /api/agents/*, /api/health/live, /api/health/ready
+const FASTAPI_BASE = (process.env.FASTAPI_BASE_URL || 'https://api.viktron.ai').replace(/\/$/, '');
+const FASTAPI_PREFIXES = [
+  '/api/analytics/',
+  '/api/saas/',
+  '/api/agentirl/',
+  '/api/onboard',
+  '/api/teams',
+  '/api/dashboard/',
+  '/api/agents/',
+  '/api/health/live',
+  '/api/health/ready',
+  '/api/memory/',
+  '/api/integrations/',
+];
+
+app.use('/api', async (req, res, next) => {
+  const fullPath = req.originalUrl; // e.g. /api/analytics/onboard/init
+  const shouldProxy = FASTAPI_PREFIXES.some(prefix => fullPath === prefix.replace(/\/$/, '') || fullPath.startsWith(prefix));
+  if (!shouldProxy) return next();
+
+  const target = `${FASTAPI_BASE}${fullPath}`;
+  try {
+    const fastapiRes = await fetch(target, {
+      method: req.method,
+      headers: {
+        'content-type': 'application/json',
+        ...(req.headers['authorization'] ? { authorization: req.headers['authorization'] } : {}),
+        ...(req.headers['x-forwarded-for'] ? { 'x-forwarded-for': req.headers['x-forwarded-for'] } : {}),
+      },
+      body: ['GET', 'HEAD', 'OPTIONS'].includes(req.method.toUpperCase())
+        ? undefined
+        : req.rawBody ?? JSON.stringify(req.body),
+      signal: AbortSignal.timeout(30000),
+    });
+
+    const contentType = fastapiRes.headers.get('content-type') || '';
+    res.status(fastapiRes.status);
+    res.setHeader('content-type', contentType);
+    const body = await fastapiRes.text();
+    res.send(body);
+  } catch (err) {
+    logger.error('FastAPI proxy error', { target, message: err.message });
+    res.status(502).json({ success: false, message: 'Upstream service unavailable' });
+  }
+});
+
 // 404 handler for API routes
 app.use('/api/*', (req, res) => {
   res.status(404).json({ success: false, message: 'API endpoint not found' });

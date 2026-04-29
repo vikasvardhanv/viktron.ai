@@ -18,7 +18,8 @@ import { authFetch, useAuth } from '../../context/AuthContext';
 const getApiBase = (): string => {
   if (typeof window === 'undefined') return '/api';
   const host = window.location.hostname.replace(/^www\./, '');
-  if (host === 'viktron.ai' || host.endsWith('.viktron.ai')) return 'https://viktron.ai/api';
+  // Analytics calls go to FastAPI (api.viktron.ai), not the Node.js layer (viktron.ai/api)
+  if (host === 'viktron.ai' || host.endsWith('.viktron.ai')) return 'https://api.viktron.ai/api';
   const env = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
   return env ? `${env}/api` : '/api';
 };
