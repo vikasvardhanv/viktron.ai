@@ -7,7 +7,7 @@ export const BusinessPlanDemo: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <DemoWrapper title="AI Business Plan Generator">
+    <DemoWrapper title="AI Business Plan Generator" description="Generate complete business plans with AI: market analysis, financial projections, competitive landscape, and investor-ready executive summaries.">
       <BusinessPlanner onRestart={() => navigate('/demos')} />
     </DemoWrapper>
   );

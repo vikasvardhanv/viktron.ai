@@ -93,18 +93,32 @@ export const Navbar: React.FC = () => {
                       </a>
                     ) : (
                      <div className="relative">
-                         <Link 
-                           to={item.path}
-                           className={`px-6 py-2.5 flex items-center gap-2 text-[10px] font-mono font-black uppercase tracking-[0.3em] transition-all duration-500 relative group ${isActive 
-                             ? 'text-black bg-gradient-to-r from-emerald-400 via-lime-400 to-emerald-400 shadow-[0_0_30px_rgba(132,204,221,0.3)] before:absolute before:bottom-0 before:left-0 before:right-0 before:h-0.5 before:bg-gradient-to-r before:from-yellow-400 before:via-lime-400 before:to-emerald-400' 
-                             : 'text-zinc-400 hover:text-white hover:bg-white/5 border-transparent'}
-                         `}
-                       >
-                           {item.name} {item.isPopup && <ChevronDown size={10} className={`transition-transform duration-300 ${activePopup === item.isPopup ? 'rotate-180' : ''}`} />}
-                           {isActive && (
-                             <span className="absolute -bottom-[1px] left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-lime-400 to-transparent opacity-80" />
-                           )}
-                       </Link>
+                         {item.isPopup ? (
+                           <div
+                             className={`px-6 py-2.5 flex items-center gap-2 text-[10px] font-mono font-black uppercase tracking-[0.3em] transition-all duration-500 relative group cursor-default ${isActive 
+                               ? 'text-black bg-gradient-to-r from-emerald-400 via-lime-400 to-emerald-400 shadow-[0_0_30px_rgba(132,204,221,0.3)]' 
+                               : 'text-zinc-400 hover:text-white hover:bg-white/5 border-transparent'}
+                           `}
+                           >
+                             {item.name} <ChevronDown size={10} className={`transition-transform duration-300 ${activePopup === item.isPopup ? 'rotate-180' : ''}`} />
+                             {isActive && (
+                               <span className="absolute -bottom-[1px] left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-lime-400 to-transparent opacity-80" />
+                             )}
+                           </div>
+                         ) : (
+                           <Link 
+                             to={item.path}
+                             className={`px-6 py-2.5 flex items-center gap-2 text-[10px] font-mono font-black uppercase tracking-[0.3em] transition-all duration-500 relative group ${isActive 
+                               ? 'text-black bg-gradient-to-r from-emerald-400 via-lime-400 to-emerald-400 shadow-[0_0_30px_rgba(132,204,221,0.3)]' 
+                               : 'text-zinc-400 hover:text-white hover:bg-white/5 border-transparent'}
+                           `}
+                           >
+                             {item.name}
+                             {isActive && (
+                               <span className="absolute -bottom-[1px] left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-lime-400 to-transparent opacity-80" />
+                             )}
+                           </Link>
+                         )}
                        {item.isPopup === 'about' && <AboutPopup isOpen={activePopup === 'about'} onClose={() => setActivePopup(null)} />}
                        {item.isPopup === 'product' && <ProductPopup isOpen={activePopup === 'product'} onClose={() => setActivePopup(null)} />}
                      </div>
@@ -196,13 +210,22 @@ export const Navbar: React.FC = () => {
                    return (
                      <div key={item.path} className="flex flex-col">
                         <div className="flex items-center justify-between">
-                          <Link
-                            to={item.path}
-                            onClick={() => !hasPopup && setIsMobileMenuOpen(false)}
-                            className={`text-4xl font-black uppercase tracking-tighter transition-all flex-1 py-2 ${location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path.split('?')[0])) ? 'text-lime-400' : 'text-white'}`}
-                          >
-                            {item.name}
-                          </Link>
+                          {hasPopup ? (
+                            <button
+                              onClick={() => setMobileExpandedItem(isExpanded ? null : item.isPopup)}
+                              className={`text-4xl font-black uppercase tracking-tighter transition-all flex-1 py-2 text-left ${isActive ? 'text-lime-400' : 'text-white'}`}
+                            >
+                              {item.name}
+                            </button>
+                          ) : (
+                            <Link
+                              to={item.path}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className={`text-4xl font-black uppercase tracking-tighter transition-all flex-1 py-2 ${location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path.split('?')[0])) ? 'text-lime-400' : 'text-white'}`}
+                            >
+                              {item.name}
+                            </Link>
+                          )}
                           {hasPopup && (
                             <button 
                               onClick={() => setMobileExpandedItem(isExpanded ? null : item.isPopup)}

@@ -7,7 +7,7 @@ export const WhatsAppDemo: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <DemoWrapper title="WhatsApp Business Bot">
+    <DemoWrapper title="WhatsApp Business Bot" description="AI-powered WhatsApp automation: auto-reply to customer messages, send order updates, run marketing campaigns, and qualify leads on WhatsApp.">
       <WhatsAppBot onRestart={() => navigate('/demos')} />
     </DemoWrapper>
   );

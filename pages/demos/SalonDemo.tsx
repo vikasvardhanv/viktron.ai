@@ -7,7 +7,7 @@ export const SalonDemo: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <DemoWrapper title="Salon AI Agent">
+    <DemoWrapper title="Salon AI Agent" description="AI agent for salons and barbershops: online booking, service menus, stylist recommendations, and automated reminders.">
       <SalonAgent
         onBack={() => navigate('/agents')}
         onRestart={() => navigate('/demos')}

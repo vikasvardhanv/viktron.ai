@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Layout } from '../components/layout/Layout';
+import { SEO } from '../components/ui/SEO';
 import {
   Send, RotateCcw, ArrowRight, Loader2, CheckCircle2,
   Brain, Users, FileText, Headphones, Code2, ClipboardList, TestTube2,
@@ -587,6 +588,12 @@ export const InvestorDemo: React.FC = () => {
 
   return (
     <Layout>
+      <SEO
+        title="Deploy Your AI Team in Seconds | Live Demo | Viktron"
+        description="See Viktron's multi-agent orchestration in action. Fill in your company details, pick your AI agents, and watch them coordinate in real-time. Powered by Claude."
+        url="/demo"
+        keywords="AI team demo, AI agent deployment, multi-agent demo, Claude AI agents, AI orchestration demo, enterprise AI demo"
+      />
       {/* Hero — pt-16 offsets the fixed 64px navbar */}
       <div className="bg-white border-b border-slate-100 pt-16">
         <div className="max-w-6xl mx-auto px-4 py-8 text-center">

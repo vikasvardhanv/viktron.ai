@@ -7,7 +7,7 @@ export const ConstructionDemo: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <DemoWrapper title="Construction AI Agent">
+    <DemoWrapper title="Construction AI Agent" description="AI agent for construction companies: project inquiries, quote requests, site visit scheduling, and subcontractor coordination.">
       <ConstructionAgent
         onBack={() => navigate('/agents')}
         onRestart={() => navigate('/demos')}

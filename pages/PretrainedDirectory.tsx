@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { SEO } from '../components/ui/SEO';
 
 export default function PretrainedDirectory() {
   const [items, setItems] = useState<any[]>([]);
@@ -11,6 +12,12 @@ export default function PretrainedDirectory() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
+      <SEO
+        title="Pretrained AI Workers Directory | Viktron"
+        description="Browse and deploy pretrained AI agent workers. Pre-built AI models ready for customer support, sales, and operational tasks. One-click agent deployment."
+        url="/pretrained"
+        keywords="pretrained AI workers, AI agent templates, pre-built AI agents, ready AI models, instant AI deployment"
+      />
       <h1 className="text-2xl font-bold mb-4">Pretrained Workers</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {items.map((t) => (

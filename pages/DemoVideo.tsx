@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SEO } from '../components/ui/SEO';
 import {
   BrainCircuit, Target, MessageSquare, Sparkles,
   CheckCircle2, Loader2, Zap, ArrowRight
@@ -134,6 +135,12 @@ export const DemoVideo = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col font-mono selection:bg-blue-500/30">
+      <SEO
+        title="AgentIRL Live Demo | AI Agent Orchestration in Action | Viktron"
+        description="Watch AI agents collaborate in real-time. See how AgentIRL orchestrates multi-agent teams for lead handling, customer support, and content creation."
+        url="/demo-video"
+        keywords="AI agent demo, AgentIRL demo, multi-agent orchestration demo, AI team automation, AI agent live demo"
+      />
       {/* Top bar */}
       <div className="flex items-center justify-between px-6 py-3 border-b border-white/5">
         <div className="flex items-center gap-3">
@@ -152,6 +159,7 @@ export const DemoVideo = () => {
 
       {/* Main content */}
       <div className="flex-1 flex flex-col items-center justify-center px-8 py-12 max-w-4xl mx-auto w-full">
+        <h1 className="sr-only">AgentIRL — AI Agent Orchestration Live Demo</h1>
 
         {/* Prompt input area */}
         <div className="w-full mb-10">

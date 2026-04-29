@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, Eye } from 'lucide-react';
 import { HypeyLandingPagePreview } from '../components/HypeyLandingPagePreview';
 import { HypeyPlatformBuilder } from '../components/HypeyPlatformBuilder';
+import { SEO } from '../components/ui/SEO';
 
 interface PlatformConfig {
   sector?: string;
@@ -26,6 +27,12 @@ export const WhiteLabel: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100">
+      <SEO
+        title="White Label AI Platform Builder | Viktron"
+        description="Build and deploy your own white-label AI automation platform. Custom branding, domain, pricing, and agent configuration. Launch your AI SaaS in minutes."
+        url="/white-label"
+        keywords="white label AI, AI SaaS builder, custom AI platform, AI agency platform, branded AI agents, resell AI services"
+      />
       {!showPreview ? (
         <div className="fixed left-0 right-0 top-0 z-50 border-b border-slate-700 bg-slate-800">
           <div className="container-custom h-16 flex items-center justify-between">
@@ -53,6 +60,7 @@ export const WhiteLabel: React.FC = () => {
       <AnimatePresence mode="wait">
         {!showPreview ? (
           <motion.div key="builder" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="pt-16">
+            <h1 className="sr-only">White Label AI Platform Builder</h1>
             <HypeyPlatformBuilder onPlatformGenerated={handlePlatformGenerated} />
           </motion.div>
         ) : (

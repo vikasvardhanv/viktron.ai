@@ -60,7 +60,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ mode }) => {
     <Layout showFooter={false}>
       <SEO
         title={isSignup ? 'Create Account' : 'Sign In'}
-        description="Sign in or create a Viktron account."
+        description={isSignup ? 'Create your Viktron AI account to deploy autonomous AI agents. Get started with AgentIRL orchestration, Trust Fabric governance, and real-time analytics.' : 'Sign in to your Viktron AI account to manage your AI agent teams, view analytics dashboards, and orchestrate autonomous workflows.'}
         url={isSignup ? '/signup' : '/login'}
         noindex
       />

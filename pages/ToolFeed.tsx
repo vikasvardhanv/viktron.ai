@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { ExternalLink, RefreshCw, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getAuthToken, useAuth } from '../context/AuthContext';
+import { SEO } from '../components/ui/SEO';
 
 type ToolItem = {
   id: string;
@@ -297,6 +298,12 @@ export const ToolFeed: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 px-4 sm:px-8 py-8">
+      <SEO
+        title="AI Tools Directory | Discover Top AI Tools | Viktron"
+        description="Discover the latest AI tools in one place. Browse categorized AI tools with clean descriptions and direct website links. Updated daily."
+        url="/tools"
+        keywords="AI tools directory, best AI tools, AI software, AI tool discovery, latest AI tools"
+      />
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="rounded-2xl border border-slate-200 bg-white p-3 sm:p-4 shadow-sm flex items-center justify-between gap-3">
           <Link to="/" className="flex items-center gap-2">

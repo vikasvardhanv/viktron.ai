@@ -16,11 +16,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" fetchpriority="high">
 
     <!-- Preload critical assets -->
+    <link rel="modulepreload" href="/index.tsx" />
+    <link rel="preload" href="/styles/critical.css" as="style" fetchpriority="high" />
 
     <!-- Primary Meta Tags -->
-    <title>Viktron AI — Enterprise AI Agent Infrastructure & Orchestration Platform</title>
-    <meta name="title" content="Viktron AI — Enterprise AI Agent Infrastructure & Orchestration Platform" />
-    <meta name="description" content="Viktron is the enterprise infrastructure layer for autonomous AI agents. Multi-agent orchestration (AgentIRL), SOC 2 governance (Trust Fabric), and real-time analytics. Plans from $199/month. Serving 500+ businesses." />
+    <title>Viktron AI | Enterprise AI Agent Infrastructure & Orchestration</title>
+    <meta name="title" content="Viktron AI | Enterprise AI Agent Infrastructure & Orchestration" />
+    <meta name="description" content="Enterprise infrastructure for autonomous AI agents. Multi-agent orchestration (AgentIRL), SOC 2 governance (Trust Fabric), and real-time analytics. Plans from $199/mo." />
     <meta name="keywords" content="AI agent platform, multi-agent orchestration, AI infrastructure, enterprise AI agents, AI governance, AgentIRL, Trust Fabric, AI observability, AI automation agency, AI chatbots, voice AI agents, WhatsApp automation, business AI, AI agent teams, agentic AI, AI compliance, SOC 2 AI, AI audit trails, production AI runtime" />
     <meta name="author" content="Viktron.ai" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
@@ -86,14 +88,38 @@
     <!-- Critical CSS (moved from inline styles for better cacheability and performance) -->
     <link rel="stylesheet" href="/styles/critical.css" />
 
-    <!-- Google AdSense site verification script -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6601354684559213" crossorigin="anonymous"></script>
+    <!-- Deferred: Google AdSense (loads after page interactive) -->
+    <script>
+      window.addEventListener('load', function() {
+        var adScript = document.createElement('script');
+        adScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6601354684559213';
+        adScript.async = true;
+        adScript.crossOrigin = 'anonymous';
+        document.head.appendChild(adScript);
+      });
+    </script>
 
-    <!-- Google Sign-In -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Deferred: Google Sign-In (loads after page interactive) -->
+    <script>
+      window.addEventListener('load', function() {
+        var gsiScript = document.createElement('script');
+        gsiScript.src = 'https://accounts.google.com/gsi/client';
+        gsiScript.async = true;
+        gsiScript.defer = true;
+        document.head.appendChild(gsiScript);
+      });
+    </script>
 
-    <!-- Apple Sign-In -->
-    <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
+    <!-- Deferred: Apple Sign-In (loads after page interactive) -->
+    <script>
+      window.addEventListener('load', function() {
+        var appleScript = document.createElement('script');
+        appleScript.src = 'https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js';
+        appleScript.async = true;
+        appleScript.defer = true;
+        document.head.appendChild(appleScript);
+      });
+    </script>
     <meta name="appleid-signin-client-id" content="com.viktronai.signin">
     <meta name="appleid-signin-scope" content="name email">
     <meta name="appleid-signin-redirect-uri" content="https://viktron.ai">

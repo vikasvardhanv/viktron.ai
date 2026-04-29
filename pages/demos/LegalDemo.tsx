@@ -7,7 +7,7 @@ export const LegalDemo: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <DemoWrapper title="Legal Intake AI Agent">
+    <DemoWrapper title="Legal Intake AI Agent" description="AI agent for law firms: client intake forms, case qualification, document collection, and consultation scheduling.">
       <LegalAgent
         onBack={() => navigate('/agents')}
         onRestart={() => navigate('/demos')}

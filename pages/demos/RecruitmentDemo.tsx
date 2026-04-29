@@ -7,7 +7,7 @@ export const RecruitmentDemo: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <DemoWrapper title="Recruitment AI Agent">
+    <DemoWrapper title="Recruitment AI Agent" description="AI agent for recruitment: candidate screening, interview scheduling, job description matching, and automated follow-up throughout the hiring pipeline.">
       <RecruitmentAgent
         onBack={() => navigate('/agents')}
         onRestart={() => navigate('/demos')}

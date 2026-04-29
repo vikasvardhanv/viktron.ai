@@ -7,7 +7,7 @@ export const EcommerceDemo: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <DemoWrapper title="E-commerce Support AI Agent">
+    <DemoWrapper title="E-commerce Support AI Agent" description="AI agent for e-commerce: product recommendations, order tracking, returns processing, and abandoned cart recovery via chat.">
       <EcommerceAgent
         onBack={() => navigate('/agents')}
         onRestart={() => navigate('/demos')}

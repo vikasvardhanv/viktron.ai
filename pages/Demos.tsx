@@ -178,13 +178,13 @@ export const DemoWrapper: React.FC<{ children: React.ReactNode; title: string; d
       <div className="pt-32 pb-8 bg-[#050505]">
         <div className="max-w-[1400px] mx-auto px-6 flex items-center justify-between">
            <div className="flex items-center gap-6">
-              <button 
-                onClick={() => navigate('/demos')} 
+              <button
+                onClick={() => navigate('/demos')}
                 className="w-10 h-10 obsidian-inset flex items-center justify-center text-zinc-500 hover:text-white transition-colors"
               >
                  <ArrowLeft size={16} />
               </button>
-              <h2 className="text-white font-bold text-xl uppercase tracking-tighter">{title}</h2>
+              <h1 className="text-white font-bold text-xl uppercase tracking-tighter">{title}</h1>
            </div>
            <div className="text-[10px] font-mono text-primary font-bold tracking-widest uppercase animate-pulse">
               ● LIVE_DEMO_INSTANCE

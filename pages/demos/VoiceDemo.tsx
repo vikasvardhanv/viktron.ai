@@ -7,7 +7,7 @@ export const VoiceDemo: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <DemoWrapper title="Voice AI Agent">
+    <DemoWrapper title="Voice AI Agent" description="AI voice agent for phone support: handle inbound calls, answer FAQs, book appointments, and escalate complex issues to human agents.">
       <VoiceAgent onRestart={() => navigate('/demos')} />
     </DemoWrapper>
   );

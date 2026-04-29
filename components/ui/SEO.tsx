@@ -24,8 +24,8 @@ const BASE_URL = 'https://viktron.ai';
 const DEFAULT_IMAGE = `${BASE_URL}/visuals/viktronlogo.png`;
 
 export const SEO: React.FC<SEOProps> = ({
-  title = 'Viktron | Infrastructure Layer for Autonomous Agents',
-  description = 'Viktron is the missing infrastructure layer for AI agents: production-grade orchestration (AgentIRL™), real-time observability (Analytics), and enterprise governance. Multi-agent coordination, OTLP export, SOC 2 compliance.',
+  title = 'Viktron AI | Enterprise AI Agent Infrastructure & Orchestration',
+  description = 'Enterprise infrastructure for autonomous AI agents. Multi-agent orchestration (AgentIRL), SOC 2 governance (Trust Fabric), and real-time analytics. Plans from $199/mo.',
   keywords = 'AI agent platform, multi-agent orchestration, AI infrastructure, AI observability, AI governance, agent orchestration, AI monitoring, AI audit trails, enterprise AI, AgentIRL, OTLP export, AI agent analytics, production AI runtime, AI compliance, agentic AI, AI automation agency, AI chatbots, voice AI agents, WhatsApp automation',
   image = DEFAULT_IMAGE,
   url = BASE_URL,
@@ -35,7 +35,7 @@ export const SEO: React.FC<SEOProps> = ({
   noindex = false,
   canonicalUrl
 }) => {
-  const siteTitle = title.includes('Viktron.ai') ? title : `${title} | Viktron.ai`;
+  const siteTitle = (title.includes('Viktron.ai') || title.includes('Viktron AI')) ? title : `${title} | Viktron.ai`;
   const finalUrl = url.startsWith('http') ? url : `${BASE_URL}${url}`;
   const finalCanonical = canonicalUrl || finalUrl;
   const finalImage = image.startsWith('http') ? image : `${BASE_URL}${image}`;
@@ -251,7 +251,6 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <link rel="canonical" href={finalCanonical} />
-      <link rel="alternate" hrefLang="en" href={finalCanonical} />
       <link rel="alternate" hrefLang="x-default" href={finalCanonical} />
       
       {/* Robots */}
