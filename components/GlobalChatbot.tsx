@@ -175,12 +175,10 @@ export const GlobalChatbot: React.FC = () => {
         contents: contents,
         config: {
           systemInstruction: {
-            parts: [{ text: personaForPath(window.location.pathname) }] 
+            parts: [{ text: personaForPath(window.location.pathname) }]
           },
-          generationConfig: {
-            maxOutputTokens: 500,
-            temperature: 0.7,
-          }
+          maxOutputTokens: 500,
+          temperature: 0.7,
         }
       });
 

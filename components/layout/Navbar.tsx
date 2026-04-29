@@ -206,13 +206,14 @@ export const Navbar: React.FC = () => {
                  {navItems.map((item) => {
                    const hasPopup = !!item.isPopup;
                    const isExpanded = mobileExpandedItem === item.isPopup;
+                   const isActive = location.pathname === item.path || (item.path !== '/' && location.pathname.startsWith(item.path.split('?')[0]));
                    
                    return (
                      <div key={item.path} className="flex flex-col">
                         <div className="flex items-center justify-between">
                           {hasPopup ? (
                             <button
-                              onClick={() => setMobileExpandedItem(isExpanded ? null : item.isPopup)}
+                              onClick={() => setMobileExpandedItem(isExpanded ? null : (item.isPopup ?? null))}
                               className={`text-4xl font-black uppercase tracking-tighter transition-all flex-1 py-2 text-left ${isActive ? 'text-lime-400' : 'text-white'}`}
                             >
                               {item.name}
@@ -228,7 +229,7 @@ export const Navbar: React.FC = () => {
                           )}
                           {hasPopup && (
                             <button 
-                              onClick={() => setMobileExpandedItem(isExpanded ? null : item.isPopup)}
+                              onClick={() => setMobileExpandedItem(isExpanded ? null : (item.isPopup ?? null))}
                               className="p-4 text-zinc-500 hover:text-primary transition-colors"
                             >
                               <ChevronDown size={24} className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
