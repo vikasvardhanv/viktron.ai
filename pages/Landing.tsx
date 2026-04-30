@@ -76,22 +76,31 @@ export const Landing: React.FC = () => {
                   <span className="text-zinc-400">CONTROL.</span>
                 </h1>
                 <p className="heading-editorial text-3xl md:text-4xl text-zinc-300 mt-8 max-w-xl">
-                  The definitive infrastructure layer for autonomous enterprise intelligence.
+                  AI agent teams that run your business — or governance infrastructure for the agents you already have.
                 </p>
               </FU>
 
               <FU d={0.2}>
-                <p className="max-w-xl text-zinc-400 text-lg leading-relaxed">
-                  Viktron is an **Enterprise Control Plane**. We provide the governance 
-                  interceptor that wraps your agent workforce in a secure, high-trust 
-                  runtime with real-time policy enforcement.
-                </p>
+                <div className="max-w-xl space-y-4">
+                  <div className="flex items-start gap-4">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2.5 shrink-0" />
+                    <p className="text-zinc-400 text-lg leading-relaxed">
+                      <span className="text-white font-semibold">Need AI employees?</span> We deploy Sales, Support, Content, and Operations agents that work inside your Slack, WhatsApp, or web channel — 24/7, no headcount.
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2.5 shrink-0" />
+                    <p className="text-zinc-400 text-lg leading-relaxed">
+                      <span className="text-white font-semibold">Have agents already?</span> Connect them to AgentIRL — our governance runtime adds policy enforcement, SOC 2 audit trails, and trust scoring without touching your code.
+                    </p>
+                  </div>
+                </div>
               </FU>
 
               <FU d={0.3}>
                 <div className="flex flex-wrap items-center gap-6">
-                  <Link to="/contact" className="btn-acid px-10 py-5">Request Technical Access</Link>
-                  <Link to="/services/agentirl" className="btn-obsidian px-10 py-5 !text-white hover:!text-primary">System Architecture</Link>
+                  <Link to="/signup?redirect=/onboarding" className="btn-acid px-10 py-5">Deploy AI Agents</Link>
+                  <Link to="/services/agentirl" className="btn-obsidian px-10 py-5 !text-white hover:!text-primary">AgentIRL Platform</Link>
                 </div>
               </FU>
             </div>
@@ -142,6 +151,70 @@ export const Landing: React.FC = () => {
         </div>
       </section>
 
+      {/* ══════════ 00: TWO WAYS TO USE VIKTRON ══════════ */}
+      <section className="py-32 bg-[#080808] border-t border-white/5 relative">
+        <div className="max-w-7xl mx-auto px-6">
+          <FU d={0} className="text-center mb-20">
+            <Label>HOW WE HELP // TWO PATHS</Label>
+            <h2 className="heading-precision text-5xl md:text-7xl text-white uppercase tracking-tighter mt-6">
+              Which describes you?
+            </h2>
+          </FU>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Path 1: Agency */}
+            <FU d={0.1}>
+              <div className="obsidian-panel p-12 h-full flex flex-col border border-white/5 hover:border-primary/30 transition-all group">
+                <div className="font-mono text-[10px] text-primary uppercase tracking-[0.3em] font-bold mb-8">PATH_01 // AI_EMPLOYEES</div>
+                <h3 className="heading-precision text-4xl text-white uppercase tracking-tighter mb-6">
+                  "I need AI to<br />run my business."
+                </h3>
+                <p className="text-zinc-400 leading-relaxed mb-8 flex-1">
+                  You need AI agents that handle sales calls, respond to customers, write content, and manage operations — but you don't want to build them yourself.
+                </p>
+                <div className="space-y-3 mb-10">
+                  {['Sales agent qualifies and follows up on leads', 'Support agent answers customers 24/7 on WhatsApp & Slack', 'Content agent writes posts, emails, and product copy', 'Operations agent tracks tasks and reports status'].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3 text-sm text-zinc-400">
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+                      {item}
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-auto pt-8 border-t border-white/5 flex items-center justify-between">
+                  <div className="font-mono text-[10px] text-zinc-600 uppercase tracking-widest">From $199/month</div>
+                  <Link to="/signup?redirect=/onboarding" className="btn-acid !px-8 !py-3 !text-[11px]">Deploy Your Team</Link>
+                </div>
+              </div>
+            </FU>
+
+            {/* Path 2: Platform */}
+            <FU d={0.15}>
+              <div className="obsidian-panel p-12 h-full flex flex-col border border-white/5 hover:border-primary/30 transition-all group">
+                <div className="font-mono text-[10px] text-primary uppercase tracking-[0.3em] font-bold mb-8">PATH_02 // AGENTIRL_PLATFORM</div>
+                <h3 className="heading-precision text-4xl text-white uppercase tracking-tighter mb-6">
+                  "I have agents.<br />I need governance."
+                </h3>
+                <p className="text-zinc-400 leading-relaxed mb-8 flex-1">
+                  You're already running AI agents (LangChain, CrewAI, AutoGen, or custom) and need enterprise controls — audit trails, policy enforcement, SOC 2 compliance — without rewriting your code.
+                </p>
+                <div className="space-y-3 mb-10">
+                  {['SDK wraps your existing agent executor in minutes', 'Every tool call intercepted against your policy rules', 'Immutable provenance ledger — who did what and why', 'Trust scoring, delegation tokens, memory governance'].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3 text-sm text-zinc-400">
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+                      {item}
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-auto pt-8 border-t border-white/5 flex items-center justify-between">
+                  <div className="font-mono text-[10px] text-zinc-600 uppercase tracking-widest">Enterprise pricing</div>
+                  <Link to="/contact" className="btn-obsidian !px-8 !py-3 !text-[11px]">Request SDK Access</Link>
+                </div>
+              </div>
+            </FU>
+          </div>
+        </div>
+      </section>
+
       {/* ══════════════════ 01: WHAT IT IS ══════════════════ */}
       <section className="py-40 bg-[#050505] border-t border-white/5 relative">
         <div className="max-w-7xl mx-auto px-6">
@@ -153,9 +226,10 @@ export const Landing: React.FC = () => {
                 The Trust<br />Fabric.
               </h2>
               <p className="text-zinc-300 text-xl leading-relaxed mb-12 font-light">
-                AgentIRL™ is a **governance interceptor** that wraps your agent frameworks 
-                (LangChain, CrewAI, AutoGen) in a secure "Trust Fabric". It stops 
-                rogue actions before they execute.
+                AgentIRL™ is a governance interceptor that wraps your agent frameworks
+                (LangChain, CrewAI, AutoGen) in a secure Trust Fabric. Every tool call
+                is validated against your policies before it executes — stopping rogue
+                actions before they reach your systems.
               </p>
               
               <div className="grid sm:grid-cols-2 gap-10">

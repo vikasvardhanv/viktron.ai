@@ -58,21 +58,33 @@ export const AgentIRL: React.FC = () => (
             <FU d={0.1}>
               <h1 className="heading-precision text-7xl md:text-8xl text-white leading-[0.85] tracking-[-0.04em]">
                 AGENT<br />
-                <span className="text-zinc-700">INTERCEPTION.</span>
+                <span className="text-zinc-700">GOVERNANCE.</span>
               </h1>
               <p className="heading-editorial text-3xl text-zinc-300 mt-8 max-w-xl">
-                The definitive middleware layer between models and enterprise systems.
+                Enterprise governance for AI agents you already run — or want to run through us.
               </p>
             </FU>
             <FU d={0.2}>
-              <p className="max-w-xl text-zinc-400 text-lg leading-relaxed">
-                AgentIRL is the production runtime for autonomous agents. It wraps existing 
-                frameworks to intercept every tool call, ensuring safety, budget, and identity.
-              </p>
+              <div className="max-w-xl space-y-5">
+                <p className="text-zinc-400 text-lg leading-relaxed">
+                  AgentIRL is the runtime layer that sits between your AI agents and the world. It intercepts every tool call, enforces your policies, issues delegation tokens, and records an immutable audit trail — all without touching your existing agent code.
+                </p>
+                <div className="grid grid-cols-2 gap-4 pt-2">
+                  {[
+                    { label: 'Bring your own agents', sub: 'LangChain, CrewAI, AutoGen, or custom SDK' },
+                    { label: 'Or use ours', sub: 'We provision a full agent team for you' },
+                  ].map((item, i) => (
+                    <div key={i} className="obsidian-inset p-4 border border-white/5">
+                      <div className="text-white text-[11px] font-bold uppercase tracking-widest mb-1">{item.label}</div>
+                      <div className="text-zinc-600 text-[10px] leading-relaxed">{item.sub}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </FU>
             <FU d={0.3} className="flex gap-6">
-              <Link to="/signup?redirect=/onboarding" className="btn-acid">Get Started Free</Link>
-              <Link to="/enterprise" className="btn-obsidian">Compliance Matrix</Link>
+              <Link to="/contact" className="btn-acid">Request SDK Access</Link>
+              <Link to="/signup?redirect=/onboarding" className="btn-obsidian">Deploy Agent Team Instead</Link>
             </FU>
           </div>
           <FU d={0.4} className="relative hidden lg:block group">
@@ -287,10 +299,16 @@ export const AgentIRL: React.FC = () => (
     <section className="py-60 bg-[#050505] relative overflow-hidden text-center">
        <div className="max-w-5xl mx-auto px-6 relative z-10">
           <FU d={0}>
-             <h2 className="heading-precision text-7xl md:text-[140px] text-white mb-16 uppercase tracking-tighter font-black">
+             <h2 className="heading-precision text-7xl md:text-[140px] text-white mb-12 uppercase tracking-tighter font-black">
                 SECURE<br />WORKFORCE.
              </h2>
-             <Link to="/signup?redirect=/onboarding" className="btn-acid px-16 py-6">Deploy Your Workforce</Link>
+             <p className="text-zinc-400 text-xl max-w-2xl mx-auto mb-14 leading-relaxed">
+               Bringing your own agents to AgentIRL, or want us to deploy a governed agent team for you?
+             </p>
+             <div className="flex flex-wrap gap-6 justify-center">
+               <Link to="/contact" className="btn-acid px-16 py-6">Request SDK Access</Link>
+               <Link to="/signup?redirect=/onboarding" className="btn-obsidian px-16 py-6">Deploy Agent Team</Link>
+             </div>
           </FU>
        </div>
     </section>
