@@ -36,8 +36,8 @@ export const SEO: React.FC<SEOProps> = ({
   canonicalUrl
 }) => {
   const siteTitle = (title.includes('Viktron.ai') || title.includes('Viktron AI')) ? title : `${title} | Viktron.ai`;
-  const finalUrl = url.startsWith('http') ? url : `${BASE_URL}${url}`;
-  const finalCanonical = canonicalUrl || finalUrl;
+  const finalUrl = (url.startsWith('http') ? url : `${BASE_URL}${url}`).replace(/\/$/, '') || BASE_URL;
+  const finalCanonical = (canonicalUrl || finalUrl).replace(/\/$/, '') || BASE_URL;
   const finalImage = image.startsWith('http') ? image : `${BASE_URL}${image}`;
 
   // Default Organization Schema
@@ -251,8 +251,7 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <link rel="canonical" href={finalCanonical} />
-      <link rel="alternate" hrefLang="x-default" href={finalCanonical} />
-      
+
       {/* Robots */}
       <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
       <meta name="googlebot" content={noindex ? 'noindex, nofollow' : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'} />
@@ -319,7 +318,7 @@ export const ServiceSEO: React.FC<{ serviceName: string; serviceDescription: str
     title={`${serviceName} | AI Services | Viktron`}
     description={serviceDescription}
     keywords={`${serviceName}, AI Services, Business Automation, Viktron`}
-    url={`/services/${serviceId || ''}`}
+    url={`/services/${serviceId || ''}`.replace(/\/$/, '') || '/services'}
     canonicalUrl={serviceId ? `https://viktron.ai/services/${serviceId}` : 'https://viktron.ai/services'}
     schema={{
       "@context": "https://schema.org",

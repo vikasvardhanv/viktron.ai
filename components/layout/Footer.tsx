@@ -116,7 +116,7 @@ export const Footer = () => {
 
         <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
           <p className="text-zinc-500 text-[10px] font-mono uppercase tracking-widest">
-            © {new Date().getFullYear()} Viktron Inc. [GLOBAL_HQ] | <a href="https://seojuice.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">v2.2_INSTITUTIONAL</a>
+            © {new Date().getFullYear()} Viktron Inc. [GLOBAL_HQ] | Last updated: April 29, 2026 | <a href="https://seojuice.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">v2.2_INSTITUTIONAL</a>
           </p>
           <div className="flex items-center gap-3 text-[10px] font-mono text-primary font-bold tracking-widest">
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(204,255,0,0.8)]"></span>
